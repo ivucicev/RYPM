@@ -1,0 +1,12 @@
+@import 'scss/theme/variables.scss';
+@import 'scss/global.scss';
+
+.header-md {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+// TODO: GV, ion-inputs have min-height in new version: leave?
+// .sc-ion-input-md-h {
+//   min-height: unset;
+// }

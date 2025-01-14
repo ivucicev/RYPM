@@ -1,28 +1,29 @@
 <ion-header>
-    <ion-toolbar>
-        <ion-buttons slot="start">
-            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
-        </ion-buttons>
-        <ion-title>
-            {{'select_language' | translate}}
-        </ion-title>
-    </ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      {{'select_language' | translate}}
+    </ion-title>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content class="bg_color" fullscreen>
-    <div class="form">
-        <ion-list lines="none">
-            <ion-radio-group [(ngModel)]="defaultLanguageCode">
-                <ion-item class="animate__animated animate__fadeInUp" *ngFor="let language of languages" (click)="onLanguageClick(language)">
-                    <div class="item_inner d-flex">
-                        <h3>{{language.name}}</h3>
-                        <ion-radio class="end" value="{{language.code}}"></ion-radio>
-                    </div>
-                </ion-item>
-            </ion-radio-group>
-        </ion-list>
-    </div>
+  <div class="form">
+    <ion-list lines="none">
+      <ion-radio-group [(ngModel)]="defaultLanguageCode">
+        <ion-item class="animate__animated animate__fadeInUp" *ngFor="let language of languages"
+          (click)="onLanguageClick(language)">
+          <div class="item_inner d-flex">
+            <h3>{{language.name}}</h3>
+            <ion-radio justify="end" class="end"></ion-radio>
+          </div>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </div>
 </ion-content>
 <ion-footer class="ion-no-border">
-    <ion-button size="large" shape="round" class="btn" (click)="languageConfirm()">{{'continue' | translate}}</ion-button>
+  <ion-button size="large" shape="round" class="btn" (click)="languageConfirm()">{{'continue' | translate}}</ion-button>
 </ion-footer>

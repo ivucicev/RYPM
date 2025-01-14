@@ -38,6 +38,8 @@
   --white: #fff;
   --item-bg: #25252b;
   --transparent: rgba(0, 0, 0, 0);
+
+  --ion-color-primary: var(--primary);
 }
 
 .bg_color {
@@ -238,20 +240,17 @@ ion-header {
       }
     }
 
-    ion-label {
+    ion-input .label-text {
       color: var(--text-light) !important;
       font-size: 1rem !important;
       font-weight: 500;
       text-transform: none;
       letter-spacing: 0px !important;
       margin-bottom: 7px !important;
-      transform: translateY(128%) !important;
     }
 
-    .item_inner {
-      &.d-flex {
-        align-items: flex-start;
-      }
+    ion-input.password {
+      letter-spacing: 3px !important;
     }
 
     ion-textarea,
@@ -277,6 +276,13 @@ ion-header {
           --padding: var(--no-padding);
         }
       }
+
+      &.has-focus,
+      &.has-value {
+        ion-label {
+          transform: translateY(50%) scale(0.75) !important;
+        }
+      }
     }
 
     &.item-select {
@@ -298,13 +304,6 @@ ion-header {
         font-size: .95rem !important;
         font-weight: 400 !important;
         color: var(--text-black);
-      }
-    }
-
-    &.item-has-focus,
-    &.item-has-value {
-      ion-label {
-        transform: translateY(50%) scale(0.75) !important;
       }
     }
   }
@@ -564,8 +563,8 @@ ion-app[dir="rtl"] {
     }
   }
 
-  .form ion-item.item-has-focus ion-label,
-  .form ion-item.item-has-value ion-label {
+  .form ion-input.has-focus .label-text-wrapper,
+  .form ion-input.has-value .label-text-wrapper {
     transform-origin: right top !important;
     margin-right: 0 !important;
   }

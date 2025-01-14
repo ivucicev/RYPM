@@ -1,112 +1,112 @@
 .form {
-    width: 100%;
+  width: 100%;
 
-    ion-list {
-        background: none;
-        width: calc(100% - 0px);
-        margin: 0 auto;
-        padding-top: 10px;
-        padding-bottom: 63px;
+  ion-list {
+    background: none;
+    width: calc(100% - 0px);
+    margin: 0 auto;
+    padding-top: 10px;
+    padding-bottom: 63px;
 
-        ion-item {
-            padding: 19px 15px;
-            --inner-padding-end: 0px;
-            --inner-min-height: unset !important;
-            --padding-start: 0;
-            --background: var(--transparent) !important;
-            width: calc(100% - 27px);
-            --min-height: unset;
-            margin: 0 auto;
-            margin-bottom: 11px;
-            background: var(--item-bg);
-            border-radius: 7px;
-            border-bottom: none !important;
+    ion-item {
+      padding: 19px 15px;
+      --inner-padding-end: 0px;
+      --inner-min-height: unset !important;
+      --padding-start: 0;
+      --background: var(--transparent) !important;
+      width: calc(100% - 27px);
+      --min-height: unset;
+      margin: 0 auto;
+      margin-bottom: 11px;
+      background: var(--item-bg);
+      border-radius: 7px;
+      border-bottom: none !important;
 
-            .item_inner {
-                h3 {
-                    margin: 0;
-                    color: var(--white);
-                    font-size: 1.14rem;
-                    letter-spacing: 0.3px;
+      .item_inner {
+        h3 {
+          margin: 0;
+          color: var(--white);
+          font-size: 1.14rem;
+          letter-spacing: 0.3px;
 
-                }
-
-                ion-radio {
-                    --color-checked: var(--primary);
-                    margin: 0;
-
-                }
-            }
-
-            &.animate__animated.animate__fadeInUp {
-                --animate-duration: .0s;
-
-                &:nth-child(1) {
-                    --animate-duration: .15s;
-                }
-
-                &:nth-child(2) {
-                    --animate-duration: .2s;
-                }
-
-                &:nth-child(3) {
-                    --animate-duration: .25s;
-                }
-
-                &:nth-child(4) {
-                    --animate-duration: .3s;
-                }
-
-                &:nth-child(5) {
-                    --animate-duration: .35s;
-                }
-
-                &:nth-child(6) {
-                    --animate-duration: .4s;
-                }
-
-                &:nth-child(7) {
-                    --animate-duration: .45s;
-                }
-
-                &:nth-child(8) {
-                    --animate-duration: .5s;
-                }
-
-                &:nth-child(9) {
-                    --animate-duration: .55s;
-                }
-
-                &:nth-child(10) {
-                    --animate-duration: .6s;
-                }
-
-                &:nth-child(11) {
-                    --animate-duration: .65s;
-                }
-
-                &:nth-child(12) {
-                    --animate-duration: .7s;
-                }
-
-                &:nth-child(13) {
-                    --animate-duration: .5s;
-                }
-
-                &:nth-child(14) {
-                    --animate-duration: .5s;
-                }
-
-                &:nth-child(15) {
-                    --animate-duration: .5s;
-                }
-            }
         }
+
+        ion-radio {
+          --color-checked: var(--primary);
+          margin: 0;
+
+        }
+      }
+
+      &.animate__animated.animate__fadeInUp {
+        --animate-duration: .0s;
+
+        &:nth-child(1) {
+          --animate-duration: .15s;
+        }
+
+        &:nth-child(2) {
+          --animate-duration: .2s;
+        }
+
+        &:nth-child(3) {
+          --animate-duration: .25s;
+        }
+
+        &:nth-child(4) {
+          --animate-duration: .3s;
+        }
+
+        &:nth-child(5) {
+          --animate-duration: .35s;
+        }
+
+        &:nth-child(6) {
+          --animate-duration: .4s;
+        }
+
+        &:nth-child(7) {
+          --animate-duration: .45s;
+        }
+
+        &:nth-child(8) {
+          --animate-duration: .5s;
+        }
+
+        &:nth-child(9) {
+          --animate-duration: .55s;
+        }
+
+        &:nth-child(10) {
+          --animate-duration: .6s;
+        }
+
+        &:nth-child(11) {
+          --animate-duration: .65s;
+        }
+
+        &:nth-child(12) {
+          --animate-duration: .7s;
+        }
+
+        &:nth-child(13) {
+          --animate-duration: .5s;
+        }
+
+        &:nth-child(14) {
+          --animate-duration: .5s;
+        }
+
+        &:nth-child(15) {
+          --animate-duration: .5s;
+        }
+      }
     }
+  }
 }
 
 
 ion-footer {
-    padding:14px;
-    background: var(--bg-color);
+  padding: 14px;
+  background: var(--bg-color);
 }

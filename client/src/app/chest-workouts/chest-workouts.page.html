@@ -1,0 +1,1402 @@
+<ion-header class="bg_transparent">
+    <div class="header_background center_img">
+        <img src="assets/images/5.png" class="crop_img">
+    </div>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+        </ion-buttons>
+        <ion-title>
+            <div class="title-inner d-flex">
+                Chest Workouts
+                <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+            </div>
+        </ion-title>
+    </ion-toolbar>
+
+    <ion-segment mode="ios" [(ngModel)]="tab" lines="none">
+        <ion-segment-button mode="ios" value="beginers">
+            <ion-label>
+                {{'beginers' | translate}}
+            </ion-label>
+        </ion-segment-button>
+        <ion-segment-button mode="ios" value="skills">
+            <ion-label>
+                {{'skills' | translate}}
+            </ion-label>
+        </ion-segment-button>
+        <ion-segment-button mode="ios" value="master">
+            <ion-label>
+                {{'master' | translate}}
+            </ion-label>
+        </ion-segment-button>
+    </ion-segment>
+</ion-header>
+
+<ion-content class="bg_color" fullscreen>
+    <div class="tab_content" [ngSwitch]="tab">
+
+        <ion-list lines="none" *ngSwitchCase="'beginers'">
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+        </ion-list>
+
+
+
+
+        <ion-list lines="none" *ngSwitchCase="'skills'">
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+        </ion-list>
+
+
+
+        <ion-list lines="none" *ngSwitchCase="'master'">
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Stretch</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/chest_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+        </ion-list>
+    </div>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="animate__animated animate__zoomIn">
+        <ion-fab-button (click)="workout_start()">
+            <ion-icon class="zmdi zmdi-play"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>

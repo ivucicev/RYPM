@@ -1,0 +1,44 @@
+<ion-header class="bg_transparent">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+        </ion-buttons>
+        <ion-title>
+            <div class="title-inner d-flex">
+                <ion-icon class="zmdi zmdi-alert-circle-o end ion-text-end"></ion-icon>
+            </div>
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="bg_color" fullscreen>
+    <div class="bg_img center_img">
+        <img src="assets/images/strecho_1.png" class="crop_img">
+    </div>
+
+    <div class="page_title ion-text-center">
+        <h2>Wheel Stretch</h2>
+        <h3>2 mins | 1 set | 15 reps</h3>
+    </div>
+    <div class="timer">
+        <circle-progress [maxPercent]="100" [percent]="80" [showTitle]="false" [showUnits]="false" [showSubtitle]="false" [responsive]="true" [radius]="74" [outerStrokeWidth]="9" [space]="-6" [innerStrokeWidth]="4" [outerStrokeLinecap]="'round'" [outerStrokeColor]="'var(--primary)'" [innerStrokeColor]="'rgba(72, 72, 72, 0.83)'" [animation]="true" [animationDuration]="300"></circle-progress>
+
+
+        <div class="text_box">
+            <h2>0:30</h2>
+            <h3>{{'mins' | translate}}</h3>
+        </div>
+    </div>
+
+    <ion-button size="large" expand="round" class="btn">
+        {{'stop' | translate}}
+    </ion-button>
+    
+    <div class="card_footer ion-text-center">
+        <h2 (click)="rest()"> {{'next' | translate}}</h2>
+        <h3>Full Crunches</h3>
+        <h4> 5 mins | 2 set | 25 reps</h4>
+    </div>
+
+</ion-content>

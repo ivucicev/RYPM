@@ -1,0 +1,1038 @@
+<ion-header class="bg_transparent">
+    <div class="header_background center_img">
+        <img src="assets/images/1.png" class="crop_img">
+    </div>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+        </ion-buttons>
+        <ion-title>
+            <div class="title-inner d-flex">
+                Weight Loss Programs
+                <!--                <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>-->
+            </div>
+        </ion-title>
+    </ion-toolbar>
+
+    <ion-segment mode="ios" [(ngModel)]="tab" lines="none">
+        <ion-segment-button mode="ios" value="beginers">
+            <ion-label>
+                {{'beginers' | translate}}
+            </ion-label>
+        </ion-segment-button>
+        <ion-segment-button mode="ios" value="skills">
+            <ion-label>
+                {{'skills' | translate}}
+            </ion-label>
+        </ion-segment-button>
+        <ion-segment-button mode="ios" value="master">
+            <ion-label>
+                {{'master' | translate}}
+            </ion-label>
+        </ion-segment-button>
+    </ion-segment>
+</ion-header>
+
+
+<ion-content class="bg_color" fullscreen>
+    <div class="tab_content" [ngSwitch]="tab">
+        <ion-list lines="none" *ngSwitchCase="'beginers'">
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+             <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item> <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item> <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item> <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item> <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item> <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+        </ion-list>
+
+
+
+        <ion-list lines="none" *ngSwitchCase="'skills'">
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+              <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>  <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>  <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>  <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>  <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>  <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+        </ion-list>
+
+
+
+
+        <ion-list lines="none" *ngSwitchCase="'master'">
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+             <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+ <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+ <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+ <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+ <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Strecho Workout</h2>
+                        <h3 class="d-flex">90 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Bell Magic Workout</h2>
+                        <h3 class="d-flex">125 hours | Jackwill Smith <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Soft Curve Workout</h2>
+                        <h3 class="d-flex">100 hours | Linda Williamson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="stretch_workouts()">
+                <div class="item-inner">
+                    <div class="img_box center_img">
+                        <img src="assets/images/weight_loss_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Stretcho Workout</h2>
+                        <h3 class="d-flex">60 hours | Amenda Johnson <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                        </h3>
+                    </div>
+                </div>
+            </ion-item>
+        </ion-list>
+    </div>
+</ion-content>

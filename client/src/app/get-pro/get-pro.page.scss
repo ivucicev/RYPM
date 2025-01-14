@@ -1,0 +1,184 @@
+ion-header {
+    ion-toolbar {
+        position: absolute;
+        width: 100%;
+        z-index: 99;
+        left: 0;
+    }
+
+    .banner {
+        position: relative;
+        width: 100%;
+
+        .banner_img {
+            width: 100%;
+            height: 200px;
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: var(--bg-color);
+                opacity: .6;
+
+            }
+        }
+
+        h2 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: -41px;
+            width: 100%;
+            height: fit-content;
+            margin: auto 0;
+            color: var(--white);
+            font-size: 1.25rem;
+            letter-spacing: .5px;
+            --animate-duration: .25s;
+        }
+    }
+}
+
+
+ion-list {
+    background: none;
+    width: calc(100% - 0px);
+    margin: 0 auto;
+    padding: 0;
+    padding-top: 40px;
+
+    ion-item {
+        padding: 0;
+        --inner-padding-end: 0px;
+        --inner-min-height: unset !important;
+        --padding-start: 0;
+        --background: var(--transparent) !important;
+        width: calc(100% - 40px);
+        --min-height: unset;
+        margin: 0 auto;
+        padding-bottom: 30px;
+
+        .item-inner {
+            .img_box {
+                min-width: 83px;
+                height: 83px;
+                border-radius: 7px;
+                margin-right: 20px;
+            }
+
+            ion-icon {
+                width: auto;
+                margin-right: 20px;
+                color: var(--primary);
+                border: 1px solid var(--primary);
+                border-radius: 50%;
+                min-width: 50px;
+                height: 50px;
+                line-height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .text_box {
+                width: 100%;
+
+                h2 {
+                    margin: 0;
+                    color: var(--white);
+                    font-size: 1.14rem;
+                    letter-spacing: 0.3px;
+                    padding-bottom: 4px;
+                }
+
+                h3 {
+                    margin: 0;
+                    color: var(--text-light);
+                    font-size: .75rem;
+                    opacity: .6;
+                }
+            }
+        }
+
+        &.animate__animated.animate__fadeInUp {
+            --animate-duration: .0s;
+
+            &:nth-child(1) {
+                --animate-duration: .15s;
+            }
+
+            &:nth-child(2) {
+                --animate-duration: .2s;
+            }
+
+            &:nth-child(3) {
+                --animate-duration: .25s;
+            }
+
+            &:nth-child(4) {
+                --animate-duration: .3s;
+            }
+
+            &:nth-child(5) {
+                --animate-duration: .35s;
+            }
+
+            &:nth-child(6) {
+                --animate-duration: .4s;
+            }
+
+            &:nth-child(7) {
+                --animate-duration: .45s;
+            }
+
+            &:nth-child(8) {
+                --animate-duration: .5s;
+            }
+
+            &:nth-child(9) {
+                --animate-duration: .55s;
+            }
+
+            &:nth-child(10) {
+                --animate-duration: .6s;
+            }
+
+            &:nth-child(11) {
+                --animate-duration: .65s;
+            }
+
+            &:nth-child(12) {
+                --animate-duration: .7s;
+            }
+
+            &:nth-child(13) {
+                --animate-duration: .5s;
+            }
+
+            &:nth-child(14) {
+                --animate-duration: .5s;
+            }
+
+            &:nth-child(15) {
+                --animate-duration: .5s;
+            }
+        }
+    }
+}
+
+ion-footer {
+    background: var(--bg-color);
+    padding: 20px;
+    --animate-duration: .25s;
+
+    .button.btn {
+        width: fit-content;
+        margin: 0 auto;
+        display: block;
+        min-width: 160px;
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+}

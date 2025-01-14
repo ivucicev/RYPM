@@ -1,0 +1,141 @@
+ion-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    ion-toolbar {
+        ion-title {
+            .title-inner {
+
+                ion-icon {
+                    padding: 0 2px;
+                    font-size: 1.3rem;
+                }
+            }
+        }
+    }
+}
+
+.bg_img {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 320px;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(0deg, rgba(27, 27, 32, 1) 0%, rgba(27, 27, 32, 0.2528361686471463) 100%);
+        z-index: 9;
+    }
+
+    img {
+        filter: blur(3px);
+    }
+}
+
+ion-content {
+    --padding-top: 60px !important;
+}
+
+.page_title {
+    position: relative;
+    z-index: 99;
+    padding: 40px 20px 20px 20px;
+
+    h2 {
+        margin: 0;
+        color: var(--white);
+        font-weight: 500;
+        font-size: 1.8rem;
+        letter-spacing: .8px;
+        padding-bottom: 6px;
+
+    }
+
+    h3 {
+        margin: 0;
+        color: var(--text-light);
+        font-size: 1rem;
+        letter-spacing: .3px;
+    }
+}
+
+.timer {
+    position: relative;
+    z-index: 99;
+    width: 215px;
+    margin: 22px auto 31px auto;
+
+    .text_box {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: fit-content;
+        height: fit-content;
+        margin: auto;
+        color: var(--white);
+        text-align: center;
+
+        h2 {
+            margin: 0;
+            font-size: 2.3rem;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 1rem;
+            letter-spacing: .4px;
+        }
+    }
+}
+
+
+.button.btn {
+    width: fit-content;
+    margin: 0 auto;
+    display: block;
+    min-width: 160px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--primary) !important;
+}
+
+.card_footer {
+    padding-top: 43px;
+
+    h2 {
+        margin: 0;
+        color: var(--primary);
+        text-transform: uppercase;
+        font-size: 1rem;
+        letter-spacing: .7px;
+        font-weight: 500;
+        padding-bottom: 8px;
+    }
+
+    h3 {
+        margin: 0;
+        color: var(--white);
+        font-size: 1.2rem;
+        letter-spacing: .5px;
+        padding-bottom: 5px;
+    }
+
+    h4 {
+        margin: 0;
+        color: var(--text-light);
+        opacity: 0.4;
+        font-size: .83rem;
+        letter-spacing: .4px;
+    }
+}

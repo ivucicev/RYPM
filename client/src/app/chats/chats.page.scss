@@ -1,0 +1,142 @@
+ion-header {
+    ion-toolbar {
+        ion-title {
+            padding: 0 30px !important;
+            text-align: center !important;
+            font-size: 1.35rem !important;
+        }
+    }
+}
+
+
+ion-list {
+    background: none;
+    width: calc(100% - 0px);
+    margin: 0 auto;
+    padding-top: 10px;
+    padding-bottom: 63px;
+
+    ion-item {
+        padding: 0;
+        --inner-padding-end: 0px;
+        --inner-min-height: unset !important;
+        --padding-start: 0;
+        --background: var(--transparent) !important;
+        width: calc(100% - 27px);
+        --min-height: unset;
+        margin: 0 auto;
+        margin-bottom: 11px;
+        background: var(--item-bg);
+        border-radius: 7px;
+
+        .item-inner {
+
+            .img_box {
+                min-width: 68px;
+                height: 68px;
+            }
+
+            .text_box {
+                width: 100%;
+                overflow: hidden;
+                padding: 8px 15px;
+
+                h2 {
+                    margin: 0;
+                    color: var(--white);
+                    font-size: 1.11rem;
+                    letter-spacing: 0.3px;
+                   padding-bottom: 6px;
+
+                    .item-title {
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                    }
+
+                    small {
+                        min-width: fit-content;
+                        font-weight: 500;
+                        color: var(--text-light);
+                        font-size: .65rem;
+                        display: block;
+                        opacity: .5;
+                    }
+                }
+
+                h3 {
+                    margin: 0;
+                    color: var(--text-light);
+                    font-size: 0.73rem;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                }
+            }
+        }
+
+        &.animate__animated.animate__fadeInUp {
+            --animate-duration: .0s;
+
+            &:nth-child(1) {
+                --animate-duration: .15s;
+            }
+
+            &:nth-child(2) {
+                --animate-duration: .2s;
+            }
+
+            &:nth-child(3) {
+                --animate-duration: .25s;
+            }
+
+            &:nth-child(4) {
+                --animate-duration: .3s;
+            }
+
+            &:nth-child(5) {
+                --animate-duration: .35s;
+            }
+
+            &:nth-child(6) {
+                --animate-duration: .4s;
+            }
+
+            &:nth-child(7) {
+                --animate-duration: .45s;
+            }
+
+            &:nth-child(8) {
+                --animate-duration: .5s;
+            }
+
+            &:nth-child(9) {
+                --animate-duration: .55s;
+            }
+
+            &:nth-child(10) {
+                --animate-duration: .6s;
+            }
+
+            &:nth-child(11) {
+                --animate-duration: .65s;
+            }
+
+            &:nth-child(12) {
+                --animate-duration: .7s;
+            }
+
+            &:nth-child(13) {
+                --animate-duration: .5s;
+            }
+
+            &:nth-child(14) {
+                --animate-duration: .5s;
+            }
+
+            &:nth-child(15) {
+                --animate-duration: .5s;
+            }
+        }
+    }
+}

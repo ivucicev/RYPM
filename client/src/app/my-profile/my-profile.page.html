@@ -1,0 +1,46 @@
+<ion-header class="bg_transparent">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+        </ion-buttons>
+        <ion-title>
+            {{'my_profile' | translate}}
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="bg_color" fullscreen>
+    <div class="banner">
+        <div class="banner_img center_img">
+            <img src="assets/images/banner_img.png" class="crop_img">
+        </div>
+        <div class="profile_img animate__animated animate__zoomIn">
+            <div class="img_box center_img">
+                <img src="assets/images/profile.png" class="crop_img">
+                <!--                <ion-icon class="zmdi zmdi-account"></ion-icon>-->
+            </div>
+            <ion-icon class="zmdi zmdi-camera"></ion-icon>
+        </div>
+    </div>
+
+    <div class="form">
+        <ion-list lines="none">
+            <ion-item lines="none" class="animate__animated animate__fadeInUp">
+                <ion-label mode="md" position="floating">{{"full_name" | translate}}</ion-label>
+                <ion-input mode="md" type="name" value="Samantha Smith" readonly="boolean"></ion-input>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp">
+                <ion-label mode="md" position="floating">{{"email_address" | translate}}</ion-label>
+                <ion-input mode="md" type="email" value="samanthasmith@mail.com" readonly="boolean"></ion-input>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp">
+                <ion-label mode="md" position="floating">{{"phone_number" | translate}}</ion-label>
+                <ion-input mode="md" type="email" value="+1 987 654 3210" readonly="boolean"></ion-input>
+            </ion-item>
+
+        </ion-list>
+    </div>
+</ion-content>

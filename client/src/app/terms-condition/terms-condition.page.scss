@@ -1,0 +1,50 @@
+.animate__animated.animate__fadeInUp {
+    --animate-duration: 0;
+
+    &:nth-child(1) {
+        --animate-duration: .15s;
+    }
+
+    &:nth-child(2) {
+        --animate-duration: .2s;
+    }
+
+    &:nth-child(3) {
+        --animate-duration: .25s;
+    }
+
+    &:nth-child(4) {
+        --animate-duration: .3s;
+    }
+
+    &:nth-child(5) {
+        --animate-duration: .35s;
+    }
+
+    &:nth-child(6) {
+        --animate-duration: .4s;
+    }
+
+    &:nth-child(7) {
+        --animate-duration: .45s;
+    }
+
+    &:nth-child(8) {
+        --animate-duration: .5s;
+    }
+
+}
+
+.text_box {
+    width: calc(100% - 40px);
+    margin: 0 auto;
+    padding-top: 10px;
+
+    p {
+        margin: 0;
+        color: var(--white);
+        padding-bottom: 15px;
+        font-size: 1rem;
+        line-height: 22px;
+    }
+}

@@ -1,27 +1,16 @@
-import { Component, EnvironmentInjector, inject } from '@angular/core';
-import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { triangle, ellipse, square } from 'ionicons/icons';
-import { HelloWorldService } from '../core/services/hello-world.service';
+import { Component } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { IonicModule } from '@ionic/angular';
 
 @Component({
-  selector: 'app-tabs',
-  templateUrl: 'tabs.page.html',
-  styleUrls: ['tabs.page.scss'],
-  standalone: true,
-  imports: [IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel],
+    selector: 'app-tabs',
+    templateUrl: 'tabs.page.html',
+    styleUrls: ['tabs.page.scss'],
+    standalone: true,
+    imports: [IonicModule, TranslateModule]
 })
 export class TabsPage {
-  public environmentInjector = inject(EnvironmentInjector);
 
-  constructor(
-    private helloWorldService: HelloWorldService
-  ) {
-    addIcons({ triangle, ellipse, square });
+  constructor() {}
 
-    this.helloWorldService.hello('World').then(res => {
-      alert('Hello world response.')
-      console.log(res);
-    })
-  }
 }

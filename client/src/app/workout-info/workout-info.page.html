@@ -1,0 +1,69 @@
+<ion-header class="bg_transparent">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+        </ion-buttons>
+        <ion-title>
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="bg_color" fullscreen [scrollEvents]="true" (ionScroll)="onScroll($event)">
+    <div class="banner" [class.active]="showToolbar">
+        <div class="img_box center_img">
+            <img src="assets/images/strecho_1.png" class="crop_img">
+            <div class="start_button animate__animated animate__zoomIn" (click)="workout_start()">
+                <ion-icon class="zmdi zmdi-play"></ion-icon>
+            </div>
+        </div>
+        <div class="text_box">
+            <div class="profile_info">
+                <h2 class="d-flex">Wheel Stretch</h2>
+                <h3 class="d-flex">3 min | 1 set 15 stps</h3>
+            </div>
+
+            <div class="about">
+                <h2> {{'how_to_do_it' | translate}}.</h2>
+                <p class="animate__animated animate__fadeInUp">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                </p>
+
+                <p class="animate__animated animate__fadeInUp">
+                    It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here,
+                    content here', making it look like readable English.
+                </p>
+
+                <p class="animate__animated animate__fadeInUp">
+                    There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum,
+                    you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.
+                    It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.
+                </p>
+
+                <p class="animate__animated animate__fadeInUp">
+                    Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up
+                    one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of
+                    "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit
+                    amet..", comes from a line in section 1.10.32.
+                </p>
+            </div>
+        </div>
+    </div>
+</ion-content>
+
+<ion-footer class="ion-no-border animate__animated animate__fadeInUp">
+    <ion-row>
+        <ion-col size="3">
+            <ion-icon class="zmdi zmdi-skip-previous ion-text-center"></ion-icon>
+        </ion-col>
+
+        <ion-col size="6">
+            <ion-button size="large" expand="round" class="btn" (click)="workout_start()">
+                {{'start_now' | translate}}
+            </ion-button>
+        </ion-col>
+
+        <ion-col size="3">
+            <ion-icon class="zmdi zmdi-skip-next ion-text-center"></ion-icon>
+        </ion-col>
+    </ion-row>
+</ion-footer>

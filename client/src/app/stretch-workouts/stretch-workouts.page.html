@@ -1,0 +1,865 @@
+<ion-header class="bg_transparent">
+    <div class="header_background center_img">
+        <img src="assets/images/weight_loss_1.png" class="crop_img">
+    </div>
+    <ion-toolbar>
+        <div class="toolbar-inner d-flex">
+            <ion-buttons slot="start">
+                <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+            </ion-buttons>
+            <ion-title>
+                <div class="title-inner">
+                    <h2 class="d-flex"> Strecho Workout <ion-icon class="zmdi zmdi-plus-circle-o-duplicate end ion-text-end"></ion-icon>
+                    </h2>
+                    <h3>90 hours | Amenda Johnson </h3>
+                </div>
+            </ion-title>
+        </div>
+    </ion-toolbar>
+
+    <div class="tab_button">
+        <ion-segment mode="ios" [(ngModel)]="tab" lines="none">
+            <ion-segment-button mode="ios" value="workouts">
+                <ion-label>
+                    {{'workouts' | translate}}
+                </ion-label>
+            </ion-segment-button>
+            <ion-segment-button mode="ios" value="trainer">
+                <ion-label>
+                    {{'trainer' | translate}}
+                </ion-label>
+            </ion-segment-button>
+        </ion-segment>
+    </div>
+</ion-header>
+
+<ion-content class="bg_color" fullscreen>
+    <div class="tab_content" [ngSwitch]="tab">
+
+        <ion-list lines="none" *ngSwitchCase="'workouts'">
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Crunches</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_6.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Crunches</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_6.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Crunches</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_6.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Wheel Stretch</h2>
+                        <h3>2 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Full Crunches</h2>
+                        <h3>5 mins | 2 set | 25 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Battle Rope</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Side Crunches</h2>
+                        <h3>3 mins | 1 set | 15 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="workout_info()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/strecho_6.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Half Crunshes</h2>
+                        <h3>5 mins | 2 set | 30 reps</h3>
+                    </div>
+                </div>
+            </ion-item>
+        </ion-list>
+
+
+
+        <ion-list lines="none" *ngSwitchCase="'trainer'">
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Amenda Johnson</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Russeil Taylor</h2>
+                        <h3>Muscle Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Lliana George</h2>
+                        <h3>Yoga Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Suzein Smith</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Peter Johnson</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_6.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Peter Johnson</h2>
+                        <h3>Yoga Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Amenda Johnson</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Russeil Taylor</h2>
+                        <h3>Muscle Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Lliana George</h2>
+                        <h3>Yoga Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Suzein Smith</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Peter Johnson</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_6.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Peter Johnson</h2>
+                        <h3>Yoga Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Amenda Johnson</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Russeil Taylor</h2>
+                        <h3>Muscle Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Lliana George</h2>
+                        <h3>Yoga Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Suzein Smith</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Peter Johnson</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_6.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Peter Johnson</h2>
+                        <h3>Yoga Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Amenda Johnson</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Russeil Taylor</h2>
+                        <h3>Muscle Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Lliana George</h2>
+                        <h3>Yoga Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Suzein Smith</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Peter Johnson</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_6.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Peter Johnson</h2>
+                        <h3>Yoga Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Amenda Johnson</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Russeil Taylor</h2>
+                        <h3>Muscle Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Lliana George</h2>
+                        <h3>Yoga Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Suzein Smith</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Peter Johnson</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_6.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Peter Johnson</h2>
+                        <h3>Yoga Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Amenda Johnson</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Russeil Taylor</h2>
+                        <h3>Muscle Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Lliana George</h2>
+                        <h3>Yoga Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Suzein Smith</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Peter Johnson</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_6.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Peter Johnson</h2>
+                        <h3>Yoga Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Amenda Johnson</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Russeil Taylor</h2>
+                        <h3>Muscle Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Lliana George</h2>
+                        <h3>Yoga Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Suzein Smith</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Peter Johnson</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_6.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Peter Johnson</h2>
+                        <h3>Yoga Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_1.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Amenda Johnson</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_2.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Russeil Taylor</h2>
+                        <h3>Muscle Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_3.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Lliana George</h2>
+                        <h3>Yoga Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_4.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Suzein Smith</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_5.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Peter Johnson</h2>
+                        <h3>Fitness Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="trainer_profile()">
+                <div class="item-inner d-flex">
+                    <div class="img_box center_img">
+                        <img src="assets/images/gym_trainer_6.png" class="crop_img">
+                    </div>
+                    <div class="text_box">
+                        <h2>Peter Johnson</h2>
+                        <h3>Yoga Trainer</h3>
+                    </div>
+                </div>
+            </ion-item>
+        </ion-list>
+    </div>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="animate__animated animate__zoomIn">
+        <ion-fab-button (click)="workout_start()">
+            <ion-icon class="zmdi zmdi-play"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>

@@ -1,0 +1,100 @@
+<ion-header class="bg_transparent">
+    <ion-toolbar [class.show-background]="showToolbar">
+        <!--
+        <ion-buttons slot="start">
+            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+        </ion-buttons>
+-->
+        <ion-title>{{'account' | translate}}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="bg_color" fullscreen [scrollEvents]="true" (ionScroll)="onScroll($event)">
+
+    <div class="buy_this_app end" (click)="buyappalert()" *ngIf="config.demoMode">
+        <h2>
+            <!--                                    <ion-icon class="zmdi zmdi-shopping-cart"></ion-icon>-->
+            {{"buy_this_app" | translate}}
+        </h2>
+    </div>
+
+    <div class="bg_img center_img">
+        <img src="assets/images/profile.png" class="crop_img">
+    </div>
+
+    <div class="profile d-flex" (click)="my_profile()">
+        <div class="img_box center_img">
+            <img src="assets/images/profile.png" class="crop_img">
+        </div>
+        <div class="text_box">
+            <h2>Samantha Smith</h2>
+            <h3>{{'view_profile' | translate}}</h3>
+        </div>
+    </div>
+    <div class="get_pro d-flex" (click)="get_pro()">
+        <h2>Get Access to 1000+ Cources</h2>
+        <h3 class="end">{{'get_pro' | translate}}</h3>
+    </div>
+
+    <ion-list lines="none">
+        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="my_trainers()">
+            <div class="item-inner d-flex">
+                <ion-icon class="zmdi zmdi-pin-account ion-text-start"></ion-icon>
+                <div class="text_box">
+                    <h2>{{'my_trainers' | translate}}</h2>
+                    <h3>{{'view_list_of_trainers_you_follow' | translate}}</h3>
+                </div>
+            </div>
+        </ion-item>
+
+        <ion-item lines="none" class="animate__animated animate__fadeInUp">
+            <div class="item-inner d-flex">
+                <ion-icon class="zmdi zmdi-male ion-text-start"></ion-icon>
+                <div class="text_box">
+                    <h2>{{'my_workouts' | translate}}</h2>
+                    <h3>{{'view_list_of_workouts_you_saved' | translate}}</h3>
+                </div>
+            </div>
+        </ion-item>
+
+        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="change_language()">
+            <div class="item-inner d-flex">
+                <ion-icon class="zmdi zmdi-globe ion-text-start"></ion-icon>
+                <div class="text_box">
+                    <h2>{{'change_language' | translate}}</h2>
+                    <h3>{{'select_your_language' | translate}}</h3>
+                </div>
+            </div>
+        </ion-item>
+
+        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="help()">
+            <div class="item-inner d-flex">
+                <ion-icon class="zmdi zmdi-help ion-text-start"></ion-icon>
+                <div class="text_box">
+                    <h2>{{'need_help' | translate}}?</h2>
+                    <h3>{{'faq_to_help_with_your_queries' | translate}}</h3>
+                </div>
+            </div>
+        </ion-item>
+
+        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="terms_condition()">
+            <div class="item-inner d-flex">
+                <ion-icon class="zmdi zmdi-assignment ion-text-start"></ion-icon>
+                <div class="text_box">
+                    <h2>{{'terms_conditions' | translate}}?</h2>
+                    <h3>{{'our_terms_conditions' | translate}}</h3>
+                </div>
+            </div>
+        </ion-item>
+    </ion-list>
+</ion-content>
+
+<ion-footer class="ion-no-border" style="bottom: 43px; background: var(--bg-color);">
+    <div class="developed_by d-flex" (click)="developed_by()" *ngIf="config.demoMode">
+        <h2>{{"developed_by" | translate}}</h2>
+        <div class="img_box end">
+            <img src="assets/images/opus_logo_light.png">
+        </div>
+    </div>
+</ion-footer>

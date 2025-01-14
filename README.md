@@ -1,13 +1,13 @@
-## Angular Ionic + Pocketbase
+# Angular Ionic + Pocketbase
 
-### Client
+## Client
 
 ```
 .cd client
 ionic serve
 ```
 
-### Server
+## Server
 
 ```
 .cd server

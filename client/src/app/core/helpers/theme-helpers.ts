@@ -1,6 +1,6 @@
-import { Constants } from "./contants.models";
+import { Constants } from "../constants/constants";
 
-export class Helper {
+export class ThemeHelper {
     static seThemeMode(status: string) {
         window.localStorage.setItem(Constants.KEY_DARK_MODE, status);
     }

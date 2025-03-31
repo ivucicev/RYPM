@@ -1,22 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { NavController, IonicModule } from '@ionic/angular';
+import { Component } from '@angular/core';
+import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
+import { AccountService } from '../core/services/account.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-forgot-password',
     templateUrl: './forgot-password.page.html',
     styleUrls: ['./forgot-password.page.scss'],
     standalone: true,
-    imports: [IonicModule, TranslateModule],
+    imports: [IonicModule, TranslateModule, FormsModule],
 })
-export class ForgotPasswordPage implements OnInit {
+export class ForgotPasswordPage {
 
-  constructor(private navCtrl: NavController) { }
+    email: string;
 
-  ngOnInit() {
-  }
+    constructor(
+        private accountService: AccountService) { }
 
- tabs() {
-    this.navCtrl.navigateRoot(['./tabs']);
-  }  
+    submit() {
+        this.accountService.requestPasswordReset(this.email);
+    }
 }

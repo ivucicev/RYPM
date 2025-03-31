@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, IonicModule } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
+import { VerificationStateService } from '../core/services/verification-state-service';
+import { AccountService } from '../core/services/account.service';
+import { PocketbaseService } from '../core/services/pocketbase.service';
 
 @Component({
     selector: 'app-verification',
@@ -11,12 +14,22 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class VerificationPage implements OnInit {
 
-  constructor(private navCtrl: NavController) { }
+    private readonly pocketbase = this.pocketbaseService.pb;
 
-  ngOnInit() {
-  }
+    private readonly loginBM = this.verificationStateService.popLoginBM();
 
- tabs() {
-    this.navCtrl.navigateRoot(['./tabs']);
-  }  
+    constructor(
+        private accountService: AccountService,
+        private verificationStateService: VerificationStateService,
+        private pocketbaseService: PocketbaseService
+    ) {
+    }
+
+    async submit(code) {
+        await this.accountService.confirmEmail(code, this.loginBM);
+    }
+
+    ngOnInit() {
+        this.pocketbase.collection('users').requestVerification(this.loginBM.email);
+    }
 }

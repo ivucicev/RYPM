@@ -12,29 +12,30 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 import { routes } from './app/app.routes';
 
 if (environment.production) {
-  enableProdMode();
+    enableProdMode();
 }
 
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http);
+    return new TranslateHttpLoader(http);
 }
 
 bootstrapApplication(AppComponent, {
-  providers: [
-    { provide: APP_CONFIG, useValue: BaseAppConfig },
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideIonicAngular(),
-    provideHttpClient(),
-    importProvidersFrom(
-      TranslateModule.forRoot({
-        loader: {
-          provide: TranslateLoader,
-          useFactory: HttpLoaderFactory,
-          deps: [HttpClient],
-        },
-      }),
-      NgCircleProgressModule.forRoot({}),
-    ),
-    provideRouter(routes, withPreloading(PreloadAllModules)),
-  ],
+
+    providers: [
+        { provide: APP_CONFIG, useValue: BaseAppConfig },
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+        provideIonicAngular(),
+        provideHttpClient(),
+        importProvidersFrom(
+            TranslateModule.forRoot({
+                loader: {
+                    provide: TranslateLoader,
+                    useFactory: HttpLoaderFactory,
+                    deps: [HttpClient],
+                },
+            }),
+            NgCircleProgressModule.forRoot({}),
+        ),
+        provideRouter(routes, withPreloading(PreloadAllModules))
+    ],
 });

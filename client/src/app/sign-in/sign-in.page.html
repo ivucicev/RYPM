@@ -1,57 +1,61 @@
 <ion-header class="bg_transparent">
-  <ion-toolbar>
-    <ion-title>
-      <div class="title_inner d-flex">
-        {{'sign_in' | translate}}
-        <span class="end" (click)="register()">
-          <ion-icon class="zmdi zmdi-plus"></ion-icon>
-          {{'register' | translate}}
-        </span>
-      </div>
-    </ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <!-- icon="chevron-back-outline" -->
+            <ion-back-button [text]="''" [icon]="'close-outline'"></ion-back-button>
+        </ion-buttons>
+        <ion-title>
+            <div class="title_inner d-flex">
+                {{'sign_in' | translate}}
+                <span class="end" (click)="register()">
+                    <ion-icon class="zmdi zmdi-plus"></ion-icon>
+                    {{'register' | translate}}
+                </span>
+            </div>
+        </ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content class="bg_color" fullscreen>
-  <div class="banner">
-    <div class="banner_img center_img">
-      <img src="assets/images/banner_img.png" class="crop_img">
+    <div class="banner">
+        <div class="banner_img center_img">
+            <img src="assets/images/banner_img.png" class="crop_img">
+        </div>
+        <div class="logo animate__animated animate__fadeInUp">
+            <img src="assets/images/logo.png">
+        </div>
     </div>
-    <div class="logo animate__animated animate__fadeInUp">
-      <img src="assets/images/logo.png">
-    </div>
-  </div>
-  <div class="form">
-    <ion-list lines="none">
-      <ion-item lines="none" class="animate__animated animate__fadeInUp">
-        <ion-input [label]="'email_address' | translate" labelPlacement="floating" mode="md" type="email"
-          value="samanthasmith@mail.com"></ion-input>
-      </ion-item>
-      <ion-item lines="none" class="animate__animated animate__fadeInUp">
-        <ion-input [label]="'password' | translate" class="password" mode="md" labelPlacement="floating" type="password"
-          value="******">
-          <h3 class="end" (click)="forgot_password()">{{"forgot" | translate}}</h3>
-        </ion-input>
-      </ion-item>
-    </ion-list>
-
-    <ion-button size="large" expand="round" class="btn animate__animated animate__fadeInUp"
-      (click)="tabs()">{{'sign_in_now' | translate}}</ion-button>
-
-    <div class="or_continue_with animate__animated animate__fadeInUp">
-      <h3 class="ion-text-center">{{'or_continue_with' | translate}}</h3>
-      <ion-row>
-        <ion-col size="6">
-          <ion-button size="large" expand="round" fill="outline" class="btn" (click)="tabs()">
-            <ion-icon class="zmdi zmdi-facebook"></ion-icon>
-            {{'facebook' | translate}}</ion-button>
-        </ion-col>
-        <ion-col size="6">
-          <ion-button size="large" expand="round" fill="outline" class="btn" (click)="tabs()">
-            <ion-icon class="zmdi zmdi-google"></ion-icon>
-            {{'google' | translate}}</ion-button>
-        </ion-col>
-      </ion-row>
-    </div>
-  </div>
+    <form [formGroup]="loginForm" (ngSubmit)="signIn()">
+        <div class="form">
+            <ion-list lines="none">
+                <ion-item lines="none" class="animate__animated animate__fadeInUp">
+                    <ion-input formControlName="email" [label]="'email_address' | translate" labelPlacement="floating"
+                        mode="md" type="email"></ion-input>
+                </ion-item>
+                <ion-item lines="none" class="animate__animated animate__fadeInUp">
+                    <ion-input formControlName="password" [label]="'password' | translate" class="password" mode="md"
+                        labelPlacement="floating" type="password">
+                        <h3 class="end" (click)="forgot_password()">{{"forgot" | translate}}</h3>
+                    </ion-input>
+                </ion-item>
+            </ion-list>
+            <ion-button size="large" expand="round" class="btn animate__animated animate__fadeInUp"
+                (click)="signIn()">{{'sign_in_now' | translate}}</ion-button>
+            <div class="or_continue_with animate__animated animate__fadeInUp">
+                <h3 class="ion-text-center">{{'or_continue_with' | translate}}</h3>
+                <ion-row>
+                    <ion-col size="6">
+                        <ion-button size="large" expand="round" fill="outline" class="btn" (click)="signInFacebook()">
+                            <ion-icon class="zmdi zmdi-facebook"></ion-icon>
+                            {{'facebook' | translate}}</ion-button>
+                    </ion-col>
+                    <ion-col size="6">
+                        <ion-button size="large" expand="round" fill="outline" class="btn" (click)="signInGoogle()">
+                            <ion-icon class="zmdi zmdi-google"></ion-icon>
+                            {{'google' | translate}}</ion-button>
+                    </ion-col>
+                </ion-row>
+            </div>
+        </div>
+    </form>
 </ion-content>

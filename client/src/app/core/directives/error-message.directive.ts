@@ -1,0 +1,67 @@
+import { Directive, ElementRef, OnInit, OnDestroy } from '@angular/core';
+import { FormGroupDirective, StatusChangeEvent, TouchedChangeEvent, ValueChangeEvent } from '@angular/forms';
+import { Subscription, merge } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { IonInput } from '@ionic/angular';
+
+@Directive({
+    selector: '[formGroup]',
+    standalone: true
+})
+export class ErrorMessageDirective implements OnInit, OnDestroy {
+    private subscription: Subscription;
+    private readonly validationMessages: Record<string, string> = {
+        required: 'validators_required',
+        email: 'validators_email',
+        minlength: 'validators_minlength',
+        maxlength: 'validators_maxlength',
+        pattern: 'validators_pattern'
+    };
+
+    constructor(
+        private el: ElementRef,
+        private formGroupDirective: FormGroupDirective,
+        private translateService: TranslateService
+    ) { }
+
+    ngOnInit() {
+        const form = this.formGroupDirective.form;
+        const controlEvents = Object.values(form.controls).map(control =>
+            control.events
+        );
+
+        this.subscription = merge(...controlEvents).subscribe(event => {
+            console.log(event);
+            if (event instanceof ValueChangeEvent) {
+
+            } else if (event instanceof StatusChangeEvent) {
+
+            } else if (event instanceof TouchedChangeEvent) {
+
+            };
+
+            this.updateErrorMessages();
+        });
+    }
+
+    ngOnDestroy() {
+        this.subscription?.unsubscribe();
+    }
+
+    private updateErrorMessages() {
+        const form = this.formGroupDirective.form;
+        Object.entries(form.controls).forEach(([key, control]) => {
+            const ionInput = this.el.nativeElement.querySelector(`ion-input[formControlName="${key}"]`) as IonInput;
+
+            if (!ionInput) return;
+
+            if (control.invalid && (control.touched || control.dirty)) {
+                const errorKey = Object.keys(control.errors)[0];
+                const errorMessage = this.translateService.instant(this.validationMessages[errorKey] || 'validators_invalid');
+                ionInput.errorText = errorMessage;
+            } else {
+                ionInput.errorText = undefined;
+            }
+        });
+    }
+}

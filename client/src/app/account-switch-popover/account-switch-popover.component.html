@@ -1,0 +1,20 @@
+<ion-list>
+    <ion-item button (click)="dismiss()">
+        <ion-icon [color]="'primary'" name="person-outline" slot="start"></ion-icon>
+        <ion-label>{{ user?.name || '-' }}</ion-label>
+    </ion-item>
+    @for(acc of accounts; track $index) {
+    <ion-item button (click)="switchAccount(acc)">
+        <ion-icon name="person-outline" slot="start"></ion-icon>
+        <ion-label>{{ acc['name'] || '-' }}</ion-label>
+    </ion-item>
+    }
+    <ion-item button (click)="addNewAccount()">
+        <ion-icon slot="start"></ion-icon>
+        <ion-label>{{ 'add_new_account' | translate }}</ion-label>
+    </ion-item>
+    <ion-item button (click)="dismiss()">
+        <ion-icon name="close" slot="start"></ion-icon>
+        <ion-label>{{ 'cancel' | translate }}</ion-label>
+    </ion-item>
+</ion-list>

@@ -1,0 +1,21 @@
+<div class="profile_img animate__animated animate__zoomIn">
+    @if (isEditing) {
+    <input #imgInput id="profile-img-file-input" type="file" class="d-none" [disabled]="isDisabled"
+        (change)="handleFileInput($event)" />
+    }
+    <label for="profile-img-file-input" class="d-block" [style.cursor]="!isDisabled && isEditing ? 'pointer' : ''"
+        tabindex="0">
+        <div class="img_box center_img" [style.backgroundImage]="'url(' + (imageSrc) + ')'">
+            @if (!imageSrc) {
+            <ion-icon class="zmdi zmdi-account"></ion-icon>
+            }
+        </div>
+    </label>
+    @if (isEditing && !isDisabled) {
+    @if (!imageSrc) {
+    <ion-icon class="zmdi zmdi-camera"></ion-icon>
+    } @else {
+    <ion-icon (click)="handleFileInput(null)" [style.cursor]="'pointer'" class="zmdi zmdi-close danger"></ion-icon>
+    }
+    }
+</div>

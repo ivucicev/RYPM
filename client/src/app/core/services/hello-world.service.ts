@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
-import { PocketBaseService } from './pocketbase.service';
+import { PocketbaseService } from './pocketbase.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class HelloWorldService {
 
-  private pocketBase = this.pocketBaseService.pocketBase;
+    private pocketBase = this.pocketBaseService.pb;
 
-  constructor(
-    private pocketBaseService: PocketBaseService
-  ) {
-  }
+    constructor(
+        private pocketBaseService: PocketbaseService
+    ) {
+    }
 
-  public hello(name: string): Promise<any> {
-    return this.pocketBase.send('/api/hello-world/hello', { query: { name: name } });
-  }
+    public hello(name: string): Promise<any> {
+        return this.pocketBase.send('/api/hello-world/hello', { query: { name: name } });
+    }
 }

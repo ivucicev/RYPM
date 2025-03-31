@@ -1,58 +1,69 @@
 <ion-header class="bg_transparent">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
-    </ion-buttons>
-    <ion-title>
-      {{'register' | translate}}
-    </ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+        </ion-buttons>
+        <ion-title>
+            {{'register' | translate}}
+        </ion-title>
+    </ion-toolbar>
 </ion-header>
 
-
 <ion-content class="bg_color" fullscreen>
-  <div class="banner">
-    <div class="banner_img center_img">
-      <img src="assets/images/banner_img.png" class="crop_img">
-    </div>
-    <div class="profile_img animate__animated animate__zoomIn">
-      <div class="img_box center_img">
-        <!--                                <img src="assets/images/profile.png" class="crop_img">-->
-        <ion-icon class="zmdi zmdi-account"></ion-icon>
-      </div>
-      <ion-icon class="zmdi zmdi-camera"></ion-icon>
-    </div>
-  </div>
+    <form [formGroup]="registrationForm" (ngSubmit)="register()">
+        <div class="banner">
+            <div class="banner_img center_img">
+                <img src="assets/images/banner_img.png" class="crop_img">
+            </div>
+            <app-image-input formControlName="avatar"></app-image-input>
+        </div>
 
-  <div class="form">
-    <ion-list lines="none">
-      <ion-item lines="none" class="animate__animated animate__fadeInUp">
-        <ion-input labelPlacement="floating" [label]="'full_name' | translate" mode="md" type="name"
-          value="Samantha Smith">
-        </ion-input>
-      </ion-item>
+        <div class="form">
+            <ion-list lines="none">
+                <h4>{{ 'i_am_a' | translate }}</h4>
+                <ion-radio-group #group formControlName="type">
+                    <ion-item>
+                        <ion-icon [color]="group.value == userTypes.User ? 'primary' : ''" slot="end"
+                            name="person-outline"></ion-icon>
+                        <ion-radio labelPlacement="end" slot="start" [value]="userTypes.User">
+                            <h5>{{ 'user' | translate }}</h5>
+                            <p> {{ 'register_user_description' | translate }}</p>
+                        </ion-radio>
+                    </ion-item>
 
-      <ion-item lines="none" class="animate__animated animate__fadeInUp">
-        <ion-input labelPlacement="floating" [label]="'email_address' | translate" mode="md" type="email"
-          value="samanthasmith@mail.com"></ion-input>
-      </ion-item>
+                    <ion-item>
+                        <ion-icon [color]="group.value == userTypes.Trainer ? 'primary' : ''" slot="end"
+                            name="barbell-outline"></ion-icon>
+                        <ion-radio labelPlacement="end" slot="start" [value]="userTypes.Trainer">
+                            <h5>{{ 'trainer' | translate }}</h5>
+                            <p> {{ 'register_trainer_description' | translate }}</p>
+                        </ion-radio>
+                    </ion-item>
+                </ion-radio-group>
 
-      <ion-item lines="none" class="animate__animated animate__fadeInUp">
-        <ion-input labelPlacement="floating" [label]="'phone_number' | translate" mode="md" type="email"
-          value="+1 987 654 3210"></ion-input>
-      </ion-item>
+                <ion-item lines="none" class="animate__animated animate__fadeInUp">
+                    <ion-input formControlName="name" labelPlacement="floating" [label]="'name' | translate" mode="md"
+                        type="text">
+                    </ion-input>
+                </ion-item>
 
+                <ion-item lines="none" class="animate__animated animate__fadeInUp">
+                    <ion-input formControlName="email" labelPlacement="floating" [label]="'email' | translate" mode="md"
+                        type="email">
+                    </ion-input>
+                </ion-item>
 
-      <ion-item lines="none" class="animate__animated animate__fadeInUp">
-        <ion-input labelPlacement="floating" [label]="'create_password' | translate" class=password mode="md"
-          type="password" value="******">
-        </ion-input>
-      </ion-item>
-    </ion-list>
-  </div>
+                <ion-item lines="none" class="animate__animated animate__fadeInUp">
+                    <ion-input formControlName="password" labelPlacement="floating" [label]="'password' | translate"
+                        class="password" mode="md" type="password">
+                    </ion-input>
+                </ion-item>
+            </ion-list>
+        </div>
+    </form>
 </ion-content>
 
 <ion-footer class="ion-no-border animate__animated animate__fadeInUp">
-  <ion-button size="large" expand="round" class="btn" (click)="verification()">{{'register_now' |
-    translate}}</ion-button>
+    <ion-button size="large" expand="round" class="btn" (click)="register()">{{'register_now' |
+        translate}}</ion-button>
 </ion-footer>

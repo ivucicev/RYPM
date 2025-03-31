@@ -1,46 +1,50 @@
 <ion-header class="bg_transparent">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
-    </ion-buttons>
-    <ion-title>
-      {{'my_profile' | translate}}
-    </ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+        </ion-buttons>
+        <ion-title>
+            {{'my_profile' | translate}}
+        </ion-title>
+    </ion-toolbar>
 </ion-header>
 
-
 <ion-content class="bg_color" fullscreen>
-  <div class="banner">
-    <div class="banner_img center_img">
-      <img src="assets/images/banner_img.png" class="crop_img">
-    </div>
-    <div class="profile_img animate__animated animate__zoomIn">
-      <div class="img_box center_img">
-        <img src="assets/images/profile.png" class="crop_img">
-        <!--                <ion-icon class="zmdi zmdi-account"></ion-icon>-->
-      </div>
-      <ion-icon class="zmdi zmdi-camera"></ion-icon>
-    </div>
-  </div>
+    <form [formGroup]="profileForm" (ngSubmit)="saveChanges()">
+        <div class="banner">
+            <div class="banner_img center_img">
+                <img src="assets/images/banner_img.png" class="crop_img">
+            </div>
+            <app-image-input [isEditing]="isEditing" formControlName="avatar"></app-image-input>
+        </div>
 
-  <div class="form">
-    <ion-list lines="none">
-      <ion-item lines="none" class="animate__animated animate__fadeInUp">
-        <ion-input labelPlacement="floating" [label]="'full_name' | translate" mode="md" type="name"
-          value="Samantha Smith" readonly="boolean"></ion-input>
-      </ion-item>
+        <div class="form">
+            <ion-list lines="none">
+                <ion-item lines="none" class="animate__animated animate__fadeInUp">
+                    <ion-input formControlName="name" labelPlacement="floating" [label]="'name' | translate" mode="md"
+                        type="name"></ion-input>
+                </ion-item>
 
-      <ion-item lines="none" class="animate__animated animate__fadeInUp">
-        <ion-input labelPlacement="floating" [label]="'email_address' | translate" mode="md" type="email"
-          value="samanthasmith@mail.com" readonly="boolean"></ion-input>
-      </ion-item>
-
-      <ion-item lines="none" class="animate__animated animate__fadeInUp">
-        <ion-input labelPlacement="floating" [label]="'phone_number' | translate" mode="md" type="email"
-          value="+1 987 654 3210" readonly="boolean"></ion-input>
-      </ion-item>
-
-    </ion-list>
-  </div>
+                <ion-item lines="none" class="animate__animated animate__fadeInUp">
+                    <ion-input formControlName="email" labelPlacement="floating" [label]="'email' | translate" mode="md"
+                        type="email"></ion-input>
+                </ion-item>
+            </ion-list>
+        </div>
+    </form>
 </ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <div class="button-group">
+            @if (isEditing) {
+            <ion-button class="btn" expand="block" color="light" (click)="cancelEditMode()">{{ 'cancel' | translate
+                }}</ion-button>
+            <ion-button class="btn" expand="block" (click)="saveChanges()">{{ 'save' | translate
+                }}</ion-button>
+            } @else {
+            <ion-button class="btn" expand="block" (click)="enterEditMode()">{{ 'edit' | translate }}</ion-button>
+            }
+        </div>
+    </ion-toolbar>
+</ion-footer>

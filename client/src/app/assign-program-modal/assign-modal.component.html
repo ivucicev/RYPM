@@ -1,0 +1,51 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>{{ 'assign' | translate }} @if(title) { "{{ title }}" }</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss()">
+                <ion-icon name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+    <ion-toolbar>
+        <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="filterUsers()"></ion-searchbar>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        @for (user of filteredUsers; track $index) {
+        <ion-item-sliding>
+            <ion-item (click)="user.selected = !user.selected">
+                <ion-avatar slot="start">
+                    <img [src]="user.avatar">
+                </ion-avatar>
+                <ion-label>
+                    <ion-title [size]="'small'" class="ion-no-padding ion-text-start"
+                        [color]="user.selected ? 'primary' : ''">
+                        {{ user.name }}
+                    </ion-title>
+                    <p>{{ user.email }}</p>
+                </ion-label>
+                <ion-checkbox slot="end" [(ngModel)]="user.selected"></ion-checkbox>
+            </ion-item>
+            <ion-item-options side="start">
+                <ion-item-option color="primary" (click)="navigateToUserProfile(user)">
+                    <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
+                </ion-item-option>
+            </ion-item-options>
+
+        </ion-item-sliding>
+        }
+
+    </ion-list>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss()">{{'cancel' | translate }}</ion-button>
+            <ion-button (click)="assignToSelected()" [strong]="true">{{'assign' | translate }}</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-footer>

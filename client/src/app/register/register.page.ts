@@ -7,14 +7,13 @@ import { RegisterBM, } from '../core/models/bm/register-bm';
 import { FormType } from '../core/helpers/form-helpers';
 import { ErrorMessageDirective } from '../core/directives/error-message.directive';
 import { UserType } from '../core/models/user-type';
-import { ImageInputComponent } from '../shared/image-input/image-input.component';
 
 @Component({
     selector: 'app-register',
     templateUrl: './register.page.html',
     styleUrls: ['./register.page.scss'],
     standalone: true,
-    imports: [IonicModule, TranslateModule, ReactiveFormsModule, ErrorMessageDirective, ImageInputComponent],
+    imports: [IonicModule, TranslateModule, ReactiveFormsModule, ErrorMessageDirective],
 })
 export class RegisterPage implements OnInit {
 

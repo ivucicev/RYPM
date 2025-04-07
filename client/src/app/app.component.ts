@@ -5,7 +5,7 @@ import { APP_CONFIG, AppConfig } from './app.config';
 import { VtPopupPage } from './vt-popup/vt-popup.page';
 import { StatusBar } from '@capacitor/status-bar';
 import { SplashScreen } from '@capacitor/splash-screen';
-import { addOutline, alertCircleOutline, barbellOutline, checkmark, checkmarkCircleOutline, chevronBackOutline, close, closeOutline, createOutline, ellipsisVerticalCircleOutline, informationCircleOutline, pencil, personAddOutline, personOutline, save, settingsOutline, warningOutline } from 'ionicons/icons';
+import { add, addCircle, addCircleOutline, addOutline, alertCircleOutline, barbellOutline, checkmark, checkmarkCircleOutline, chevronBackOutline, chevronDown, chevronUp, close, closeCircle, closeOutline, createOutline, documentTextOutline, ellipsisHorizontalCircle, ellipsisVertical, ellipsisVerticalCircleOutline, filterOutline, hourglassOutline, informationCircleOutline, pencil, personAdd, personAddOutline, personOutline, playOutline, refreshOutline, remove, save, settingsOutline, timeOutline, timerOutline, trash, trashBin, trashOutline, warningOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { IonicModule } from '@ionic/angular';
 import { MyEvent } from './core/services/myevent.services';
@@ -42,8 +42,10 @@ export class AppComponent {
 
         addIcons({
             warningOutline, alertCircleOutline, checkmarkCircleOutline, informationCircleOutline, closeOutline,
-            ellipsisVerticalCircleOutline, personAddOutline, addOutline,
-            close, checkmark, createOutline, personOutline, barbellOutline
+            ellipsisVerticalCircleOutline, personAddOutline, addOutline, remove, chevronUp, chevronDown, timerOutline,
+            close, checkmark, createOutline, personOutline, barbellOutline, hourglassOutline, timeOutline, ellipsisVertical,
+            ellipsisHorizontalCircle, add, filterOutline, refreshOutline, closeCircle, addCircle, trash, addCircleOutline,
+            documentTextOutline, personAdd, trashOutline, playOutline
         })
     }
 
@@ -110,5 +112,4 @@ export class AppComponent {
     language(): void {
         this.navCtrl.navigateRoot(['./change-language']);
     }
-
 }

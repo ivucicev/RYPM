@@ -11,7 +11,7 @@ ionic serve
 
 ```
 .cd server
-./pocketbase serve
+./pocketbase serve --http http://127.0.0.1:8093
 ```
 
 `pb_data` - stores application data, uploaded files, etc.

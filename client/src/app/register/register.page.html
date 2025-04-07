@@ -14,13 +14,13 @@
         <div class="banner">
             <div class="banner_img center_img">
                 <img src="assets/images/banner_img.png" class="crop_img">
+                <div _ngcontent-ng-c2626598366="" class="logo animate__animated animate__fadeInUp">
+                    <h1>{{ 'welcome' | translate }}!</h1>
+                </div>
             </div>
-            <app-image-input formControlName="avatar"></app-image-input>
         </div>
-
         <div class="form">
             <ion-list lines="none">
-                <h4>{{ 'i_am_a' | translate }}</h4>
                 <ion-radio-group #group formControlName="type">
                     <ion-item>
                         <ion-icon [color]="group.value == userTypes.User ? 'primary' : ''" slot="end"
@@ -64,6 +64,6 @@
 </ion-content>
 
 <ion-footer class="ion-no-border animate__animated animate__fadeInUp">
-    <ion-button size="large" expand="round" class="btn" (click)="register()">{{'register_now' |
+    <ion-button size="large" expand="round" class="btn" (click)="register()">{{'register' |
         translate}}</ion-button>
 </ion-footer>

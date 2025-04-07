@@ -42,3 +42,7 @@ ion-tabs {
         --animate-duration: .3s;
     }
 }
+
+:host ::ng-deep ion-tabs ion-fab.fab-vertical-bottom {
+    bottom: 80px;
+}

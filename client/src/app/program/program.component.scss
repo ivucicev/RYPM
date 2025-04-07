@@ -1,0 +1,25 @@
+.day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+
+    >h2 {
+        text-transform: uppercase;
+    }
+}
+
+.day-actions {
+    display: flex;
+    margin-right: -1.25rem;
+}
+
+ion-segment[scrollable] {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+
+    ion-segment-button {
+        min-width: 100px;
+    }
+}

@@ -1,35 +1,35 @@
 <ion-header class="bg_transparent">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
-    </ion-buttons>
-    <ion-title>
-      {{'verification' | translate}}
-    </ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+        </ion-buttons>
+        <ion-title>
+            {{'verification' | translate}}
+        </ion-title>
+    </ion-toolbar>
 </ion-header>
 
 
 <ion-content class="bg_color" fullscreen>
-  <div class="banner">
-    <div class="banner_img center_img">
-      <img src="assets/images/banner_img.png" class="crop_img">
+    <div class="banner">
+        <div class="banner_img center_img">
+            <img src="assets/images/banner_img.png" class="crop_img">
+        </div>
+        <p class="animate__animated animate__fadeInUp"> {{'verification_text' | translate}}<br>{{'verification_text2' |
+            translate}}</p>
     </div>
-    <p class="animate__animated animate__fadeInUp"> {{'verification_text' | translate}}<br>{{'verification_text2' |
-      translate}}</p>
-  </div>
 
-  <div class="form">
-    <ion-list lines="none">
-      <ion-item lines="none" class="animate__animated animate__fadeInUp">
-        <ion-input #input labelPlacement="floating" [label]="'enter_verification_code' | translate" mode="md"
-          type="number"></ion-input>
-      </ion-item>
-    </ion-list>
+    <div class="form">
+        <ion-list lines="none">
+            <ion-item lines="none" class="animate__animated animate__fadeInUp">
+                <ion-input #input labelPlacement="floating" [label]="'enter_verification_code' | translate" mode="md"
+                    type="number"></ion-input>
+            </ion-item>
+        </ion-list>
 
-    <ion-button size="large" expand="round" class="btn animate__animated animate__fadeInUp"
-      (click)="submit(input.value)">{{'submit'
-      | translate}}</ion-button>
+        <ion-button size="large" expand="round" class="btn animate__animated animate__fadeInUp"
+            (click)="submit(input.value)">{{'submit'
+            | translate}}</ion-button>
 
-  </div>
+    </div>
 </ion-content>

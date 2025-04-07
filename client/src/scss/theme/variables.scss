@@ -231,4 +231,9 @@
 
         --ion-card-background: #1e1e1e;
     }
+
+    // TODO: fix dark/light mode: static color for now
+    body {
+        --ion-background-color: #1b1b20 !important;
+    }
 }

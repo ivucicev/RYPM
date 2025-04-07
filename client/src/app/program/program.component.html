@@ -1,0 +1,172 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+        </ion-buttons>
+        <ion-title>
+            {{'custom_program' | translate}}
+        </ion-title>
+    </ion-toolbar>
+
+    <ion-toolbar>
+        <ion-segment scrollable [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}">
+            <ion-segment-button value="info" [class]="(activeTab == 'info') ? 'active' : ''">
+                <ion-label>{{ 'info' | translate }}</ion-label>
+            </ion-segment-button>
+
+            <ion-segment-button value="users" [class]="(activeTab == 'users') ? 'active' : ''">
+                <ion-label>{{ 'users' | translate }}</ion-label>
+            </ion-segment-button>
+
+            @for (week of getWeeksArray().controls; track $index; let i = $index) {
+            <ion-segment-button [class]="(activeTab == 'week-'+i) ? 'active' : ''" [value]="'week-'+i">
+                <ion-label> {{ 'week' | translate }} {{i+1}}</ion-label>
+            </ion-segment-button>
+            }
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="bg_color" fullscreen>
+    <form [formGroup]="programForm" (ngSubmit)="saveChanges()">
+        <div class="form">
+            @if (activeTab === 'info') {
+            <ion-list lines="none">
+                <ion-item>
+                    <ion-input label="{{ 'name' | translate }}" labelPlacement="floating" formControlName="name"
+                        type="text"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-textarea label="{{ 'description' | translate }}" labelPlacement="floating"
+                        formControlName="description" rows="3"></ion-textarea>
+                </ion-item>
+                <ion-item>
+                    <ion-label>{{ 'duration_weeks' | translate }}</ion-label>
+                    <ion-select formControlName="duration">
+                        @for (num of weeks; track num) {
+                        <ion-select-option [value]="num">
+                            {{num}} {{ 'weeks' | translate }}
+                        </ion-select-option>
+                        }
+                    </ion-select>
+                </ion-item>
+            </ion-list>
+            }
+
+            @if (activeTab === 'users') {
+            <div class="user-list-container">
+                <ion-list>
+                    @for (user of getAssignedUsers().controls; track user.get('id').value) {
+                    <ion-item-sliding>
+                        <ion-item>
+                            <ion-avatar slot="start">
+                                <img [src]="user.get('avatar').value">
+                            </ion-avatar>
+                            <ion-label>
+                                <h2>{{ user.get('name').value }}</h2>
+                                <p>{{ user.get('email').value }}</p>
+                            </ion-label>
+                        </ion-item>
+
+                        <ion-item-options side="end">
+                            <ion-item-option color="danger" (click)="removeAssignedUser(user.get('id').value)">
+                                <ion-icon slot="icon-only" name="trash"></ion-icon>
+                            </ion-item-option>
+                        </ion-item-options>
+
+                    </ion-item-sliding>
+                    }@empty{
+                    <ion-item lines="none" class="ion-margin-top">
+                        <ion-label class="ion-text-center" [color]="'medium'">
+                            {{ 'no_users_assigned' | translate }}
+                        </ion-label>
+                    </ion-item>
+                    }
+                </ion-list>
+
+                <ion-button class="ion-padding" expand="block" (click)="openAssignUsersModal()">
+                    {{ 'add_day' | translate }}
+                </ion-button>
+            </div>
+            }
+
+            <ng-container formArrayName="weeks">
+                @for (week of getWeeksArray().controls; track $index; let weekIndex = $index) {
+                <div class="exercise-list" [hidden]="activeTab !== 'week-'+weekIndex" [formGroupName]="weekIndex">
+                    <ion-list formArrayName="days">
+                        @for (day of getDaysArray(weekIndex).controls; track $index; let dayIndex = $index) {
+                        <ion-item lines="none" class="day-item" [formGroupName]="dayIndex">
+                            <ion-label>
+                                <div class="day-header">
+                                    <h2 class="ion-color-light">{{ 'day' | translate }} {{dayIndex+1}}</h2>
+                                    <div class="day-actions">
+                                        <ion-button fill="clear" size="small" [color]="'medium'"
+                                            (click)="presentDayActionPopover($event, weekIndex, dayIndex)">
+                                            <ion-icon name="ellipsis-vertical"></ion-icon>
+                                        </ion-button>
+                                    </div>
+                                </div>
+
+                                <div formArrayName="exercises">
+                                    @for (exercise of getExercisesArray(weekIndex, dayIndex).controls; track $index; let
+                                    exIndex = $index) {
+                                    <ion-item-sliding [formGroupName]="exIndex">
+
+                                        <ion-item class="ion-no-border">
+                                            <app-exercise-form [style.width]="'100%'" [exercise]="exercise">
+                                            </app-exercise-form>
+                                        </ion-item>
+
+                                        <ion-item-options side="end">
+                                            <ion-item-option color="danger"
+                                                (click)="removeExercise(weekIndex, dayIndex, exIndex)">
+                                                <ion-icon slot="icon-only" name="trash"></ion-icon>
+                                            </ion-item-option>
+                                        </ion-item-options>
+                                    </ion-item-sliding>
+                                    }
+                                    @empty {
+                                    <ion-label [color]="'medium'">
+                                        {{ 'no_exercise_added' | translate }}
+                                    </ion-label>
+                                    }
+
+                                    <ion-button class="ion-float-end" fill="outline"
+                                        (click)="addExerciseToDay(weekIndex, dayIndex)">
+                                        {{ 'add_exercise' | translate }}
+                                    </ion-button>
+                                </div>
+                            </ion-label>
+                        </ion-item>
+                        }
+                    </ion-list>
+
+                    @if (getDaysArray(weekIndex).length === 0) {
+                    <ion-item lines="none" class="ion-margin-top">
+                        <ion-label class="ion-text-center" [color]="'medium'">
+                            {{ 'no_days_added' | translate }}
+                        </ion-label>
+                    </ion-item>
+                    }
+
+                    <ion-button class="ion-padding" expand="block" (click)="addDay(weekIndex)">
+                        {{ 'add_day' | translate }}
+                    </ion-button>
+                </div>
+                }
+            </ng-container>
+        </div>
+    </form>
+</ion-content>
+
+@if(activeTab === 'info') {
+<ion-footer>
+    <ion-toolbar>
+        <div class="button-group ion-padding">
+            <ion-button class="btn" expand="block" (click)="saveChanges()">
+                {{ 'save' | translate }}
+            </ion-button>
+        </div>
+    </ion-toolbar>
+</ion-footer>
+}

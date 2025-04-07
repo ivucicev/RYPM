@@ -1,0 +1,14 @@
+<ion-list>
+    <ion-item button (click)="moveUpHandler()" [disabled]="!canMoveUp">
+        <ion-icon name="chevron-up-outline" slot="start"></ion-icon>
+        <ion-label>{{ 'move_up' | translate }}</ion-label>
+    </ion-item>
+    <ion-item button (click)="moveDownHandler()" [disabled]="!canMoveDown">
+        <ion-icon name="chevron-down-outline" slot="start"></ion-icon>
+        <ion-label>{{ 'move_down' | translate }}</ion-label>
+    </ion-item>
+    <ion-item button (click)="removeHandler()" color="danger">
+        <ion-icon name="trash-outline" slot="start"></ion-icon>
+        <ion-label>{{ 'remove' | translate }}</ion-label>
+    </ion-item>
+</ion-list>

@@ -22,7 +22,11 @@
         <h3>2 mins | 1 set | 15 reps</h3>
     </div>
     <div class="timer">
-        <circle-progress [maxPercent]="100" [percent]="80" [showTitle]="false" [showUnits]="false" [showSubtitle]="false" [responsive]="true" [radius]="74" [outerStrokeWidth]="9" [space]="-6" [innerStrokeWidth]="4" [outerStrokeLinecap]="'round'" [outerStrokeColor]="'var(--primary)'" [innerStrokeColor]="'rgba(72, 72, 72, 0.83)'" [animation]="true" [animationDuration]="300"></circle-progress>
+        <circle-progress [maxPercent]="100" [percent]="80" [showTitle]="false" [showUnits]="false"
+            [showSubtitle]="false" [responsive]="true" [radius]="74" [outerStrokeWidth]="9" [space]="-6"
+            [innerStrokeWidth]="4" [outerStrokeLinecap]="'round'" [outerStrokeColor]="'var(--primary)'"
+            [innerStrokeColor]="'rgba(72, 72, 72, 0.83)'" [animation]="true"
+            [animationDuration]="300"></circle-progress>
 
 
         <div class="text_box">
@@ -34,7 +38,7 @@
     <ion-button size="large" expand="round" class="btn">
         {{'stop' | translate}}
     </ion-button>
-    
+
     <div class="card_footer ion-text-center">
         <h2 (click)="rest()"> {{'next' | translate}}</h2>
         <h3>Full Crunches</h3>

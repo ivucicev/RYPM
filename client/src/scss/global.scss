@@ -76,6 +76,13 @@
     }
 }
 
+ion-button {
+    font-size: .95rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    --border-width: 1px;
+}
+
 .button {
     &.btn {
         width: 100%;
@@ -171,7 +178,7 @@ ion-header {
         ion-title {
             color: var(--white);
             padding: 0 15px !important;
-            padding-left: 0 !important;
+            // padding-left: 0 !important;
             text-align: justify !important;
             font-size: 1.1rem;
             font-weight: 500;
@@ -190,6 +197,22 @@ ion-header {
             --background: transparent;
             --ion-color-base: transparent !important;
         }
+    }
+}
+
+ion-list {
+    background: var(--transparent) !important;
+}
+
+ion-item {
+    --background: var(--transparent);
+    --ripple-color: var(--transparent) !important;
+    --background-focused: var(--transparent) !important;
+}
+
+:not(ion-item) {
+    >ion-input {
+        border-bottom: 1px solid var(--text-light) !important;
     }
 }
 
@@ -223,7 +246,7 @@ ion-header {
         margin-bottom: 10px;
         --ripple-color: var(--transparent) !important;
         --background-focused: var(--transparent) !important;
-        border-bottom: 1px solid var(--text-light) !important;
+        border-bottom: 1px solid var(--text-light);
         padding-bottom: 8px;
 
         .input-bottom {
@@ -251,7 +274,8 @@ ion-header {
             }
         }
 
-        ion-input .label-text {
+        ion-input .label-text,
+        ion-textarea .label-text {
             color: var(--text-light) !important;
             font-size: 1rem !important;
             font-weight: 500;
@@ -346,7 +370,7 @@ ion-loading {
     height: auto;
 
     .alert-head {
-        background: var(--white);
+        // background: var(--white);
         padding: 20px 27px 16px 27px;
 
         h2 {
@@ -389,8 +413,9 @@ ion-loading {
         }
 
         .alert-button {
-            color: var(--white);
-            background: var(--primary);
+            // color: var(--white);
+            // background: var(--primary);
+            color: var(--primary);
             height: 50px;
             text-align: center;
             margin: 0;

@@ -20,3 +20,18 @@
     background-position-x: center !important;
     background-position-y: center !important;
 }
+
+ion-button {
+    text-transform: none !important;
+}
+
+.active {
+    color: var(--ion-color-primary);
+}
+
+.ion-no-border {
+    border-bottom: none !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+}

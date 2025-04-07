@@ -1,4 +1,4 @@
 export enum UserType {
-    User,
+    User = 1,
     Trainer
 }

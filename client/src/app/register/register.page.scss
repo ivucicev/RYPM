@@ -16,3 +16,12 @@ ion-radio-group {
         }
     }
 }
+
+.banner .logo {
+    position: absolute;
+    bottom: 59px;
+    left: 0;
+    width: 100%;
+    padding: 0 30px;
+    --animate-duration: .3s;
+}

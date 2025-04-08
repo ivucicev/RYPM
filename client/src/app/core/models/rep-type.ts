@@ -1,6 +1,6 @@
 export enum RepType {
     Reps = 1,
-    RepsRange,
+    Range,
     Max,
     Duration
 }

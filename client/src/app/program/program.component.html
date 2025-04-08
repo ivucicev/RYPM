@@ -10,16 +10,16 @@
 
     <ion-toolbar>
         <ion-segment scrollable [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}">
-            <ion-segment-button value="info" [class]="(activeTab == 'info') ? 'active' : ''">
+            <ion-segment-button value="info">
                 <ion-label>{{ 'info' | translate }}</ion-label>
             </ion-segment-button>
 
-            <ion-segment-button value="users" [class]="(activeTab == 'users') ? 'active' : ''">
+            <ion-segment-button value="users">
                 <ion-label>{{ 'users' | translate }}</ion-label>
             </ion-segment-button>
 
             @for (week of getWeeksArray().controls; track $index; let i = $index) {
-            <ion-segment-button [class]="(activeTab == 'week-'+i) ? 'active' : ''" [value]="'week-'+i">
+            <ion-segment-button [value]="'week-'+i">
                 <ion-label> {{ 'week' | translate }} {{i+1}}</ion-label>
             </ion-segment-button>
             }

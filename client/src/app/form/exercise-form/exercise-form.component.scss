@@ -1,3 +1,41 @@
+.sets-container {
+    margin: 10px 0;
+}
+
+.rep-row {
+    display: flex;
+    align-items: center;
+    padding: 12px 8px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    background-color: var(--ion-color-light);
+    position: relative;
+    cursor: pointer;
+}
+
+.set-number {
+    width: 30px;
+    font-weight: bold;
+}
+
+.set-values {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+}
+
+.weight-value {
+    font-weight: 500;
+}
+
+.set-action-indicator {
+    color: var(--ion-color-medium);
+}
+
+.type-selector-toolbar {
+    --min-height: 40px;
+}
+
 ion-col {
     gap: 10px;
     align-items: center;
@@ -8,7 +46,6 @@ ion-col {
     display: flex;
     align-items: center;
     gap: 8px;
-
 }
 
 .exercise-item {
@@ -32,14 +69,12 @@ ion-col {
     max-width: 100px;
 }
 
-
 .reps-select,
 .weight-select {
     display: flex;
     margin-left: auto;
     padding: 0 8px;
     border-radius: 8px;
-    //background-color: var(--ion-color-light);
 }
 
 .reps-select {

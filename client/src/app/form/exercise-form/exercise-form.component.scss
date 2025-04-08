@@ -101,3 +101,28 @@ ion-col {
     --padding-end: 8px;
     margin-left: auto;
 }
+
+ion-item.rep-row {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --background: transparent;
+    border-bottom: none;
+    margin: 0px;
+
+    ion-icon {
+        font-size: 1rem;
+    }
+
+    ion-reorder {
+        margin-left: 10px;
+
+        ion-icon {
+            font-size: 1.5rem;
+        }
+    }
+}
+
+
+ion-item-sliding {
+    margin-bottom: 4px;
+}

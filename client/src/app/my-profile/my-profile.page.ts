@@ -89,7 +89,7 @@ export class MyProfilePage implements OnInit {
     }
 
     async saveChanges() {
-        var user = await this.accountService.getCurrentUser();
+        const user = await this.accountService.getCurrentUser();
 
         const model = this.model;
 

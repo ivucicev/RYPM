@@ -19,38 +19,56 @@
     </div>
 
     <div formArrayName="sets" class="sets-container">
-        @for (set of setsArray.controls; track $index; let setIndex = $index) {
-        <div [formGroupName]="setIndex" class="rep-row" (click)="openSetPickerModal(setIndex)">
-            <div class="set-number">{{setIndex + 1}}.</div>
-            <div class="set-values">
-                @if (set.get('weightType').value !== WeightType.NA) {
-                <div class="weight-value">
-                    {{set.get('weight').value}} {{set.get('weightType').value | weightType}}
-                </div>
-                <div>×</div>
-                }
+        <ion-reorder-group [disabled]="false" (ionItemReorder)="reorderSets($event)">
+            @for (set of setsArray.controls; track $index; let setIndex = $index) {
+            <ion-item-sliding #setSliding>
+                <ion-item lines="none" [formGroupName]="setIndex" class="rep-row" (click)="openSetPickerModal(setIndex)"
+                    lines="none">
+                    <div class="set-number">{{setIndex + 1}}.</div>
+                    <div class="set-values">
+                        @if (set.get('weightType').value !== WeightType.NA) {
+                        <div class="weight-value">
+                            {{set.get('weight').value}} {{set.get('weightType').value | weightType}}
+                        </div>
+                        <div>×</div>
+                        }
 
-                <div class="rep-value">
-                    @switch (set.get('type').value) {
-                    @case (RepType.Reps) {
-                    {{set.get('value').value}} {{ 'reps' | translate }}
-                    }
-                    @case (RepType.Range) {
-                    {{set.get('minValue').value}}-{{set.get('maxValue').value}} {{ 'reps' | translate }}
-                    }
-                    @case (RepType.Max) {
-                    {{ 'max' | translate }} {{ 'reps' | translate }}
-                    }
-                    @case (RepType.Duration) {
-                    {{set.get('value').value}} {{ 'sec' | translate }}
-                    }
-                    }
-                </div>
-            </div>
-            <ion-icon name="chevron-forward" class="set-action-indicator"></ion-icon>
-        </div>
-        }
+                        <div class="rep-value">
+                            @switch (set.get('type').value) {
+                            @case (RepType.Reps) {
+                            {{set.get('value').value}} {{ 'reps' | translate }}
+                            }
+                            @case (RepType.Range) {
+                            {{set.get('minValue').value}}-{{set.get('maxValue').value}} {{ 'reps' | translate }}
+                            }
+                            @case (RepType.Max) {
+                            {{ 'max' | translate }} {{ 'reps' | translate }}
+                            }
+                            @case (RepType.Duration) {
+                            {{set.get('value').value}} {{ 'sec' | translate }}
+                            }
+                            }
+                        </div>
+                    </div>
+                    <ion-icon name="chevron-forward" class="set-action-indicator" slot="end"></ion-icon>
+                    <ion-reorder slot="end">
+                        <ion-icon name="reorder-two-outline"></ion-icon>
+                    </ion-reorder>
+                </ion-item>
+
+                @if(setIndex >= 1) {
+                <!-- TODO: fix swipe delete -->
+                <!-- <ion-item-options side="end" (ionSwipe)="removeSetAt(setIndex)">
+                    <ion-item-option color="danger" (click)="removeSetAt(setIndex)">
+                        <ion-icon slot="icon-only" name="trash"></ion-icon>
+                    </ion-item-option>
+                </ion-item-options> -->
+                }
+            </ion-item-sliding>
+            }
+        </ion-reorder-group>
     </div>
+
 
     <div class="set-buttons">
         <ion-button size="small" fill="clear" (click)="removeSet()" [color]="'dark'" [disabled]="setsArray.length <= 1">

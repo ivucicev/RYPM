@@ -244,14 +244,11 @@ export class ProgramFormsService implements OnDestroy {
     }
 
     private swapFormArrayItems(formArray: FormArray, index1: number, index2: number) {
-        const item1 = formArray.at(index1).value;
-        const item2 = formArray.at(index2).value;
-
         const control1 = formArray.at(index1);
         const control2 = formArray.at(index2);
 
-        control1.patchValue(item2);
-        control2.patchValue(item1);
+        formArray.setControl(index1, control2);
+        formArray.setControl(index2, control1);
     }
     //#endregion
 }

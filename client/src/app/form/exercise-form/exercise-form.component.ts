@@ -1,6 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormArray } from '@angular/forms';
-import { IonicModule, ModalController, IonModal } from '@ionic/angular';
+import { IonicModule, ModalController, IonModal, ItemReorderEventDetail } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { RepType } from 'src/app/core/models/rep-type';
 import { WeightType } from 'src/app/core/models/weight-type';
@@ -66,7 +66,7 @@ export class ExerciseFormComponent {
     }
 
     get setsArray() {
-        return this.exercise.get('sets') as FormArray;
+        return this.exercise.get('sets') as FormArray<ExerciseSetFormGroup>;
     }
 
     addSet() {
@@ -80,6 +80,20 @@ export class ExerciseFormComponent {
         const setsArray = this.setsArray;
         if (setsArray.length > 1) {
             setsArray.removeAt(setsArray.length - 1);
+        }
+    }
+
+    reorderSets(event: CustomEvent<ItemReorderEventDetail>) {
+        const items = this.setsArray.controls.map((item) => item.value);
+        const itemsOrdered: ExerciseSet[] = event.detail.complete(items);
+
+        this.setsArray.clear();
+        itemsOrdered.map((item) => this.setsArray.push(this.programFormService.createSetFormGroup(item)));
+    }
+
+    removeSetAt(index: number) {
+        if (this.setsArray.length > 1) {
+            this.setsArray.removeAt(index);
         }
     }
 

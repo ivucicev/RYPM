@@ -116,7 +116,7 @@ export class AccountService {
     }
 
     async confirmEmail(code: string, model: LoginBM): Promise<void> {
-        var res = await this.pocketbase.collection('users').confirmVerification(code);
+        const res = await this.pocketbase.collection('users').confirmVerification(code);
         if (!res) return;
 
         const authData = await this.pocketbase.collection('users').authWithPassword(model.email, model.password);

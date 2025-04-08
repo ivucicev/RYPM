@@ -5,7 +5,7 @@ import { APP_CONFIG, AppConfig } from './app.config';
 import { VtPopupPage } from './vt-popup/vt-popup.page';
 import { StatusBar } from '@capacitor/status-bar';
 import { SplashScreen } from '@capacitor/splash-screen';
-import { add, addCircle, addCircleOutline, addOutline, alertCircleOutline, barbellOutline, checkmark, checkmarkCircleOutline, chevronBackOutline, chevronDown, chevronForward, chevronUp, close, closeCircle, closeOutline, createOutline, documentTextOutline, ellipsisHorizontalCircle, ellipsisVertical, ellipsisVerticalCircleOutline, filterOutline, hourglassOutline, informationCircleOutline, personAdd, personAddOutline, personOutline, playOutline, refreshOutline, remove, timeOutline, timerOutline, trash, trashOutline, warningOutline } from 'ionicons/icons';
+import { add, addCircle, addCircleOutline, addOutline, alertCircleOutline, barbellOutline, checkmark, checkmarkCircleOutline, chevronBackOutline, chevronDown, chevronForward, chevronUp, close, closeCircle, closeOutline, createOutline, documentTextOutline, ellipsisHorizontalCircle, ellipsisVertical, ellipsisVerticalCircleOutline, filterOutline, hourglassOutline, informationCircleOutline, personAdd, personAddOutline, personOutline, playOutline, refreshOutline, remove, reorderTwoOutline, timeOutline, timerOutline, trash, trashOutline, warningOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { IonicModule } from '@ionic/angular';
 import { MyEvent } from './core/services/myevent.services';
@@ -45,7 +45,7 @@ export class AppComponent {
             ellipsisVerticalCircleOutline, personAddOutline, addOutline, remove, chevronUp, chevronDown, timerOutline,
             close, checkmark, createOutline, personOutline, barbellOutline, hourglassOutline, timeOutline, ellipsisVertical,
             ellipsisHorizontalCircle, add, filterOutline, refreshOutline, closeCircle, addCircle, trash, addCircleOutline,
-            documentTextOutline, personAdd, trashOutline, playOutline, chevronForward
+            documentTextOutline, personAdd, trashOutline, playOutline, chevronForward, reorderTwoOutline
         })
     }
 

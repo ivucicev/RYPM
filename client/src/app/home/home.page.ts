@@ -104,11 +104,60 @@ export class HomePage implements OnInit {
         this.navCtrl.navigateForward(`./program/${id}`);
     }
 
+    async presentProgramActionSheet(program: Program) {
+        const programId = program.id;
+
+        const translations = await lastValueFrom(this.translateService.get([
+            'start', 'edit', 'close', 'delete', 'assign'
+        ]));
+        const actionSheet = await this.actionSheetCtrl.create({
+            header: program.name,
+            buttons: [
+                {
+                    text: translations.start,
+                    icon: 'play-outline',
+                    handler: () => {
+                        this.startWorkout(programId);
+                    },
+                },
+                {
+                    text: translations.edit,
+                    icon: 'create-outline',
+                    handler: () => {
+                        this.editTemplate(programId);
+                    },
+                },
+                {
+                    text: translations.assign,
+                    icon: 'person-add-outline',
+                    handler: () => {
+                        this.presentAssignProgramPopover(program);
+                    },
+                },
+                {
+                    text: translations.delete,
+                    icon: 'trash-outline',
+                    role: 'destructive',
+                    handler: () => {
+                        this.deleteProgram(programId);
+                    },
+                },
+                {
+                    text: translations.close,
+                    icon: 'close-outline',
+                    role: 'cancel',
+                },
+            ],
+        });
+
+        await actionSheet.present();
+    }
+
     async presentTemplateActionSheet(template: Template) {
         const templateId = template.id;
 
         const translations = await lastValueFrom(this.translateService.get([
-            'start', 'edit', 'close', 'template'
+            'start', 'edit', 'close', 'delete', 'template', 'assign'
         ]));
         const actionSheet = await this.actionSheetCtrl.create({
             header: template.name ?? translations.template,
@@ -125,6 +174,21 @@ export class HomePage implements OnInit {
                     icon: 'create-outline',
                     handler: () => {
                         this.editTemplate(templateId);
+                    },
+                },
+                {
+                    text: translations.assign,
+                    icon: 'person-add-outline',
+                    handler: () => {
+                        this.presentAssignTemplatePopover(template);
+                    },
+                },
+                {
+                    text: translations.delete,
+                    icon: 'trash-outline',
+                    role: 'destructive',
+                    handler: () => {
+                        this.deleteTemplate(templateId);
                     },
                 },
                 {

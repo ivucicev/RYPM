@@ -25,3 +25,9 @@ ion-radio-group {
     padding: 0 30px;
     --animate-duration: .3s;
 }
+
+ion-header,
+.banner {
+    --ion-text-color: white;
+    color: var(--ion-text-color);
+}

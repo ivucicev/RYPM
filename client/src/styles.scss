@@ -1,4 +1,3 @@
-@import 'scss/theme/variables.scss';
 @import 'scss/global.scss';
 
 .header-md {
@@ -8,7 +7,7 @@
 
 // TODO: GV, ion-inputs have min-height in new version: leave?
 // .sc-ion-input-md-h {
-//   min-height: unset;
+//     min-height: unset;
 // }
 
 .d-none {
@@ -34,4 +33,14 @@ ion-button {
     border-top: none !important;
     border-left: none !important;
     border-right: none !important;
+}
+
+.error-text {
+    padding-bottom: 10px;
+}
+
+[data-theme='light'] {
+    .light-invert {
+        filter: invert(1) !important;
+    }
 }

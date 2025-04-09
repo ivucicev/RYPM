@@ -51,6 +51,7 @@ export class ExerciseFormComponent {
     weightOptions = Array.from({ length: 60 }, (_, i) => (i + 1) * 0.5);
     setsOptions = Array.from({ length: 10 }, (_, i) => i + 1);
     repsOptions = Array.from({ length: 30 }, (_, i) => i + 1);
+    repsOptionsMin = this.repsOptions;
 
     @Input() exercise: ExerciseFormGroup;
 
@@ -135,8 +136,25 @@ export class ExerciseFormComponent {
         this.selectedWeightType = type;
     }
 
+    setMinValue(value) {
+        this.selectedMinValue = value;
+        if (this.selectedMaxValue < value) {
+            this.selectedMaxValue = value;
+        }
+    }
+
+    setMaxValue(value) {
+        this.selectedMaxValue = value;
+        if (this.selectedMinValue > value) {
+            this.selectedMinValue = value;
+        }
+    }
+
     setRepType(type) {
         this.selectedRepType = type;
+        if (type == RepType.Duration) {
+            this.selectedWeightType = WeightType.NA;
+        }
     }
 
     cancelPicker() {

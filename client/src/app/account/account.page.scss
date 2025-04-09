@@ -291,7 +291,7 @@ ion-list {
 }
 
 .button-clear {
-    color: white;
+    color: var(--ion-color-dark);
     opacity: 80%;
     --background-hover: unset;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject, Signal } from '@angular/core';
 import { BuyappalertPage } from '../buyappalert/buyappalert.page';
 import { ModalController } from '@ionic/angular/standalone';
 import { AppConfig, APP_CONFIG } from '../app.config';
@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { AccountSwitchPopoverComponent } from '../account-switch-popover/account-switch-popover.component';
 import { AccountService } from '../core/services/account.service';
 import { User } from '../core/models/user';
+import { ThemeService } from '../core/services/theme.service';
 
 @Component({
     selector: 'app-account',
@@ -18,7 +19,7 @@ import { User } from '../core/models/user';
     imports: [
         IonicModule,
         NgIf,
-        TranslateModule,
+        TranslateModule
     ],
 })
 export class AccountPage {
@@ -26,12 +27,15 @@ export class AccountPage {
     showToolbar = false;
     user: User;
 
+    isDark: Signal<boolean> = this.themeService.isDark;
+
     constructor(
         private popoverCtrl: PopoverController,
         @Inject(APP_CONFIG) public config: AppConfig,
         private route: Router,
         private modalController: ModalController,
-        private accountService: AccountService
+        private accountService: AccountService,
+        private themeService: ThemeService
     ) {
     }
 
@@ -55,6 +59,10 @@ export class AccountPage {
             const scrollTop = $event.detail.scrollTop;
             this.showToolbar = scrollTop >= 300;
         }
+    }
+
+    toggleTheme() {
+        this.themeService.toggleTheme();
     }
 
     my_profile() {

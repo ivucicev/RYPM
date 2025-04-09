@@ -18,34 +18,31 @@
                         type="text"></ion-input>
                 </ion-item>
             </ion-list>
-            <ion-item lines="none" class="day-item">
+            <ion-item lines="none" class="day-item" formArrayName="exercises">
                 <ion-label>
-                    <div formArrayName="exercises">
-                        @for (exercise of exercisesArray.controls; track $index; let exIndex = $index) {
-                        <ion-item-sliding>
-                            <ion-item [formGroupName]="exIndex" class="ion-no-border">
-                                <app-exercise-form [style.width]="'100%'" [exercise]="exercise">
-                                </app-exercise-form>
-                            </ion-item>
-                            <ion-item-options side="end">
-                                <ion-item-option color="danger" (click)="removeExercise(exIndex)">
-                                    <ion-icon slot="icon-only" name="trash"></ion-icon>
-                                </ion-item-option>
-                            </ion-item-options>
-                        </ion-item-sliding>
-                        }
-                        @empty {
-                        <ion-label class="ion-text-center ion-padding" [color]="'medium'">
-                            {{ 'no_exercise_added' | translate }}
-                        </ion-label>
-                        }
+                    @for (exercise of exercisesArray.controls; track $index; let exIndex = $index) {
+                    <ion-item-sliding>
+                        <ion-item lines="none" [formGroupName]="exIndex" class="ion-no-border">
+                            <app-exercise-form [style.width]="'100%'" [exercise]="exercise">
+                            </app-exercise-form>
+                        </ion-item>
+                        <ion-item-options side="end">
+                            <ion-item-option color="danger" (click)="removeExercise(exIndex)">
+                                <ion-icon slot="icon-only" name="trash"></ion-icon>
+                            </ion-item-option>
+                        </ion-item-options>
+                    </ion-item-sliding>
+                    }
+                    @empty {
+                    <ion-label class="ion-text-center ion-padding" [color]="'medium'">
+                        {{ 'no_exercise_added' | translate }}
+                    </ion-label>
+                    }
 
-                        <ion-button class="ion-float-end" fill="outline" (click)="addExercise()">
-                            {{ 'add_exercise' | translate }}
-                        </ion-button>
-                    </div>
+                    <ion-button class="ion-float-end ion-margin-top" fill="outline" (click)="addExercise()">
+                        {{ 'add_exercise' | translate }}
+                    </ion-button>
                 </ion-label>
-
             </ion-item>
         </div>
     </form>

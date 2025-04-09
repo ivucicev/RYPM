@@ -29,18 +29,21 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 @import 'animate.css/animate.min.css';
+@import './theme/variables.scss';
 
 :root {
-    --primary: #1ce5c1;
-    --bg-color: #1b1b20;
-    --bg-light: #EBEBEB;
+    --primary: var(--ion-color-primary);
+    --bg-color: var(--ion-background-color);
+    //--bg-light: #EBEBEB;
     --text-light: #8C8C8C;
-    --white: #fff;
-    --item-bg: #25252b;
-    --transparent: rgba(0, 0, 0, 0);
+    // --white: #fff;
+    --white: var(--ion-color-dark);
+    // --item-bg: #25252b;
+    // --transparent: rgba(0, 0, 0, 0);
+    // --ion-color-primary: var(--primary);
 
-    --ion-color-primary: var(--primary);
 }
+
 
 .bg_color {
     --background: var(--bg-color);
@@ -64,7 +67,7 @@
 
     img {
         &.crop_img {
-            position: absolute;
+            // position: absolute; // TODO: dark theme blends ok with transparency overlap: light theme does not
             min-width: 100%;
             min-height: 100%;
             top: 0;
@@ -91,7 +94,7 @@ ion-button {
         letter-spacing: 0;
         height: 48px;
         --background: var(--primary);
-        color: var(--white);
+        //color: var(--white);
         margin: 0;
         --box-shadow: none;
         text-transform: none;
@@ -106,7 +109,7 @@ ion-button {
 
         &.button-outline {
             --background: var(--transparent);
-            color: var(--white);
+            //color: var(--white);
             --border-color: var(--primary);
             --border-width: 1px;
 
@@ -148,13 +151,13 @@ ion-header {
             --padding-start: 0 !important;
 
             ion-back-button {
-                --color: var(--white) !important;
+                //--//color: var(--white) !important;
                 --icon-font-size: 1.3rem !important;
                 --padding-start: 15px;
             }
 
             ion-menu-button {
-                --color: var(--white) !important;
+                //--//color: var(--white) !important;
                 --padding-end: 0 !important;
                 font-size: 1.8rem !important;
                 margin-right: 12px;
@@ -176,7 +179,7 @@ ion-header {
         }
 
         ion-title {
-            color: var(--white);
+            //color: var(--white);
             padding: 0 15px !important;
             // padding-left: 0 !important;
             text-align: justify !important;
@@ -243,11 +246,11 @@ ion-item {
         --min-height: unset !important;
         --padding-start: 0;
         box-shadow: none !important;
-        margin-bottom: 10px;
+        // margin-bottom: 10px;
         --ripple-color: var(--transparent) !important;
         --background-focused: var(--transparent) !important;
         border-bottom: 1px solid var(--text-light);
-        padding-bottom: 8px;
+        // padding-bottom: 8px;
 
         .input-bottom {
             //border-top: 1px solid var(--text-light);
@@ -281,7 +284,7 @@ ion-item {
             font-weight: 500;
             text-transform: none;
             letter-spacing: 0px !important;
-            margin-bottom: 7px !important;
+            // margin-bottom: 7px !important;
         }
 
         ion-input.password {
@@ -300,7 +303,7 @@ ion-item {
             --padding-end: 0 !important;
             --padding-top: 0 !important;
             --padding-bottom: 0px !important;
-            color: var(--white);
+            //color: var(--white);
             --placeholder-color: var(--text-light) !important;
             --placeholder-opacity: 1;
             --placeholder-font-weight: 500 !important;
@@ -407,13 +410,13 @@ ion-loading {
             right: 0;
             width: 1.5px;
             height: 100%;
-            background-color: var(--white);
+            // background-color: var(--white);
             z-index: 9999;
             margin: 0 auto;
         }
 
         .alert-button {
-            // color: var(--white);
+            // //color: var(--white);
             // background: var(--primary);
             color: var(--primary);
             height: 50px;
@@ -447,7 +450,7 @@ ion-loading {
                 height: 40px;
                 background: var(--primary);
                 text-transform: none;
-                color: var(--white);
+                //color: var(--white);
                 margin: 0;
                 --box-shadow: none;
                 width: fit-content;
@@ -640,7 +643,7 @@ ion-app[dir="rtl"] {
                 height: 100%;
                 line-height: 122px;
                 text-align: center;
-                color: var(--white);
+                //color: var(--white);
                 font-size: 5rem;
             }
         }
@@ -653,7 +656,7 @@ ion-app[dir="rtl"] {
             }
 
             background: var(--primary);
-            color: var(--white);
+            //color: var(--white);
 
             border-radius: 50%;
             width: 28px;
@@ -686,7 +689,7 @@ ion-app[dir="rtl"] {
             left: 0;
             width: 100%;
             text-align: center;
-            color: var(--white);
+            //color: var(--white);
             font-size: 3rem;
         }
     }

@@ -14,7 +14,6 @@ import { ModalController } from "@ionic/angular/standalone";
 import { ProgramUser } from "../models/program-user";
 import { User } from "../models/user";
 
-// TODO: subjects
 @Injectable()
 export class ProgramFormsService implements OnDestroy {
 
@@ -25,7 +24,6 @@ export class ProgramFormsService implements OnDestroy {
         private modalCtrl: ModalController) { }
 
     ngOnDestroy() {
-        console.log("destroy")
         this.subject.next(null);
         this.subject.unsubscribe();
     }

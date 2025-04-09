@@ -85,7 +85,7 @@
                 </ion-list>
 
                 <ion-button class="ion-padding" expand="block" (click)="openAssignUsersModal()">
-                    {{ 'add_day' | translate }}
+                    {{ 'add_user' | translate }}
                 </ion-button>
             </div>
             }
@@ -112,7 +112,7 @@
                                     exIndex = $index) {
                                     <ion-item-sliding [formGroupName]="exIndex">
 
-                                        <ion-item class="ion-no-border">
+                                        <ion-item lines="none" class="ion-no-border">
                                             <app-exercise-form [style.width]="'100%'" [exercise]="exercise">
                                             </app-exercise-form>
                                         </ion-item>
@@ -131,7 +131,7 @@
                                     </ion-label>
                                     }
 
-                                    <ion-button class="ion-float-end" fill="outline"
+                                    <ion-button class="ion-float-end ion-margin-top" fill="outline"
                                         (click)="addExerciseToDay(weekIndex, dayIndex)">
                                         {{ 'add_exercise' | translate }}
                                     </ion-button>

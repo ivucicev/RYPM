@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title><img src="assets/images/logo.png"></ion-title>
+        <ion-title><img class="light-invert" src="assets/images/logo.png"></ion-title>
     </ion-toolbar>
     <ion-segment mode="ios" [(ngModel)]="tab" lines="none">
         <ion-segment-button mode="ios" value="programs">
@@ -22,7 +22,7 @@
         <ion-list lines="none" *ngSwitchCase="'programs'">
             @for (program of programs; track program.id) {
             <ion-item-sliding>
-                <ion-item (click)="openDetailProgram(program.id)">
+                <ion-item (click)="presentProgramActionSheet(program)">
                     <ion-label>
                         <div>
                             <h2>{{ program.name }}</h2>

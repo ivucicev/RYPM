@@ -28,7 +28,10 @@
                     <div class="set-values">
                         @if (set.get('weightType').value !== WeightType.NA) {
                         <div class="weight-value">
-                            {{set.get('weight').value}} {{set.get('weightType').value | weightType}}
+                            @if(set.get('weightType').value == WeightType.KG
+                            || set.get('weightType').value == WeightType.LB) {
+                            {{set.get('weight').value}}
+                            } {{set.get('weightType').value | weightType}}
                         </div>
                         <div>×</div>
                         }
@@ -55,15 +58,6 @@
                         <ion-icon name="reorder-two-outline"></ion-icon>
                     </ion-reorder>
                 </ion-item>
-
-                @if(setIndex >= 1) {
-                <!-- TODO: fix swipe delete -->
-                <!-- <ion-item-options side="end" (ionSwipe)="removeSetAt(setIndex)">
-                    <ion-item-option color="danger" (click)="removeSetAt(setIndex)">
-                        <ion-icon slot="icon-only" name="trash"></ion-icon>
-                    </ion-item-option>
-                </ion-item-options> -->
-                }
             </ion-item-sliding>
             }
         </ion-reorder-group>
@@ -88,7 +82,7 @@
         <ion-header>
             <ion-toolbar>
                 <ion-title>{{ 'set' | translate }} {{selectedSetIndex + 1}}</ion-title>
-                <ion-buttons slot="start">
+                <ion-buttons slot="end">
                     <ion-button (click)="cancelPicker()">{{ 'cancel' | translate }}</ion-button>
                 </ion-buttons>
                 <ion-buttons slot="end">
@@ -99,7 +93,7 @@
             <ion-toolbar class="type-selector-toolbar">
                 <ion-segment [value]="selectedWeightType" (ionChange)="setWeightType($event.detail.value)">
                     @for(weightType of weightTypes; track $index) {
-                    <ion-segment-button [value]="weightType">
+                    <ion-segment-button [value]="weightType" [disabled]="selectedRepType == RepType.Duration">
                         <ion-label>{{ weightType | weightType }}</ion-label>
                     </ion-segment-button>
                     }
@@ -128,7 +122,7 @@
                         }
                     </ion-picker-column>
 
-                    @if (selectedWeightType !== WeightType.NA) {
+                    @if (selectedWeightType == WeightType.KG || selectedWeightType == WeightType.LB) {
                     <ion-picker-column [value]="selectedWeight" (ionChange)="selectedWeight = $event.detail.value">
                         @for (option of weightOptions; track option) {
                         <ion-picker-column-option [value]="option">
@@ -149,15 +143,21 @@
                     }
 
                     @if (selectedRepType === RepType.Range) {
-                    <ion-picker-column [value]="selectedMinValue" (ionChange)="selectedMinValue = $event.detail.value">
-                        @for (option of repsOptions; track option) {
+                    <ion-picker-column [value]="selectedMinValue" (ionChange)="setMinValue($event.detail.value)">
+                        @for (option of repsOptionsMin; track option) {
                         <ion-picker-column-option [value]="option">
                             {{ option }}
                         </ion-picker-column-option>
                         }
                     </ion-picker-column>
 
-                    <ion-picker-column [value]="selectedMaxValue" (ionChange)="selectedMaxValue = $event.detail.value">
+                    <ion-picker-column [value]="-1" [disabled]="true" class="picker-min-width">
+                        <ion-picker-column-option [value]="-1">
+                            {{ '-' }}
+                        </ion-picker-column-option>
+                    </ion-picker-column>
+
+                    <ion-picker-column [value]="selectedMaxValue" (ionChange)="setMaxValue($event.detail.value)">
                         @for (option of repsOptions; track option) {
                         <ion-picker-column-option [value]="option">
                             {{ option }} {{ 'reps' | translate }}

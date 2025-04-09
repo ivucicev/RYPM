@@ -18,10 +18,10 @@
             {{"buy_this_app" | translate}}
         </h2>
     </div>
-
+    <!--
     <div class="bg_img center_img">
-        <!-- <img src="{{ user?.avatar }}" class="crop_img"> -->
-    </div>
+         <img src="{{ user?.avatar }}" class="crop_img">
+    </div> -->
 
     <div class="d-flex">
         <div class="profile d-flex" (click)="my_profile()">
@@ -100,6 +100,19 @@
                 </div>
             </div>
         </ion-item>
+
+        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="toggleTheme()">
+            <div class="item-inner d-flex">
+                <ion-icon [size]="'medium'" class="zmdi" [class]="isDark() ? 'zmdi-sun' : 'zmdi-circle-o'"
+                    slot="icon-only"></ion-icon>
+                <div class="text_box">
+                    <h2>{{ (isDark() ? 'light' : 'dark' ) | translate}}</h2>
+                    <h3>{{'change_theme' | translate}}</h3>
+                </div>
+            </div>
+        </ion-item>
+
+
     </ion-list>
 </ion-content>
 

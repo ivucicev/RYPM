@@ -17,6 +17,13 @@
 </ion-header>
 
 <ion-content class="bg_color" fullscreen fixed-slot-placement="before">
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="tab == 'programs' ? openNewProgram() : openNewTemplate()">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+
     <div class="tab_content" [ngSwitch]="tab">
 
         <ion-list lines="none" *ngSwitchCase="'programs'">
@@ -91,12 +98,6 @@
             </ion-item-sliding>
             }
         </ion-list>
-
-        <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-            <ion-fab-button (click)="tab == 'programs' ? openNewProgram() : openNewTemplate()">
-                <ion-icon name="add"></ion-icon>
-            </ion-fab-button>
-        </ion-fab>
 
         <ng-container>
             <!-- <ion-list lines="none" *ngSwitchCase="'trainer'">

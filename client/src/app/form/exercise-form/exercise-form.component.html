@@ -1,16 +1,41 @@
 <div class="exercise-item" [formGroup]="exercise">
+    @if (!workoutMode) {
     <h2>{{exercise.get('name').value}}</h2>
+    }
 
     <div class="exercise-settings-container">
-        <span>{{ 'rest' | translate }}</span>
         <ion-icon name="timer-outline"></ion-icon>
-        <ion-select formControlName="restDuration" interface="popover" class="rest-duration-select">
-            @for (option of durationOptions; track option.value) {
-            <ion-select-option [value]="option.value">
-                {{ option?.value | duration }}
-            </ion-select-option>
-            }
-        </ion-select>
+        <span>{{ 'rest' | translate }}:</span>
+        <ion-button fill="clear" color="dark" size="small" (click)="openRestPickerModal()">
+            {{ exercise.get('restDuration')?.value | duration }}
+            <ion-icon size="small" name="chevron-down-outline" slot="end"></ion-icon>
+        </ion-button>
+
+        <ion-modal #restPickerModal [backdropDismiss]="true" class="picker-modal">
+            <ng-template>
+                <ion-header>
+                    <ion-toolbar>
+                        <ion-title slot="start">{{ 'set' | translate }} {{selectedSetIndex + 1}}</ion-title>
+                        <ion-buttons slot="end">
+                            <ion-button (click)="cancelPicker()">{{ 'cancel' | translate }}</ion-button>
+                        </ion-buttons>
+                        <ion-buttons slot="end">
+                            <ion-button (click)="confirmRestPicker()">{{ 'confirm' | translate }}</ion-button>
+                        </ion-buttons>
+                    </ion-toolbar>
+                </ion-header>
+                <ion-picker>
+                    <ion-picker-column [value]="selectedRestValue"
+                        (ionChange)="selectedRestValue = $event.detail.value">
+                        @for (option of durationOptions; track option.value) {
+                        <ion-picker-column-option [value]="option.value">
+                            {{ option.value | duration }}
+                        </ion-picker-column-option>
+                        }
+                    </ion-picker-column>
+                </ion-picker>
+            </ng-template>
+        </ion-modal>
 
         <ion-button fill="clear" class="notes-button" (click)="onOpenNotes()">
             <ion-icon name="document-text-outline"
@@ -18,78 +43,142 @@
         </ion-button>
     </div>
 
-    <div formArrayName="sets" class="sets-container">
+    <div formArrayName="sets" class="form-container">
         <ion-reorder-group [disabled]="false" (ionItemReorder)="reorderSets($event)">
             @for (set of setsArray.controls; track $index; let setIndex = $index) {
-            <ion-item-sliding #setSliding>
-                <ion-item lines="none" [formGroupName]="setIndex" class="rep-row" (click)="openSetPickerModal(setIndex)"
-                    lines="none">
-                    <div class="set-number">{{setIndex + 1}}.</div>
-                    <div class="set-values">
-                        @if (set.get('weightType').value !== WeightType.NA) {
-                        <div class="weight-value">
-                            @if(set.get('weightType').value == WeightType.KG
-                            || set.get('weightType').value == WeightType.LB) {
-                            {{set.get('weight').value}}
-                            } {{set.get('weightType').value | weightType}}
-                        </div>
-                        <div>×</div>
+            <ion-item-sliding #setSliding [formGroupName]="setIndex">
+                <ion-item lines="none" class="rep-row" (click)="openSetPickerModal(setIndex)" lines="none">
+                    <div class="set-history small">
+                        @if (set.get('previousWeight')?.value || set.get('previousValue')?.value) {
+                        <ng-container [ngTemplateOutlet]="setValueTemplate"
+                            [ngTemplateOutletContext]="{set: set, previous: true}">
+                        </ng-container>
                         }
-
-                        <div class="rep-value">
-                            @switch (set.get('type').value) {
-                            @case (RepType.Reps) {
-                            {{set.get('value').value}} {{ 'reps' | translate }}
-                            }
-                            @case (RepType.Range) {
-                            {{set.get('minValue').value}}-{{set.get('maxValue').value}} {{ 'reps' | translate }}
-                            }
-                            @case (RepType.Max) {
-                            {{ 'max' | translate }} {{ 'reps' | translate }}
-                            }
-                            @case (RepType.Duration) {
-                            {{set.get('value').value}} {{ 'sec' | translate }}
-                            }
-                            }
-                        </div>
                     </div>
+
+                    <div class="set-number">{{setIndex + 1}}.</div>
+
+                    @if(workoutMode) {
+                    <ng-container [ngTemplateOutlet]="setValueTemplate" [ngTemplateOutletContext]="{set: set}">
+                    </ng-container>
+                    <div class="small" [style.margin-left]="'auto'">
+                        <ng-container [ngTemplateOutlet]="setConfigTemplate" [ngTemplateOutletContext]="{set: set}">
+                        </ng-container>
+                    </div>
+
+                    } @else {
+                    <ng-container [ngTemplateOutlet]="setConfigTemplate" [ngTemplateOutletContext]="{set: set}">
+                    </ng-container>
+                    }
+
                     <ion-icon name="chevron-forward" class="set-action-indicator" slot="end"></ion-icon>
+
+                    @if(!workoutMode) {
                     <ion-reorder slot="end">
                         <ion-icon name="reorder-two-outline"></ion-icon>
                     </ion-reorder>
+                    }
                 </ion-item>
+
+                @if (workoutMode) {
+                <ion-checkbox #checkbox (ionChange)="updateCompletion(setIndex)"
+                    formControlName="completed"></ion-checkbox>
+                }
             </ion-item-sliding>
             }
         </ion-reorder-group>
     </div>
 
-
     <div class="set-buttons">
-        <ion-button size="small" fill="clear" (click)="removeSet()" [color]="'dark'" [disabled]="setsArray.length <= 1">
-            <ion-icon slot="start" name="remove"></ion-icon>
-            {{ 'set' | translate }}
+        <ion-button size="small" fill="clear" color="medium" expand="block" (click)="removeSet()"
+            [disabled]="setsArray.length <= 1" color="medium">
+            {{ 'remove_set' | translate }}
         </ion-button>
-        <ion-button fill="clear" size="small" [color]="'dark'" (click)="addSet()">
-            <ion-icon slot="start" name="add"></ion-icon>
-            {{ 'set' | translate }}
+        <ion-button size="small" fill="clear" color="medium" expand="block" (click)="addSet()">
+            {{ 'add_set' | translate }}
         </ion-button>
     </div>
 </div>
 
-<ion-modal #pickerModal [breakpoints]="[0, 0.5]" [initialBreakpoint]="0.5" [backdropDismiss]="true"
-    class="picker-modal">
+<ng-template #setValueTemplate let-set="set" let-previous="previous">
+    <div class="set-display-container">
+        @if(previous) {
+        {{ 'prev' | translate }}:
+        }
+        @if (set.get('weightType').value !== WeightType.NA) {
+        <div class="weight-value">
+            @if(set.get('weightType').value == WeightType.KG || set.get('weightType').value == WeightType.LB) {
+            {{ set.get(previous ? 'previousWeight' : 'currentWeight')?.value }}
+            } {{set.get('weightType').value | weightType}}
+        </div>
+        <div>×</div>
+        }
+
+        <div class="rep-value">
+            {{set.get(previous ? 'previousValue' : 'currentValue')?.value}}
+            @switch (set.get('type').value) {
+            @case (RepType.Reps) {
+            {{ 'reps' | translate }}
+            }
+            @case (RepType.Range) {
+            {{ 'reps' | translate }}
+            }
+            @case (RepType.Max) {
+            {{ 'reps' | translate }}
+            }
+            @case (RepType.Duration) {
+            {{ 'sec' | translate }}
+            }
+            }
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #setConfigTemplate let-set="set">
+    <div class="set-display-container">
+        @if (set.get('weightType').value !== WeightType.NA) {
+        <div class="weight-value">
+            @if(set.get('weightType').value == WeightType.KG || set.get('weightType').value == WeightType.LB) {
+            {{set.get('weight')?.value}}
+            } {{set.get('weightType').value | weightType}}
+        </div>
+        <div>×</div>
+        }
+
+        <div class="rep-value">
+            @switch (set.get('type').value) {
+            @case (RepType.Reps) {
+            {{set.get('value')?.value}} {{ 'reps' | translate }}
+            }
+            @case (RepType.Range) {
+            {{set.get('minValue')?.value}} - {{set.get('maxValue')?.value}} {{ 'reps' | translate }}
+            }
+            @case (RepType.Max) {
+            {{ 'max' | translate }} {{ 'reps' | translate }}
+            }
+            @case (RepType.Duration) {
+            {{set.get('value')?.value}} {{ 'sec' | translate }}
+            }
+            }
+        </div>
+    </div>
+</ng-template>
+
+
+<ion-modal #setPickerModal [backdropDismiss]="true" class="picker-modal">
     <ng-template>
         <ion-header>
             <ion-toolbar>
-                <ion-title>{{ 'set' | translate }} {{selectedSetIndex + 1}}</ion-title>
+                <ion-title slot="start">{{ 'set' | translate }} {{selectedSetIndex + 1}}</ion-title>
                 <ion-buttons slot="end">
                     <ion-button (click)="cancelPicker()">{{ 'cancel' | translate }}</ion-button>
                 </ion-buttons>
                 <ion-buttons slot="end">
-                    <ion-button (click)="confirmPicker()">{{ 'confirm' | translate }}</ion-button>
+                    <ion-button (click)="confirmSetPicker()">{{ 'confirm' | translate }}</ion-button>
                 </ion-buttons>
             </ion-toolbar>
 
+            @if (!workoutMode) {
             <ion-toolbar class="type-selector-toolbar">
                 <ion-segment [value]="selectedWeightType" (ionChange)="setWeightType($event.detail.value)">
                     @for(weightType of weightTypes; track $index) {
@@ -109,74 +198,72 @@
                     }
                 </ion-segment>
             </ion-toolbar>
+            }
         </ion-header>
 
-        <ion-content>
-            <div class="picker-content">
-                <ion-picker>
-                    <ion-picker-column [value]="numSets" (ionChange)="numSets = $event.detail.value">
-                        @for (option of setsOptions; track option) {
-                        <ion-picker-column-option [value]="option">
-                            {{ option }} {{ 'sets' | translate }}
-                        </ion-picker-column-option>
-                        }
-                    </ion-picker-column>
+        <ion-picker>
+            @if (!workoutMode) {
+            <ion-picker-column [value]="numSets" (ionChange)="numSets = $event.detail.value">
+                @for (option of setsOptions; track option) {
+                <ion-picker-column-option [value]="option">
+                    {{ option }} {{ 'sets' | translate }}
+                </ion-picker-column-option>
+                }
+            </ion-picker-column>
+            }
 
-                    @if (selectedWeightType == WeightType.KG || selectedWeightType == WeightType.LB) {
-                    <ion-picker-column [value]="selectedWeight" (ionChange)="selectedWeight = $event.detail.value">
-                        @for (option of weightOptions; track option) {
-                        <ion-picker-column-option [value]="option">
-                            {{ option }} {{ selectedWeightType | weightType }}
-                        </ion-picker-column-option>
-                        }
-                    </ion-picker-column>
-                    }
+            @if (selectedWeightType == WeightType.KG || selectedWeightType == WeightType.LB) {
+            <ion-picker-column [value]="selectedWeight" (ionChange)="selectedWeight = $event.detail.value">
+                @for (option of weightOptions; track option) {
+                <ion-picker-column-option [value]="option">
+                    {{ option }} {{ selectedWeightType | weightType }}
+                </ion-picker-column-option>
+                }
+            </ion-picker-column>
+            }
 
-                    @if (selectedRepType === RepType.Reps) {
-                    <ion-picker-column [value]="selectedValue" (ionChange)="selectedValue = $event.detail.value">
-                        @for (option of repsOptions; track option) {
-                        <ion-picker-column-option [value]="option">
-                            {{ option }} {{ 'reps' | translate }}
-                        </ion-picker-column-option>
-                        }
-                    </ion-picker-column>
-                    }
+            @if (selectedRepType === RepType.Reps
+            || (workoutMode && (selectedRepType == RepType.Range || selectedRepType == RepType.Max))) {
+            <ion-picker-column [value]="selectedValue" (ionChange)="selectedValue = $event.detail.value">
+                @for (option of repsOptions; track option) {
+                <ion-picker-column-option [value]="option">
+                    {{ option }} {{ 'reps' | translate }}
+                </ion-picker-column-option>
+                }
+            </ion-picker-column>
+            }
 
-                    @if (selectedRepType === RepType.Range) {
-                    <ion-picker-column [value]="selectedMinValue" (ionChange)="setMinValue($event.detail.value)">
-                        @for (option of repsOptionsMin; track option) {
-                        <ion-picker-column-option [value]="option">
-                            {{ option }}
-                        </ion-picker-column-option>
-                        }
-                    </ion-picker-column>
+            @if (!workoutMode) {
+            @if (selectedRepType === RepType.Range) {
+            <ion-picker-column [value]="selectedMinValue" (ionChange)="setMinValue($event.detail.value)">
+                @for (option of repsOptionsMin; track option) {
+                <ion-picker-column-option [value]="option">
+                    {{ option }}
+                </ion-picker-column-option>
+                }
+                <div class="picker-range-suffix" slot="suffix">-</div>
+            </ion-picker-column>
 
-                    <ion-picker-column [value]="-1" [disabled]="true" class="picker-min-width">
-                        <ion-picker-column-option [value]="-1">
-                            {{ '-' }}
-                        </ion-picker-column-option>
-                    </ion-picker-column>
+            <ion-picker-column [value]="selectedMaxValue" (ionChange)="setMaxValue($event.detail.value)">
+                @for (option of repsOptions; track option) {
+                <ion-picker-column-option [value]="option">
+                    {{ option }} {{ 'reps' | translate }}
+                </ion-picker-column-option>
+                }
+            </ion-picker-column>
+            }
+            }
 
-                    <ion-picker-column [value]="selectedMaxValue" (ionChange)="setMaxValue($event.detail.value)">
-                        @for (option of repsOptions; track option) {
-                        <ion-picker-column-option [value]="option">
-                            {{ option }} {{ 'reps' | translate }}
-                        </ion-picker-column-option>
-                        }
-                    </ion-picker-column>
-                    }
+            @if (selectedRepType === RepType.Duration) {
+            <ion-picker-column [value]="selectedValue" (ionChange)="selectedValue = $event.detail.value">
+                @for (option of weightOptions; track option) {
+                <ion-picker-column-option [value]="option">
+                    {{ option }} {{ 'sec' | translate }}
+                </ion-picker-column-option>
+                }
+            </ion-picker-column>
+            }
 
-                    @if (selectedRepType === RepType.Duration) {
-                    <ion-picker-column [value]="selectedValue" (ionChange)="selectedValue = $event.detail.value">
-                        @for (option of weightOptions; track option) {
-                        <ion-picker-column-option [value]="option">
-                            {{ option }} {{ 'sec' | translate }}
-                        </ion-picker-column-option>
-                        }
-                    </ion-picker-column>
-                    }
-                </ion-picker>
-            </div>
-        </ion-content>
+        </ion-picker>
     </ng-template>
 </ion-modal>

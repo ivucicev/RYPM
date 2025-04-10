@@ -67,6 +67,10 @@ export const routes: Routes = [
         loadChildren: () => import('./template/template.routes').then(m => m.routes)
     },
     {
+        path: 'exercise',
+        loadChildren: () => import('./exercise-wizard/exercise-routes').then(m => m.routes)
+    },
+    {
         path: 'my-profile',
         loadChildren: () => import('./my-profile/my-profile.routes').then(m => m.routes)
     },

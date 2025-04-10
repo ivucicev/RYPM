@@ -5,13 +5,13 @@ import { APP_CONFIG, AppConfig } from './app.config';
 import { VtPopupPage } from './vt-popup/vt-popup.page';
 import { StatusBar } from '@capacitor/status-bar';
 import { SplashScreen } from '@capacitor/splash-screen';
-import { add, addCircle, addCircleOutline, addOutline, alertCircleOutline, barbellOutline, checkmark, checkmarkCircleOutline, chevronBackOutline, chevronDown, chevronForward, chevronUp, close, closeCircle, closeOutline, createOutline, documentTextOutline, ellipsisHorizontalCircle, ellipsisVertical, ellipsisVerticalCircleOutline, filterOutline, hourglassOutline, informationCircleOutline, moonOutline, personAdd, personAddOutline, personOutline, playOutline, refreshOutline, remove, reorderTwoOutline, sunnyOutline, timeOutline, timerOutline, trash, trashOutline, warningOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { IonicModule } from '@ionic/angular';
 import { MyEvent } from './core/services/myevent.services';
 import { AccountService } from './core/services/account.service';
 import { Constants } from './core/constants/constants';
 import { ThemeService } from './core/services/theme.service';
+import { registerIcons } from './core/constants/icons';
 
 @Component({
     selector: 'app-root',
@@ -43,13 +43,7 @@ export class AppComponent {
             this.globalize(value);
         });
 
-        addIcons({
-            warningOutline, alertCircleOutline, checkmarkCircleOutline, informationCircleOutline, closeOutline,
-            ellipsisVerticalCircleOutline, personAddOutline, addOutline, remove, chevronUp, chevronDown, timerOutline,
-            close, checkmark, createOutline, personOutline, barbellOutline, hourglassOutline, timeOutline, ellipsisVertical,
-            ellipsisHorizontalCircle, add, filterOutline, refreshOutline, closeCircle, addCircle, trash, addCircleOutline,
-            documentTextOutline, personAdd, trashOutline, playOutline, chevronForward, reorderTwoOutline, sunnyOutline, moonOutline
-        })
+        registerIcons();
     }
 
     public component = AppComponent;
@@ -74,6 +68,9 @@ export class AppComponent {
             this.globalize(defaultLang);
 
             this.accountService.attemptAutoLogin().then(res => {
+                // TODO: remove, used for testing + add AUTH GUARD
+                this.navCtrl.navigateRoot(['./tabs']);
+                return;
                 if (!res) {
                     this.navCtrl.navigateRoot(['./sign-in']);
                 } else {
@@ -82,8 +79,6 @@ export class AppComponent {
                 // SplashScreen.hide();
             });
         });
-
-        addIcons({ chevronBackOutline });
     }
 
     globalize(languagePriority: any) {

@@ -84,9 +84,11 @@
                     }
                 </ion-list>
 
-                <ion-button class="ion-padding" expand="block" (click)="openAssignUsersModal()">
-                    {{ 'add_user' | translate }}
-                </ion-button>
+                <div class="ion-padding-top ion-padding-bottom">
+                    <ion-button expand="block" (click)="openAssignUsersModal()">
+                        {{ 'add_user' | translate }}
+                    </ion-button>
+                </div>
             </div>
             }
 
@@ -106,7 +108,6 @@
                                         </ion-button>
                                     </div>
                                 </div>
-
                                 <div formArrayName="exercises">
                                     @for (exercise of getExercisesArray(weekIndex, dayIndex).controls; track $index; let
                                     exIndex = $index) {
@@ -149,9 +150,11 @@
                     </ion-item>
                     }
 
-                    <ion-button class="ion-padding" expand="block" (click)="addDay(weekIndex)">
-                        {{ 'add_day' | translate }}
-                    </ion-button>
+                    <div class="ion-padding-top ion-padding-bottom">
+                        <ion-button expand="block" (click)="addDay(weekIndex)">
+                            {{ 'add_day' | translate }}
+                        </ion-button>
+                    </div>
                 </div>
                 }
             </ng-container>

@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormArray } from '@angular/forms';
 import { IonicModule, ModalController, IonModal, ItemReorderEventDetail } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
@@ -10,6 +10,7 @@ import { ExerciseFormGroup, ProgramFormsService, ExerciseSetFormGroup } from 'sr
 import { ExerciseSet } from 'src/app/core/models/set';
 import { WeightTypePipe } from 'src/app/core/pipes/weight-type.pipe';
 import { RepTypePipe } from 'src/app/core/pipes/rep-type.pipe';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
     selector: 'app-exercise-form',
@@ -23,7 +24,8 @@ import { RepTypePipe } from 'src/app/core/pipes/rep-type.pipe';
         FormsModule,
         DurationPipe,
         WeightTypePipe,
-        RepTypePipe
+        RepTypePipe,
+        NgTemplateOutlet
     ],
     providers: [ProgramFormsService]
 })
@@ -40,6 +42,8 @@ export class ExerciseFormComponent {
     repTypes = Object.values(RepType).filter((value) => typeof value === 'number') as RepType[];
 
     selectedSetIndex: number = 0;
+
+    selectedRestValue: any = 0;
     numSets: any = 1;
     selectedWeightType: any = WeightType.KG;
     selectedWeight: any = 5;
@@ -53,9 +57,15 @@ export class ExerciseFormComponent {
     repsOptions = Array.from({ length: 30 }, (_, i) => i + 1);
     repsOptionsMin = this.repsOptions;
 
+    @Input() workoutMode: boolean = false;
+
     @Input() exercise: ExerciseFormGroup;
 
-    @ViewChild('pickerModal') pickerModal: IonModal;
+    @Output() restStartedEvent = new EventEmitter<number>();
+    @Output() allCompletedEvent = new EventEmitter<number>();
+
+    @ViewChild('setPickerModal') setPickerModal: IonModal;
+    @ViewChild('restPickerModal') restPickerModal: IonModal;
 
     constructor(
         private modalCtrl: ModalController,
@@ -63,6 +73,36 @@ export class ExerciseFormComponent {
     ) {
         for (let seconds = 5; seconds <= 600; seconds += 5) {
             this.durationOptions.push({ value: seconds });
+        }
+    }
+
+    updateCompletion(setIndex: number) {
+        const form = this.setsArray.at(setIndex);
+
+        if (form.controls.completed.value) {
+            form.controls.completed.setValue(true);
+            this.handleRest();
+
+            var allCompleted = true;
+            for (let i = 0; i < this.setsArray.length; i++) {
+                const formTmp = this.setsArray.at(i);
+                if (!formTmp.controls.completed.value && i != setIndex) {
+                    allCompleted = false;
+                }
+            }
+
+            if (allCompleted) {
+                setTimeout(() => {
+                    this.allCompletedEvent.emit();
+                })
+            }
+        }
+    }
+
+    handleRest() {
+        const restDuration = this.exercise.get('restDuration')?.value;
+        if (restDuration) {
+            this.restStartedEvent.emit(restDuration);
         }
     }
 
@@ -101,8 +141,8 @@ export class ExerciseFormComponent {
     async onOpenNotes() {
         const modal = await this.modalCtrl.create({
             component: ExerciseNotesModalComponent,
-            breakpoints: [0, 0.5, 0.75],
-            initialBreakpoint: 0.5,
+            breakpoints: [0, 0.75, 1],
+            initialBreakpoint: 0.75,
             componentProps: {
                 notes: this.exercise.get('notes').value,
                 exerciseName: this.exercise.get('name').value
@@ -117,6 +157,11 @@ export class ExerciseFormComponent {
         }
     }
 
+    openRestPickerModal() {
+        this.selectedRestValue = this.exercise.controls.restDuration.value;
+        this.restPickerModal.present();
+    }
+
     openSetPickerModal(setIndex: number) {
         this.selectedSetIndex = setIndex;
         const currentSet = this.setsArray.at(setIndex).value;
@@ -129,7 +174,7 @@ export class ExerciseFormComponent {
         this.selectedMinValue = currentSet.minValue || 1;
         this.selectedMaxValue = currentSet.maxValue || 1;
 
-        this.pickerModal.present();
+        this.setPickerModal.present();
     }
 
     setWeightType(type) {
@@ -158,41 +203,64 @@ export class ExerciseFormComponent {
     }
 
     cancelPicker() {
-        this.pickerModal.dismiss();
+        this.setPickerModal.dismiss();
+        this.restPickerModal.dismiss();
     }
 
-    confirmPicker() {
+    confirmRestPicker() {
+        this.exercise.controls.restDuration.setValue(this.selectedRestValue);
+
+        this.cancelPicker();
+    }
+
+    confirmSetPicker() {
         const setControl = this.setsArray.at(this.selectedSetIndex) as ExerciseSetFormGroup;
 
-        setControl.patchValue({
-            weightType: this.selectedWeightType,
-            weight: this.selectedWeight,
-            type: this.selectedRepType
-        });
+        const valuesToPatch = this.workoutMode ?
+            // workout mode: can only update values
+            {
+                currentWeight: this.selectedWeight,
+                currentValue: this.selectedValue,
+            } :
+            // edit mode: can change type/expected values
+            {
+                weightType: this.selectedWeightType,
+                weight: this.selectedWeight,
+                type: this.selectedRepType
+            }
 
-        if (this.selectedRepType === RepType.Reps || this.selectedRepType === RepType.Duration) {
-            setControl.patchValue({ value: this.selectedValue });
-        } else if (this.selectedRepType === RepType.Range) {
-            setControl.patchValue({
-                minValue: this.selectedMinValue,
-                maxValue: this.selectedMaxValue
-            });
+        setControl.patchValue(valuesToPatch);
+
+        if (!this.workoutMode) {
+            if (this.selectedRepType === RepType.Reps || this.selectedRepType === RepType.Duration) {
+                setControl.patchValue({ value: this.selectedValue });
+            } else if (this.selectedRepType === RepType.Range) {
+                setControl.patchValue({
+                    minValue: this.selectedMinValue,
+                    maxValue: this.selectedMaxValue
+                });
+            } else {
+                setControl.patchValue({
+                    value: null,
+                    minValue: null,
+                    maxValue: null
+                });
+            }
+
+            if (this.numSets > 1) {
+                const additionalSets = this.numSets - 1;
+                for (let i = 0; i < additionalSets; i++) {
+                    const newSet = this.programFormService.createSetFormGroup(setControl.value as ExerciseSet);
+                    this.setsArray.push(newSet);
+                }
+            }
         } else {
-            setControl.patchValue({
-                value: null,
-                minValue: null,
-                maxValue: null
-            });
-        }
-
-        if (this.numSets > 1) {
-            const additionalSets = this.numSets - 1;
-            for (let i = 0; i < additionalSets; i++) {
-                const newSet = this.programFormService.createSetFormGroup(setControl.value as ExerciseSet);
-                this.setsArray.push(newSet);
+            if (!setControl.controls.completed.value) {
+                setControl.controls.completed.setValue(true);
+                this.updateCompletion(this.selectedSetIndex);
             }
         }
 
-        this.pickerModal.dismiss();
+        this.cancelPicker();
     }
 }

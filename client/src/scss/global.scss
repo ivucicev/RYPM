@@ -34,12 +34,12 @@
 :root {
     --primary: var(--ion-color-primary);
     --bg-color: var(--ion-background-color);
-    //--bg-light: #EBEBEB;
+    --bg-light: #EBEBEB;
     --text-light: #8C8C8C;
     // --white: #fff;
     --white: var(--ion-color-dark);
     // --item-bg: #25252b;
-    // --transparent: rgba(0, 0, 0, 0);
+    --transparent: rgba(0, 0, 0, 0);
     // --ion-color-primary: var(--primary);
 
 }
@@ -79,11 +79,43 @@
     }
 }
 
+ion-item {
+    ion-button.button-outline {
+        --color-activated: var(--primary);
+    }
+}
+
 ion-button {
     font-size: .95rem;
     font-weight: 400;
     letter-spacing: 0;
     --border-width: 1px;
+
+    // --border-radius: 50px !important;
+    // --padding-top: 1.0rem;
+    // --padding-bottom: 1.0rem;
+
+
+    // &.ion-color-light {
+    //     --ion-color-base: var(--ion-text-color);
+
+    //     &::slotted(ion-icon[slot=end]) {
+    //         color: var(--ion-color-medium);
+    //     }
+    // }
+
+    &.button-outline {
+        // --color-activated: var(--primary);
+        --background: var(--transparent);
+        //color: var(--white);
+        --border-color: var(--primary);
+        --border-width: 1px;
+        //--background-activated: var(--transparent);
+
+        &.ion-color-light {
+            --ion-color-base: var(--ion-text-color) !important;
+        }
+    }
 }
 
 .button {
@@ -108,6 +140,7 @@ ion-button {
         }
 
         &.button-outline {
+            --color-activated: var(--primary);
             --background: var(--transparent);
             //color: var(--white);
             --border-color: var(--primary);
@@ -197,6 +230,11 @@ ion-header {
 
     &.bg_transparent {
         ion-toolbar {
+            --background: transparent;
+            --ion-color-base: transparent !important;
+        }
+
+        ion-footer {
             --background: transparent;
             --ion-color-base: transparent !important;
         }
@@ -332,7 +370,7 @@ ion-item {
                 --placeholder-opacity: 1;
                 font-size: .95rem !important;
                 font-weight: 400 !important;
-                color: var(--text-black);
+                // color: var(--text-black);
                 letter-spacing: 0;
                 max-width: 100%;
             }
@@ -343,7 +381,7 @@ ion-item {
                 padding: 0;
                 font-size: .95rem !important;
                 font-weight: 400 !important;
-                color: var(--text-black);
+                // color: var(--text-black);
             }
         }
     }
@@ -390,7 +428,7 @@ ion-loading {
             .alert-button-inner {
                 .alert-radio-label {
                     font-size: 1.2rem;
-                    color: var(--text-black);
+                    // color: var(--text-black);
                 }
             }
         }
@@ -479,7 +517,7 @@ ion-loading {
             .picker-opt {
                 font-size: 1.8rem;
                 font-weight: 500;
-                color: var(--text-black);
+                // color: var(--text-black);
             }
         }
     }
@@ -679,6 +717,7 @@ ion-app[dir="rtl"] {
     .img_box {
         border-radius: 8px;
         background: var(--bg-light);
+        border: 1px solid var(--ion-background-color-step-150);
 
         &.center_img {
             align-content: center;

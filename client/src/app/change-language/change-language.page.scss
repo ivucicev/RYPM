@@ -22,7 +22,8 @@
 
 
             ion-radio {
-                padding: 15px 15px;
+                // border-bottom: 1px solid var(--ion-color-light);
+                padding: 0px 10px;
                 --inner-padding-end: 0px;
                 --inner-min-height: unset !important;
 

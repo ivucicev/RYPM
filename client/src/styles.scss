@@ -5,11 +5,6 @@
     box-shadow: none;
 }
 
-// TODO: GV, ion-inputs have min-height in new version: leave?
-// .sc-ion-input-md-h {
-//     min-height: unset;
-// }
-
 .d-none {
     display: none;
 }
@@ -42,5 +37,33 @@ ion-button {
 [data-theme='light'] {
     .light-invert {
         filter: invert(1) !important;
+    }
+
+    ::-ms-reveal {
+        filter: invert(100%);
+    }
+}
+
+.footer-md {
+    box-shadow: none !important;
+}
+
+.banner_img img {
+    background: black;
+}
+
+ion-checkbox::part(container) {
+    border-radius: 6px;
+}
+
+ion-picker {
+    background: var(--bg-color);
+}
+
+button.action-sheet-destructive {
+    --color: var(--ion-color-danger);
+
+    span {
+        color: var(--ion-color-danger);
     }
 }

@@ -81,9 +81,10 @@ export class MyProfilePage implements OnInit {
     get model() {
         const model = this.profileForm.getRawValue();
 
-        if (!(model.avatar instanceof File)) {
-            delete model.avatar;
-        }
+        // TODO: check bug?
+        // if (!(model.avatar instanceof File)) {
+        //     delete model.avatar;
+        // }
 
         return model;
     }

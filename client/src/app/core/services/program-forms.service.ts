@@ -87,6 +87,12 @@ export class ProgramFormsService implements OnDestroy {
 
     createSetFormGroup(set?: ExerciseSet): ExerciseSetFormGroup {
         const fg: ExerciseSetFormGroup = this.formBuilder.group({
+            id: [''],
+            completed: [set?.completed || false],
+            previousValue: new FormControl(set?.previousValue || 0),
+            previousWeight: new FormControl(set?.previousWeight || 0),
+            currentValue: new FormControl(set?.currentValue || 0),
+            currentWeight: new FormControl(set?.currentWeight || 0),
             weight: new FormControl(set?.weight || 0),
             weightType: new FormControl<WeightType>(set?.weightType || WeightType.KG),
             type: new FormControl(set?.type || RepType.Reps),

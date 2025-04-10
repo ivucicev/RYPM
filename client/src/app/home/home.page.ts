@@ -101,7 +101,7 @@ export class HomePage implements OnInit {
     }
 
     openDetailProgram(id: string): void {
-        this.navCtrl.navigateForward(`./program/${id}`);
+        this.navCtrl.navigateForward([`./program/${id}`]);
     }
 
     async presentProgramActionSheet(program: Program) {
@@ -117,7 +117,7 @@ export class HomePage implements OnInit {
                     text: translations.start,
                     icon: 'play-outline',
                     handler: () => {
-                        this.startWorkout(programId);
+                        this.startWorkoutFromProgram(programId);
                     },
                 },
                 {
@@ -166,7 +166,7 @@ export class HomePage implements OnInit {
                     text: translations.start,
                     icon: 'play-outline',
                     handler: () => {
-                        this.startWorkout(templateId);
+                        this.startWorkoutFromTemplate(templateId);
                     },
                 },
                 {
@@ -202,15 +202,23 @@ export class HomePage implements OnInit {
         await actionSheet.present();
     }
 
-    startWorkout(templateId: string) {
-        console.log('Starting workout for template:', templateId);
+    startWorkoutFromTemplate(programId: string) {
+        console.log('Starting workout for template:', programId);
         // TODO: Implement navigation to workout page or start workout logic
+        this.navCtrl.navigateForward([`./exercise`]);
     }
+
+    startWorkoutFromProgram(templateId: string) {
+        console.log('Starting workout for program:', templateId);
+        // TODO: Implement navigation to workout page or start workout logic
+        this.navCtrl.navigateForward([`./exercise`]);
+    }
+
 
     editTemplate(templateId: string) {
         // TODO
         console.log('Editing template:', templateId);
-        this.navCtrl.navigateForward(`./template/${templateId}`);
+        this.navCtrl.navigateForward([`./template/${templateId}`]);
     }
 
     presentAssignTemplatePopover(template: Template): void {

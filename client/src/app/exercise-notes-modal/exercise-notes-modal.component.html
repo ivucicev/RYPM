@@ -8,6 +8,8 @@
     </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
-    <ion-textarea [(ngModel)]="notesText" placeholder="{{ 'description' | translate }}..." rows="10"
-        class="notes-textarea" autoGrow="true"></ion-textarea>
+    <ion-item lines="none">
+        <ion-textarea #textArea fill="clear" [(ngModel)]="notesText" placeholder="{{ 'description' | translate }}..."
+            rows="10" class="notes-textarea" autoGrow="true" expand="block"></ion-textarea>
+    </ion-item>
 </ion-content>

@@ -1,0 +1,213 @@
+.exercise-header {
+    padding: 16px;
+
+    h1 {
+        margin: 0 0 8px 0;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+}
+
+.notes {
+    background-color: rgba(var(--ion-color-secondary-rgb), 0.1);
+    padding: 12px;
+    border-radius: 8px;
+    margin: 16px;
+
+    ion-icon {
+        vertical-align: middle;
+        margin-right: 8px;
+    }
+}
+
+.sets-container {
+    margin: 16px;
+
+    .set-item {
+        margin-bottom: 8px;
+        border-radius: 8px;
+
+        h2 {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .set-value {
+            font-size: 16px;
+            margin: 4px 0;
+        }
+
+        .weight-type {
+            display: inline-block;
+            font-size: 14px;
+            background-color: rgba(var(--ion-color-medium-rgb), 0.2);
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-top: 4px;
+        }
+    }
+}
+
+.rest-timer {
+    text-align: center;
+    margin: 32px 16px;
+
+    .timer-display {
+        font-size: 48px;
+        font-weight: bold;
+        margin: 24px 0;
+        color: var(--ion-color-primary);
+    }
+}
+
+.prev-next-buttons {
+    display: flex;
+    justify-content: space-between;
+
+    ion-button {
+        --padding-start: 15px !important;
+        --padding-end: 15px !important;
+    }
+}
+
+.next-exercise {
+    align-self: center;
+
+    .next-label {
+        margin: 0;
+        font-size: 1rem;
+        color: var(--ion-color-medium);
+        text-align: center;
+    }
+}
+
+.exercise-tabs {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    padding: 5px;
+    background: var(--ion-toolbar-background);
+
+    .exercise-tab {
+        flex: 1;
+        height: 6px;
+        margin: 0 2px;
+        border-radius: 2px;
+        background-color: var(--ion-color-medium);
+
+        &.active {
+            background-color: var(--ion-color-primary);
+        }
+    }
+}
+
+.picker-content {
+    --background: var(--ion-background-color);
+}
+
+.picker-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    height: 200px;
+}
+
+.picker-min-width {
+    min-width: 150px;
+}
+
+ion-picker-column-option {
+    font-size: 22px;
+}
+
+.skip-footer {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+ion-footer {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 0px 10px;
+
+    .footer-container {
+        border-radius: 50px;
+        background: rgb(7, 6, 6);
+        padding: 0px 25px;
+
+        .nav-buttons {
+            margin: 0px -2.5rem;
+        }
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(30px);
+        opacity: 0;
+    }
+}
+
+@keyframes slideOutLeft {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(-30px);
+        opacity: 0;
+    }
+}
+
+.slide-in-right {
+    animation: slideInRight 0.3s forwards;
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.3s forwards;
+}
+
+.slide-out-right {
+    animation: slideOutRight 0.3s forwards;
+}
+
+.slide-out-left {
+    animation: slideOutLeft 0.3s forwards;
+}

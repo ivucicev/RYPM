@@ -24,7 +24,14 @@ bootstrapApplication(AppComponent, {
     providers: [
         { provide: APP_CONFIG, useValue: BaseAppConfig },
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-        provideIonicAngular(),
+        provideIonicAngular({
+            // TODO: check
+            // mode: 'ios',
+            // animated: true,
+            // backButtonText: '',
+            // rippleEffect: true,
+            // tabButtonLayout: 'icon-top',
+        }),
         provideHttpClient(),
         importProvidersFrom(
             TranslateModule.forRoot({

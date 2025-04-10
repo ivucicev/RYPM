@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, ModalController } from '@ionic/angular';
+import { IonicModule, IonTextarea, ModalController } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -15,12 +15,22 @@ export class ExerciseNotesModalComponent implements OnInit {
     @Input() notes: string = '';
     @Input() exerciseName: string = '';
 
+    @ViewChild('textArea') textArea: IonTextarea;
+
     notesText: string = '';
 
     constructor(private modalController: ModalController) { }
 
     ngOnInit() {
         this.notesText = this.notes;
+    }
+
+    ionViewDidEnter() {
+        this.textArea.getInputElement().then(e => {
+            const length = e.value.length;
+            e.focus();
+            e.setSelectionRange(length, length);
+        });
     }
 
     save() {

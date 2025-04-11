@@ -94,11 +94,11 @@ ion-col {
 }
 
 .exercise-item {
-    padding: 10px 0px;
+    // padding: 10px 0px;
     --padding-start: 0;
     border-bottom: none !important;
 
-    h2 {
+    .title {
         padding-bottom: 10px;
         margin-left: 0;
         margin-right: 0;

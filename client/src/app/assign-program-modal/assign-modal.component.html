@@ -2,9 +2,9 @@
     <ion-toolbar>
         <ion-title>{{ 'assign' | translate }} @if(title) { "{{ title }}" }</ion-title>
         <ion-buttons slot="end">
-            <ion-button (click)="dismiss()">
-                <ion-icon name="close"></ion-icon>
-            </ion-button>
+            <ion-button (click)="dismiss()">{{'cancel' | translate }}</ion-button>
+            <ion-button (click)="assignToSelected()" [strong]="true" color="primary">{{'assign' | translate
+                }}</ion-button>
         </ion-buttons>
     </ion-toolbar>
     <ion-toolbar>
@@ -21,11 +21,10 @@
                     <img [src]="user.avatar">
                 </ion-avatar>
                 <ion-label>
-                    <ion-title [size]="'small'" class="ion-no-padding ion-text-start"
-                        [color]="user.selected ? 'primary' : ''">
+                    <ion-text class="ion-no-padding ion-text-start" [color]="user.selected ? 'primary' : ''">
                         {{ user.name }}
-                    </ion-title>
-                    <p>{{ user.email }}</p>
+                    </ion-text> <br>
+                    <ion-note>{{ user.email }}</ion-note>
                 </ion-label>
                 <ion-checkbox slot="end" [(ngModel)]="user.selected"></ion-checkbox>
             </ion-item>
@@ -40,12 +39,3 @@
 
     </ion-list>
 </ion-content>
-
-<ion-footer>
-    <ion-toolbar>
-        <ion-buttons slot="end">
-            <ion-button (click)="dismiss()">{{'cancel' | translate }}</ion-button>
-            <ion-button (click)="assignToSelected()" [strong]="true">{{'assign' | translate }}</ion-button>
-        </ion-buttons>
-    </ion-toolbar>
-</ion-footer>

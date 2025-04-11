@@ -50,11 +50,14 @@ export class TemplateComponent implements OnInit {
         return this.templateForm.get('exercises') as FormArray<ExerciseFormGroup>;
     }
 
-    async addExercise() {
-        const exercise = await this.programFormService.getExercise();
-        if (!exercise) return;
-        const exerciseForm = this.programFormService.createExerciseFormGroup(exercise);
-        this.exercisesArray.push(exerciseForm);
+    async addExercises() {
+        const exercises = await this.programFormService.getExercises();
+        if (!exercises || !exercises.length) return;
+
+        exercises.map(e => {
+            const fg = this.programFormService.createExerciseFormGroup(e);
+            this.exercisesArray.push(fg);
+        })
     }
 
     removeExercise(index: number) {

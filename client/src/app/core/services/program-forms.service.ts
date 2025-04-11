@@ -201,17 +201,18 @@ export class ProgramFormsService implements OnDestroy {
         exercisesArray.removeAt(exerciseIndex);
     }
 
-    async addExerciseToDay(programForm: ProgramFormGroup, weekIndex: number, dayIndex: number) {
-        const exercise = await this.getExercise();
-        if (!exercise) return;
+    async addExercisesToDay(programForm: ProgramFormGroup, weekIndex: number, dayIndex: number) {
+        const exercises = await this.getExercises();
+        if (!exercises || !exercises.length) return;
 
-        const exerciseToAdd = { ...exercise };
         const exercisesArray = this.getExercisesArray(programForm, weekIndex, dayIndex);
-        const fg = this.createExerciseFormGroup(exerciseToAdd);
-        exercisesArray.push(fg);
+        exercises.map(e => {
+            const fg = this.createExerciseFormGroup(e);
+            exercisesArray.push(fg);
+        })
     }
 
-    async getExercise() {
+    async getExercises(): Promise<Exercise[]> {
         const modal = await this.modalCtrl.create({
             component: ExerciseSelectorComponent,
             breakpoints: [0, 0.5, 0.75, 1],
@@ -224,7 +225,7 @@ export class ProgramFormsService implements OnDestroy {
         await modal.present();
         const { data } = await modal.onDidDismiss();
 
-        return data?.exercise;
+        return data?.exercises;
     }
 
     removeSet(programForm: ProgramFormGroup, weekIndex: number, dayIndex: number, exerciseIndex: number) {

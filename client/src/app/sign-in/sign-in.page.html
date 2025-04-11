@@ -27,12 +27,12 @@
     </div>
     <form [formGroup]="loginForm" (ngSubmit)="signIn()">
         <div class="form">
-            <ion-list lines="none">
-                <ion-item lines="none" class="animate__animated animate__fadeInUp">
+            <ion-list>
+                <ion-item class="animate__animated animate__fadeInUp">
                     <ion-input formControlName="email" [label]="'email_address' | translate" labelPlacement="floating"
                         mode="md" type="email"></ion-input>
                 </ion-item>
-                <ion-item lines="none" class="animate__animated animate__fadeInUp">
+                <ion-item class="animate__animated animate__fadeInUp">
                     <ion-input formControlName="password" [label]="'password' | translate" class="password" mode="md"
                         labelPlacement="floating" type="password">
                         <h3 class="end" (click)="forgot_password()">{{"forgot" | translate}}</h3>

@@ -12,7 +12,7 @@
 <ion-content class="bg_color" fullscreen>
     <form [formGroup]="templateForm" (ngSubmit)="saveChanges()">
         <div class="form">
-            <ion-list lines="none">
+            <ion-list>
                 <ion-item>
                     <ion-input label="{{ 'name' | translate }}" labelPlacement="floating" formControlName="name"
                         type="text"></ion-input>
@@ -39,7 +39,7 @@
                     </ion-label>
                     }
 
-                    <ion-button class="ion-float-end ion-margin-top" fill="outline" (click)="addExercise()">
+                    <ion-button class="ion-float-end ion-margin-top" fill="outline" (click)="addExercises()">
                         {{ 'add_exercise' | translate }}
                     </ion-button>
                 </ion-label>
@@ -51,7 +51,7 @@
 <ion-footer>
     <ion-toolbar>
         <div class="button-group ion-padding">
-            <ion-button class="btn" [disabled]="templateForm.invalid" expand="block" (click)="saveChanges()">
+            <ion-button color="primary" [disabled]="templateForm.invalid" expand="block" (click)="saveChanges()">
                 {{ 'save' | translate }}
             </ion-button>
         </div>

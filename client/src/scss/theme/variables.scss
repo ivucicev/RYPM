@@ -105,6 +105,15 @@
     --ion-background-color-step-750: #282828;
     --ion-background-color-step-800: #1b1b1b;
     --ion-background-color-step-900: #010101;
+
+    --ion-border-color: #e0e0e0;
+    --ion-item-background: #ffffff;
+    --ion-toolbar-background: #f8f8f8;
+    --ion-tab-bar-background: #f8f8f8;
+    --ion-card-background: #ffffff;
+
+    --ion-toolbar-background: var(--ion-background-color-step-50); // IOS: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.065);
+    --ion-item-border-color: var(--ion-background-color-step-100);
 }
 
 [data-theme='dark'] {

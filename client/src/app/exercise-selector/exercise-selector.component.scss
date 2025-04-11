@@ -1,12 +1,12 @@
 .tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px;
-    margin-top: 4px;
+    gap: 5px;
+    margin-top: 10px;
 
     ion-chip {
         margin: 0;
         height: 24px;
-        font-size: 12px;
+        font-size: 11px;
     }
 }

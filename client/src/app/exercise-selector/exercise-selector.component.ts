@@ -1,23 +1,27 @@
-import { NgFor, NgIf } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, IonicModule } from '@ionic/angular';
 import { Exercise } from '../core/models/exercise';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+
+interface SelectableExercise extends Exercise {
+    selected?: boolean;
+}
 
 @Component({
     selector: 'app-exercise-selector',
     templateUrl: './exercise-selector.component.html',
     styleUrls: ['./exercise-selector.component.scss'],
     standalone: true,
-    imports: [IonicModule, NgFor, FormsModule, NgIf, TranslateModule]
+    imports: [IonicModule, FormsModule, TranslateModule]
 })
-export class ExerciseSelectorComponent {
+export class ExerciseSelectorComponent implements OnInit {
 
     @Input() history: Exercise[] = [];
+    @Input() preSelected: Exercise[] = [];
 
-    // TODO: fetch
-    exercises: Exercise[] = [
+    // TODO
+    exercises: SelectableExercise[] = [
         { id: '1', name: 'Push-up', tags: ['Upper Body', 'Chest', 'Bodyweight'] },
         { id: '2', name: 'Squat', tags: ['Lower Body', 'Legs', 'Bodyweight'] },
         { id: '3', name: 'Pull-up', tags: ['Upper Body', 'Back', 'Bodyweight'] },
@@ -31,11 +35,16 @@ export class ExerciseSelectorComponent {
     ];
 
     searchTerm: string = '';
-    filteredExercises: Exercise[] = [];
+    filteredExercises: SelectableExercise[] = [];
 
     constructor(private modalCtrl: ModalController) { }
 
     ngOnInit() {
+        this.exercises = this.exercises.map(exercise => ({
+            ...exercise,
+            selected: this.preSelected?.some(pre => pre.id === exercise.id) || false
+        }));
+
         this.filteredExercises = [...this.exercises];
     }
 
@@ -52,9 +61,14 @@ export class ExerciseSelectorComponent {
         );
     }
 
-    selectExercise(exercise: Exercise) {
+    toggleExercise(exercise: SelectableExercise) {
+        exercise.selected = !exercise.selected;
+    }
+
+    addSelected() {
+        const selectedExercises = this.exercises.filter(ex => ex.selected);
         this.modalCtrl.dismiss({
-            exercise: exercise
+            exercises: selectedExercises
         });
     }
 

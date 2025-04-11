@@ -90,7 +90,7 @@ export class ProgramComponent implements OnInit {
     }
 
     async addExerciseToDay(weekIndex: number, dayIndex: number) {
-        await this.programFormService.addExerciseToDay(this.programForm, weekIndex, dayIndex);
+        await this.programFormService.addExercisesToDay(this.programForm, weekIndex, dayIndex);
     }
 
     async presentDayActionPopover(event: Event, weekIndex: number, dayIndex: number) {

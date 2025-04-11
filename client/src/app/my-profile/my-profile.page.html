@@ -38,12 +38,12 @@
     <ion-toolbar>
         <div class="button-group ion-padding">
             @if (isEditing) {
-            <ion-button class="btn" expand="block" color="light" (click)="cancelEditMode()">{{ 'cancel' | translate
+            <ion-button expand="block" color="light" (click)="cancelEditMode()">{{ 'cancel' | translate
                 }}</ion-button>
-            <ion-button class="btn" expand="block" (click)="saveChanges()">{{ 'save' | translate
+            <ion-button expand="block" (click)="saveChanges()">{{ 'save' | translate
                 }}</ion-button>
             } @else {
-            <ion-button class="btn" expand="block" (click)="enterEditMode()">{{ 'edit' | translate }}</ion-button>
+            <ion-button expand="block" (click)="enterEditMode()">{{ 'edit' | translate }}</ion-button>
             }
         </div>
     </ion-toolbar>

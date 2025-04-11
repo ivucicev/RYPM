@@ -1,6 +1,6 @@
 <div class="exercise-item" [formGroup]="exercise">
     @if (!workoutMode) {
-    <h2>{{exercise.get('name').value}}</h2>
+    <span class="title">{{exercise.get('name').value}}</span>
     }
 
     <div class="exercise-settings-container">

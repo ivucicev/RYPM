@@ -1,0 +1,26 @@
+.md {
+    ion-searchbar {
+        --background: var(--ion-toolbar-background);
+        --border-radius: 8px;
+        --box-shadow: none;
+        --placeholder-color: var(--ion-color-medium);
+        --placeholder-opacity: 0.6;
+        --icon-color: var(--ion-color-medium);
+        --clear-button-color: var(--ion-color-medium);
+        transition: background-color 0.2s ease;
+        padding: 15px !important;
+
+
+        searchbar-input {
+            font-size: 16px;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+        }
+
+        .searchbar-search-icon {
+            width: 20px;
+            height: 20px;
+            opacity: 0.8;
+        }
+    }
+}

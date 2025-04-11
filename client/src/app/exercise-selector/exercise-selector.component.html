@@ -3,27 +3,38 @@
         <ion-title>{{ 'select_exercise' | translate }}</ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="dismiss()">{{ 'cancel' | translate }}</ion-button>
+            <ion-button (click)="addSelected()" [strong]="true" color="primary">{{ 'add' | translate }}</ion-button>
         </ion-buttons>
     </ion-toolbar>
     <ion-toolbar>
-        <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterExercises()" placeholder="Search exercises"
-            debounce="300"></ion-searchbar>
+        <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterExercises()"
+            placeholder="{{ 'search_exercises' | translate }}" debounce="300"></ion-searchbar>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
     <ion-list>
-        <ion-item *ngFor="let exercise of filteredExercises" (click)="selectExercise(exercise)" button>
+        @for (exercise of filteredExercises; track exercise.id) {
+        <ion-item (click)="toggleExercise(exercise)">
             <ion-label>
-                <h2>{{exercise.name}}</h2>
-                <div class="tags">
-                    <ion-chip *ngFor="let tag of exercise.tags" size="small" outline>{{tag}}</ion-chip>
-                </div>
+                <ion-text [color]="exercise.selected ? 'primary' : ''">
+                    {{ exercise.name }}
+                </ion-text><br />
+                <ion-note color="medium" class="ion-text-wrap">
+                    <div class="tags">
+                        @for (tag of exercise.tags; track tag) {
+                        <ion-chip size="small" outline>{{tag}}</ion-chip>
+                        }
+                    </div>
+                </ion-note>
             </ion-label>
+            <ion-checkbox slot="end" [(ngModel)]="exercise.selected"></ion-checkbox>
         </ion-item>
-
-        <ion-item *ngIf="filteredExercises.length === 0">
+        }
+        @if (filteredExercises.length === 0) {
+        <ion-item>
             <ion-label class="ion-text-center">{{ 'no_exercises_found' | translate }}</ion-label>
         </ion-item>
+        }
     </ion-list>
 </ion-content>

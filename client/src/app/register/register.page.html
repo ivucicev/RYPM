@@ -20,40 +20,39 @@
             </div>
         </div>
         <div class="form ion-padding-top ion-padding-bottom">
-            <ion-list lines="none">
-                <ion-radio-group #group formControlName="type">
-                    <ion-item>
-                        <ion-icon [color]="group.value == userTypes.User ? 'primary' : ''" slot="end"
-                            name="person-outline"></ion-icon>
-                        <ion-radio labelPlacement="end" slot="start" [value]="userTypes.User">
-                            <h5>{{ 'user' | translate }}</h5>
-                            <p> {{ 'register_user_description' | translate }}</p>
-                        </ion-radio>
-                    </ion-item>
+            <ion-radio-group #group formControlName="type">
+                <ion-item lines="none">
+                    <ion-icon [color]="group.value == userTypes.User ? 'primary' : ''" slot="end"
+                        name="person-outline"></ion-icon>
+                    <ion-radio labelPlacement="end" slot="start" [value]="userTypes.User">
+                        <h5>{{ 'user' | translate }}</h5>
+                        <p> {{ 'register_user_description' | translate }}</p>
+                    </ion-radio>
+                </ion-item>
 
-                    <ion-item>
-                        <ion-icon [color]="group.value == userTypes.Trainer ? 'primary' : ''" slot="end"
-                            name="barbell-outline"></ion-icon>
-                        <ion-radio labelPlacement="end" slot="start" [value]="userTypes.Trainer">
-                            <h5>{{ 'trainer' | translate }}</h5>
-                            <p> {{ 'register_trainer_description' | translate }}</p>
-                        </ion-radio>
-                    </ion-item>
-                </ion-radio-group>
-
-                <ion-item lines="none" class="animate__animated animate__fadeInUp">
+                <ion-item lines="none">
+                    <ion-icon [color]="group.value == userTypes.Trainer ? 'primary' : ''" slot="end"
+                        name="barbell-outline"></ion-icon>
+                    <ion-radio labelPlacement="end" slot="start" [value]="userTypes.Trainer">
+                        <h5>{{ 'trainer' | translate }}</h5>
+                        <p> {{ 'register_trainer_description' | translate }}</p>
+                    </ion-radio>
+                </ion-item>
+            </ion-radio-group>
+            <ion-list>
+                <ion-item class="animate__animated animate__fadeInUp">
                     <ion-input formControlName="name" labelPlacement="floating" [label]="'name' | translate" mode="md"
                         type="text">
                     </ion-input>
                 </ion-item>
 
-                <ion-item lines="none" class="animate__animated animate__fadeInUp">
+                <ion-item class="animate__animated animate__fadeInUp">
                     <ion-input formControlName="email" labelPlacement="floating" [label]="'email' | translate" mode="md"
                         type="email">
                     </ion-input>
                 </ion-item>
 
-                <ion-item lines="none" class="animate__animated animate__fadeInUp">
+                <ion-item class="animate__animated animate__fadeInUp">
                     <ion-input formControlName="password" labelPlacement="floating" [label]="'password' | translate"
                         class="password" mode="md" type="password">
                     </ion-input>

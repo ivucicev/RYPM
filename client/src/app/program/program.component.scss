@@ -23,3 +23,11 @@ ion-segment[scrollable] {
         min-width: 100px;
     }
 }
+
+.day-item {
+    >div {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+}

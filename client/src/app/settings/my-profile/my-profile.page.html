@@ -1,4 +1,4 @@
-<ion-header class="bg_transparent">
+<ion-header class="bg_transparent" collapse="fade">
     <ion-toolbar>
         <ion-buttons slot="start">
             <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
@@ -19,15 +19,22 @@
         </div>
 
         <div class="form">
-            <ion-list lines="none">
-                <ion-item lines="none" class="animate__animated animate__fadeInUp">
+            <ion-list>
+                <ion-item class="animate__animated animate__fadeInUp">
                     <ion-input formControlName="name" labelPlacement="floating" [label]="'name' | translate" mode="md"
                         type="name"></ion-input>
                 </ion-item>
 
-                <ion-item lines="none" class="animate__animated animate__fadeInUp">
-                    <ion-input formControlName="email" labelPlacement="floating" [label]="'email' | translate" mode="md"
-                        type="email"></ion-input>
+                <ion-item>
+                    <ion-textarea fill="clear" formControlName="about" label="{{ 'about' | translate }}"
+                        labelPlacement="floating" [counter]="true" maxlength="500" rows="4"
+                        helperText="{{ 'about_helperText' | translate }}"></ion-textarea>
+                </ion-item>
+
+                <ion-item lines="none">
+                    <ion-toggle [slot]="'start'" formControlName="isPublic" (ionChange)="onIsPublicToggle()">
+                        {{ 'public' | translate }}
+                    </ion-toggle>
                 </ion-item>
             </ion-list>
         </div>
@@ -38,12 +45,16 @@
     <ion-toolbar>
         <div class="button-group ion-padding">
             @if (isEditing) {
-            <ion-button expand="block" color="light" (click)="cancelEditMode()">{{ 'cancel' | translate
-                }}</ion-button>
-            <ion-button expand="block" (click)="saveChanges()">{{ 'save' | translate
-                }}</ion-button>
+            <ion-button expand="round" color="light" (click)="cancelEditMode()" class="btn">
+                {{ 'cancel' | translate }}
+            </ion-button>
+            <ion-button expand="round" class="btn" (click)="saveChanges()">
+                {{ 'save' | translate}}
+            </ion-button>
             } @else {
-            <ion-button expand="block" (click)="enterEditMode()">{{ 'edit' | translate }}</ion-button>
+            <ion-button expand="round" class="btn" (click)="enterEditMode()">
+                {{ 'edit' | translate }}
+            </ion-button>
             }
         </div>
     </ion-toolbar>

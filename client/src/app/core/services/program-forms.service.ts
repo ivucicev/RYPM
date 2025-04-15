@@ -48,11 +48,13 @@ export class ProgramFormsService implements OnDestroy {
                     while (weeksArray.length > durationWeeks) {
                         weeksArray.removeAt(weeksArray.length - 1);
                     }
-
                 }
                 else if (durationWeeks > weeksArray.length) {
                     for (let i = weeksArray.length; i < durationWeeks; i++) {
-                        weeksArray.push(this.createWeekFormGroup());
+                        const weekForm = this.createWeekFormGroup();
+                        weeksArray.push(weekForm);
+
+                        this.addDay(programForm, i);
                     }
                 }
             });
@@ -128,14 +130,16 @@ export class ProgramFormsService implements OnDestroy {
     }
 
     createDayFormGroup(): DayFormGroup {
-        return this.formBuilder.group({
+        const fg = this.formBuilder.group({
             exercises: this.formBuilder.array<ExerciseFormGroup>([])
         });
+        return fg;
     }
     //#endregion
 
     //#region Getters
     getExercisesArray(programForm: ProgramFormGroup, weekIndex: number, dayIndex: number) {
+        console.log(this.getDaysArray(programForm, weekIndex).at(dayIndex), weekIndex, dayIndex)
         return this.getDaysArray(programForm, weekIndex).at(dayIndex).get('exercises') as FormArray<ExerciseFormGroup>;
     }
 

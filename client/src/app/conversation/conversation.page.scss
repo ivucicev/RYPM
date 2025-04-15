@@ -1,5 +1,4 @@
 ion-header {
-    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -8,20 +7,17 @@ ion-header {
         align-items: flex-start;
     }
 
-    ion-toolbar {
-        &::before {
-            content: "";
-            position: absolute;
-            top: -100%;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgb(0 0 0 / 74%);
-            backdrop-filter: saturate(83%) blur(8px);
-            transition: all 0.3s;
-        }
+    .title-inner-wrapper {
+        display: flex;
+    }
 
+    ion-toolbar {
         ion-title {
+            >div {
+                display: flex;
+                flex-direction: column;
+            }
+
             .title-inner {
                 width: 100%;
                 padding-top: 14px;
@@ -65,36 +61,6 @@ ion-header {
 
 }
 
-.bg_img {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 320px;
-
-    &::before,
-    &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(0deg, rgba(27, 27, 32, 1) 0%, rgba(27, 27, 32, 1) 0%, rgba(27, 27, 32, 0.4102591720281863) 100%);
-        z-index: 9;
-    }
-
-    &::before {
-        background: var(--bg-color);
-        opacity: .4;
-    }
-}
-
-ion-content {
-    --padding-top: 70px !important;
-    --padding-bottom: 60px !important;
-}
-
 .chat_container {
     padding: 15px 20px;
     flex-wrap: wrap;
@@ -134,8 +100,7 @@ ion-content {
 
         &.received {
             .chat {
-                background: var(--item-bg);
-
+                background: var(--ion-card-background) !important;
             }
         }
 
@@ -165,16 +130,16 @@ ion-content {
 
 ion-footer {
     background: var(--bg-color);
-    padding: 13px 17px;
+    padding: 5px;
     --animate-duration: .25s;
 
     .form {
         margin: 0;
         width: 100%;
         padding: 0;
-        background: var(--item-bg);
+        background: var(--ion-card-background) !important;
         border-radius: 50px;
-        padding-left: 14px;
+        padding-left: 15px;
 
         ion-list {
             padding: 0 !important;
@@ -191,7 +156,7 @@ ion-footer {
                 ion-input {
                     --placeholder-color: var(--text-light) !important;
                     --placeholder-font-weight: 400 !important;
-                    padding: 16px 6px !important;
+                    padding: 5px 5px !important;
                     font-weight: 500 !important;
                 }
             }

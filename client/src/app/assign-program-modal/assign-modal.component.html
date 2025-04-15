@@ -18,7 +18,7 @@
         <ion-item-sliding>
             <ion-item (click)="user.selected = !user.selected">
                 <ion-avatar slot="start">
-                    <img [src]="user.avatar">
+                    <img [src]="user.avatar ?? 'assets/images/avatar.svg'">
                 </ion-avatar>
                 <ion-label>
                     <ion-text class="ion-no-padding ion-text-start" [color]="user.selected ? 'primary' : ''">

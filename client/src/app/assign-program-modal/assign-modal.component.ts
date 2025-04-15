@@ -33,13 +33,11 @@ export class AssignModalComponent implements OnInit {
                 id: 1,
                 name: 'John Doe',
                 email: 'john@example.com',
-                avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
             },
             {
                 id: 2,
                 name: 'Jane Smith',
                 email: 'jane@example.com',
-                avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
                 selected: false
             },
         ];

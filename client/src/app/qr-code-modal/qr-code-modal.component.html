@@ -1,0 +1,45 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="dismissModal()">
+                <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>{{'connect' | translate}}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" fullscreen>
+    <div class="qr-container">
+        <div class="qr-code">
+            <!-- TODO -->
+            <img src="" alt="QR Code">
+        </div>
+        <p class="qr-description">{{'scan_to_connect' | translate}}</p>
+    </div>
+
+
+</ion-content>
+
+<ion-footer class="ion-no-border">
+    <ion-toolbar>
+        <div class="ion-padding">
+            <!-- TODO -->
+            <div class="button-group ion-margin-bottom">
+                <ion-button size="medium" expand="block" fill="outline" color="primary">
+                    <ion-icon slot="start" name="copy-outline"></ion-icon>
+                    {{'copy' | translate}}
+                </ion-button>
+                <ion-button size="medium" expand="block" fill="outline" color="primary">
+                    <ion-icon slot="start" name="share-social-outline"></ion-icon>
+                    {{ 'share' | translate }}
+                </ion-button>
+            </div>
+            <div>
+                <ion-button expand="round" color="primary" class="btn" (click)="dismissModal()">
+                    {{ 'complete' | translate}}
+                </ion-button>
+            </div>
+        </div>
+    </ion-toolbar>
+</ion-footer>

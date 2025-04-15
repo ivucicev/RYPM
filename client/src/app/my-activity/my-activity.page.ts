@@ -1,106 +1,151 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Chart } from 'chart.js';
-import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
-import { IonicModule } from '@ionic/angular';
- 
+import { Component } from '@angular/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ActionSheetController, IonicModule } from '@ionic/angular';
+import { lastValueFrom } from 'rxjs';
+import { DateTimePipe } from '../core/pipes/datetime.pipe';
 
 @Component({
     selector: 'app-my-activity',
     templateUrl: './my-activity.page.html',
     styleUrls: ['./my-activity.page.scss'],
     standalone: true,
-    imports: [IonicModule, TranslateModule],
+    imports: [IonicModule, TranslateModule, DateTimePipe],
 })
-export class MyActivityPage implements OnInit {
+export class MyActivityPage {
 
-  constructor(private route: Router) { }
-  ngOnInit() {
-  }
-    
-  @ViewChild('barChart', { static: false }) barChart; 	
-  bars: any;
-  colorArray: any;
-  ionViewDidEnter() {
-    this.createBarChart();
-  }
-    
-  createBarChart() {
-    this.bars = new Chart(this.barChart.nativeElement, {
-      type: 'line',
-      data: {
-        labels: ['S', 'M', 'T', 'W', 'T', 'F', 'S',],
-        datasets: [{
-          label: 'Viewers in millions',
-         data: [45, 53, 50, 55, 50, 80, 100],
-          backgroundColor: 'rgba(28, 229, 193, 0.38)',
-          borderColor: '#1ce5c1',
-          borderWidth: 2,
-          pointColor : "#fff",
-          pointStrokeColor : "#ff6c23"    
+    // TODO
+    currentWorkout: any = {
+        id: 'workout-001',
+        createdBy: {
+            id: 'trainer-123',
+            name: 'Sarah Trainer',
+            isCurrentUser: false
         },
-        {
-          label: 'Viewers in millions',
-          data: [40, 50, 50, 45, 45, 50,],
-          backgroundColor: 'rgba(28, 229, 193, 0.38)',
-          borderColor: '#fff',
-          borderWidth: 2,
-         fill: false,    
-        }]
+        program: {
 
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        elements: {
-             point:{
-                 radius: 0
-             }
-          },  
-        legend: { 
-          display: false,
-        },  
-        layout: {  
-            padding: {
-             left: 0,
-             right: 0,
-             top: 0,
-             bottom: 0
-            }
-        }, 
-        scales: {
-          yAxes: [{
-            display: false,
-            ticks: {
-              beginAtZero: false
-            },
-            gridLines: {
-              drawBorder: false,
-            }
-          }],
-          xAxes: [{
-            display: true, 
-            labelFontWeight: "bold",
-            gridLines: {
-              display: true,
-              color: '#000',
-              zeroLineColor: '#000'    
-            },
-            ticks: {
-              fontColor: "#8C8C8C",
-              fontSize: "15", 
-              labelFontWeight: "bold",    
-              fontFamily: "Google Sans",
-            //  lineWidth: 2, 
-            },
-          }]
         },
-          
-      }
-    });
-  }
+        start: new Date('2025-04-10T09:45:00'),
+        isActive: true,
+        exercises: [
+            {
+                id: 'ex-1',
+                name: 'Bench Press',
+                tags: ['chest', 'strength'],
+                restDuration: 90,
+                sets: [
+                    { id: 's1', reps: 10, weight: 60 },
+                    { id: 's2', reps: 8, weight: 65 },
+                    { id: 's3', reps: 6, weight: 70 }
+                ]
+            },
+            {
+                id: 'ex-2',
+                name: 'Pull-ups',
+                tags: ['back', 'upper-body'],
+                restDuration: 60,
+                sets: [
+                    { id: 's4', reps: 8, weight: 0 },
+                    { id: 's5', reps: 8, weight: 0 },
+                    { id: 's6', reps: 8, weight: 0 }
+                ]
+            },
+            {
+                id: 'ex-3',
+                name: 'Squats',
+                tags: ['legs', 'lower-body'],
+                restDuration: 120,
+                sets: [
+                    { id: 's7', reps: 12, weight: 100 },
+                    { id: 's8', reps: 10, weight: 110 },
+                    { id: 's9', reps: 8, weight: 120 }
+                ]
+            },
+            {
+                id: 'ex-4',
+                name: 'Shoulder Press',
+                tags: ['shoulders', 'upper-body'],
+                restDuration: 90,
+                sets: [
+                    { id: 's10', reps: 10, weight: 40 },
+                    { id: 's11', reps: 8, weight: 45 },
+                ]
+            },
+            {
+                id: 'ex-5',
+                name: 'Deadlift',
+                tags: ['back', 'legs', 'compound'],
+                restDuration: 120,
+                sets: [
+                    { id: 's12', reps: 8, weight: 140 },
+                    { id: 's13', reps: 6, weight: 150 },
+                    { id: 's14', reps: 5, weight: 160 }
+                ]
+            }
+        ]
+    };
 
- stretch_workouts() {
-    this.route.navigate(['./stretch-workouts']);
-  }  
+    constructor(
+        private actionSheetCtrl: ActionSheetController,
+        private translateService: TranslateService
+    ) { }
+
+    async openSettings() {
+        const translations = await lastValueFrom(this.translateService.get([
+            'chat_w_trainer', 'edit', 'end', 'delete', 'cancel', 'workout'
+        ]));
+
+        const actionSheet = await this.actionSheetCtrl.create({
+            header: translations.workout,
+            buttons: [
+                {
+                    text: translations.edit,
+                    icon: 'create-outline',
+                    handler: () => {
+                        console.log('Edit workout clicked');
+                    }
+                },
+                {
+                    text: translations.chat_w_trainer,
+                    icon: 'chatbubble-outline',
+                    handler: () => {
+                        this.chatWithTrainer();
+                    }
+                },
+                {
+                    text: translations.end,
+                    icon: 'stop-circle-outline',
+                    handler: () => {
+                        console.log('End workout clicked');
+                        this.currentWorkout.isActive = false;
+                        this.currentWorkout.end = new Date();
+                    }
+                },
+                {
+                    text: translations.delete,
+                    icon: 'trash-outline',
+                    role: 'destructive',
+                    handler: () => {
+                        console.log('Delete workout clicked');
+                    }
+                },
+                {
+                    text: translations.cancel,
+                    icon: 'close-outline',
+                    role: 'cancel'
+                }
+            ]
+        });
+
+        await actionSheet.present();
+    }
+
+    continueWorkout() {
+        // TODO
+        console.log('Continue workout clicked');
+    }
+
+    chatWithTrainer() {
+        console.log('Chat with trainer clicked');
+        // Logic to open chat interface with the trainer
+    }
 }

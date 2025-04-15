@@ -8,8 +8,8 @@
         </ion-title>
     </ion-toolbar>
 
-    <ion-toolbar>
-        <ion-segment scrollable [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}">
+    <ion-row class="ion-padding-x">
+        <ion-segment scrollable [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" (ionChange)="tabChange()">
             <ion-segment-button value="info">
                 <ion-label>{{ 'info' | translate }}</ion-label>
             </ion-segment-button>
@@ -20,13 +20,13 @@
             </ion-segment-button>
             }
         </ion-segment>
-    </ion-toolbar>
+    </ion-row>
 </ion-header>
 
 <ion-content class="bg_color" fullscreen>
     <form [formGroup]="programForm" (ngSubmit)="saveChanges()">
+        @if (activeTab === 'info') {
         <div class="form">
-            @if (activeTab === 'info') {
             <ion-item>
                 <ion-input label="{{ 'name' | translate }}" labelPlacement="floating" formControlName="name"
                     type="text"></ion-input>
@@ -75,81 +75,86 @@
                         }
                     </ion-list>
                     <div class="ion-padding-bottom">
-                        <ion-button size="medium" expand="block" fill="outline" (click)="openAssignUsersModal()">
+                        <ion-button size="medium" expand="block" fill="clear" (click)="openAssignUsersModal()">
                             {{ 'add_user' | translate }}
                         </ion-button>
                     </div>
                 </ion-label>
             </ion-item>
-            }
+        </div>
+        }
 
-            <ng-container formArrayName="weeks">
-                @for (week of getWeeksArray().controls; track $index; let weekIndex = $index) {
-                <div class="exercise-list" [hidden]="activeTab !== 'week-'+weekIndex" [formGroupName]="weekIndex">
-                    <ion-list formArrayName="days">
-                        @for (day of getDaysArray(weekIndex).controls; track $index; let dayIndex = $index) {
-                        <ion-item lines="none" class="day-item" [formGroupName]="dayIndex">
-                            <div>
-                                <div class="day-header">
-                                    <h3 class="ion-color-light">{{ 'day' | translate }} {{dayIndex+1}}</h3>
-                                    <div class="day-actions">
-                                        <ion-button fill="clear" size="small" [color]="'medium'"
-                                            (click)="presentDayActionPopover($event, weekIndex, dayIndex)">
-                                            <ion-icon name="ellipsis-vertical"></ion-icon>
-                                        </ion-button>
-                                    </div>
+        <ng-container formArrayName="weeks">
+            @for (week of getWeeksArray().controls; track $index; let weekIndex = $index) {
+            @if(activeTab == 'week-'+weekIndex) {
+            <div class="exercise-list" [formGroupName]="weekIndex">
+                <div class="week-layout">
+                    <div class="days-sidebar">
+                        <div class="day-pills-container">
+                            <div class="day-pills">
+                                @for (day of getDaysArray(weekIndex).controls; track $index; let dayIndex = $index) {
+                                <div class="day-pill" [class.active-day]="activeDayIndex === dayIndex"
+                                    (click)="setActiveDay(dayIndex)">
+                                    {{dayIndex + 1}}
                                 </div>
-                                <div formArrayName="exercises">
-                                    @for (exercise of getExercisesArray(weekIndex, dayIndex).controls; track $index; let
-                                    exIndex = $index) {
-                                    <ion-item-sliding [formGroupName]="exIndex">
+                                }
+                                <div class="day-pill add-pill" (click)="addDay(weekIndex)">
+                                    <ion-icon name="add-outline"></ion-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                                        <ion-item lines="none" class="ion-no-border">
-                                            <app-exercise-form [style.width]="'100%'" [exercise]="exercise">
-                                            </app-exercise-form>
-                                        </ion-item>
-
-                                        <ion-item-options side="end">
-                                            <ion-item-option color="danger"
-                                                (click)="removeExercise(weekIndex, dayIndex, exIndex)">
-                                                <ion-icon slot="icon-only" name="trash"></ion-icon>
-                                            </ion-item-option>
-                                        </ion-item-options>
-                                    </ion-item-sliding>
-                                    }
-                                    @empty {
-                                    <ion-label [color]="'medium'">
-                                        {{ 'no_exercise_added' | translate }}
-                                    </ion-label>
-                                    }
-
-                                    <ion-button fill="clear" expand="block"
-                                        (click)="addExerciseToDay(weekIndex, dayIndex)">
-                                        {{ 'add_exercise' | translate }}
+                    <div class="day-content" formArrayName="days">
+                        @if (getDaysArray(weekIndex).length > 0 && activeDayIndex !== null) {
+                        <div [formGroupName]="activeDayIndex">
+                            <div class="day-header">
+                                <h3 class="ion-color-light">{{ 'day' | translate }} {{activeDayIndex+1}}</h3>
+                                <div class="day-actions">
+                                    <ion-button fill="clear" size="small" [color]="'medium'"
+                                        (click)="presentDayActionPopover($event, weekIndex, activeDayIndex)">
+                                        <ion-icon name="ellipsis-vertical"></ion-icon>
                                     </ion-button>
                                 </div>
                             </div>
-                        </ion-item>
+
+                            <div formArrayName="exercises">
+                                @for (exercise of getExercisesArray(weekIndex, activeDayIndex).controls; track
+                                $index; let
+                                exIndex = $index) {
+                                <ion-item-sliding [formGroupName]="exIndex">
+                                    <ion-item lines="none" class="ion-no-border ion-no-padding">
+                                        <app-exercise-form [style.width]="'100%'" [exercise]="exercise">
+                                        </app-exercise-form>
+                                    </ion-item>
+
+                                    <ion-item-options side="end">
+                                        <ion-item-option color="danger"
+                                            (click)="removeExercise(weekIndex, activeDayIndex, exIndex)">
+                                            <ion-icon slot="icon-only" name="trash"></ion-icon>
+                                        </ion-item-option>
+                                    </ion-item-options>
+                                </ion-item-sliding>
+                                }
+                                @empty {
+                                <ion-label [color]="'medium'">
+                                    {{ 'no_exercise_added' | translate }}
+                                </ion-label>
+                                }
+
+                                <ion-button fill="clear" expand="block"
+                                    (click)="addExerciseToDay(weekIndex, activeDayIndex)">
+                                    {{ 'add_exercise' | translate }}
+                                </ion-button>
+                            </div>
+                        </div>
                         }
-                    </ion-list>
-
-                    @if (getDaysArray(weekIndex).length === 0) {
-                    <ion-item lines="none">
-                        <ion-label class="ion-text-center" [color]="'medium'">
-                            {{ 'no_days_added' | translate }}
-                        </ion-label>
-                    </ion-item>
-                    }
-
-                    <div class="ion-padding-bottom">
-                        <ion-button fill="outline" expand="block" (click)="addDay(weekIndex)">
-                            {{ 'add_day' | translate }}
-                        </ion-button>
                     </div>
                 </div>
-                }
-            </ng-container>
-        </div>
+            </div>
+            }
+            }
+        </ng-container>
     </form>
 </ion-content>
 
@@ -157,7 +162,7 @@
 <ion-footer>
     <ion-toolbar>
         <div class="button-group ion-padding">
-            <ion-button color="primary" expand="block" (click)="saveChanges()">
+            <ion-button color="primary" expand="round" class="btn" (click)="saveChanges()">
                 {{ 'save' | translate }}
             </ion-button>
         </div>

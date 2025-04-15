@@ -1,5 +1,6 @@
 @import 'scss/global.scss';
 @import 'scss/md/_md.scss';
+@import 'scss/ios/_ios.scss';
 
 .header-md {
     -webkit-box-shadow: none;
@@ -31,6 +32,7 @@ ion-button {
     border-right: none !important;
 }
 
+.helper-text,
 .error-text {
     padding-bottom: 10px;
 }
@@ -78,6 +80,39 @@ ion-item-options {
     box-shadow: none;
 }
 
-// ion-item::part(native) {
-//     padding: 0px 16px;
-// }
+.button-group {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+
+    ion-button {
+        flex-grow: 1;
+    }
+}
+
+.inner-card {
+    border-radius: 10px;
+    background: var(--ion-card-background);
+}
+
+ion-card {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border-radius: 10px;
+    margin: 5px 0px;
+}
+
+.profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+ion-textarea,
+ion-input {
+    --border-color: transparent !important;
+}
+
+.ion-no-padding {
+    --inner-padding-end: 0px;
+}

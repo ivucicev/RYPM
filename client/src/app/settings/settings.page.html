@@ -1,11 +1,6 @@
 <ion-header class="bg_transparent">
     <ion-toolbar [class.show-background]="showToolbar">
-        <!--
-        <ion-buttons slot="start">
-            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
-        </ion-buttons>
-        -->
-        <ion-title>{{'account' | translate}}</ion-title>
+        <ion-title>{{'settings' | translate}}</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -14,14 +9,9 @@
 
     <div class="buy_this_app end" (click)="buyappalert()" *ngIf="config.demoMode">
         <h2>
-            <!-- <ion-icon class="zmdi zmdi-shopping-cart"></ion-icon>-->
             {{"buy_this_app" | translate}}
         </h2>
     </div>
-
-    <!-- <div class="bg_img center_img">
-        <img src="{{ user?.avatar }}" class="crop_img">
-    </div> -->
 
     <div class="d-flex">
         <div class="profile d-flex" (click)="my_profile()">
@@ -31,42 +21,50 @@
                     <ion-icon class="zmdi zmdi-account"></ion-icon>
                     }
                 </div>
-                <!-- <img src="{{ user?.avatar }}" class="crop_img"> -->
             </div>
             <div class="text_box ion-margin-start">
                 <h2>{{ user?.name || '-'}}</h2>
                 <h3>{{'view_profile' | translate}}</h3>
             </div>
         </div>
-
-
         <ion-button fill="clear" (click)="openAccountSwitchOptions()">
             <ion-icon name="ellipsis-vertical-circle-outline"></ion-icon>
         </ion-button>
     </div>
 
-    <div class="get_pro d-flex" (click)="get_pro()">
+    <!-- <div class="get_pro d-flex" (click)="get_pro()">
         <h2>Get Access to 1000+ Cources</h2>
         <h3 class="end">{{'get_pro' | translate}}</h3>
-    </div>
+    </div> -->
 
     <ion-list lines="none">
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="my_trainers()">
+        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="toggleTheme()">
             <div class="item-inner d-flex">
-                <ion-icon class="zmdi zmdi-pin-account ion-text-start"></ion-icon>
+                <ion-icon [size]="'medium'" class="zmdi" [class]="isDark() ? 'zmdi-sun' : 'zmdi-circle-o'"
+                    slot="icon-only"></ion-icon>
                 <div class="text_box">
-                    <h2>{{'my_trainers' | translate}}</h2>
-                    <h3>{{'view_list_of_trainers_you_follow' | translate}}</h3>
+                    <h2>{{ (isDark() ? 'light' : 'dark' ) | translate}}</h2>
+                    <h3>{{'change_theme' | translate}}</h3>
                 </div>
             </div>
         </ion-item>
 
-        <ion-item lines="none" class="animate__animated animate__fadeInUp">
+        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="measurements()">
             <div class="item-inner d-flex">
-                <ion-icon class="zmdi zmdi-male ion-text-start"></ion-icon>
+                <ion-icon [size]="'medium'" class="zmdi zmdi-ruler" slot="icon-only"></ion-icon>
                 <div class="text_box">
-                    <h2>{{'my_workouts' | translate}}</h2>
-                    <h3>{{'view_list_of_workouts_you_saved' | translate}}</h3>
+                    <h2>{{ 'measurements' | translate}}</h2>
+                    <h3>{{'select_default_measurements' | translate}}</h3>
+                </div>
+            </div>
+        </ion-item>
+
+        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="account_settings()">
+            <div class="item-inner d-flex">
+                <ion-icon [size]="'medium'" class="zmdi zmdi-lock-outline" slot="icon-only"></ion-icon>
+                <div class="text_box">
+                    <h2>{{ 'account' | translate}}</h2>
+                    <h3>{{'account_settings' | translate}}</h3>
                 </div>
             </div>
         </ion-item>
@@ -100,19 +98,6 @@
                 </div>
             </div>
         </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="toggleTheme()">
-            <div class="item-inner d-flex">
-                <ion-icon [size]="'medium'" class="zmdi" [class]="isDark() ? 'zmdi-sun' : 'zmdi-circle-o'"
-                    slot="icon-only"></ion-icon>
-                <div class="text_box">
-                    <h2>{{ (isDark() ? 'light' : 'dark' ) | translate}}</h2>
-                    <h3>{{'change_theme' | translate}}</h3>
-                </div>
-            </div>
-        </ion-item>
-
-
     </ion-list>
 </ion-content>
 

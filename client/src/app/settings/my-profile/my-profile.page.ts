@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { IonicModule } from '@ionic/angular';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AlertController, IonicModule } from '@ionic/angular';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FormType } from '../core/helpers/form-helpers';
-import { ProfileBM } from '../core/models/bm/profile-bm';
-import { ErrorMessageDirective } from '../core/directives/error-message.directive';
-import { PocketbaseService } from '../core/services/pocketbase.service';
-import { ImageInputComponent } from '../shared/image-input/image-input.component';
-import { UserType } from '../core/models/user-type';
-import { AccountService } from '../core/services/account.service';
-import { PB } from '../core/constants/pb-constants';
-import { ToastService } from '../core/services/toast-service';
+import { FormType } from '../../core/helpers/form-helpers';
+import { ProfileBM } from '../../core/models/bm/profile-bm';
+import { ErrorMessageDirective } from '../../core/directives/error-message.directive';
+import { PocketbaseService } from '../../core/services/pocketbase.service';
+import { ImageInputComponent } from '../../shared/image-input/image-input.component';
+import { AccountService } from '../../core/services/account.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-my-profile',
@@ -30,7 +28,8 @@ export class MyProfilePage implements OnInit {
         private formBuilder: FormBuilder,
         private pocketbaseService: PocketbaseService,
         private accountService: AccountService,
-        private toastService: ToastService
+        private alertCtrl: AlertController,
+        private translateService: TranslateService
     ) {
     }
 
@@ -40,18 +39,18 @@ export class MyProfilePage implements OnInit {
 
     async init(reload = false) {
         this.profileForm = this.formBuilder.group({
-            type: [],
             avatar: [],
             name: [],
-            email: []
+            isPublic: [],
+            about: []
         });
 
         this.accountService.getCurrentUser(reload).then(user => {
             this.profileForm = this.formBuilder.group({
-                type: [user.type ?? UserType.Trainer],
                 avatar: [user.avatar],
                 name: [user.name, [Validators.required]],
-                email: [user.email, [Validators.required, Validators.email]]
+                isPublic: [user.isPublic],
+                about: [user.about],
             });
 
             this.profileForm.disable();
@@ -93,24 +92,43 @@ export class MyProfilePage implements OnInit {
         const user = await this.accountService.getCurrentUser();
 
         const model = this.model;
-
-        const newEmail = model.email;
-        const currentEmail = user.email;
-
-        model.email = currentEmail;
         this.pocketbaseService.users.update(
             user.id,
-            model, { headers: PB.HEADER.NO_TOAST }
+            model
         ).then(async res => {
             if (!res) return;
-
-            if (newEmail != currentEmail) {
-                this.accountService.requestEmailChange(newEmail);
-            } else {
-                this.toastService.success();
-            }
-
             this.cancelEditMode();
         });
+    }
+
+    async onIsPublicToggle() {
+        const newValue = this.profileForm.controls.isPublic.value;
+        const t = await lastValueFrom(this.translateService.get(
+            ['info', 'cancel', 'switch_to_public', 'switch_to_private']
+        ));
+        const alert = await this.alertCtrl.create({
+            header: t.info,
+            message: newValue
+                // TODO
+                ? 'Switching to a public profile will make you discoverable to other users. Are you sure you want to continue?'
+                : 'Switching to a private profile will hide your account from other users. You will only be able to connect by manually sharing the connection link. Are you sure you want to continue?',
+            buttons: [
+                {
+                    text: t.cancel,
+                    role: 'cancel',
+                    handler: () => {
+                        this.profileForm.controls.isPublic.setValue(!newValue);
+                    },
+                },
+                {
+                    text: newValue ? t.switch_to_public : t.switch_to_private,
+                    handler: () => {
+                        this.profileForm.controls.isPublic.setValue(newValue);
+                    },
+                },
+            ],
+        });
+
+        await alert.present();
     }
 }

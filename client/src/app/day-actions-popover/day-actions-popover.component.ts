@@ -13,6 +13,7 @@ export class DayActionsPopoverComponent {
 
     @Input() canMoveUp: boolean = false;
     @Input() canMoveDown: boolean = false;
+    @Input() canDelete: boolean = false;
 
     @Input() moveUpHandler: () => void = () => { };
     @Input() moveDownHandler: () => void = () => { };

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ScrollDetail } from '@ionic/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from '@ionic/angular';
+import { Keyboard } from '@capacitor/keyboard';
 
 @Component({
     selector: 'app-conversation',
@@ -12,20 +12,20 @@ import { IonicModule } from '@ionic/angular';
     imports: [IonicModule, TranslateModule],
 })
 export class ConversationPage implements OnInit {
-  showToolbar = false;
-  constructor(private route: Router) { }
+    showToolbar = false;
+    constructor(private route: Router) { }
 
-  ngOnInit() {
-  }
-
-  onScroll($event) {
-    if ($event && $event.detail && $event.detail.scrollTop) {
-      const scrollTop = $event.detail.scrollTop;
-      this.showToolbar = scrollTop >= 300;
+    ngOnInit() {
     }
-  }
 
-  trainer_profile() {
-    this.route.navigate(['./trainer-profile']);
-  }
+    onScroll($event) {
+        if ($event && $event.detail && $event.detail.scrollTop) {
+            const scrollTop = $event.detail.scrollTop;
+            this.showToolbar = scrollTop >= 300;
+        }
+    }
+
+    trainer_profile() {
+        this.route.navigate(['./trainer-profile']);
+    }
 }

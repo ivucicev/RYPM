@@ -67,8 +67,8 @@ export class TemplateComponent implements OnInit {
     saveChanges() {
         if (this.templateForm.valid) {
             const templateData = this.templateForm.value;
+            // TODO
             console.log('Saving template:', templateData);
-            // TODO: Save logic here
         }
     }
 }

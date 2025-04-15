@@ -27,6 +27,7 @@ export class ProgramComponent implements OnInit {
     subject: Subject<void>;
 
     selectedWeekIndex: number = 0;
+    activeDayIndex: number | null = null;
     activeTab: string = 'info';
     RepType = RepType;
     WeightType = WeightType;
@@ -49,6 +50,12 @@ export class ProgramComponent implements OnInit {
         private programFormService: ProgramFormsService,
         private modalCtrl: ModalController
     ) {
+    }
+
+    tabChange() {
+        if (this.activeTab.includes('week')) {
+            this.activeDayIndex = 0;
+        }
     }
 
     ngOnInit() {
@@ -77,16 +84,26 @@ export class ProgramComponent implements OnInit {
         return this.programFormService.getSetsArray(this.programForm, weekIndex, dayIndex, exerciseIndex);
     }
 
-    addDay(weekIndex: number) {
-        return this.programFormService.addDay(this.programForm, weekIndex);
-    }
-
     removeDay(weekIndex: number, dayIndex: number) {
-        return this.programFormService.removeDay(this.programForm, weekIndex, dayIndex);
+        this.programFormService.removeDay(this.programForm, weekIndex, dayIndex);
+        if (this.activeDayIndex == dayIndex) {
+            const newDayIndex = this.getDaysArray(weekIndex).length - 1;
+            this.activeDayIndex = newDayIndex;
+        }
     }
 
     removeExercise(weekIndex: number, dayIndex: number, exerciseIndex: number) {
         return this.programFormService.removeExercise(this.programForm, weekIndex, dayIndex, exerciseIndex);
+    }
+
+    setActiveDay(dayIndex: number) {
+        this.activeDayIndex = dayIndex;
+    }
+
+    addDay(weekIndex: number): void {
+        this.programFormService.addDay(this.programForm, weekIndex);
+        const newDayIndex = this.getDaysArray(weekIndex).length - 1;
+        this.activeDayIndex = newDayIndex;
     }
 
     async addExerciseToDay(weekIndex: number, dayIndex: number) {
@@ -94,21 +111,29 @@ export class ProgramComponent implements OnInit {
     }
 
     async presentDayActionPopover(event: Event, weekIndex: number, dayIndex: number) {
+        const daysArrayLength = this.getDaysArray(weekIndex).length;
         const popover = await this.popoverCtrl.create({
             component: DayActionsPopoverComponent,
             event: event,
             translucent: true,
             componentProps: {
+                canDelete: daysArrayLength > 1,
                 canMoveUp: dayIndex > 0,
-                canMoveDown: dayIndex < this.getDaysArray(weekIndex).length - 1,
+                canMoveDown: dayIndex < (daysArrayLength - 1),
                 moveUpHandler: () => {
                     this.programFormService.moveDay(this.programForm, weekIndex, dayIndex, 'up');
+                    this.activeDayIndex = dayIndex - 1;
                 },
                 moveDownHandler: () => {
                     this.programFormService.moveDay(this.programForm, weekIndex, dayIndex, 'down');
+                    this.activeDayIndex = dayIndex + 1;
                 },
                 removeHandler: () => {
                     this.programFormService.removeDay(this.programForm, weekIndex, dayIndex);
+                    let lastDayIndex = this.getDaysArray(weekIndex).length - 1;
+                    if (dayIndex > lastDayIndex) {
+                        this.activeDayIndex = lastDayIndex;
+                    }
                 }
             },
             dismissOnSelect: true,

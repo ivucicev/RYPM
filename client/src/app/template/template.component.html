@@ -4,7 +4,7 @@
             <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
         </ion-buttons>
         <ion-title>
-            {{ 'exercise_template' | translate }}
+            {{ 'template' | translate }}
         </ion-title>
     </ion-toolbar>
 </ion-header>
@@ -39,7 +39,7 @@
                     </ion-label>
                     }
 
-                    <ion-button class="ion-float-end ion-margin-top" fill="outline" (click)="addExercises()">
+                    <ion-button fill="clear" expand="block" (click)="addExercises()">
                         {{ 'add_exercise' | translate }}
                     </ion-button>
                 </ion-label>
@@ -51,7 +51,8 @@
 <ion-footer>
     <ion-toolbar>
         <div class="button-group ion-padding">
-            <ion-button color="primary" [disabled]="templateForm.invalid" expand="block" (click)="saveChanges()">
+            <ion-button color="primary" [disabled]="templateForm.invalid" expand="round" class="btn"
+                (click)="saveChanges()">
                 {{ 'save' | translate }}
             </ion-button>
         </div>

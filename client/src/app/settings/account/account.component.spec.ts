@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { ExerciseWizardComponent } from './exercise-wizard.component';
+import { AccountComponent } from './account.component';
 
-describe('ExerciseWizardComponent', () => {
-  let component: ExerciseWizardComponent;
-  let fixture: ComponentFixture<ExerciseWizardComponent>;
+describe('AccountComponent', () => {
+  let component: AccountComponent;
+  let fixture: ComponentFixture<AccountComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExerciseWizardComponent ],
+      declarations: [ AccountComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ExerciseWizardComponent);
+    fixture = TestBed.createComponent(AccountComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

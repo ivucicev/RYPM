@@ -1,26 +1,23 @@
-<ion-header class="bg_transparent">
+<ion-header collapse="fade">
     <ion-toolbar [class.show-background]="showToolbar">
-        <div class="toolbar-inner d-flex">
-            <ion-buttons slot="start">
-                <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
-            </ion-buttons>
-            <ion-title (click)="trainer_profile()">
+        <ion-buttons slot="start">
+            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+        </ion-buttons>
+        <ion-title (click)="trainer_profile()">
+            <div class="title-inne-wrapper">
                 <div class="title-inner">
-                    <h2 class="d-flex"> Amenda Johnson
+                    <h2 class="d-flex">
+                        Amenda Johnson
                         <ion-icon class="zmdi zmdi-alert-circle-o end ion-text-end"></ion-icon>
                     </h2>
                     <h3>Fitness Trainer</h3>
                 </div>
-            </ion-title>
-        </div>
+            </div>
+        </ion-title>
     </ion-toolbar>
 </ion-header>
 
-
-<ion-content class="bg_color" fullscreen [scrollEvents]="true" (ionScroll)="onScroll($event)">
-    <div class="bg_img center_img">
-        <img src="assets/images/gym_trainer_1.png" class="crop_img">
-    </div>
+<ion-content #content class="bg_color" fullscreen [scrollEvents]="true" (ionScroll)="onScroll($event)">
     <div class="chat_container d-flex">
         <div class="chat_box d-flex send">
             <div class="chat">
@@ -28,21 +25,42 @@
                 <p>11:40 am</p>
             </div>
         </div>
-
         <div class="chat_box d-flex  received">
             <div class="chat">
                 <h2>Hello Samantha, <br>How may I help you?</h2>
                 <p>11:40 am</p>
             </div>
         </div>
-
         <div class="chat_box d-flex send">
             <div class="chat">
                 <h2>Do I have to repeat <br>same exercise?</h2>
                 <p>11:40 am</p>
             </div>
         </div>
-
+        <div class="chat_box d-flex  received">
+            <div class="chat">
+                <h2>Yes, You can repeat same exrcise today</h2>
+                <p>11:40 am</p>
+            </div>
+        </div>
+        <div class="chat_box d-flex  received">
+            <div class="chat">
+                <h2>Yes, You can repeat same exrcise today</h2>
+                <p>11:40 am</p>
+            </div>
+        </div>
+        <div class="chat_box d-flex  received">
+            <div class="chat">
+                <h2>Yes, You can repeat same exrcise today</h2>
+                <p>11:40 am</p>
+            </div>
+        </div>
+        <div class="chat_box d-flex  received">
+            <div class="chat">
+                <h2>Yes, You can repeat same exrcise today</h2>
+                <p>11:40 am</p>
+            </div>
+        </div>
         <div class="chat_box d-flex  received">
             <div class="chat">
                 <h2>Yes, You can repeat same exrcise today</h2>
@@ -52,7 +70,7 @@
     </div>
 </ion-content>
 
-<ion-footer class="ion-no-border animate__animated animate__fadeInUp">
+<ion-footer class="ion-no-border animate__animated animate__fadeInUp bg_transparent">
     <div class="form">
         <ion-list lines="none d-flex">
             <ion-item lines="none">

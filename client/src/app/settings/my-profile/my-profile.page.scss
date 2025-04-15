@@ -8,3 +8,9 @@ ion-header {
 ion-header {
     --ion-text-color: white
 }
+
+.select-option-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

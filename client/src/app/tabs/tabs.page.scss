@@ -1,11 +1,7 @@
 ion-tabs {
     ion-tab-bar {
-        position: fixed;
-        bottom: 10px;
-        left: 0;
-        right: 0;
         width: calc(100% - 26px);
-        margin: 0 auto;
+        margin: 10px auto;
         border-radius: 50px;
         background: #0B0B0D;
         --background: var(--transparent) !important;

@@ -1,336 +1,39 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>{{'chats' | translate}}</ion-title>
+        <ion-title>{{ 'chat' | translate }}</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="openSearchUser()">
+                <ion-icon name="search-outline"></ion-icon>
+            </ion-button>
+            <ion-button (click)="openLinkScreen()">
+                <ion-icon name="link-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
 <ion-content class="bg_color" fullscreen>
     <ion-list lines="none">
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
+        @for(chat of chatsList; track chat.id) {
+        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation(chat)">
             <div class="item-inner d-flex">
                 <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_1.png" class="crop_img">
+                    <img [src]="chat.avatar || 'assets/images/avatar.svg'" class="crop_img">
                 </div>
                 <div class="text_box">
                     <h2 class="d-flex">
-                        <span class="item-title">Amenda Johnson</span>
-                        <small class="end">11:40 am</small>
+                        <span class="item-title">{{ chat.name }}</span>
+                        <small class="end">{{ chat.time }}</small>
                     </h2>
-                    <h3>Yes, You can repeat same exercise today.</h3>
+                    <h3 [class.system-message]="chat.messageType === 'system'">
+                        @if (chat.messageType === 'system') {
+                        <ion-icon name="alert-circle"></ion-icon>
+                        }
+                        {{ chat.lastMessage || '-'}}
+                    </h3>
                 </div>
             </div>
         </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_2.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Russeil Taylor</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>No Worries. Believe in yourself.</h3>
-                </div>
-            </div>
-        </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_3.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Lliana George</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>Yes, You can repeat same exercise today.</h3>
-                </div>
-            </div>
-        </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_4.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Suzein Smith</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>Fitness Trainer</h3>
-                </div>
-            </div>
-        </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_5.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Peter Johnson</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>It will help you in anyway. Trust me.</h3>
-                </div>
-            </div>
-        </ion-item>   
-        
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_6.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Olivier Haydon</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>It will help you in anyway. Trust me.</h3>
-                </div>
-            </div>
-        </ion-item>
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_1.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Amenda Johnson</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>Yes, You can repeat same exercise today.</h3>
-                </div>
-            </div>
-        </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_2.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Russeil Taylor</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>No Worries. Believe in yourself.</h3>
-                </div>
-            </div>
-        </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_3.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Lliana George</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>Yes, You can repeat same exercise today.</h3>
-                </div>
-            </div>
-        </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_4.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Suzein Smith</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>Fitness Trainer</h3>
-                </div>
-            </div>
-        </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_5.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Peter Johnson</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>It will help you in anyway. Trust me.</h3>
-                </div>
-            </div>
-        </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_6.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Olivier Haydon</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>You have to drink 4 liters everyday.</h3>
-                </div>
-            </div>
-        </ion-item>
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_1.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Amenda Johnson</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>Yes, You can repeat same exercise today.</h3>
-                </div>
-            </div>
-        </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_2.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Russeil Taylor</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>No Worries. Believe in yourself.</h3>
-                </div>
-            </div>
-        </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_3.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Lliana George</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>Yes, You can repeat same exercise today.</h3>
-                </div>
-            </div>
-        </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_4.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Suzein Smith</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>Fitness Trainer</h3>
-                </div>
-            </div>
-        </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_5.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Peter Johnson</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>It will help you in anyway. Trust me.</h3>
-                </div>
-            </div>
-        </ion-item>
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_1.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Amenda Johnson</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>Yes, You can repeat same exercise today.</h3>
-                </div>
-            </div>
-        </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_2.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Russeil Taylor</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>No Worries. Believe in yourself.</h3>
-                </div>
-            </div>
-        </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_3.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Lliana George</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>Yes, You can repeat same exercise today.</h3>
-                </div>
-            </div>
-        </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_4.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Suzein Smith</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>Fitness Trainer</h3>
-                </div>
-            </div>
-        </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation()">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
-                    <img src="assets/images/gym_trainer_5.png" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Peter Johnson</span>
-                        <small class="end">11:40 am</small>
-                    </h2>
-                    <h3>It will help you in anyway. Trust me.</h3>
-                </div>
-            </div>
-        </ion-item>
+        }
     </ion-list>
 </ion-content>

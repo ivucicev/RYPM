@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="form ion-padding-top ion-padding-bottom">
-            <ion-radio-group #group formControlName="type">
+            <!-- <ion-radio-group #group formControlName="type">
                 <ion-item lines="none">
                     <ion-icon [color]="group.value == userTypes.User ? 'primary' : ''" slot="end"
                         name="person-outline"></ion-icon>
@@ -38,7 +38,45 @@
                         <p> {{ 'register_trainer_description' | translate }}</p>
                     </ion-radio>
                 </ion-item>
-            </ion-radio-group>
+            </ion-radio-group> -->
+
+            <div class="user-type-selector">
+                <ion-segment formControlName="type" mode="md" class="custom-segment">
+                    <ion-segment-button [value]="userTypes.User" class="segment-button">
+                        <div class="segment-button-content">
+                            <ion-icon name="person-outline"></ion-icon>
+                            <div class="segment-text">
+                                <span>{{ 'user' | translate }}</span>
+                            </div>
+                        </div>
+                    </ion-segment-button>
+
+                    <ion-segment-button [value]="userTypes.Trainer" class="segment-button">
+                        <div class="segment-button-content">
+                            <ion-icon name="barbell-outline"></ion-icon>
+                            <div class="segment-text">
+                                <span>{{ 'trainer' | translate }}</span>
+                            </div>
+                        </div>
+                    </ion-segment-button>
+                </ion-segment>
+
+                <div class="type-description">
+
+                    @if (registrationForm.get('type').value === userTypes.Trainer) {
+                    <p>
+                        {{ 'register_trainer_description' | translate }}
+                    </p>
+                    } @else {
+                    <p>
+                        {{ 'register_user_description' | translate }}
+                    </p>
+                    }
+
+                </div>
+            </div>
+
+
             <ion-list>
                 <ion-item class="animate__animated animate__fadeInUp">
                     <ion-input formControlName="name" labelPlacement="floating" [label]="'name' | translate" mode="md"

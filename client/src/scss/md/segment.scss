@@ -1,18 +1,17 @@
 .md {
-
     ion-segment {
         overflow: hidden;
-        margin: 0px;
         --background: var(--ion-toolbar-background);
-        --min-height: 20px;
         --padding-top: 0;
         --padding-bottom: 0;
-
+        --min-height: 34px;
+        margin: 0px;
         border-radius: 10px;
-        margin: 0px 5px;
+        padding: 0px 5px;
     }
 
     ion-segment-button {
+        margin: 0px 5px !important;
         font-weight: 500;
         font-size: 13px;
         letter-spacing: 0.01em;
@@ -29,7 +28,11 @@
         --border-width: 0;
         --border-style: none;
         margin: 0;
-        min-height: min-content;
+        min-height: var(--min-height) !important;
+
+        ion-label {
+            margin: 0px !important;
+        }
 
         // &::part(native)::slotted(ion-label) {
         //     line-height: 14px;

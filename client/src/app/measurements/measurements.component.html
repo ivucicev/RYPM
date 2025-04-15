@@ -1,0 +1,22 @@
+<ion-header class="bg_transparent" collapse="fade">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+        </ion-buttons>
+        <ion-title>
+            {{'measurements' | translate}}
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="bg_color ion-padding-x" fullscreen>
+    <p class="ion-padding-bottom"> {{ 'weight_measurements' | translate }}</p>
+    <ion-segment [value]="selectedWeightType" (ionChange)="setWeightType($event.detail.value)">
+        @for(weightType of weightTypes; track $index) {
+        <ion-segment-button [value]="weightType">
+            <ion-label>{{ weightType | weightType }}</ion-label>
+        </ion-segment-button>
+        }
+    </ion-segment>
+    <!-- TODO: km, miles... -->
+</ion-content>

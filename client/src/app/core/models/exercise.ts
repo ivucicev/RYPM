@@ -2,7 +2,7 @@ import { ExerciseSet } from "./set";
 
 export interface Exercise {
     id: string;
-    // exerciseId: string; // TODO: external exercise identifier
+    // exerciseId: string;
     name: string;
     tags?: string[];
     notes?: string;

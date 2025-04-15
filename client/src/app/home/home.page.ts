@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NgSwitch, NgSwitchCase } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActionSheetController, IonicModule, ModalController, NavController } from '@ionic/angular';
-import { debounceTime, distinctUntilChanged, lastValueFrom } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { AssignModalComponent } from '../assign-program-modal/assign-modal.component';
 import { Exercise } from '../core/models/exercise';
 import { Program } from '../core/models/program';
@@ -25,19 +25,13 @@ import { Template } from '../core/models/Template';
         ReactiveFormsModule
     ],
 })
-export class HomePage implements OnInit {
+export class HomePage {
     tab: string = "programs";
 
     searchControl: FormControl = new FormControl('');
     searching: boolean = false;
 
     // TODO: fetch
-    exercises: Exercise[] = [
-        { id: '1', name: 'Push-Up', tags: ['Upper Body', 'Bodyweight'], notes: 'Great for chest and triceps', restDuration: 60 },
-        { id: '2', name: 'Squat', tags: ['Lower Body', 'Bodyweight'], notes: 'Targets legs and glutes', restDuration: 90 },
-        { id: '3', name: 'Plank', tags: ['Core'], notes: 'Strengthens core muscles', restDuration: 30 },
-    ];
-    // Map tags from exercises
     programs = [
         { id: '1', duration: 1, name: 'Full body', description: 'Full Body Blast', tags: ['HIIT', 'Strength'] },
         { id: '2', duration: 2, name: 'Stretch', tags: ['Lower Body', 'Bodyweight'] },
@@ -71,33 +65,15 @@ export class HomePage implements OnInit {
         private actionSheetCtrl: ActionSheetController
     ) { }
 
-    ngOnInit() {
-        this.searchControl.valueChanges
-            .pipe(
-                debounceTime(700),
-                distinctUntilChanged()
-            )
-            .subscribe(search => {
-                this.searching = false;
-                this.filterItems(search);
-            });
+    //#region Workout
+    openNewWorkout() {
+        this.navCtrl.navigateForward(['./workout']);
     }
+    //#endregion
 
-    onSearchInput() {
-        this.searching = true;
-    }
-
-    filterItems(searchTerm: string) {
-        // Implement your filtering logic here
-        // This will depend on your data structure
-    }
-
+    //#region Program
     openNewProgram() {
         this.navCtrl.navigateForward(['./program']);
-    }
-
-    openNewTemplate() {
-        this.navCtrl.navigateForward(['./template']);
     }
 
     openDetailProgram(id: string): void {
@@ -151,6 +127,31 @@ export class HomePage implements OnInit {
         });
 
         await actionSheet.present();
+    }
+
+    startWorkoutFromProgram(templateId: string) {
+        console.log('Starting workout for program:', templateId);
+        // TODO: Implement navigation to workout page or start workout logic
+        this.navCtrl.navigateForward([`./exercise`]);
+    }
+
+    async presentAssignProgramPopover(program: Program) {
+        const assign = (users) => {
+            console.log('Users assigned:', users);
+        }
+        this.presentAssignPopover(program.name, assign);
+    }
+
+    deleteProgram(id: string): void {
+        this.programs = this.programs.filter(exercise => exercise.id !== id);
+        // TODO
+        console.log('Deleted exercise with ID:', id);
+    }
+    //#endregion
+
+    //#region Template
+    openNewTemplate() {
+        this.navCtrl.navigateForward(['./template']);
     }
 
     async presentTemplateActionSheet(template: Template) {
@@ -208,13 +209,6 @@ export class HomePage implements OnInit {
         this.navCtrl.navigateForward([`./exercise`]);
     }
 
-    startWorkoutFromProgram(templateId: string) {
-        console.log('Starting workout for program:', templateId);
-        // TODO: Implement navigation to workout page or start workout logic
-        this.navCtrl.navigateForward([`./exercise`]);
-    }
-
-
     editTemplate(templateId: string) {
         // TODO
         console.log('Editing template:', templateId);
@@ -228,24 +222,12 @@ export class HomePage implements OnInit {
         this.presentAssignPopover(template.name, assign);
     }
 
-    deleteProgram(id: string): void {
-        this.programs = this.programs.filter(exercise => exercise.id !== id);
-        // TODO
-        console.log('Deleted exercise with ID:', id);
-    }
-
     deleteTemplate(id: string): void {
         this.templates = this.templates.filter(template => template.id !== id);
         // TODO
         console.log('Deleted template:', id);
     }
-
-    async presentAssignProgramPopover(program: Program) {
-        const assign = (users) => {
-            console.log('Users assigned:', users);
-        }
-        this.presentAssignPopover(program.name, assign);
-    }
+    //#endregion
 
     async presentAssignPopover(title: string, func: (users: User) => void) {
         const modal = await this.modalCtrl.create({

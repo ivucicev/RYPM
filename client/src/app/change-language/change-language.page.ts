@@ -1,11 +1,11 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { APP_CONFIG, AppConfig } from '../app.config';
+import { Component, Inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgFor } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { MyEvent } from '../core/services/myevent.services';
 import { FormsModule } from '@angular/forms';
-import { Constants } from '../core/constants/constants';
+import { MyEvent } from 'src/app/core/services/myevent.services';
+import { APP_CONFIG, AppConfig } from 'src/app/app.config';
+import { Constants } from 'src/app/core/constants/constants';
 
 
 @Component({
@@ -20,7 +20,7 @@ import { Constants } from '../core/constants/constants';
         TranslateModule,
     ],
 })
-export class ChangeLanguagePage implements OnInit {
+export class ChangeLanguagePage {
     defaultLanguageCode;
     languages: Array<{ code: string, name: string }>;
 
@@ -29,9 +29,6 @@ export class ChangeLanguagePage implements OnInit {
         this.defaultLanguageCode = config.availableLanguages[0].code;
         let defaultLang = window.localStorage.getItem(Constants.KEY_DEFAULT_LANGUAGE);
         if (defaultLang) this.defaultLanguageCode = defaultLang;
-    }
-
-    ngOnInit() {
     }
 
     onLanguageClick(language) {

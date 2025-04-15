@@ -2,16 +2,31 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    // background: var(--ion-toolbar-background);
 
-    >h2 {
+    >ion-label {
         text-transform: uppercase;
     }
+
+    ion-button:last-child {
+        --padding-end: 0px
+    }
+
+    --padding-start: 10px;
+    --padding-end: 10px;
+
+
 }
+
+ion-accordion-group {
+    margin: 0px;
+}
+
 
 .day-actions {
     display: flex;
-    margin-right: -1.25rem;
+    // margin-right: -1.25rem;
+    margin-left: auto;
 }
 
 ion-segment[scrollable] {
@@ -29,5 +44,123 @@ ion-segment[scrollable] {
         display: flex;
         flex-direction: column;
         width: 100%;
+    }
+}
+
+.week-container {
+    height: 100%;
+}
+
+.week-layout {
+    display: flex;
+    height: 100%;
+    position: relative;
+}
+
+.days-sidebar {
+    width: 50px;
+    min-width: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    height: 100%;
+    background-color: var(--ion-background-color);
+    z-index: 1;
+    border-right: 1px solid var(--ion-color-light);
+}
+
+.day-pills-container {
+    overflow-y: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.day-pills-container::-webkit-scrollbar {
+    display: none;
+}
+
+.day-pills {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+}
+
+.day-pill {
+    width: 32px;
+    height: 32px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--ion-color-light);
+    color: var(--ion-text-color);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.day-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.active-day {
+    background-color: var(--ion-color-primary);
+    color: white;
+}
+
+.add-pill {
+    background-color: var(--ion-color-light-shade);
+}
+
+.day-content-wrapper {
+    flex-grow: 1;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.day-content {
+    height: 100%;
+    margin-left: 50px;
+    padding: 0px 15px 15px 15px;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    position: sticky;
+    top: 0;
+    background-color: var(--ion-background-color);
+    z-index: 2;
+}
+
+.no-day-selected {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}
+
+form {
+    height: 100%;
+
+    .exercise-list {
+        height: 100%;
+        padding: 10px 0px;
     }
 }

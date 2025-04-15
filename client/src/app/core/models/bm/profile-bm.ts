@@ -1,8 +1,8 @@
-import { UserType } from "../user-type";
 
 export interface ProfileBM {
     name: string;
-    type: UserType;
-    email: string;
+    isPublic: boolean;
+    about: string;
     avatar: any;
 }
+

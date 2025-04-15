@@ -13,14 +13,14 @@ import { AnimationController } from '@ionic/angular/standalone';
 import { Constants } from '../core/constants/constants';
 
 @Component({
-    selector: 'app-exercise-wizard',
-    templateUrl: './exercise-wizard.component.html',
-    styleUrls: ['./exercise-wizard.component.scss'],
+    selector: 'app-workout-wizard',
+    templateUrl: './workout-wizard.component.html',
+    styleUrls: ['./workout-wizard.component.scss'],
     standalone: true,
     imports: [IonicModule, CommonModule, FormsModule, ExerciseFormComponent, TranslateModule, DurationPipe],
     providers: [ProgramFormsService]
 })
-export class ExerciseWizardComponent implements OnInit, OnDestroy {
+export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
     exercises: ExerciseFormGroup[] = [];
     currentExerciseIndex = signal(0);

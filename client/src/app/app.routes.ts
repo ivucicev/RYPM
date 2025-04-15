@@ -51,8 +51,12 @@ export const routes: Routes = [
         loadChildren: () => import('./chats/chats.routes').then(m => m.routes)
     },
     {
-        path: 'account',
-        loadChildren: () => import('./account/account.routes').then(m => m.routes)
+        path: 'settings',
+        loadChildren: () => import('./settings/settings.routes').then(m => m.routes)
+    },
+    {
+        path: 'search-user',
+        loadChildren: () => import('./search-user/search-user-routes').then(m => m.routes)
     },
     {
         path: 'conversation',
@@ -62,17 +66,22 @@ export const routes: Routes = [
         path: 'program',
         loadChildren: () => import('./program/program.routes').then(m => m.routes)
     },
+
+    {
+        path: 'workout',
+        loadChildren: () => import('./workout/workout.routes').then(m => m.routes)
+    },
     {
         path: 'template',
         loadChildren: () => import('./template/template.routes').then(m => m.routes)
     },
     {
         path: 'exercise',
-        loadChildren: () => import('./exercise-wizard/exercise-routes').then(m => m.routes)
+        loadChildren: () => import('./workout-wizard/workout-routes').then(m => m.routes)
     },
     {
         path: 'my-profile',
-        loadChildren: () => import('./my-profile/my-profile.routes').then(m => m.routes)
+        loadChildren: () => import('./settings/my-profile/my-profile.routes').then(m => m.routes)
     },
     {
         path: 'get-pro',
@@ -85,6 +94,18 @@ export const routes: Routes = [
     {
         path: 'help',
         loadChildren: () => import('./help/help.routes').then(m => m.routes)
+    },
+    {
+        path: 'change-language',
+        loadChildren: () => import('./change-language/change-language.routes').then(m => m.routes)
+    },
+    {
+        path: 'account',
+        loadChildren: () => import('./settings/account/account.routes').then(m => m.routes)
+    },
+    {
+        path: 'measurements',
+        loadChildren: () => import('./measurements/measurements.routes').then(m => m.routes)
     },
     {
         path: 'terms-condition',
@@ -109,10 +130,6 @@ export const routes: Routes = [
     {
         path: 'chest-workouts',
         loadChildren: () => import('./chest-workouts/chest-workouts.routes').then(m => m.routes)
-    },
-    {
-        path: 'change-language',
-        loadChildren: () => import('./change-language/change-language.routes').then(m => m.routes)
     },
     {
         path: 'vt-popup',

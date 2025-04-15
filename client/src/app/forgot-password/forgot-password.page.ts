@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ForgotPasswordPage {
 
+    // TODO: form, email validator
     email: string;
 
     constructor(

@@ -6,15 +6,15 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NgIf } from '@angular/common';
 import { IonicModule, PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { AccountSwitchPopoverComponent } from '../account-switch-popover/account-switch-popover.component';
+import { AccountSwitchPopoverComponent } from './account-switch-popover/account-switch-popover.component';
 import { AccountService } from '../core/services/account.service';
 import { User } from '../core/models/user';
 import { ThemeService } from '../core/services/theme.service';
 
 @Component({
-    selector: 'app-account',
-    templateUrl: './account.page.html',
-    styleUrls: ['./account.page.scss'],
+    selector: 'app-settings',
+    templateUrl: './settings.page.html',
+    styleUrls: ['./settings.page.scss'],
     standalone: true,
     imports: [
         IonicModule,
@@ -22,7 +22,7 @@ import { ThemeService } from '../core/services/theme.service';
         TranslateModule
     ],
 })
-export class AccountPage {
+export class SettingsPage {
 
     showToolbar = false;
     user: User;
@@ -89,10 +89,20 @@ export class AccountPage {
         this.route.navigate(['./get-pro']);
     }
 
+    account_settings() {
+        this.route.navigate(['./account']);
+    }
+
+    measurements() {
+        this.route.navigate(['./measurements']);
+    }
+
+    // TODO
     developed_by() {
         window.open("https://opuslab.works/", '_system', 'location=no');
     }
 
+    // TODO
     buyappalert() {
         this.modalController.create({ component: BuyappalertPage }).then((modalElement) => modalElement.present());
     }

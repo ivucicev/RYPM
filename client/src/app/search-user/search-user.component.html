@@ -1,0 +1,42 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+        </ion-buttons>
+        <ion-title>
+            <ion-searchbar [(ngModel)]="searchTerm" placeholder="{{ 'search' | translate }}..."
+                (ionInput)="filterResults()"></ion-searchbar>
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="bg_color" fullscreen>
+    <div class="search-container ion-padding">
+
+    </div>
+
+    @if (filteredResults.length === 0) {
+    <div class="no-results ion-text-center ion-padding">
+        {{ 'no_results_found' | translate }}
+    </div>
+    }
+
+    @if (filteredResults.length > 0) {
+    <ion-list lines="none">
+        @for(result of filteredResults; track result.id) {
+        <!-- TODO: fix-->
+        <!-- <ion-item lines="none" (click)="selectResult(result)">
+            <div class="item-inner d-flex">
+                <div class="img_box center_img">
+                    <img [src]="result.avatar" class="crop_img">
+                </div>
+                <div class="text_box">
+                    <h2>{{ result.name }}</h2>
+                    <p>{{ result.type === 'trainer' ? 'Trainer' : 'User' }}</p>
+                </div>
+            </div>
+        </ion-item> -->
+        }
+    </ion-list>
+    }
+</ion-content>

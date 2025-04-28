@@ -1,0 +1,18 @@
+.no-data-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0;
+    width: 100%;
+
+    ion-icon {
+        margin-bottom: 0.75rem;
+    }
+}
+
+.no-data-text {
+    font-size: 1rem;
+    color: var(--ion-color-medium);
+    letter-spacing: 0.01em;
+}

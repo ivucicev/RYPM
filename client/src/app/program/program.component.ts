@@ -1,16 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { IonicModule, ModalController } from '@ionic/angular';
-import { TranslateModule } from '@ngx-translate/core';
+import { ActionSheetController, IonicModule, ModalController } from '@ionic/angular';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ErrorMessageDirective } from '../core/directives/error-message.directive';
-import { PopoverController } from '@ionic/angular/standalone';
+import { NavController, PopoverController } from '@ionic/angular/standalone';
 import { RepType } from '../core/models/rep-type';
 import { WeightType } from '../core/models/weight-type';
 import { ExerciseFormComponent } from '../form/exercise-form/exercise-form.component';
-import { ProgramFormGroup, ProgramFormsService } from '../core/services/program-forms.service';
-import { Subject } from 'rxjs';
+import { ProgramFormGroup, FormsService } from '../core/services/forms.service';
+import { lastValueFrom, Subject, takeUntil } from 'rxjs';
 import { DayActionsPopoverComponent } from '../day-actions-popover/day-actions-popover.component';
 import { AssignModalComponent } from '../assign-program-modal/assign-modal.component';
+import { PocketbaseService } from '../core/services/pocketbase.service';
+import { ActivatedRoute } from '@angular/router';
+import { Program } from '../core/models/program';
+import { ProgramBM } from '../core/models/bm/program-bm';
+import { AutosaveService } from '../core/services/autosave.service';
 
 @Component({
     selector: 'app-program',
@@ -19,11 +24,13 @@ import { AssignModalComponent } from '../assign-program-modal/assign-modal.compo
     standalone: true,
     imports: [IonicModule, TranslateModule, ReactiveFormsModule, FormsModule, ErrorMessageDirective,
         ExerciseFormComponent],
-    providers: [ProgramFormsService]
+    providers: [FormsService, AutosaveService]
 })
-export class ProgramComponent implements OnInit {
+export class ProgramComponent implements OnInit, OnDestroy {
 
-    programForm: ProgramFormGroup;
+    private unsubscribeAll = new Subject<void>();
+
+    programForm: ProgramFormGroup = this.programFormService.createProgramFormGroup();
     subject: Subject<void>;
 
     selectedWeekIndex: number = 0;
@@ -34,22 +41,60 @@ export class ProgramComponent implements OnInit {
 
     weeks = Array.from({ length: 12 }, (_, i) => i + 1);
 
-    // TODO: fetch
-    assignedUsers =
-        [
-            {
-                id: 0,
-                name: 'John Smith',
-                email: 'john-smth@example.com',
-                avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
-            },
-        ];
+    // TODO: Trainer
+    // assignedUsers =
+    //     [
+    //         {
+    //             id: 0,
+    //             name: 'John Smith',
+    //             email: 'john-smth@example.com',
+    //             avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
+    //         },
+    //     ];
 
     constructor(
         private popoverCtrl: PopoverController,
-        private programFormService: ProgramFormsService,
-        private modalCtrl: ModalController
+        private programFormService: FormsService,
+        private modalCtrl: ModalController,
+        private pocketbaseService: PocketbaseService,
+        private navCtrl: NavController,
+        private activatedRoute: ActivatedRoute,
+        private translateService: TranslateService,
+        private actionSheetCtrl: ActionSheetController,
+        private autosaveService: AutosaveService,
     ) {
+    }
+
+    ngOnInit() {
+        this.activatedRoute.params
+            .pipe(takeUntil(this.unsubscribeAll))
+            .subscribe(params => {
+                const id = params['id'];
+                this.refresh(id);
+            });
+    }
+
+    ngOnDestroy() {
+        this.unsubscribeAll.next(null);
+        this.unsubscribeAll.complete();
+    }
+
+
+    init(program?: Program) {
+        this.programForm = this.programFormService.createProgramFormGroup(program);
+        this.autosaveService.register<ProgramBM>(this.programForm, 'programs', false)
+            .subscribe();
+    }
+
+    async refresh(id: string) {
+        if (!id) {
+            this.init();
+            return;
+        }
+
+        this.pocketbaseService.programs.getOne(id, { expand: 'weeks,weeks.days' }).then((res) => {
+            this.init(res);
+        });
     }
 
     tabChange() {
@@ -58,15 +103,10 @@ export class ProgramComponent implements OnInit {
         }
     }
 
-    ngOnInit() {
-        const programForm = this.programFormService.createProgramFormGroup();
-        this.programForm = programForm;
-    }
-
-
-    getAssignedUsers() {
-        return this.programFormService.getAssignedUsers(this.programForm);
-    }
+    // TODO: Trainer
+    // getAssignedUsers() {
+    //     return this.programFormService.getAssignedUsers(this.programForm);
+    // }
 
     getWeeksArray() {
         return this.programFormService.getWeeksArray(this.programForm);
@@ -143,35 +183,56 @@ export class ProgramComponent implements OnInit {
         await popover.present();
     }
 
-    removeAssignedUser(userId: string) {
-        this.programFormService.removeUser(this.programForm, userId);
-    }
+    // TODO: Trainer
+    // removeAssignedUser(userId: string) {
+    //     this.programFormService.removeUser(this.programForm, userId);
+    // }
 
-    async openAssignUsersModal() {
-        const modal = await this.modalCtrl.create({
-            component: AssignModalComponent,
-            componentProps: {
-                programName: this.programForm.get('name').value,
-                programId: this.programForm.get('id')?.value || 'new',
-                onAssign: (users) => this.assignUsers(users)
-            }
+    // async openAssignUsersModal() {
+    //     const modal = await this.modalCtrl.create({
+    //         component: AssignModalComponent,
+    //         componentProps: {
+    //             programName: this.programForm.get('name').value,
+    //             programId: this.programForm.get('id')?.value || 'new',
+    //             onAssign: (users) => this.assignUsers(users)
+    //         }
+    //     });
+
+    //     await modal.present();
+    // }
+
+    // assignUsers(users: any[]) {
+    //     users.forEach(user => {
+    //         this.programFormService.addUser(this.programForm, user);
+    //     });
+    // }
+
+    async openSettings() {
+        const translations = await lastValueFrom(this.translateService.get([
+            'delete', 'cancel'
+        ]));
+
+        const actionSheet = await this.actionSheetCtrl.create({
+            header: translations.workout,
+            buttons: [
+                {
+                    text: translations.delete,
+                    icon: 'trash-outline',
+                    role: 'destructive',
+                    handler: () => {
+                        this.pocketbaseService.programs.delete(this.programForm.get('id')?.value).then(() => {
+                            this.navCtrl.navigateBack(['./tabs']);
+                        })
+                    }
+                },
+                {
+                    text: translations.cancel,
+                    icon: 'close-outline',
+                    role: 'cancel'
+                }
+            ]
         });
 
-        await modal.present();
-    }
-
-    assignUsers(users: any[]) {
-        users.forEach(user => {
-            this.programFormService.addUser(this.programForm, user);
-        });
-    }
-
-    saveChanges() {
-        this.programForm.markAllAsTouched();
-
-        const program = this.programForm.getRawValue();
-
-        // TODO: save
-        console.log('Saving program:', program);
+        await actionSheet.present();
     }
 }

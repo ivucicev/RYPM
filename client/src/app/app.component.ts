@@ -12,6 +12,7 @@ import { AccountService } from './core/services/account.service';
 import { Constants } from './core/constants/constants';
 import { ThemeService } from './core/services/theme.service';
 import { registerIcons } from './core/constants/icons';
+import { register } from 'swiper/element/bundle';
 
 @Component({
     selector: 'app-root',
@@ -58,6 +59,9 @@ export class AppComponent {
         }
         this.platform.ready().then(async () => {
 
+            // swiper
+            register();
+
             // TODO: fix splash, styling
             // StatusBar.styleDefault();
             // SplashScreen.show();
@@ -69,8 +73,9 @@ export class AppComponent {
 
             this.accountService.attemptAutoLogin().then(res => {
                 // TODO: remove, used for testing + add AUTH GUARD
-                this.navCtrl.navigateRoot(['./tabs']);
-                return;
+                // this.navCtrl.navigateRoot(['./tabs']);
+                // return;
+                console.log("Autologin y/n", res)
                 if (!res) {
                     this.navCtrl.navigateRoot(['./sign-in']);
                 } else {

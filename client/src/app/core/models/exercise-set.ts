@@ -1,9 +1,9 @@
 import { RepType } from "./rep-type";
 import { WeightType } from "./weight-type";
 
-export interface ExerciseSet {
+export interface Set {
     id?: string;
-    // index: number; // TODO: ?
+    index: number;
 
     type: RepType;
     weightType: WeightType;

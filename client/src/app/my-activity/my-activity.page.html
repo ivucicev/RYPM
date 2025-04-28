@@ -2,10 +2,11 @@
     <ion-toolbar>
         <ion-title>{{'activity' | translate}}</ion-title>
         <ion-buttons slot="end">
-            <!-- TODO -->
+            <!-- TODO: calendar -->
             <ion-button>
                 <ion-icon name="calendar-clear-outline"></ion-icon>
             </ion-button>
+            <!-- TODO: analytics -->
             <ion-button>
                 <ion-icon name="analytics-outline"></ion-icon>
             </ion-button>
@@ -15,20 +16,25 @@
 
 <ion-content class="bg_color ion-padding-x" fullscreen>
     <ion-list lines="none">
+
+        <!-- TODO: view -->
+        @for(workout of workouts; track $index) {
         <ion-card>
             <div class="inner-card">
                 <ion-card-header>
                     <div class="card-header-container">
                         <div class="user-info">
                             <ion-icon name="person-circle" size="small"></ion-icon>
-                            <span class="creator-name">{{ currentWorkout.createdBy.isCurrentUser ? 'Me' :
-                                currentWorkout.createdBy.name }}</span>
+                            <!-- <span class="creator-name">
+                                {{ workout.workout.isCurrentUser ? 'Me' : workout.createdBy.name }}
+                            </span> -->
                         </div>
                         <div class="datetime">
-                            {{ currentWorkout.start | dateTime }}
+                            {{ workout.start | dateTime }}
                         </div>
                         <div class="action-area">
-                            <div class="status-indicator" [class.active]="currentWorkout.isActive"></div>
+                            <!-- <div class="status-indicator" [class.active]="workout.state == WorkoutState.InProgress">
+                            </div> -->
                             <ion-button color="dark" fill="clear" size="small" (click)="openSettings()">
                                 <ion-icon name="ellipsis-vertical"></ion-icon>
                             </ion-button>
@@ -37,17 +43,20 @@
                 </ion-card-header>
                 <ion-card-content>
                     <div class="exercises-list">
-                        @for(exercise of currentWorkout.exercises; track $index) {
+                        @for(exercise of workout.exercises; track $index) {
                         <div class="exercise-item">
                             {{ exercise.name }} ({{ exercise.sets?.length }} sets)
                         </div>
                         }
                     </div>
-                    <ion-button expand="block" (click)="continueWorkout()">
+                    <!-- <ion-button expand="block" (click)="continueWorkout()">
                         {{ 'continue' | translate }}
-                    </ion-button>
+                    </ion-button> -->
                 </ion-card-content>
             </div>
         </ion-card>
+        } @empty {
+        <ion-note> {{ 'no_activity' | translate }}</ion-note>
+        }
     </ion-list>
 </ion-content>

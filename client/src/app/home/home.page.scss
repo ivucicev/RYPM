@@ -1,19 +1,15 @@
-ion-header {
-    background: var(--bg-color);
+// ion-header {
+//     ion-toolbar ion-title {
+//         img {
+//             width: 85px;
+//             display: block;
+//             margin: 0 auto;
+//         }
+//     }
+// }
 
-    ion-toolbar ion-title {
-
-        img {
-            width: 85px;
-            display: block;
-            margin: 0 auto;
-        }
-    }
-
-    .segment-toolbar {
-        padding-bottom: 10px;
-
-    }
+.segment-toolbar {
+    // padding-bottom: 10px;
 
     ion-segment {
         width: min-content;
@@ -46,4 +42,81 @@ ion-header {
     flex-wrap: wrap;
     gap: 4px;
     margin-top: 4px;
+}
+
+swiper-container {
+    height: var(--swiper-container-height);
+    width: 100%;
+    // padding: 0 var(--ion-padding, 16px);
+    box-sizing: border-box;
+
+    ::ng-deep .swiper-scrollbar {
+        display: none;
+    }
+
+    &::part(pagination) {
+        position: relative;
+        margin-top: 10px;
+    }
+
+    swiper-slide {
+        min-width: 275px;
+        width: min-content;
+    }
+}
+
+:host ::ng-deep .swiper-pagination {
+    position: relative;
+}
+
+.workout-card {
+    .header-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        justify-content: space-between;
+    }
+
+    .exercise-row {
+        gap: 4px;
+        display: flex;
+        flex-direction: column;
+
+        .exercise-header {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+
+            .rest-info {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                color: var(--ion-color-medium);
+                font-size: 0.9rem;
+                margin-left: auto;
+            }
+        }
+
+        .next-set-row {
+            display: flex;
+            gap: 4px;
+        }
+
+        .exercise-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 0.9rem;
+
+            .tags {
+                display: flex;
+                gap: 4px;
+                flex-shrink: 0;
+            }
+        }
+    }
 }

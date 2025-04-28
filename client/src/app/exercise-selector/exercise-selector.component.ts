@@ -22,16 +22,16 @@ export class ExerciseSelectorComponent implements OnInit {
 
     // TODO
     exercises: SelectableExercise[] = [
-        { id: '1', name: 'Push-up', tags: ['Upper Body', 'Chest', 'Bodyweight'] },
-        { id: '2', name: 'Squat', tags: ['Lower Body', 'Legs', 'Bodyweight'] },
-        { id: '3', name: 'Pull-up', tags: ['Upper Body', 'Back', 'Bodyweight'] },
-        { id: '4', name: 'Plank', tags: ['Core', 'Bodyweight'] },
-        { id: '5', name: 'Bench Press', tags: ['Upper Body', 'Chest', 'Weights'] },
-        { id: '6', name: 'Deadlift', tags: ['Lower Body', 'Back', 'Weights'] },
-        { id: '7', name: 'Lunges', tags: ['Lower Body', 'Legs', 'Bodyweight'] },
-        { id: '8', name: 'Shoulder Press', tags: ['Upper Body', 'Shoulders', 'Weights'] },
-        { id: '9', name: 'Bicycle Crunches', tags: ['Core', 'Bodyweight'] },
-        { id: '10', name: 'Burpees', tags: ['Full Body', 'Cardio', 'Bodyweight'] },
+        { id: '', name: 'Push-up', tags: ['Upper Body', 'Chest', 'Bodyweight'] },
+        { id: '', name: 'Squat', tags: ['Lower Body', 'Legs', 'Bodyweight'] },
+        { id: '', name: 'Pull-up', tags: ['Upper Body', 'Back', 'Bodyweight'] },
+        { id: '', name: 'Plank', tags: ['Core', 'Bodyweight'] },
+        { id: '', name: 'Bench Press', tags: ['Upper Body', 'Chest', 'Weights'] },
+        { id: '', name: 'Deadlift', tags: ['Lower Body', 'Back', 'Weights'] },
+        { id: '', name: 'Lunges', tags: ['Lower Body', 'Legs', 'Bodyweight'] },
+        { id: '', name: 'Shoulder Press', tags: ['Upper Body', 'Shoulders', 'Weights'] },
+        { id: '', name: 'Bicycle Crunches', tags: ['Core', 'Bodyweight'] },
+        { id: '', name: 'Burpees', tags: ['Full Body', 'Cardio', 'Bodyweight'] },
     ];
 
     searchTerm: string = '';

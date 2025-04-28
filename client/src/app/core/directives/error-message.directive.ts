@@ -31,7 +31,7 @@ export class ErrorMessageDirective implements OnInit, OnDestroy {
         );
 
         this.subscription = merge(...controlEvents).subscribe(event => {
-            console.log(event);
+            // TODO: check if specific events can be used (not to trigger on every control event)
             if (event instanceof ValueChangeEvent) {
 
             } else if (event instanceof StatusChangeEvent) {

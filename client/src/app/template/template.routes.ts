@@ -6,6 +6,10 @@ export const routes: Routes = [
     {
         path: '',
         component: TemplateComponent
+    },
+    {
+        path: ':id',
+        component: TemplateComponent
     }
 ];
 

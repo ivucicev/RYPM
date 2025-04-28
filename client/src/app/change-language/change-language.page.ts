@@ -35,6 +35,7 @@ export class ChangeLanguagePage {
         this.defaultLanguageCode = language.code;
     }
 
+    // TODO: fix, not working
     languageConfirm() {
         this.myEvent.setLanguageData(this.defaultLanguageCode);
         window.localStorage.setItem(Constants.KEY_DEFAULT_LANGUAGE, this.defaultLanguageCode);

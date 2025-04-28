@@ -1,10 +1,10 @@
 import { Exercise } from "./exercise";
+import { WorkoutState } from "./workout-state";
 
 export interface Workout {
-    id: string,
-    userId: string,
-    createdById: string,
+    id?: string,
     start: Date,
     end: Date,
-    exercises: Exercise[];
+    state: WorkoutState;
+    exercises: Exercise[]
 }

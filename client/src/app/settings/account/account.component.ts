@@ -43,7 +43,7 @@ export class AccountComponent implements OnInit {
 
         this.accountService.getCurrentUser(reload).then(user => {
             this.accountForm = this.formBuilder.group({
-                email: [user.name, [Validators.required, Validators.email]],
+                email: [user.email, [Validators.required, Validators.email]],
             });
 
             this.accountForm.disable();

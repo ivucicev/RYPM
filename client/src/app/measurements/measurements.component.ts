@@ -4,6 +4,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { WeightType } from 'src/app/core/models/weight-type';
 import { WeightTypePipe } from 'src/app/core/pipes/weight-type.pipe';
 import { AccountService } from 'src/app/core/services/account.service';
+import { PocketbaseService } from '../core/services/pocketbase.service';
+import { User } from '../core/models/user';
+import { PB } from '../core/constants/pb-constants';
 
 @Component({
     selector: 'app-measurements',
@@ -19,10 +22,9 @@ export class MeasurementsComponent implements OnInit {
     weightTypes = [WeightType.KG, WeightType.LB]
 
     constructor(
-        private accountService: AccountService
-    ) {
-
-    }
+        private accountService: AccountService,
+        private pocketbaseService: PocketbaseService
+    ) { }
 
     ngOnInit() {
         this.accountService.getCurrentUser().then(user => {
@@ -32,6 +34,12 @@ export class MeasurementsComponent implements OnInit {
 
     setWeightType(type) {
         this.selectedWeightType = type;
-        // TODO: save
+        this.accountService.getCurrentUser().then(user => {
+            this.pocketbaseService.users.update(
+                user.id,
+                { defaultWeightType: this.selectedWeightType } as User,
+                { headers: PB.HEADER.NO_TOAST }
+            );
+        });
     }
 }

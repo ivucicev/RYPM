@@ -7,7 +7,70 @@
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
-    <ion-row class="segment-toolbar ion-padding-x">
+    <!--
+     <ion-toolbar>
+        <ion-title><img class="light-invert" src="assets/images/logo.png"></ion-title>
+    </ion-toolbar>
+    -->
+</ion-header>
+
+<ion-content class="bg_color" fullscreen fixed-slot-placement="before">
+
+    @if (workouts?.length) {
+    <div class="ion-padding-x">
+        <ion-label>{{ 'active' | translate }}</ion-label>
+        <swiper-container slides-per-view="auto" space-between="15" style="width:100%;height:min-content;">
+            <!-- [pagination]="true" scrollbar-hide="true" -->
+            @for (workout of workouts; track $index) {
+            <swiper-slide>
+                <ion-card class="workout-card" (click)="openWorkout(workout.id)">
+                    <ion-card-header>
+                        <ion-label class="header-row" [color]="'medium'">
+                            <span>{{ workout.start | dateTime }}</span>
+                            <app-time-badge [initialTime]="workout.start"></app-time-badge>
+                        </ion-label>
+                    </ion-card-header>
+                    <ion-card-content>
+                        @if (workout.nextExercise) {
+                        <div class="exercise-row">
+                            <div class="exercise-header">
+                                {{ workout.nextExercise.name }}
+                                @if (workout.nextExercise.restDuration) {
+                                <span class="rest-info">
+                                    <ion-icon name="timer-outline"></ion-icon>
+                                    <span>{{ 'rest' | translate }}: {{ workout.nextExercise.restDuration }}s</span>
+                                </span>
+                                }
+                            </div>
+                            @if (workout.nextExercise.nextSet) {
+                            <div class="next-set-row">
+                                <ion-icon name="arrow-forward-circle-outline" [color]="'primary'"></ion-icon>
+                                <ion-label>
+                                    <ng-container
+                                        *ngTemplateOutlet="setValueTemplate; context: { set: workout.nextExercise.nextSet, previous: false }"></ng-container>
+                                </ion-label>
+                            </div>
+                            }
+                        </div>
+                        } @else {
+                        <div class="exercise-row">
+                            <div class="next-set-row">
+                                <ion-icon name="checkmark-circle-outline" [color]="'primary'"></ion-icon>
+                                <ion-label>
+                                    {{ 'all_exercises_completed' | translate }}
+                                </ion-label>
+                            </div>
+                        </div>
+                        }
+                    </ion-card-content>
+                </ion-card>
+            </swiper-slide>
+            }
+        </swiper-container>
+    </div>
+    }
+
+    <ion-row class="segment-toolbar ion-padding">
         <ion-segment mode="ios" [(ngModel)]="tab" lines="none">
             <ion-segment-button mode="ios" value="programs">
                 <ion-label>
@@ -22,13 +85,13 @@
         </ion-segment>
         <div [ngSwitch]="tab" [style.margin-left]="'auto'">
             <ng-container *ngSwitchCase="'programs'">
-                <ion-button expand="block" fill="clear" size="small" color="primary" (click)="openNewProgram()">
+                <ion-button expand="block" fill="clear" size="small" color="primary" (click)="newProgram()">
                     <ion-icon slot="start" name="layers-outline"></ion-icon>
                     {{ 'add_program' | translate }}
                 </ion-button>
             </ng-container>
             <ng-container *ngSwitchCase="'templates'">
-                <ion-button expand="block" fill="clear" color="primary" size="small" (click)="openNewTemplate()">
+                <ion-button expand="block" fill="clear" color="primary" size="small" (click)="newTemplate()">
                     <ion-icon slot="start" name="shapes-outline"></ion-icon>
                     {{ 'add_template' | translate }}
                 </ion-button>
@@ -36,27 +99,18 @@
         </div>
     </ion-row>
 
-
-
-    <!-- <ion-toolbar>
-        <ion-title><img class="light-invert" src="assets/images/logo.png"></ion-title>
-    </ion-toolbar> -->
-
-</ion-header>
-
-<ion-content class="bg_color ion-padding-x" fullscreen fixed-slot-placement="before">
-    <div class="tab_content" [ngSwitch]="tab">
+    <div [ngSwitch]="tab">
         <ng-container *ngSwitchCase="'programs'">
             <ion-list>
                 @for (program of programs; track program.id) {
                 <ion-item-sliding>
-                    <ion-item [button]="true" (click)="presentProgramActionSheet(program)">
+                    <ion-item [button]="true" (click)="presentProgramActionSheet(program)" class="">
                         <ion-label>
                             <div>
-                                <h2>{{ program.name }}</h2>
+                                <h2>{{ program.name || ('program' | translate) }}</h2>
                                 <span class="duration">
                                     <ion-icon name="time-outline" size="small"></ion-icon>
-                                    {{ program.duration || 'N/A' }} {{ 'weeks' | translate }}
+                                    {{ program.numberOfWeeks || 'N/A' }} {{ 'weeks' | translate }}
                                 </span>
                             </div>
                             <ion-note>{{ program.description || ('no_description' | translate) }}</ion-note>
@@ -81,41 +135,8 @@
                         </ion-item-option>
                     </ion-item-options>
                 </ion-item-sliding>
-                <!-- <ion-item-sliding>
-                    <ion-card>
-                        <ion-item [button]="true" (click)="presentProgramActionSheet(program)">
-                            <ion-label>
-                                <div>
-                                    <h2>{{ program.name }}</h2>
-                                    <span class="duration">
-                                        <ion-icon name="time-outline" size="small"></ion-icon>
-                                        {{ program.duration || 'N/A' }} {{ 'weeks' | translate }}
-                                    </span>
-                                </div>
-                                <ion-note>{{ program.description || ('no_description' | translate) }}</ion-note>
-                                @if (program.tags?.length > 0) {
-                                <div class="tag-container">
-                                    @for (tag of program.tags; track $index) {
-                                    <ion-chip color="primary" size="small">{{ tag }}</ion-chip>
-                                    }
-                                </div>
-                                }
-                            </ion-label>
-                        </ion-item>
-
-                        <ion-item-options side="start">
-                            <ion-item-option color="primary" (click)="presentAssignProgramPopover(program)">
-                                <ion-icon slot="icon-only" name="person-add"></ion-icon>
-                            </ion-item-option>
-                        </ion-item-options>
-
-                        <ion-item-options side="end">
-                            <ion-item-option color="danger" (click)="deleteProgram(program.id)">
-                                <ion-icon slot="icon-only" name="trash"></ion-icon>
-                            </ion-item-option>
-                        </ion-item-options>
-                    </ion-card>
-                </ion-item-sliding> -->
+                } @empty {
+                <app-no-data [text]="'no_programs' | translate"></app-no-data>
                 }
             </ion-list>
         </ng-container>
@@ -149,9 +170,33 @@
                         </ion-item-option>
                     </ion-item-options>
                 </ion-item-sliding>
+                } @empty {
+                <app-no-data [text]="'no_templates' | translate"></app-no-data>
                 }
             </ion-list>
         </ng-container>
-
     </div>
 </ion-content>
+
+<ng-template #setValueTemplate let-set="set">
+    <div class="set-display-container">
+        @if (set.weightType !== WeightType.NA) {
+        <span class="weight-value">
+            @if (set.weightType === WeightType.KG || set.weightType === WeightType.LB) {
+            {{ set.weight }}
+            }
+            {{ set.weightType | weightType }}
+        </span>
+        <span>×</span>
+        }
+        <span class="rep-value">
+            {{ set.value }}
+            @switch (set.type) {
+            @case (RepType.Reps) { {{ 'reps' | translate }} }
+            @case (RepType.Range) { {{ 'reps' | translate }} }
+            @case (RepType.Max) { {{ 'reps' | translate }} }
+            @case (RepType.Duration) { {{ 'sec' | translate }} }
+            }
+        </span>
+    </div>
+</ng-template>

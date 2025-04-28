@@ -43,6 +43,7 @@
         "ng-circle-progress-day-countdown": "^0.16.1",
         "pocketbase": "^0.25.1",
         "rxjs": "~7.8.0",
+        "swiper": "^11.2.6",
         "tslib": "^2.3.0",
         "zone.js": "~0.14.2"
     },

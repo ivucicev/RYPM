@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, IonTabs } from '@ionic/angular';
 
 @Component({
     selector: 'app-tabs',
@@ -10,7 +10,41 @@ import { IonicModule } from '@ionic/angular';
     imports: [IonicModule, TranslateModule]
 })
 export class TabsPage {
+    private activeTab?: HTMLElement;
 
-  constructor() {}
+    constructor() { }
 
+    tabChange(tabsRef: IonTabs) {
+        this.activeTab = tabsRef.outlet.activatedView.element;
+    }
+
+    ionViewWillLeave() {
+        this.propagateToActiveTab('ionViewWillLeave');
+    }
+
+    ionViewDidLeave() {
+        this.propagateToActiveTab('ionViewDidLeave');
+    }
+
+    ionViewWillEnter() {
+        this.propagateToActiveTab('ionViewWillEnter');
+    }
+
+    ionViewDidEnter() {
+        this.propagateToActiveTab('ionViewDidEnter');
+    }
+
+    /**
+     * Ion lifecyle events do not trigger under active tab components but only on this enclosing component.
+     *
+     * Recommeded approach from the Ionic team is to dispatch those events back if they are needed inside active tabs.
+     *
+     * Reference: {@link https://stackoverflow.com/a/63038965}
+     * @param eventName
+     */
+    private propagateToActiveTab(eventName: string) {
+        if (this.activeTab) {
+            this.activeTab.dispatchEvent(new CustomEvent(eventName));
+        }
+    }
 }

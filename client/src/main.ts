@@ -20,7 +20,6 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 bootstrapApplication(AppComponent, {
-
     providers: [
         { provide: APP_CONFIG, useValue: BaseAppConfig },
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

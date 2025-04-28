@@ -1,11 +1,11 @@
-import { ExerciseSet } from "./set";
+import { Set } from "./exercise-set";
 
 export interface Exercise {
     id: string;
-    // exerciseId: string;
     name: string;
     tags?: string[];
     notes?: string;
     restDuration?: number;
-    sets?: ExerciseSet[];
+    sets?: Set[];
+    completed?: boolean;
 }

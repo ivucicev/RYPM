@@ -1,15 +1,25 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { NgSwitch, NgSwitchCase } from '@angular/common';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActionSheetController, IonicModule, ModalController, NavController } from '@ionic/angular';
 import { lastValueFrom } from 'rxjs';
 import { AssignModalComponent } from '../assign-program-modal/assign-modal.component';
 import { Exercise } from '../core/models/exercise';
 import { Program } from '../core/models/program';
 import { User } from '../core/models/user';
-import { Template } from '../core/models/Template';
+import { Template } from '../core/models/template';
+import { Workout } from '../core/models/workout';
+import { TimeBadgeComponent } from '../shared/time-badge/time-badge.component';
+import { DateTimePipe } from '../core/pipes/datetime.pipe';
+import { RepType } from '../core/models/rep-type';
+import { WeightType } from '../core/models/weight-type';
+import { Set } from '../core/models/exercise-set';
+import { WeightTypePipe } from '../core/pipes/weight-type.pipe';
+import { PocketbaseService } from '../core/services/pocketbase.service';
+import { NoDataComponent } from '../shared/no-data/no-data.component';
+import { WorkoutState } from '../core/models/workout-state';
+import { LoadingController } from '@ionic/angular/standalone';
 
 @Component({
     selector: 'app-home',
@@ -22,62 +32,118 @@ import { Template } from '../core/models/Template';
         NgSwitch,
         NgSwitchCase,
         TranslateModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        TimeBadgeComponent,
+        DateTimePipe,
+        NgTemplateOutlet,
+        WeightTypePipe,
+        NoDataComponent
     ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePage {
     tab: string = "programs";
 
-    searchControl: FormControl = new FormControl('');
-    searching: boolean = false;
+    WeightType = WeightType;
+    RepType = RepType;
 
-    // TODO: fetch
-    programs = [
-        { id: '1', duration: 1, name: 'Full body', description: 'Full Body Blast', tags: ['HIIT', 'Strength'] },
-        { id: '2', duration: 2, name: 'Stretch', tags: ['Lower Body', 'Bodyweight'] },
-        { id: '3', duration: 4, name: 'Core', tags: ['Core'] },
-    ];
-
-    // TODO: fetch
-    templates: Template[] = [
-        {
-            id: '1',
-            name: 'Full body',
-            exercises: [
-                { id: '1', name: 'Push-Up', tags: ['Upper Body'], notes: '', restDuration: 60 },
-                { id: '2', name: 'Squat', tags: ['Lower Body'], notes: '', restDuration: 90 },
-            ],
-        },
-        {
-            id: '2',
-            name: null,
-            exercises: [
-                { id: '3', name: 'Plank', tags: ['Core'], notes: '', restDuration: 30 },
-            ],
-        },
-    ];
+    workouts: (Workout & { nextExercise?: (Exercise & { nextSet?: Set }) })[] = [];
+    programs: (Program & { tags: string[] })[] = [];
+    templates: Template[] = [];
 
     constructor(
         private modalCtrl: ModalController,
-        private route: Router,
         private navCtrl: NavController,
         private translateService: TranslateService,
-        private actionSheetCtrl: ActionSheetController
+        private actionSheetCtrl: ActionSheetController,
+        private pocketbaseService: PocketbaseService,
+        private loadingCtrl: LoadingController
     ) { }
+
+    //#region Init
+    ionViewWillEnter() {
+        this.refresh();
+    }
+
+    async refresh() {
+        this.pocketbaseService.workouts.getFullList({
+            sort: '-start',
+            filter: `state = ${WorkoutState.InProgress}`,
+            expand: 'exercises,exercises.sets',
+        }).then((workouts) => {
+            this.workouts = workouts.map(w => {
+                const nextExercise = this.getNextIncompleteExercise(w.exercises);
+                const nextSet = this.getNextIncompleteSet(nextExercise?.sets);
+
+                return {
+                    ...w,
+                    nextExercise: nextExercise && nextSet
+                        ? { ...nextExercise, nextSet }
+                        : undefined,
+                };
+            });
+        });
+
+        this.pocketbaseService.templates.getFullList({
+            sort: '-created'
+        }).then((templates) => {
+            this.templates = templates;
+        });
+
+        this.pocketbaseService.programs.getFullList({
+            sort: '-created',
+            expand: 'weeks,weeks.days'
+        }).then((programs) => {
+            this.programs = programs.map(p => {
+                const tagsToTake = 3;
+
+                const tags = [...new Set(p.weeks.flatMap(w => w.days ?? []).flatMap(d => d.exercises ?? []).flatMap(e => e?.tags))];
+                const tagsToShow = tags.splice(0, tagsToTake);
+
+                if (tags.length > tagsToTake) {
+                    tagsToShow.push(`+${tags.length - 3}`);
+                }
+
+                return {
+                    ...p,
+                    tags: tagsToShow
+                }
+            });
+        });
+    }
+
+    getNextIncompleteExercise(exercises: Exercise[]): Exercise | undefined {
+        return exercises.find(ex => !ex.completed);
+    }
+
+    getNextIncompleteSet(sets: Set[] | undefined): Set | undefined {
+        return sets?.find(s => !s.completed);
+    }
+    //#endregion
 
     //#region Workout
     openNewWorkout() {
         this.navCtrl.navigateForward(['./workout']);
     }
+
+    openWorkout(id: string) {
+        this.navCtrl.navigateForward(['./workout-wizard', id]);
+    }
+
+    completeWorkout(id: string) {
+        this.pocketbaseService.workouts.update(id, { completed: true }).then((workout) => {
+            this.workouts = this.workouts.filter(w => w.id !== workout.id);
+        });
+    }
     //#endregion
 
     //#region Program
-    openNewProgram() {
+    newProgram() {
         this.navCtrl.navigateForward(['./program']);
     }
 
-    openDetailProgram(id: string): void {
-        this.navCtrl.navigateForward([`./program/${id}`]);
+    editProgram(programId: string) {
+        this.navCtrl.navigateForward([`./program/${programId}`]);
     }
 
     async presentProgramActionSheet(program: Program) {
@@ -100,16 +166,17 @@ export class HomePage {
                     text: translations.edit,
                     icon: 'create-outline',
                     handler: () => {
-                        this.editTemplate(programId);
+                        this.editProgram(programId);
                     },
                 },
-                {
-                    text: translations.assign,
-                    icon: 'person-add-outline',
-                    handler: () => {
-                        this.presentAssignProgramPopover(program);
-                    },
-                },
+                // TODO: Trainer
+                // {
+                //     text: translations.assign,
+                //     icon: 'person-add-outline',
+                //     handler: () => {
+                //         this.presentAssignProgramPopover(program);
+                //     },
+                // },
                 {
                     text: translations.delete,
                     icon: 'trash-outline',
@@ -129,28 +196,47 @@ export class HomePage {
         await actionSheet.present();
     }
 
-    startWorkoutFromProgram(templateId: string) {
-        console.log('Starting workout for program:', templateId);
-        // TODO: Implement navigation to workout page or start workout logic
-        this.navCtrl.navigateForward([`./exercise`]);
+    async startWorkoutFromProgram(programId: string) {
+        return;
+
+        const program = this.programs.find(p => p.id == programId);
+
+        const workout: Workout = {
+            end: null,
+            start: new Date(),
+            // TODO: TBD: pick exercises from next upcoming day/week NOW, complete 'week'/'day' as workout is completed)
+            // New prop: week.completed, day.completed; link workout to day; if workout is completed complete day; if all days are completed, complete week: after all weeks completed: go from beggining
+            exercises: [],
+            state: WorkoutState.InProgress
+        };
+
+        const loading = await this.loadingCtrl.create({});
+        loading.present();
+
+        this.pocketbaseService.upsertRecord('workouts', workout).then((workout) => {
+            loading.dismiss();
+            this.navCtrl.navigateForward([`./workout-wizard/${workout.id}`]);
+        });
+
+        this.navCtrl.navigateForward([`./workout-wizard`]);
     }
 
     async presentAssignProgramPopover(program: Program) {
         const assign = (users) => {
-            console.log('Users assigned:', users);
+            // TODO: Trainer
         }
         this.presentAssignPopover(program.name, assign);
     }
 
     deleteProgram(id: string): void {
-        this.programs = this.programs.filter(exercise => exercise.id !== id);
-        // TODO
-        console.log('Deleted exercise with ID:', id);
+        this.pocketbaseService.programs.delete(id).then(_ => {
+            this.programs = this.programs.filter(exercise => exercise.id !== id);
+        });
     }
     //#endregion
 
     //#region Template
-    openNewTemplate() {
+    newTemplate() {
         this.navCtrl.navigateForward(['./template']);
     }
 
@@ -177,13 +263,14 @@ export class HomePage {
                         this.editTemplate(templateId);
                     },
                 },
-                {
-                    text: translations.assign,
-                    icon: 'person-add-outline',
-                    handler: () => {
-                        this.presentAssignTemplatePopover(template);
-                    },
-                },
+                // TODO: Trainer
+                // {
+                //     text: translations.assign,
+                //     icon: 'person-add-outline',
+                //     handler: () => {
+                //         this.presentAssignTemplatePopover(template);
+                //     },
+                // },
                 {
                     text: translations.delete,
                     icon: 'trash-outline',
@@ -203,29 +290,40 @@ export class HomePage {
         await actionSheet.present();
     }
 
-    startWorkoutFromTemplate(programId: string) {
-        console.log('Starting workout for template:', programId);
-        // TODO: Implement navigation to workout page or start workout logic
-        this.navCtrl.navigateForward([`./exercise`]);
+    async startWorkoutFromTemplate(templateId: string) {
+        const template = this.templates.find(template => template.id == templateId);
+
+        const workout: Workout = {
+            end: null,
+            start: new Date(),
+            exercises: template?.exercises,
+            state: WorkoutState.InProgress
+        };
+
+        const loading = await this.loadingCtrl.create({});
+        loading.present();
+
+        this.pocketbaseService.upsertRecord('workouts', workout, false).then((workout) => {
+            loading.dismiss();
+            this.navCtrl.navigateForward([`./workout-wizard/${workout.id}`]);
+        });
     }
 
     editTemplate(templateId: string) {
-        // TODO
-        console.log('Editing template:', templateId);
         this.navCtrl.navigateForward([`./template/${templateId}`]);
     }
 
     presentAssignTemplatePopover(template: Template): void {
         const assign = (users) => {
-            console.log('Users assigned:', users);
+            // TODO: Trainer
         }
         this.presentAssignPopover(template.name, assign);
     }
 
     deleteTemplate(id: string): void {
-        this.templates = this.templates.filter(template => template.id !== id);
-        // TODO
-        console.log('Deleted template:', id);
+        this.pocketbaseService.templates.delete(id).then(_ => {
+            this.templates = this.templates.filter(template => template.id !== id);
+        })
     }
     //#endregion
 
@@ -235,7 +333,7 @@ export class HomePage {
             componentProps: {
                 title: title,
                 onAssign: (users) => {
-                    // TODO
+                    // TODO: Trainer
                     func(users)
                 }
             }

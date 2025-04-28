@@ -1,34 +1,52 @@
 import { Component, OnInit, OnDestroy, ViewChild, signal, computed, ElementRef } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, LoadingController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Exercise } from 'src/app/core/models/exercise';
 import { RepType } from 'src/app/core/models/rep-type';
 import { WeightType } from 'src/app/core/models/weight-type';
 import { ExerciseFormComponent } from '../form/exercise-form/exercise-form.component';
-import { ExerciseFormGroup, ProgramFormsService } from '../core/services/program-forms.service';
+import { ExerciseFormGroup, FormsService } from '../core/services/forms.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { DurationPipe } from '../core/pipes/duration.pipe';
-import { AnimationController } from '@ionic/angular/standalone';
+import { AnimationController, NavController } from '@ionic/angular/standalone';
 import { Constants } from '../core/constants/constants';
+import { TimeBadgeComponent } from '../shared/time-badge/time-badge.component';
+import { PocketbaseService } from '../core/services/pocketbase.service';
+import { Subject, takeUntil } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { Workout } from '../core/models/workout';
+import { WorkoutState } from '../core/models/workout-state';
+import { AutosaveService } from '../core/services/autosave.service';
+import { ExerciseBM } from '../core/models/bm/exercise-bm';
 
 @Component({
     selector: 'app-workout-wizard',
     templateUrl: './workout-wizard.component.html',
     styleUrls: ['./workout-wizard.component.scss'],
     standalone: true,
-    imports: [IonicModule, CommonModule, FormsModule, ExerciseFormComponent, TranslateModule, DurationPipe],
-    providers: [ProgramFormsService]
+    imports: [IonicModule, CommonModule, FormsModule, ExerciseFormComponent, TranslateModule, DurationPipe, TimeBadgeComponent],
+    providers: [FormsService, AutosaveService]
 })
 export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
+    private unsubscribeAll = new Subject<void>();
+
+    workout: Workout;
+
+    updateTimeout: any;
     exercises: ExerciseFormGroup[] = [];
-    currentExerciseIndex = signal(0);
+    currentExerciseIndex = signal(null);
 
     animationDirection = null;
 
     currentExercise = computed(() => {
         const currentExercise = this.exercises[this.currentExerciseIndex()];
+
+        if (currentExercise) {
+            this.autosaveService.register<ExerciseBM>(currentExercise, 'exercises', false)
+                .subscribe();
+        }
 
         return currentExercise;
     });
@@ -55,121 +73,54 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
     @ViewChild('exerciseContent', { read: ElementRef }) exerciseContent: ElementRef;
 
     constructor(
-        private programFormsService: ProgramFormsService,
-        private animationCtrl: AnimationController) {
-    }
+        private programFormsService: FormsService,
+        private animationCtrl: AnimationController,
+        private pocketbaseService: PocketbaseService,
+        private activatedRoute: ActivatedRoute,
+        private navCtrl: NavController,
+        private autosaveService: AutosaveService,
+        private loadingCtrl: LoadingController
+    ) { }
 
     ngOnInit() {
-        this.initMockExercises();
-        this.exercises.forEach(exerciseForm => {
-            const id = exerciseForm.get('id')?.value;
-        });
+        this.activatedRoute.params
+            .pipe(takeUntil(this.unsubscribeAll))
+            .subscribe(params => {
+                const id = params['id'];
+                this.refresh(id);
+            });
     }
 
     ngOnDestroy() {
         this.stopRest();
+
+        this.unsubscribeAll.next(null);
+        this.unsubscribeAll.complete();
     }
 
-    initMockExercises() {
-        // TODO: fetch
-        const mockExercises: Exercise[] = [
-            {
-                id: 'exercise1',
-                name: 'Push Ups',
-                tags: ['strength', 'upper body'],
-                notes: 'Keep your back straight.',
-                restDuration: 60,
-                sets: [
-                    {
-                        type: RepType.Reps,
-                        weightType: WeightType.BW,
-                        value: 15,
-                        currentValue: 15
-                    },
-                    {
-                        type: RepType.Range,
-                        weightType: WeightType.KG,
-                        weight: 15,
-                        previousWeight: 20,
-                        previousValue: 5,
-                        minValue: 4,
-                        maxValue: 9,
+    async refresh(id: string) {
+        if (!id) return;
 
-                        // take from config
-                        currentValue: 9,
-                        currentWeight: 15
-                    },
-                    {
-                        type: RepType.Max,
-                        weightType: WeightType.BW,
-                        value: 10,
-                        previousValue: 50,
-                        currentValue: 10,
-                    },
-                    {
-                        type: RepType.Duration,
-                        weightType: WeightType.NA,
-                        value: 15,
-                        previousValue: 25,
-                        currentValue: 15
-                    }
-                ]
-            },
-            {
-                id: 'exercise2',
-                name: 'Squats',
-                tags: ['strength', 'lower body'],
-                notes: 'Keep your knees behind your toes.',
-                restDuration: 60,
-                sets: [
-                    {
-                        type: RepType.Reps,
-                        weightType: WeightType.KG,
-                        weight: 60,
-                        value: 10
-                    },
-                    {
-                        type: RepType.Reps,
-                        weightType: WeightType.KG,
-                        weight: 60,
-                        value: 8
-                    }
-                ]
-            },
-            {
-                id: 'exercise3',
-                name: 'Bench Press',
-                tags: ['strength', 'chest'],
-                notes: 'Keep elbows at 45 degrees.',
-                restDuration: 90,
-                sets: [
-                    {
-                        type: RepType.Reps,
-                        weightType: WeightType.LB,
-                        weight: 135,
-                        value: 8,
-                        previousValue: 12,
-                        previousWeight: 5
-                    },
-                    {
-                        type: RepType.Reps,
-                        weightType: WeightType.LB,
-                        weight: 135,
-                        value: 8,
-                        previousValue: 5, // TODO: picked from last set at that index if its the same type (e.g. kg/reps)
-                        previousWeight: 2
-                    }
-                ]
-            }
-        ];
+        this.pocketbaseService.workouts.getOne(id, { expand: 'exercises,exercises.sets' }).then((res) => {
+            this.workout = res;
+            this.exercises = res.exercises.map(exercise =>
+                this.programFormsService.createExerciseFormGroup(exercise)
+            );
+            const nextIncompleteExercise = this.getNextIncompleteExercise(res.exercises);
+            this.currentExerciseIndex.set(nextIncompleteExercise
+                ? res.exercises.findIndex(ex => ex.id === nextIncompleteExercise.id)
+                : 0
+            );
+        });
+    }
 
-        this.exercises = mockExercises.map(exercise =>
-            this.programFormsService.createExerciseFormGroup(exercise)
-        );
+    getNextIncompleteExercise(exercises: Exercise[]): Exercise | undefined {
+        return exercises?.find(ex => !ex.completed);
     }
 
     goToNextExercise() {
         if (this.currentExerciseIndex() < this.exercises.length - 1) {
+            // TODO: this is a quick fix; find alt
             const leavingAnimation = this.animationCtrl.create()
                 .addElement(this.exerciseContent.nativeElement)
                 .duration(this.animationDuration)
@@ -177,7 +128,6 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
                 .fromTo('opacity', '1', '0')
                 .fromTo('transform', 'translateX(0)', 'translateX(-30px)');
 
-            // Play the leaving animation
             leavingAnimation.play();
 
             leavingAnimation.onFinish(() => {
@@ -197,6 +147,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
     goToPreviousExercise() {
         if (this.currentExerciseIndex() > 0) {
+            // TODO: this is a quick fix; find alt
             const leavingAnimation = this.animationCtrl.create()
                 .addElement(this.exerciseContent.nativeElement)
                 .duration(this.animationDuration)
@@ -222,8 +173,24 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
     }
 
     selectExercise(index: number) {
-        // this.stopRest();
-        // this.exerciseFormComponent.disabled.set(false);
+        if (!this.exercises[index]) return;
+
+        const currentExerciseIndex = this.currentExerciseIndex();
+
+        const currentExercise = this.exercises[currentExerciseIndex];
+        const nextExercise = this.exercises[index];
+
+        if (index > currentExerciseIndex) {
+            currentExercise.controls.completed.setValue(true);
+            nextExercise.controls.completed.setValue(false);
+        } else if (nextExercise.controls.completed.value) {
+            currentExercise.controls.completed.setValue(false);
+            nextExercise.controls.completed.setValue(false);
+        }
+
+        this.pocketbaseService.upsertRecord('exercises', currentExercise.value, false, true);
+        this.pocketbaseService.upsertRecord('exercises', nextExercise.value, false, true);
+
         this.currentExerciseIndex.set(index);
     }
 
@@ -249,27 +216,18 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         this.isResting = false;
     }
 
-    completeExercise() {
-        // TODO
+    async completeWorkout() {
+        const model = {
+            id: this.workout.id,
+            state: WorkoutState.Completed,
+            end: new Date()
+        } as Workout;
+
+        const loading = await this.loadingCtrl.create({});
+        loading.present();
+        this.pocketbaseService.upsertRecord('workouts', model).then((_) => {
+            loading.dismiss();
+            this.navCtrl.navigateBack(['./tabs']);
+        })
     }
-
-    // Utility methods
-    // getNextExercise(): ExerciseFormGroup | null {
-    //     if (this.currentExerciseIndex < this.exercises.length - 1) {
-    //         return this.exercises[this.currentExerciseIndex + 1];
-    //     }
-    //     return null;
-    // }
-
-    // getCurrentExerciseName(): string {
-    //     return this.exercises[this.currentExerciseIndex]?.get('name')?.value || '';
-    // }
-
-    // getCurrentExerciseTags(): string[] {
-    //     return this.exercises[this.currentExerciseIndex]?.get('tags')?.value || [];
-    // }
-
-    // getCurrentExerciseNotes(): string {
-    //     return this.exercises[this.currentExerciseIndex]?.get('notes')?.value || '';
-    // }
 }

@@ -50,8 +50,22 @@
     --padding-end: var(--ion-padding, 16px);
     --padding-top: 0px; // var(--ion-padding, 16px);
     --padding-bottom: 0px; // var(--ion-padding, 16px);
+    padding-top: 0px; // var(--padding-top);
+    padding-bottom: 0px; // var(--padding-bottom);
     padding-right: var(--padding-start);
     padding-left: var(--padding-end);
+}
+
+.ion-padding-y {
+    --padding-start: 0px; // var(--ion-padding, 16px);
+    --padding-end: 0px; // var(--ion-padding, 16px);
+    --padding-top: var(--ion-padding, 16px);
+    --padding-bottom: var(--ion-padding, 16px);
+    padding-top: var(--padding-top);
+    padding-bottom: var(--padding-bottom);
+    padding-right: 0px; // var(--padding-start);
+    padding-left: 0px; // var(--padding-end);
+
 }
 
 .bg_color {

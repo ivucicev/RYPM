@@ -1,5 +1,4 @@
-<ion-tabs>
-
+<ion-tabs #tabs (ionTabsDidChange)="tabChange(tabs)">
     <ion-tab-bar slot="bottom">
         <ion-tab-button tab="home">
             <ion-icon class="zmdi zmdi-male"></ion-icon>
@@ -21,5 +20,4 @@
             <ion-label>{{'settings' | translate}}</ion-label>
         </ion-tab-button>
     </ion-tab-bar>
-
 </ion-tabs>

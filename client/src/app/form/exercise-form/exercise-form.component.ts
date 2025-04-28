@@ -6,8 +6,8 @@ import { RepType } from 'src/app/core/models/rep-type';
 import { WeightType } from 'src/app/core/models/weight-type';
 import { DurationPipe } from 'src/app/core/pipes/duration.pipe';
 import { ExerciseNotesModalComponent } from 'src/app/exercise-notes-modal/exercise-notes-modal.component';
-import { ExerciseFormGroup, ProgramFormsService, ExerciseSetFormGroup } from 'src/app/core/services/program-forms.service';
-import { ExerciseSet } from 'src/app/core/models/set';
+import { ExerciseFormGroup, FormsService, ExerciseSetFormGroup } from 'src/app/core/services/forms.service';
+import { Set } from 'src/app/core/models/exercise-set';
 import { WeightTypePipe } from 'src/app/core/pipes/weight-type.pipe';
 import { RepTypePipe } from 'src/app/core/pipes/rep-type.pipe';
 import { NgTemplateOutlet } from '@angular/common';
@@ -27,7 +27,7 @@ import { NgTemplateOutlet } from '@angular/common';
         RepTypePipe,
         NgTemplateOutlet
     ],
-    providers: [ProgramFormsService]
+    providers: [FormsService]
 })
 export class ExerciseFormComponent {
 
@@ -69,7 +69,7 @@ export class ExerciseFormComponent {
 
     constructor(
         private modalCtrl: ModalController,
-        private programFormService: ProgramFormsService,
+        private programFormService: FormsService,
     ) {
         for (let seconds = 5; seconds <= 600; seconds += 5) {
             this.durationOptions.push({ value: seconds });
@@ -112,7 +112,7 @@ export class ExerciseFormComponent {
 
     addSet() {
         const sets = this.setsArray;
-        const lastSet = sets.at(sets.length - 1)?.value as ExerciseSet;
+        const lastSet = sets.at(sets.length - 1)?.value as Set;
         const sfg = this.programFormService.createSetFormGroup(lastSet);
         sets.push(sfg);
     }
@@ -126,7 +126,7 @@ export class ExerciseFormComponent {
 
     reorderSets(event: CustomEvent<ItemReorderEventDetail>) {
         const items = this.setsArray.controls.map((item) => item.value);
-        const itemsOrdered: ExerciseSet[] = event.detail.complete(items);
+        const itemsOrdered: Set[] = event.detail.complete(items);
 
         this.setsArray.clear();
         itemsOrdered.map((item) => this.setsArray.push(this.programFormService.createSetFormGroup(item)));
@@ -250,7 +250,7 @@ export class ExerciseFormComponent {
             if (this.numSets > 1) {
                 const additionalSets = this.numSets - 1;
                 for (let i = 0; i < additionalSets; i++) {
-                    const newSet = this.programFormService.createSetFormGroup(setControl.value as ExerciseSet);
+                    const newSet = this.programFormService.createSetFormGroup(setControl.value as Set);
                     this.setsArray.push(newSet);
                 }
             }

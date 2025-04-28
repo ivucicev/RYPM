@@ -1,11 +1,9 @@
-import { ProgramUser } from "./program-user";
 import { Week } from "./week";
 
 export interface Program {
-    id: string;
+    id?: string;
     name: string;
-    description?: string;
-    duration: number;
-    weeks?: Week[];
-    users?: ProgramUser[];
+    description: string;
+    numberOfWeeks: number;
+    weeks: Array<Week>;
 }

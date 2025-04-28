@@ -4,18 +4,23 @@ import { Exercise } from "../models/exercise";
 import { RepType } from "../models/rep-type";
 import { WeightType } from "../models/weight-type";
 import { FormType } from "../helpers/form-helpers";
-import { ExerciseSet } from "../models/set";
+import { Set } from "../models/exercise-set";
 import { Week } from "../models/week";
 import { Day } from "../models/day";
 import { Program } from "../models/program";
 import { distinctUntilChanged, Subject, takeUntil } from "rxjs";
 import { ExerciseSelectorComponent } from "src/app/exercise-selector/exercise-selector.component";
 import { ModalController } from "@ionic/angular/standalone";
-import { ProgramUser } from "../models/program-user";
-import { User } from "../models/user";
+import { SetBM } from "../models/bm/set-bm";
+import { WeekBM } from "../models/bm/week-bm";
+import { DayBM } from "../models/bm/day-bm";
+import { ExerciseBM } from "../models/bm/exercise-bm";
+import { ProgramBM } from "../models/bm/program-bm";
+import { TemplateBM } from "../models/bm/template-bm";
+import { Template } from "../models/template";
 
 @Injectable()
-export class ProgramFormsService implements OnDestroy {
+export class FormsService implements OnDestroy {
 
     private subject = new Subject();
 
@@ -29,17 +34,24 @@ export class ProgramFormsService implements OnDestroy {
     }
 
     //#region Init
-    createProgramFormGroup() {
+    createProgramFormGroup(program?: Program) {
         const programForm: ProgramFormGroup = this.formBuilder.group({
-            id: [''],
-            name: ['', Validators.required],
-            description: [''],
-            duration: [0, Validators.required],
+            id: [program?.id],
+            name: [program?.name],
+            description: [program?.description],
+            numberOfWeeks: [program?.numberOfWeeks || 1],
             weeks: this.formBuilder.array<WeekFormGroup>([]),
-            users: this.formBuilder.array<ProgramUserGroup>([])
+            // users: this.formBuilder.array<ProgramUserGroup>([]) // TODO: Trainer
         });
 
-        programForm.get('duration').valueChanges
+        const weeksArray = programForm.get('weeks') as FormArray<WeekFormGroup>;
+
+        program?.weeks?.forEach(week => {
+            weeksArray.push(this.createWeekFormGroup(week));
+            programForm.controls.numberOfWeeks.setValue(weeksArray.length);
+        });
+
+        programForm.controls.numberOfWeeks.valueChanges
             .pipe(distinctUntilChanged(), takeUntil(this.subject))
             .subscribe(durationWeeks => {
                 const weeksArray = this.getWeeksArray(programForm);
@@ -58,7 +70,10 @@ export class ProgramFormsService implements OnDestroy {
                     }
                 }
             });
-        programForm.controls.duration.setValue(4);
+
+        if (!program) {
+            programForm.controls.numberOfWeeks.setValue(2);
+        }
 
         return programForm;
     }
@@ -71,12 +86,13 @@ export class ProgramFormsService implements OnDestroy {
             tags: new FormControl(exercise?.tags || []),
             restDuration: new FormControl(exercise?.restDuration || 0),
             notes: new FormControl(exercise?.notes || ''),
-            sets: this.formBuilder.array<ExerciseSetFormGroup>([])
+            sets: this.formBuilder.array<ExerciseSetFormGroup>([]),
+            completed: new FormControl(false),
         });
 
         const setsArray = exerciseGroup.get('sets') as FormArray<ExerciseSetFormGroup>;
 
-        if (exercise?.sets && exercise?.sets?.length > 0) {
+        if (exercise?.sets?.length > 0) {
             exercise.sets.forEach(set => {
                 setsArray.push(this.createSetFormGroup(set));
             });
@@ -87,7 +103,25 @@ export class ProgramFormsService implements OnDestroy {
         return exerciseGroup;
     }
 
-    createSetFormGroup(set?: ExerciseSet): ExerciseSetFormGroup {
+    createTemplateFormGroup(template?: Template): TemplateFormGroup {
+        const templateForm: TemplateFormGroup = this.formBuilder.group({
+            id: [template?.id],
+            name: [template?.name],
+            exercises: this.formBuilder.array<ExerciseFormGroup>([])
+        });
+
+        const exercisesArray = templateForm.get('exercises') as FormArray<ExerciseFormGroup>;
+
+        if (template?.exercises?.length > 0) {
+            template.exercises.forEach(exercise => {
+                exercisesArray.push(this.createExerciseFormGroup(exercise));
+            });
+        }
+
+        return templateForm;
+    }
+
+    createSetFormGroup(set?: Set): ExerciseSetFormGroup {
         const fg: ExerciseSetFormGroup = this.formBuilder.group({
             id: [''],
             completed: [set?.completed || false],
@@ -122,24 +156,42 @@ export class ProgramFormsService implements OnDestroy {
         return fg;
     }
 
-    createWeekFormGroup(): WeekFormGroup {
+    createWeekFormGroup(week?: Week): WeekFormGroup {
         const fg: WeekFormGroup = this.formBuilder.group({
+            id: [week?.id],
             days: this.formBuilder.array<DayFormGroup>([])
         });
+
+        const daysArray = fg.controls.days as FormArray<DayFormGroup>;
+
+        console.log(week);
+        week?.days?.forEach(day => {
+            const dayForm = this.createDayFormGroup(day);
+            daysArray.push(dayForm);
+        });
+
         return fg;
     }
 
-    createDayFormGroup(): DayFormGroup {
+    createDayFormGroup(day?: Day): DayFormGroup {
         const fg = this.formBuilder.group({
+            id: [day?.id],
             exercises: this.formBuilder.array<ExerciseFormGroup>([])
         });
+
+        const exercisesArray = fg.controls.exercises as FormArray<ExerciseFormGroup>;
+
+        day?.exercises?.forEach(exercise => {
+            const exerciseForm = this.createExerciseFormGroup(exercise);
+            exercisesArray.push(exerciseForm);
+        });
+
         return fg;
     }
     //#endregion
 
     //#region Getters
     getExercisesArray(programForm: ProgramFormGroup, weekIndex: number, dayIndex: number) {
-        console.log(this.getDaysArray(programForm, weekIndex).at(dayIndex), weekIndex, dayIndex)
         return this.getDaysArray(programForm, weekIndex).at(dayIndex).get('exercises') as FormArray<ExerciseFormGroup>;
     }
 
@@ -156,38 +208,38 @@ export class ProgramFormsService implements OnDestroy {
         return this.getExercisesArray(programForm, weekIndex, dayIndex).at(exerciseIndex).get('sets') as FormArray<ExerciseSetFormGroup>;
     }
 
-    getAssignedUsers(form: ProgramFormGroup) {
-        return form.get('users') as FormArray<ProgramUserGroup>;
-    }
+    // getAssignedUsers(form: ProgramFormGroup) {
+    //     return form.get('users') as FormArray<ProgramUserGroup>;
+    // }
     //#endregion
 
     //#region Setters
-    addUser(form: ProgramFormGroup, user: User) {
-        const usersArray = this.getAssignedUsers(form);
-        const userExists = usersArray.controls.some(control =>
-            control.get('id').value === user.id
-        );
+    // addUser(form: ProgramFormGroup, user: User) {
+    //     const usersArray = this.getAssignedUsers(form);
+    //     const userExists = usersArray.controls.some(control =>
+    //         control.get('id').value === user.id
+    //     );
 
-        if (!userExists) {
-            usersArray.push(this.formBuilder.group({
-                id: [user.id],
-                name: [user.name],
-                email: [user.email],
-                avatar: [user.avatar]
-            }));
-        }
-    }
+    //     if (!userExists) {
+    //         usersArray.push(this.formBuilder.group({
+    //             id: [user.id],
+    //             name: [user.name],
+    //             email: [user.email],
+    //             avatar: [user.avatar]
+    //         }));
+    //     }
+    // }
 
-    removeUser(form: ProgramFormGroup, userId: string) {
-        const usersArray = this.getAssignedUsers(form);
-        const index = usersArray.controls.findIndex(control =>
-            control.get('id').value === userId
-        );
+    // removeUser(form: ProgramFormGroup, userId: string) {
+    //     const usersArray = this.getAssignedUsers(form);
+    //     const index = usersArray.controls.findIndex(control =>
+    //         control.get('id').value === userId
+    //     );
 
-        if (index >= 0) {
-            usersArray.removeAt(index);
-        }
-    }
+    //     if (index >= 0) {
+    //         usersArray.removeAt(index);
+    //     }
+    // }
 
     addDay(programForm: ProgramFormGroup, weekIndex: number) {
         const daysArray = this.getDaysArray(programForm, weekIndex);
@@ -262,9 +314,10 @@ export class ProgramFormsService implements OnDestroy {
     //#endregion
 }
 
-export type ProgramFormGroup = FormGroup<FormType<Program>>;
-export type ExerciseFormGroup = FormGroup<FormType<Exercise>>;
-export type DayFormGroup = FormGroup<FormType<Day>>;
-export type WeekFormGroup = FormGroup<FormType<Week>>;
-export type ExerciseSetFormGroup = FormGroup<FormType<ExerciseSet>>;
-export type ProgramUserGroup = FormGroup<FormType<ProgramUser>>;
+export type ProgramFormGroup = FormGroup<FormType<ProgramBM>>;
+export type ExerciseFormGroup = FormGroup<FormType<ExerciseBM>>;
+export type DayFormGroup = FormGroup<FormType<DayBM>>;
+export type WeekFormGroup = FormGroup<FormType<WeekBM>>;
+export type ExerciseSetFormGroup = FormGroup<FormType<SetBM>>;
+export type TemplateFormGroup = FormGroup<FormType<TemplateBM>>;
+// export type ProgramUserGroup = FormGroup<FormType<ProgramUser>>;

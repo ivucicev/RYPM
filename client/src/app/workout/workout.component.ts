@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, FormArray } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, NavController } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormType } from '../core/helpers/form-helpers';
 import { RepType } from '../core/models/rep-type';
 import { WeightType } from '../core/models/weight-type';
-import { ProgramFormsService, ExerciseFormGroup } from '../core/services/program-forms.service';
+import { FormsService, ExerciseFormGroup } from '../core/services/forms.service';
 import { ExerciseFormComponent } from '../form/exercise-form/exercise-form.component';
-import { Workout } from '../core/models/workout';
+import { PocketbaseService } from '../core/services/pocketbase.service';
+import { WorkoutBM } from '../core/models/bm/workout-bm';
+import { WorkoutState } from '../core/models/workout-state';
 
 @Component({
     selector: 'app-workout',
@@ -21,18 +23,20 @@ import { Workout } from '../core/models/workout';
         FormsModule,
         ExerciseFormComponent
     ],
-    providers: [ProgramFormsService]
+    providers: [FormsService]
 })
 export class WorkoutComponent implements OnInit {
 
-    workoutForm: FormGroup<FormType<Workout>>;
+    workoutForm: FormGroup<FormType<WorkoutBM>>;
     RepType = RepType;
     WeightType = WeightType;
     durationOptions = Array.from({ length: 60 }, (_, i) => ({ value: (i + 1) * 5 }));
 
     constructor(
         private formBuilder: FormBuilder,
-        private programFormService: ProgramFormsService
+        private programFormService: FormsService,
+        private pocketbaseService: PocketbaseService,
+        private navCtrl: NavController
     ) { }
 
     ngOnInit() {
@@ -42,10 +46,9 @@ export class WorkoutComponent implements OnInit {
     initForm() {
         this.workoutForm = this.formBuilder.group({
             id: [''],
-            createdById: [''],
             end: [null],
             start: [null],
-            userId: [''],
+            state: [WorkoutState.InProgress],
             exercises: this.formBuilder.array<ExerciseFormGroup>([])
         });
     }
@@ -68,12 +71,13 @@ export class WorkoutComponent implements OnInit {
         this.exercisesArray.removeAt(index);
     }
 
-    saveChanges() {
+    async saveChanges() {
         if (this.workoutForm.valid) {
-            const workoutData = this.workoutForm.value;
-            // TODO
-            console.log('Saving & starting workout:', workoutData);
+            const workout = this.workoutForm.value;
+            workout.start = new Date();
+            this.pocketbaseService.upsertRecord('workouts', workout).then(res => {
+                this.navCtrl.navigateBack(['./tabs']);
+            });
         }
     }
-
 }

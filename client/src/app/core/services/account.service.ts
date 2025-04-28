@@ -11,6 +11,7 @@ import { StorageKeys } from '../constants/storage-keys';
 import { PB } from '../constants/pb-constants';
 import { User } from '../models/user';
 import { environment } from 'src/environments/environment';
+import { COLLECTIONS } from '../constants/collections';
 
 @Injectable({
     providedIn: 'root'
@@ -40,6 +41,19 @@ export class AccountService {
         if (this.pocketbase.authStore.isValid) {
             this.getCurrentUser();
         }
+
+        this.pocketbaseService.registerAfterSendCallback(
+            (response, data, options?: any) => {
+                if (response.status === 200 && data?.collectionName == COLLECTIONS.users
+                    && (options?.method == "POST" || options?.method == "PATCH")
+                ) {
+                    this._currentUser.set({
+                        ...this._currentUser,
+                        ...data
+                    })
+                }
+            }
+        );
     }
 
     async register(model: RegisterBM): Promise<any> {
@@ -67,6 +81,8 @@ export class AccountService {
         try {
             const authData = await this.pocketbase.collection('users').authWithPassword(model.email, model.password, { headers: PB.HEADER.NO_TOAST });
             await this.saveAuthToStorage(authData);
+
+            await this.getCurrentUser(true);
 
             this.navCtrl.navigateRoot(['./tabs']);
             this.toastService.success('welcome_back');
@@ -220,6 +236,8 @@ export class AccountService {
         this.updateAccountMap(user);
 
         this._currentUser.set(user);
+
+        this.pocketbaseService.currentUser = user;
 
         return user;
     }

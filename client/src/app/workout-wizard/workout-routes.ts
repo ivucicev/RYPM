@@ -6,6 +6,10 @@ export const routes: Routes = [
     {
         path: '',
         component: WorkoutWizardComponent
+    },
+    {
+        path: ':id',
+        component: WorkoutWizardComponent
     }
 ];
 

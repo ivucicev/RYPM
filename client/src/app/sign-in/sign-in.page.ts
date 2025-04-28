@@ -41,7 +41,6 @@ export class SignInPage implements OnInit {
             filter(event => event instanceof NavigationEnd)
         ).pipe(takeUntil(this.unsubscribeAll))
             .subscribe((event: NavigationEnd) => {
-                console.log(event.url, event.urlAfterRedirects)
                 this.navigatedTo = event.url !== '/sign-in' && event.urlAfterRedirects === '/sign-in';
             });
     }

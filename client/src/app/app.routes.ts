@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
 
+// TODO: add guards/auth
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: 'sign-in',
+        redirectTo: '',
         pathMatch: 'full'
     },
     {
@@ -76,7 +77,7 @@ export const routes: Routes = [
         loadChildren: () => import('./template/template.routes').then(m => m.routes)
     },
     {
-        path: 'exercise',
+        path: 'workout-wizard',
         loadChildren: () => import('./workout-wizard/workout-routes').then(m => m.routes)
     },
     {

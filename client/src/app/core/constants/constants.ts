@@ -6,4 +6,5 @@ export class Constants {
     static THEME_MODE_DARK = "theme_dark";
     static THEME_MODE_LIGHT = "theme_light";
     static ANIMATION_DURATION_MS = 125;
+    static UPDATE_DEBOUNCE_MS = 300;
 }

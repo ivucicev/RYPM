@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
 
 export type ToastType = 'error' | 'warning' | 'info' | 'success';
 
@@ -23,7 +24,7 @@ export class ToastService {
         let displayMessage: string;
 
         if (translate) {
-            displayMessage = await this.translateService.get(message).toPromise();
+            displayMessage = await firstValueFrom(this.translateService.get(message));
         } else {
             displayMessage = message;
         }
@@ -32,6 +33,14 @@ export class ToastService {
             message: displayMessage,
             duration: duration,
             position: position,
+            keyboardClose: true,
+            buttons: [
+                {
+                    text: '×',
+                    role: 'cancel'
+                },
+            ],
+            swipeGesture: 'vertical',
             color: this.getColorForType(type),
             icon: this.getIconForType(type)
         });

@@ -15,7 +15,7 @@ export class SearchUserComponent {
 
     searchTerm = '';
 
-    // TODO
+    // TODO: Trainer
     results = [
         { id: '1', name: 'Amenda Johnson', avatar: 'assets/images/gym_trainer_1.png', type: 'trainer' },
         { id: '2', name: 'Russeil Taylor', avatar: 'assets/images/gym_trainer_2.png', type: 'trainer' },
@@ -35,8 +35,7 @@ export class SearchUserComponent {
     }
 
     selectResult(result) {
-        // TODO
-        console.log('Selected:', result);
+        // TODO: Trainer
     }
 
     close() {

@@ -4,21 +4,35 @@
             <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
         </ion-buttons>
         <ion-title>{{ 'workout' | translate }}</ion-title>
+        <ion-label slot="end">
+            @if (workout != null) {
+            <app-time-badge [initialTime]="workout.start"></app-time-badge>
+            }
+        </ion-label>
+    </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>
+            {{ currentExercise()?.controls.name.value }}
+        </ion-title>
+        @if (currentExercise() != null) {
+        <ion-button fill="clear" color="dark" slot="end">
+            <ion-icon name="information-circle-outline"></ion-icon>
+        </ion-button>
+        }
     </ion-toolbar>
 </ion-header>
 
-<ion-content class="bg_color" fullscreen>
-    <div #exerciseContent>
-        @if (exercises.length > 0) {
+<ion-content class="bg_color ion-padding-x" fullscreen>
+    <div #exerciseContent class="wizard-container">
+        @if (currentExercise() != null) {
         <div class="exercise-header">
-            <h1>{{ currentExercise().controls.name.value }}</h1>
             <div class="tags">
                 @for (tag of currentExercise().controls.tags.value; track tag) {
                 <ion-chip color="primary" outline>{{ tag }}</ion-chip>
                 }
             </div>
         </div>
-        @if (currentExercise().controls.notes) {
+        @if (currentExercise().controls.notes.value) {
         <div class="notes">
             <ion-icon name="information-circle-outline"></ion-icon>
             {{ currentExercise().controls.notes.value }}
@@ -29,6 +43,8 @@
                 (restStartedEvent)="startRest($event)" (allCompletedEvent)="goToNextExercise()">
             </app-exercise-form>
         </div>
+        } @else {
+        <ion-spinner class="fullscreen" name="dots"></ion-spinner>
         }
     </div>
 </ion-content>
@@ -43,6 +59,7 @@
 }
 
 
+@if (currentExercise() != null) {
 <ion-footer class="bg_transparent">
     <div class="footer-container">
         <div class="nav-buttons ion-padding-start ion-padding-end">
@@ -58,7 +75,7 @@
                 </div>
                 }
                 @if (currentExerciseIndex() === exercises.length - 1) {
-                <ion-button fill="clear" shape="round" [disabled]="" (click)="completeExercise()">
+                <ion-button fill="clear" shape="round" [disabled]="" (click)="completeWorkout()">
                     <ion-note class="ion-color-primary ion-color">{{ 'complete' | translate }}</ion-note>
                     <!-- <ion-icon name="checkmark-done-outline"></ion-icon> -->
                 </ion-button>
@@ -80,3 +97,4 @@
         }
     </div>
 </ion-footer>
+}

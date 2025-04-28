@@ -70,6 +70,10 @@ import {
     analyticsOutline,
     layersOutline,
     shapesOutline,
+    arrowForwardCircleOutline,
+    caretForwardOutline,
+    fileTrayOutline,
+    fileTray,
 } from 'ionicons/icons';
 
 export function registerIcons(): void {
@@ -91,6 +95,10 @@ export function registerIcons(): void {
         searchOutline,
         globeOutline,
         lockClosedOutline,
+        arrowForwardCircleOutline,
+        caretForwardOutline,
+        fileTrayOutline,
+        fileTray,
 
         // Navigation icons
         chevronUp,

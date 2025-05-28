@@ -28,7 +28,7 @@
                     </div>
                 </ion-note>
             </ion-label>
-            <ion-checkbox slot="end" [(ngModel)]="exercise.selected"></ion-checkbox>
+            <ion-checkbox slot="end" [(ngModel)]="exercise.selected" (click)="toggleExercise(exercise)"></ion-checkbox>
         </ion-item>
         }
         @if (filteredExercises.length === 0) {

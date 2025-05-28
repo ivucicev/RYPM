@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { WeightType } from '../models/weight-type';
+import { WeightType } from '../models/enums/weight-type';
 import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({

@@ -1,41 +1,49 @@
 import { Component, OnInit, OnDestroy, ViewChild, signal, computed, ElementRef } from '@angular/core';
-import { IonicModule, LoadingController } from '@ionic/angular';
+import { ActionSheetController, IonicModule, LoadingController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Exercise } from 'src/app/core/models/exercise';
-import { RepType } from 'src/app/core/models/rep-type';
-import { WeightType } from 'src/app/core/models/weight-type';
+import { FormArray, FormsModule } from '@angular/forms';
+import { Exercise } from 'src/app/core/models/collections/exercise';
+import { RepType } from 'src/app/core/models/enums/rep-type';
+import { WeightType } from 'src/app/core/models/enums/weight-type';
 import { ExerciseFormComponent } from '../form/exercise-form/exercise-form.component';
-import { ExerciseFormGroup, FormsService } from '../core/services/forms.service';
-import { TranslateModule } from '@ngx-translate/core';
-import { DurationPipe } from '../core/pipes/duration.pipe';
+import { ExerciseFormGroup, ExerciseSetFormGroup, FormsService } from '../core/services/forms.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AnimationController, NavController } from '@ionic/angular/standalone';
 import { Constants } from '../core/constants/constants';
 import { TimeBadgeComponent } from '../shared/time-badge/time-badge.component';
 import { PocketbaseService } from '../core/services/pocketbase.service';
-import { Subject, takeUntil } from 'rxjs';
+import { lastValueFrom, of, Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { Workout } from '../core/models/workout';
-import { WorkoutState } from '../core/models/workout-state';
+import { Workout } from '../core/models/collections/workout';
+import { WorkoutState } from '../core/models/enums/workout-state';
 import { AutosaveService } from '../core/services/autosave.service';
 import { ExerciseBM } from '../core/models/bm/exercise-bm';
+import { Set } from '../core/models/collections/exercise-set';
+import { PB } from '../core/constants/pb-constants';
+import { NoDataComponent } from "../shared/no-data/no-data.component";
+import { RestBadgeComponent } from "../shared/rest-badge/rest-badge.component";
 
 @Component({
     selector: 'app-workout-wizard',
     templateUrl: './workout-wizard.component.html',
     styleUrls: ['./workout-wizard.component.scss'],
     standalone: true,
-    imports: [IonicModule, CommonModule, FormsModule, ExerciseFormComponent, TranslateModule, DurationPipe, TimeBadgeComponent],
+    imports: [IonicModule, CommonModule, FormsModule, ExerciseFormComponent, TranslateModule, TimeBadgeComponent, NoDataComponent, RestBadgeComponent],
     providers: [FormsService, AutosaveService]
 })
 export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
     private unsubscribeAll = new Subject<void>();
 
+    workoutId: string;
     workout: Workout;
 
     updateTimeout: any;
     exercises: ExerciseFormGroup[] = [];
+
+    lastCompletedSet: ExerciseSetFormGroup = null;
+    lastCompletedSetExercise: ExerciseFormGroup = null;
+
     currentExerciseIndex = signal(null);
 
     animationDirection = null;
@@ -59,10 +67,6 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         return null;
     });
 
-    isResting = false;
-    restTimeRemaining = 0;
-    restTimerId: any;
-
     RepType = RepType;
     WeightType = WeightType;
 
@@ -78,7 +82,9 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         private pocketbaseService: PocketbaseService,
         private activatedRoute: ActivatedRoute,
         private navCtrl: NavController,
+        private translateService: TranslateService,
         private autosaveService: AutosaveService,
+        private actionSheetCtrl: ActionSheetController,
         private loadingCtrl: LoadingController
     ) { }
 
@@ -92,8 +98,6 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.stopRest();
-
         this.unsubscribeAll.next(null);
         this.unsubscribeAll.complete();
     }
@@ -101,15 +105,35 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
     async refresh(id: string) {
         if (!id) return;
 
+        this.workoutId = id;
+
         this.pocketbaseService.workouts.getOne(id, { expand: 'exercises,exercises.sets' }).then((res) => {
             this.workout = res;
+
             this.exercises = res.exercises.map(exercise =>
                 this.programFormsService.createExerciseFormGroup(exercise)
             );
+
+            // rest set
+            const lastCompletedSet = this.workout.exercises.flatMap(e => e.sets)
+                .sort((a, b) => new Date(b.updated).getDate() - new Date(a.updated)?.getTime())
+                .find(s => s.completed && !s.restSkipped)
+            if (lastCompletedSet) {
+                const lastCompletedSetExercise = this.workout.exercises.find(e => e.sets.includes(lastCompletedSet));
+
+                this.lastCompletedSet = this.exercises.flatMap(e => e.controls.sets.controls).find(s => s.controls.id.value == lastCompletedSet.id);
+                this.lastCompletedSetExercise = this.exercises.find(e => e.controls.id.value == lastCompletedSetExercise.id);
+            } else {
+                this.lastCompletedSet = null;
+                this.lastCompletedSetExercise = null;
+            }
+
             const nextIncompleteExercise = this.getNextIncompleteExercise(res.exercises);
+            const lastExerciseIndex = (this.exercises?.length ?? 0) - 1;
+
             this.currentExerciseIndex.set(nextIncompleteExercise
                 ? res.exercises.findIndex(ex => ex.id === nextIncompleteExercise.id)
-                : 0
+                : lastExerciseIndex
             );
         });
     }
@@ -120,55 +144,41 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
     goToNextExercise() {
         if (this.currentExerciseIndex() < this.exercises.length - 1) {
-            // TODO: this is a quick fix; find alt
-            const leavingAnimation = this.animationCtrl.create()
-                .addElement(this.exerciseContent.nativeElement)
-                .duration(this.animationDuration)
-                .easing('ease-out')
-                .fromTo('opacity', '1', '0')
-                .fromTo('transform', 'translateX(0)', 'translateX(-30px)');
-
-            leavingAnimation.play();
-
-            leavingAnimation.onFinish(() => {
-                this.selectExercise(this.currentExerciseIndex() + 1);
-
-                const enteringAnimation = this.animationCtrl.create()
-                    .addElement(this.exerciseContent.nativeElement)
-                    .duration(this.animationDuration)
-                    .easing('ease-out')
-                    .fromTo('opacity', '0', '1')
-                    .fromTo('transform', 'translateX(30px)', 'translateX(0)');
-
-                enteringAnimation.play();
-            });
+            this.transitionToExercise(this.currentExerciseIndex() + 1);
         }
     }
 
     goToPreviousExercise() {
         if (this.currentExerciseIndex() > 0) {
-            // TODO: this is a quick fix; find alt
-            const leavingAnimation = this.animationCtrl.create()
-                .addElement(this.exerciseContent.nativeElement)
+            this.transitionToExercise(this.currentExerciseIndex() - 1, true);
+        }
+    }
+
+    private async transitionToExercise(index: number, reverse = false) {
+        const element = this.exerciseContent.nativeElement;
+        const direction = reverse ? 1 : -1;
+
+        try {
+            await this.animationCtrl.create()
+                .addElement(element)
                 .duration(this.animationDuration)
                 .easing('ease-out')
-                .fromTo('opacity', '1', '0')
-                .fromTo('transform', 'translateX(0)', 'translateX(30px)');
+                .fromTo('opacity', 1, 0)
+                .fromTo('transform', 'translateX(0)', `translateX(${direction * 30}px)`)
+                .play();
 
-            leavingAnimation.play();
+            this.selectExercise(index);
 
-            leavingAnimation.onFinish(() => {
-                this.selectExercise(this.currentExerciseIndex() - 1);
+            await this.animationCtrl.create()
+                .addElement(element)
+                .duration(this.animationDuration)
+                .easing('ease-out')
+                .fromTo('opacity', 0, 1)
+                .fromTo('transform', `translateX(${direction * -30}px)`, 'translateX(0)')
+                .play();
 
-                const enteringAnimation = this.animationCtrl.create()
-                    .addElement(this.exerciseContent.nativeElement)
-                    .duration(this.animationDuration)
-                    .easing('ease-out')
-                    .fromTo('opacity', '0', '1')
-                    .fromTo('transform', 'translateX(-30px)', 'translateX(0)');
-
-                enteringAnimation.play();
-            });
+        } catch {
+            this.selectExercise(index);
         }
     }
 
@@ -194,26 +204,35 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         this.currentExerciseIndex.set(index);
     }
 
-    startRest(duration: number) {
-        this.stopRest();
+    startRest(setIndex: number) {
+        const setForms = this.currentExercise().controls.sets as FormArray<ExerciseSetFormGroup>;
+        const setForm = setForms.at(setIndex);
 
-        this.isResting = true;
-        this.restTimeRemaining = duration;
-
-        this.restTimerId = setInterval(() => {
-            this.restTimeRemaining--;
-            if (this.restTimeRemaining <= 0) {
-                this.stopRest();
-            }
-        }, 1000);
+        this.lastCompletedSet = setForm;
+        this.lastCompletedSetExercise = this.exercises.find(e => e.controls.sets.controls.find(s => s.controls.id.value == setForm.controls.id.value) != null)
     }
 
-    stopRest() {
-        if (this.restTimerId) {
-            clearInterval(this.restTimerId);
-            this.restTimerId = null;
-        }
-        this.isResting = false;
+    onRestSkipped() {
+        this.lastCompletedSet.controls.restSkipped.setValue(true);
+    }
+
+    async handleUncompletedSets() {
+        await this.workout.exercises.forEach(async exercise => {
+            await exercise.sets.forEach(async set => {
+                await this.pocketbaseService.sets.update(
+                    set.id,
+                    {
+                        currentValue: 0,
+                        currentWeight: 0
+                    } as Set,
+                    {
+                        headers: { ...PB.HEADER.NO_TOAST }
+                    }
+                );
+            });
+        });
+
+        return lastValueFrom(of(true));
     }
 
     async completeWorkout() {
@@ -225,9 +244,40 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
         const loading = await this.loadingCtrl.create({});
         loading.present();
-        this.pocketbaseService.upsertRecord('workouts', model).then((_) => {
+
+        await this.handleUncompletedSets();
+        this.pocketbaseService.workouts.update(model.id, model).then((_) => {
             loading.dismiss();
             this.navCtrl.navigateBack(['./tabs']);
         })
+    }
+
+    async openSettings() {
+        const translations = await lastValueFrom(this.translateService.get([
+            'delete', 'cancel'
+        ]));
+
+        const actionSheet = await this.actionSheetCtrl.create({
+            header: translations.workout,
+            buttons: [
+                {
+                    text: translations.delete,
+                    icon: 'trash-outline',
+                    role: 'destructive',
+                    handler: () => {
+                        this.pocketbaseService.workouts.delete(this.workout.id).then(() => {
+                            this.navCtrl.navigateBack(['./tabs']);
+                        })
+                    }
+                },
+                {
+                    text: translations.cancel,
+                    icon: 'close-outline',
+                    role: 'cancel'
+                }
+            ]
+        });
+
+        await actionSheet.present();
     }
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
-import { debounceTime, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { AbstractControl } from '@angular/forms';
+import { debounceTime, filter, switchMap, takeUntil } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
 import { PocketbaseService } from './pocketbase.service';
-import { Collection } from '../constants/collections';
+import { Collection, COLLECTIONS } from '../constants/collections';
 import { Constants } from '../constants/constants';
 
 @Injectable()
@@ -14,6 +14,7 @@ export class AutosaveService {
         private pocketbaseService: PocketbaseService
     ) { }
 
+    // TODO: submit only changed values?
     /**
      * Registers autosave on form value changes.
      *
@@ -26,7 +27,7 @@ export class AutosaveService {
      * @param debounceMs Debounce time in ms (default {@link Constants.UPDATE_DEBOUNCE_MS})
      * @returns A promise that resolves with the upsert result on each save
      */
-    register<T>(
+    register<T extends { id?: string }>(
         form: AbstractControl,
         collection: Collection,
         showToast = true,
@@ -52,8 +53,11 @@ export class AutosaveService {
                 .subscribe({
                     next: async (result) => {
                         form.patchValue({ id: result.id }, { emitEvent: false });
-                        saveResult$.next(Promise.resolve(result));
-                        console.log('Autosaved', result);
+
+                        if (collection == COLLECTIONS.workouts && result['day'])
+
+                            saveResult$.next(Promise.resolve(result));
+                        // console.log('Autosaved', result);
                     },
                     error: (err) => {
                         saveResult$.next(Promise.reject(err));

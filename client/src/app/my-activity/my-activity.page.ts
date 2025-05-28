@@ -1,24 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, viewChild } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ActionSheetController, IonicModule } from '@ionic/angular';
 import { lastValueFrom } from 'rxjs';
 import { DateTimePipe } from '../core/pipes/datetime.pipe';
 import { PocketbaseService } from '../core/services/pocketbase.service';
-import { Workout } from '../core/models/workout';
-import { WorkoutState } from '../core/models/workout-state';
+import { Workout } from '../core/models/collections/workout';
+import { WorkoutState } from '../core/models/enums/workout-state';
+import { ContinueFooterComponent } from '../shared/continue-footer/continue-footer.component';
 
 @Component({
     selector: 'app-my-activity',
     templateUrl: './my-activity.page.html',
     styleUrls: ['./my-activity.page.scss'],
     standalone: true,
-    imports: [IonicModule, TranslateModule, DateTimePipe],
+    imports: [IonicModule, TranslateModule, DateTimePipe, ContinueFooterComponent],
 })
 export class MyActivityPage {
 
     workouts: Workout[];
 
     WorkoutState = WorkoutState;
+
+    continueFooter = viewChild(ContinueFooterComponent);
 
     constructor(
         private actionSheetCtrl: ActionSheetController,
@@ -28,6 +31,7 @@ export class MyActivityPage {
 
     // TODO: fetch
     async refresh() {
+        this.continueFooter().refresh();
     }
 
     ionViewWillEnter() {

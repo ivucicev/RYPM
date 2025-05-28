@@ -120,3 +120,56 @@ swiper-container {
         }
     }
 }
+
+.progress-container {
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--ion-color-light);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg,
+            var(--ion-color-success) 0%,
+            var(--ion-color-success-shade) 100%);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.3) 50%,
+                transparent 100%);
+    }
+}
+
+.progress-text {
+    font-size: 12px;
+    color: var(--ion-color-medium);
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.program-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}

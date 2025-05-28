@@ -1,32 +1,5 @@
-.day-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    // background: var(--ion-toolbar-background);
-
-    >ion-label {
-        text-transform: uppercase;
-    }
-
-    ion-button:last-child {
-        --padding-end: 0px
-    }
-
-    --padding-start: 10px;
-    --padding-end: 10px;
-
-
-}
-
 ion-accordion-group {
     margin: 0px;
-}
-
-
-.day-actions {
-    display: flex;
-    // margin-right: -1.25rem;
-    margin-left: auto;
 }
 
 ion-segment[scrollable] {
@@ -39,11 +12,26 @@ ion-segment[scrollable] {
     }
 }
 
-.day-item {
-    >div {
+.day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    >ion-label {
+        text-transform: uppercase;
+    }
+
+    ion-button:last-child {
+        --padding-end: 0px
+    }
+
+    --padding-start: 10px;
+    --padding-end: 10px;
+
+    .day-actions {
         display: flex;
-        flex-direction: column;
-        width: 100%;
+        // margin-right: -1.25rem;
+        margin-left: auto;
     }
 }
 
@@ -163,4 +151,25 @@ form {
         height: 100%;
         padding: 10px 0px;
     }
+}
+
+.days-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 8px 0;
+    margin-top: 8px;
+
+    // Hide scrollbar but keep functionality
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+ion-chip {
+    flex-shrink: 0; // Prevent chips from shrinking
+    cursor: pointer;
 }

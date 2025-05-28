@@ -1,0 +1,13 @@
+@if (workout) {
+<ion-footer class="bg_transparent" class="ion-padding-x">
+    <app-rest-badge [initialTime]="lastCompletedSetExercise?.completedAt" #restBadge
+        (onRestSkippedEvent)="onRestSkipped()" [duration]="lastCompletedSetExercise?.restDuration"></app-rest-badge>
+
+    @if (!restBadge.isResting && !timerOnly()) {
+    <ion-button size="large" expand="round" shape="round" color="primary" (click)="navToActiveWorkout()">
+        <ion-icon slot="start" [name]="'play-outline'"></ion-icon>
+        {{ 'continue' | translate }}
+    </ion-button>
+    }
+</ion-footer>
+}

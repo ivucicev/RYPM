@@ -1,25 +1,43 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, viewChild } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActionSheetController, IonicModule, ModalController, NavController } from '@ionic/angular';
 import { lastValueFrom } from 'rxjs';
 import { AssignModalComponent } from '../assign-program-modal/assign-modal.component';
-import { Exercise } from '../core/models/exercise';
-import { Program } from '../core/models/program';
-import { User } from '../core/models/user';
-import { Template } from '../core/models/template';
-import { Workout } from '../core/models/workout';
+import { Exercise } from '../core/models/collections/exercise';
+import { Program } from '../core/models/collections/program';
+import { User } from '../core/models/collections/user';
+import { Template } from '../core/models/collections/template';
+import { Workout } from '../core/models/collections/workout';
 import { TimeBadgeComponent } from '../shared/time-badge/time-badge.component';
 import { DateTimePipe } from '../core/pipes/datetime.pipe';
-import { RepType } from '../core/models/rep-type';
-import { WeightType } from '../core/models/weight-type';
-import { Set } from '../core/models/exercise-set';
+import { RepType } from '../core/models/enums/rep-type';
+import { WeightType } from '../core/models/enums/weight-type';
+import { Set } from '../core/models/collections/exercise-set';
 import { WeightTypePipe } from '../core/pipes/weight-type.pipe';
 import { PocketbaseService } from '../core/services/pocketbase.service';
 import { NoDataComponent } from '../shared/no-data/no-data.component';
-import { WorkoutState } from '../core/models/workout-state';
+import { WorkoutState } from '../core/models/enums/workout-state';
 import { LoadingController } from '@ionic/angular/standalone';
+import { Day } from '../core/models/collections/day';
+import { ContinueFooterComponent } from '../shared/continue-footer/continue-footer.component';
+import { ProgramBM } from '../core/models/bm/program-bm';
+import { WeekBM } from '../core/models/bm/week-bm';
+import { DayBM } from '../core/models/bm/day-bm';
+
+type ProgramInfo = (
+    Program &
+    {
+        tags: string[],
+        nextDay: Day,
+        started: boolean,
+        completed: boolean,
+        totalDaysCount: number,
+        completedDaysCount: number
+    }
+);
+type WorkoutInfo = (Workout & { nextExercise?: (Exercise & { nextSet?: Set }) });
 
 @Component({
     selector: 'app-home',
@@ -37,7 +55,8 @@ import { LoadingController } from '@ionic/angular/standalone';
         DateTimePipe,
         NgTemplateOutlet,
         WeightTypePipe,
-        NoDataComponent
+        NoDataComponent,
+        ContinueFooterComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
@@ -47,9 +66,12 @@ export class HomePage {
     WeightType = WeightType;
     RepType = RepType;
 
-    workouts: (Workout & { nextExercise?: (Exercise & { nextSet?: Set }) })[] = [];
-    programs: (Program & { tags: string[] })[] = [];
+    workouts: WorkoutInfo[] = [];
+    programs: ProgramInfo[] = [];
     templates: Template[] = [];
+    lastWorkout: Workout;
+
+    continueFooter = viewChild(ContinueFooterComponent);
 
     constructor(
         private modalCtrl: ModalController,
@@ -66,6 +88,8 @@ export class HomePage {
     }
 
     async refresh() {
+        this.continueFooter()?.refresh();
+
         this.pocketbaseService.workouts.getFullList({
             sort: '-start',
             filter: `state = ${WorkoutState.InProgress}`,
@@ -82,6 +106,7 @@ export class HomePage {
                         : undefined,
                 };
             });
+            this.lastWorkout = this.workouts[0];
         });
 
         this.pocketbaseService.templates.getFullList({
@@ -91,8 +116,8 @@ export class HomePage {
         });
 
         this.pocketbaseService.programs.getFullList({
-            sort: '-created',
-            expand: 'weeks,weeks.days'
+            sort: '-updated',
+            expand: 'weeks,weeks.days,weeks.days.workout'
         }).then((programs) => {
             this.programs = programs.map(p => {
                 const tagsToTake = 3;
@@ -104,11 +129,25 @@ export class HomePage {
                     tagsToShow.push(`+${tags.length - 3}`);
                 }
 
+                const days = p.weeks.flatMap(w => w.days);
+
+                const nextDay = days.find(d => !d.workout);
+                const started = days.some(d => !!d.workout);
+                const completedDaysCount = days.filter(d => d.workout && d.workout.state != WorkoutState.InProgress)?.length;
+                const totalDaysCount = days.length;
+
                 return {
                     ...p,
+                    nextDay: nextDay,
+                    completedDaysCount: completedDaysCount,
+                    totalDaysCount: totalDaysCount,
+                    started: started,
+                    completed: started && completedDaysCount == totalDaysCount,
                     tags: tagsToShow
                 }
             });
+
+            console.log(this.programs);
         });
     }
 
@@ -146,22 +185,24 @@ export class HomePage {
         this.navCtrl.navigateForward([`./program/${programId}`]);
     }
 
-    async presentProgramActionSheet(program: Program) {
+    async presentProgramActionSheet(program: ProgramInfo) {
         const programId = program.id;
 
         const translations = await lastValueFrom(this.translateService.get([
-            'start', 'edit', 'close', 'delete', 'assign'
+            'start', 'continue', 'edit', 'close', 'delete', 'assign', 'copy'
         ]));
         const actionSheet = await this.actionSheetCtrl.create({
             header: program.name,
             buttons: [
-                {
-                    text: translations.start,
+                !program.completed ? {
+                    text: program.started
+                        ? translations.continue
+                        : translations.start,
                     icon: 'play-outline',
                     handler: () => {
                         this.startWorkoutFromProgram(programId);
                     },
-                },
+                } : null,
                 {
                     text: translations.edit,
                     icon: 'create-outline',
@@ -178,6 +219,13 @@ export class HomePage {
                 //     },
                 // },
                 {
+                    text: translations.copy,
+                    icon: 'copy-outline',
+                    handler: () => {
+                        this.copyProgram(programId);
+                    },
+                },
+                {
                     text: translations.delete,
                     icon: 'trash-outline',
                     role: 'destructive',
@@ -190,26 +238,50 @@ export class HomePage {
                     icon: 'close-outline',
                     role: 'cancel',
                 },
-            ],
+            ].filter(Boolean),
         });
 
         await actionSheet.present();
     }
 
-    async startWorkoutFromProgram(programId: string) {
-        return;
+    async copyProgram(programId: string) {
+        const program = this.programs.find(p => p.id == programId);
 
+        const newProgram = {
+            name: program.name,
+            numberOfWeeks: program.numberOfWeeks,
+            description: program.description,
+            weeks: program.weeks.map(w => {
+                return {
+                    days: w.days.map(d => {
+                        return {
+                            exercises: d.exercises
+                        } as DayBM
+                    })
+                } as WeekBM
+            })
+        } as ProgramBM
+
+        await this.pocketbaseService.upsertRecord('programs', newProgram);
+
+        this.refresh();
+    }
+
+    async startWorkoutFromProgram(programId: string) {
         const program = this.programs.find(p => p.id == programId);
 
         const workout: Workout = {
             end: null,
             start: new Date(),
-            // TODO: TBD: pick exercises from next upcoming day/week NOW, complete 'week'/'day' as workout is completed)
-            // New prop: week.completed, day.completed; link workout to day; if workout is completed complete day; if all days are completed, complete week: after all weeks completed: go from beggining
-            exercises: [],
+            day: program.nextDay,
+            exercises: program.nextDay.exercises,
             state: WorkoutState.InProgress
         };
 
+        this.createAndNavToWorkout(workout);
+    }
+
+    async createAndNavToWorkout(workout: Workout) {
         const loading = await this.loadingCtrl.create({});
         loading.present();
 
@@ -217,8 +289,6 @@ export class HomePage {
             loading.dismiss();
             this.navCtrl.navigateForward([`./workout-wizard/${workout.id}`]);
         });
-
-        this.navCtrl.navigateForward([`./workout-wizard`]);
     }
 
     async presentAssignProgramPopover(program: Program) {
@@ -300,13 +370,7 @@ export class HomePage {
             state: WorkoutState.InProgress
         };
 
-        const loading = await this.loadingCtrl.create({});
-        loading.present();
-
-        this.pocketbaseService.upsertRecord('workouts', workout, false).then((workout) => {
-            loading.dismiss();
-            this.navCtrl.navigateForward([`./workout-wizard/${workout.id}`]);
-        });
+        this.createAndNavToWorkout(workout);
     }
 
     editTemplate(templateId: string) {

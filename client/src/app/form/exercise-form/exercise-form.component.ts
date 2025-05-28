@@ -1,16 +1,17 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, output, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormArray } from '@angular/forms';
 import { IonicModule, ModalController, IonModal, ItemReorderEventDetail } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
-import { RepType } from 'src/app/core/models/rep-type';
-import { WeightType } from 'src/app/core/models/weight-type';
+import { RepType } from 'src/app/core/models/enums/rep-type';
+import { WeightType } from 'src/app/core/models/enums/weight-type';
 import { DurationPipe } from 'src/app/core/pipes/duration.pipe';
 import { ExerciseNotesModalComponent } from 'src/app/exercise-notes-modal/exercise-notes-modal.component';
 import { ExerciseFormGroup, FormsService, ExerciseSetFormGroup } from 'src/app/core/services/forms.service';
-import { Set } from 'src/app/core/models/exercise-set';
+import { Set } from 'src/app/core/models/collections/exercise-set';
 import { WeightTypePipe } from 'src/app/core/pipes/weight-type.pipe';
 import { RepTypePipe } from 'src/app/core/pipes/rep-type.pipe';
 import { NgTemplateOutlet } from '@angular/common';
+import { IonPopover } from '@ionic/angular/standalone';
 
 @Component({
     selector: 'app-exercise-form',
@@ -29,7 +30,7 @@ import { NgTemplateOutlet } from '@angular/common';
     ],
     providers: [FormsService]
 })
-export class ExerciseFormComponent {
+export class ExerciseFormComponent implements OnChanges {
 
     durationOptions: { value: number }[] = [
         { value: 0 }
@@ -46,13 +47,13 @@ export class ExerciseFormComponent {
     selectedRestValue: any = 0;
     numSets: any = 1;
     selectedWeightType: any = WeightType.KG;
-    selectedWeight: any = 5;
+    selectedWeight: any = 60;
     selectedRepType: any = RepType.Reps;
     selectedValue: any = 10;
     selectedMinValue: any = 8;
     selectedMaxValue: any = 12;
 
-    weightOptions = Array.from({ length: 60 }, (_, i) => (i + 1) * 0.5);
+    weightOptions = Array.from({ length: 240 }, (_, i) => (i + 1) * 0.5);
     setsOptions = Array.from({ length: 10 }, (_, i) => i + 1);
     repsOptions = Array.from({ length: 30 }, (_, i) => i + 1);
     repsOptionsMin = this.repsOptions;
@@ -61,11 +62,13 @@ export class ExerciseFormComponent {
 
     @Input() exercise: ExerciseFormGroup;
 
-    @Output() restStartedEvent = new EventEmitter<number>();
-    @Output() allCompletedEvent = new EventEmitter<number>();
+    onCompletedEvent = output<number>();
+    onAllCompletedEvent = output<void>();
+    onRemoveExerciseEvent = output<void>();
 
     @ViewChild('setPickerModal') setPickerModal: IonModal;
     @ViewChild('restPickerModal') restPickerModal: IonModal;
+    @ViewChild('exercisePopover') exercisePopover: IonPopover;
 
     constructor(
         private modalCtrl: ModalController,
@@ -76,12 +79,36 @@ export class ExerciseFormComponent {
         }
     }
 
+    get setsArray() {
+        return this.exercise.get('sets') as FormArray<ExerciseSetFormGroup>;
+    }
+
+    /**
+     * Automatically fills the current values and weights of each set based on the expected values.
+     */
+    autoFillDefaults() {
+        if (!this.workoutMode || this.exercise.controls.completed.value) {
+            return;
+        }
+
+        const sets = this.exercise.get('sets') as FormArray<ExerciseSetFormGroup>;
+
+        for (let i = 0; i < sets.length; i++) {
+            const set = sets.at(i);
+
+            set.controls.currentValue.setValue(set.controls.value.value || 0);
+            set.controls.currentWeight.setValue(set.controls.weight.value || 0);
+        }
+    }
+
     updateCompletion(setIndex: number) {
         const form = this.setsArray.at(setIndex);
 
         if (form.controls.completed.value) {
-            form.controls.completed.setValue(true);
-            this.handleRest();
+            form.controls.completedAt.setValue(new Date());
+            form.controls.restSkipped.setValue(false);
+
+            this.onCompleted(setIndex);
 
             var allCompleted = true;
             for (let i = 0; i < this.setsArray.length; i++) {
@@ -93,21 +120,21 @@ export class ExerciseFormComponent {
 
             if (allCompleted) {
                 setTimeout(() => {
-                    this.allCompletedEvent.emit();
+                    this.exercise.controls.completed.setValue(true);
+                    this.exercise.controls.completedAt.setValue(new Date());
+                    this.onAllCompletedEvent.emit();
                 })
+            } else {
+                this.exercise.controls.completed.setValue(false);
+                this.exercise.controls.completedAt.setValue(null);
             }
+        } else {
+            form.controls.completedAt.setValue(null);
         }
     }
 
-    handleRest() {
-        const restDuration = this.exercise.get('restDuration')?.value;
-        if (restDuration) {
-            this.restStartedEvent.emit(restDuration);
-        }
-    }
-
-    get setsArray() {
-        return this.exercise.get('sets') as FormArray<ExerciseSetFormGroup>;
+    onCompleted(setIndex: number) {
+        this.onCompletedEvent.emit(setIndex);
     }
 
     addSet() {
@@ -133,8 +160,9 @@ export class ExerciseFormComponent {
     }
 
     removeSetAt(index: number) {
+        const setsArray = this.setsArray;
         if (this.setsArray.length > 1) {
-            this.setsArray.removeAt(index);
+            setsArray.removeAt(index);
         }
     }
 
@@ -222,7 +250,7 @@ export class ExerciseFormComponent {
                 currentWeight: this.selectedWeight,
                 currentValue: this.selectedValue,
             } :
-            // edit mode: can change type/expected values
+            // edit mode: can change type/target values
             {
                 weightType: this.selectedWeightType,
                 weight: this.selectedWeight,
@@ -262,5 +290,20 @@ export class ExerciseFormComponent {
         }
 
         this.cancelPicker();
+    }
+
+    togglePopover(event: Event) {
+        if (this.exercisePopover.isOpen) {
+            this.exercisePopover.dismiss();
+        } else {
+            this.exercisePopover.event = event;
+            this.exercisePopover.present();
+        }
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if ((changes['exercise'] || changes['workoutMode']) && this.workoutMode) {
+            this.autoFillDefaults();
+        }
     }
 }

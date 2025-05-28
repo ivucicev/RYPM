@@ -1,9 +1,8 @@
-import { RepType } from "./rep-type";
-import { WeightType } from "./weight-type";
+import { RepType } from "../enums/rep-type";
+import { WeightType } from "../enums/weight-type";
 
-export interface Set {
+export interface SetBM {
     id?: string;
-    index: number;
 
     type: RepType;
     weightType: WeightType;
@@ -13,6 +12,8 @@ export interface Set {
     maxValue?: number;
 
     completed?: boolean;
+    completedAt?: Date;
+    restSkipped?: boolean;
     currentWeight?: number;
     currentValue?: number;
 

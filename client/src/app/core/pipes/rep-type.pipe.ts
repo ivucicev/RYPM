@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { RepType } from '../models/rep-type';
+import { RepType } from '../models/enums/rep-type';
 
 @Pipe({
     name: 'repType',

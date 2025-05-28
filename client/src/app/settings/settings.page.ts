@@ -8,7 +8,7 @@ import { IonicModule, PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AccountSwitchPopoverComponent } from './account-switch-popover/account-switch-popover.component';
 import { AccountService } from '../core/services/account.service';
-import { User } from '../core/models/user';
+import { User } from '../core/models/collections/user';
 import { ThemeService } from '../core/services/theme.service';
 
 @Component({

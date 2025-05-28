@@ -1,4 +1,4 @@
-import { Day } from "./day";
+import { Day } from "./collections/day";
 
 export interface Week {
     id?: string;

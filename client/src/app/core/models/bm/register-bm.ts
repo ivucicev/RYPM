@@ -1,4 +1,4 @@
-import { UserType } from "../user-type";
+import { UserType } from "../enums/user-type";
 
 export interface RegisterBM {
     name: string;

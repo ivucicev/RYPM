@@ -4,8 +4,8 @@ import { ActionSheetController, IonicModule, ModalController } from '@ionic/angu
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ErrorMessageDirective } from '../core/directives/error-message.directive';
 import { NavController, PopoverController } from '@ionic/angular/standalone';
-import { RepType } from '../core/models/rep-type';
-import { WeightType } from '../core/models/weight-type';
+import { RepType } from '../core/models/enums/rep-type';
+import { WeightType } from '../core/models/enums/weight-type';
 import { ExerciseFormComponent } from '../form/exercise-form/exercise-form.component';
 import { ProgramFormGroup, FormsService } from '../core/services/forms.service';
 import { lastValueFrom, Subject, takeUntil } from 'rxjs';
@@ -13,9 +13,12 @@ import { DayActionsPopoverComponent } from '../day-actions-popover/day-actions-p
 import { AssignModalComponent } from '../assign-program-modal/assign-modal.component';
 import { PocketbaseService } from '../core/services/pocketbase.service';
 import { ActivatedRoute } from '@angular/router';
-import { Program } from '../core/models/program';
+import { Program } from '../core/models/collections/program';
 import { ProgramBM } from '../core/models/bm/program-bm';
 import { AutosaveService } from '../core/services/autosave.service';
+import { WorkoutState } from '../core/models/enums/workout-state';
+import { Day } from '../core/models/collections/day';
+import { WorkoutStateColorPipe } from '../core/pipes/workout-state-color.pipe';
 
 @Component({
     selector: 'app-program',
@@ -23,12 +26,14 @@ import { AutosaveService } from '../core/services/autosave.service';
     styleUrls: ['./program.component.scss'],
     standalone: true,
     imports: [IonicModule, TranslateModule, ReactiveFormsModule, FormsModule, ErrorMessageDirective,
-        ExerciseFormComponent],
+        ExerciseFormComponent, WorkoutStateColorPipe],
     providers: [FormsService, AutosaveService]
 })
 export class ProgramComponent implements OnInit, OnDestroy {
 
     private unsubscribeAll = new Subject<void>();
+
+    program: Program;
 
     programForm: ProgramFormGroup = this.programFormService.createProgramFormGroup();
     subject: Subject<void>;
@@ -38,6 +43,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
     activeTab: string = 'info';
     RepType = RepType;
     WeightType = WeightType;
+    WorkoutState = WorkoutState;
 
     weeks = Array.from({ length: 12 }, (_, i) => i + 1);
 
@@ -79,8 +85,9 @@ export class ProgramComponent implements OnInit, OnDestroy {
         this.unsubscribeAll.complete();
     }
 
-
     init(program?: Program) {
+        this.program = program;
+
         this.programForm = this.programFormService.createProgramFormGroup(program);
         this.autosaveService.register<ProgramBM>(this.programForm, 'programs', false)
             .subscribe();
@@ -92,7 +99,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.pocketbaseService.programs.getOne(id, { expand: 'weeks,weeks.days' }).then((res) => {
+        this.pocketbaseService.programs.getOne(id, { expand: 'weeks,weeks.days,weeks.days.workout' }).then((res) => {
             this.init(res);
         });
     }
@@ -100,6 +107,12 @@ export class ProgramComponent implements OnInit, OnDestroy {
     tabChange() {
         if (this.activeTab.includes('week')) {
             this.activeDayIndex = 0;
+        }
+    }
+
+    navigateToWorkout(day: Day) {
+        if (day.workout?.id) {
+            this.navCtrl.navigateForward([`./workout-wizard/${day.workout.id}`]);
         }
     }
 
@@ -133,7 +146,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
     }
 
     removeExercise(weekIndex: number, dayIndex: number, exerciseIndex: number) {
-        return this.programFormService.removeExercise(this.programForm, weekIndex, dayIndex, exerciseIndex);
+        this.programFormService.removeExercise(this.programForm, weekIndex, dayIndex, exerciseIndex);
     }
 
     setActiveDay(dayIndex: number) {
@@ -141,8 +154,11 @@ export class ProgramComponent implements OnInit, OnDestroy {
     }
 
     addDay(weekIndex: number): void {
+        const daysArray = this.getDaysArray(weekIndex);
+        if (daysArray.length >= 7) return;
+
         this.programFormService.addDay(this.programForm, weekIndex);
-        const newDayIndex = this.getDaysArray(weekIndex).length - 1;
+        const newDayIndex = daysArray.length - 1;
         this.activeDayIndex = newDayIndex;
     }
 

@@ -42,6 +42,7 @@ import {
     personOutline,
     personAdd,
     timerOutline,
+    ellipseOutline,
     hourglassOutline,
     timeOutline,
     barbellOutline,
@@ -74,6 +75,7 @@ import {
     caretForwardOutline,
     fileTrayOutline,
     fileTray,
+    fitness,
 } from 'ionicons/icons';
 
 export function registerIcons(): void {
@@ -99,6 +101,8 @@ export function registerIcons(): void {
         caretForwardOutline,
         fileTrayOutline,
         fileTray,
+        ellipseOutline,
+        fitness,
 
         // Navigation icons
         chevronUp,

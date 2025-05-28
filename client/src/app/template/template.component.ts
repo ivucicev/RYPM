@@ -3,8 +3,8 @@ import { ReactiveFormsModule, FormsModule, FormGroup, FormArray } from '@angular
 import { ActionSheetController, IonicModule, NavController } from '@ionic/angular';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ExerciseFormComponent } from '../form/exercise-form/exercise-form.component';
-import { RepType } from '../core/models/rep-type';
-import { WeightType } from '../core/models/weight-type';
+import { RepType } from '../core/models/enums/rep-type';
+import { WeightType } from '../core/models/enums/weight-type';
 import { ExerciseFormGroup, FormsService } from '../core/services/forms.service';
 import { FormType } from '../core/helpers/form-helpers';
 import { TemplateBM } from '../core/models/bm/template-bm';
@@ -12,7 +12,7 @@ import { PocketbaseService } from '../core/services/pocketbase.service';
 import { ActivatedRoute } from '@angular/router';
 import { lastValueFrom, Subject, takeUntil } from 'rxjs';
 import { AutosaveService } from '../core/services/autosave.service';
-import { Template } from '../core/models/template';
+import { Template } from '../core/models/collections/template';
 
 @Component({
     selector: 'app-template',

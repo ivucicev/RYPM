@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, viewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { QrCodeModalComponent } from '../qr-code-modal/qr-code-modal.component';
 import { ModalController, NavController } from '@ionic/angular/standalone';
+import { ContinueFooterComponent } from '../shared/continue-footer/continue-footer.component';
 
 interface ChatItem {
     id: string;
@@ -20,7 +21,7 @@ interface ChatItem {
     templateUrl: './chats.page.html',
     styleUrls: ['./chats.page.scss'],
     standalone: true,
-    imports: [IonicModule, TranslateModule, CommonModule, FormsModule],
+    imports: [IonicModule, TranslateModule, CommonModule, FormsModule, ContinueFooterComponent],
 })
 export class ChatsPage {
     showSearchBar = false;
@@ -78,10 +79,20 @@ export class ChatsPage {
         }
     ];
 
+    continueFooter = viewChild(ContinueFooterComponent);
+
     constructor(
         private modalCtrl: ModalController,
         private navCtrl: NavController
     ) { }
+
+    ionViewWillEnter() {
+        this.refresh();
+    }
+
+    async refresh() {
+        this.continueFooter()?.refresh();
+    }
 
     toggleSearch() {
         this.showSearchBar = !this.showSearchBar;

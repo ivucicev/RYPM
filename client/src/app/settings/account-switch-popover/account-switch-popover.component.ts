@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicModule, NavController, PopoverController } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
-import { User } from '../../core/models/user';
+import { User } from '../../core/models/collections/user';
 import { AccountService, UserMap } from '../../core/services/account.service';
 
 @Component({

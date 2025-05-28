@@ -5,9 +5,14 @@
         </ion-buttons>
         <ion-title>{{ 'workout' | translate }}</ion-title>
         <ion-label slot="end">
-            @if (workout != null) {
-            <app-time-badge [initialTime]="workout.start"></app-time-badge>
-            }
+            <div class="ion-align-items-center" style="display: flex">
+                @if (workout != null) {
+                <app-time-badge [initialTime]="workout.start" style="display: flex"></app-time-badge>
+                }
+                <ion-button color="dark" fill="clear" size="small" (click)="openSettings()">
+                    <ion-icon name="ellipsis-vertical"></ion-icon>
+                </ion-button>
+            </div>
         </ion-label>
     </ion-toolbar>
     <ion-toolbar>
@@ -40,31 +45,30 @@
         }
         <div class="sets-container">
             <app-exercise-form #exerciseForm [style.width]="'100%'" [exercise]="currentExercise()" [workoutMode]="true"
-                (restStartedEvent)="startRest($event)" (allCompletedEvent)="goToNextExercise()">
+                (onCompletedEvent)="startRest($event)" (onAllCompletedEvent)="goToNextExercise()">
             </app-exercise-form>
         </div>
+        } @else if (currentExerciseIndex() == -1) {
+        <app-no-data [text]="'no_exercises' | translate"></app-no-data>
         } @else {
         <ion-spinner class="fullscreen" name="dots"></ion-spinner>
         }
     </div>
 </ion-content>
 
-@if (isResting) {
+@if(lastCompletedSet && lastCompletedSetExercise) {
 <ion-footer class="ion-no-border animate__animated animate__fadeInUp ion-padding-bottom skip-footer">
-    <ion-button size="large" expand="round" shape="round" color="primary" (click)="stopRest()">
-        <ion-icon slot="start" name="timer-outline"></ion-icon>
-        {{'skip' | translate}} ({{ restTimeRemaining | duration }})
-    </ion-button>
+    <app-rest-badge [initialTime]="lastCompletedSet.controls.completedAt.value" (onRestSkippedEvent)="onRestSkipped()"
+        [duration]="lastCompletedSetExercise.controls.restDuration.value"></app-rest-badge>
 </ion-footer>
 }
 
-
-@if (currentExercise() != null) {
+@if (currentExercise() != null || currentExerciseIndex() == -1) {
 <ion-footer class="bg_transparent">
     <div class="footer-container">
         <div class="nav-buttons ion-padding-start ion-padding-end">
             <div class="prev-next-buttons">
-                <ion-button fill="clear" shape="round" [disabled]="currentExerciseIndex() === 0"
+                <ion-button fill="clear" shape="round" [disabled]="currentExerciseIndex() <= 0"
                     (click)="goToPreviousExercise()">
                     <ion-icon name="play-skip-back-outline" name="chevron-back-outline"></ion-icon>
                 </ion-button>
@@ -74,7 +78,7 @@
                         ({{ nextExercise().controls.sets.value?.length }} {{'sets' | translate}})</p>
                 </div>
                 }
-                @if (currentExerciseIndex() === exercises.length - 1) {
+                @if (currentExerciseIndex() === exercises.length - 1 || currentExerciseIndex() === -1) {
                 <ion-button fill="clear" shape="round" [disabled]="" (click)="completeWorkout()">
                     <ion-note class="ion-color-primary ion-color">{{ 'complete' | translate }}</ion-note>
                     <!-- <ion-icon name="checkmark-done-outline"></ion-icon> -->

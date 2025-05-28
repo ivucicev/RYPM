@@ -3,13 +3,13 @@ import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, FormArray } f
 import { IonicModule, NavController } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormType } from '../core/helpers/form-helpers';
-import { RepType } from '../core/models/rep-type';
-import { WeightType } from '../core/models/weight-type';
+import { RepType } from '../core/models/enums/rep-type';
+import { WeightType } from '../core/models/enums/weight-type';
 import { FormsService, ExerciseFormGroup } from '../core/services/forms.service';
 import { ExerciseFormComponent } from '../form/exercise-form/exercise-form.component';
 import { PocketbaseService } from '../core/services/pocketbase.service';
 import { WorkoutBM } from '../core/models/bm/workout-bm';
-import { WorkoutState } from '../core/models/workout-state';
+import { WorkoutState } from '../core/models/enums/workout-state';
 
 @Component({
     selector: 'app-workout',
@@ -75,8 +75,8 @@ export class WorkoutComponent implements OnInit {
         if (this.workoutForm.valid) {
             const workout = this.workoutForm.value;
             workout.start = new Date();
-            this.pocketbaseService.upsertRecord('workouts', workout).then(res => {
-                this.navCtrl.navigateBack(['./tabs']);
+            this.pocketbaseService.upsertRecord('workouts', workout, false).then(res => {
+                this.navCtrl.navigateForward([`./workout-wizard/${res.id}`], { replaceUrl: true });
             });
         }
     }

@@ -3,16 +3,17 @@ import { TranslateService } from '@ngx-translate/core';
 import PocketBase, { RecordModel } from 'pocketbase';
 import { environment } from 'src/environments/environment';
 import { ToastService } from './toast-service';
-import { User } from '../models/user';
-import { Workout } from '../models/workout';
-import { Day } from '../models/day';
-import { Week } from '../models/week';
-import { Set } from '../models/exercise-set';
-import { Exercise } from '../models/exercise';
-import { Program } from '../models/program';
-import { Template } from '../models/template';
+import { User } from '../models/collections/user';
+import { Workout } from '../models/collections/workout';
+import { Day } from '../models/collections/day';
+import { Week } from '../models/collections/week';
+import { Set } from '../models/collections/exercise-set';
+import { Exercise } from '../models/collections/exercise';
+import { Program } from '../models/collections/program';
+import { Template } from '../models/collections/template';
 import { PB } from '../constants/pb-constants';
 import { Collection, COLLECTIONS } from '../constants/collections';
+import { LoadingController } from '@ionic/angular/standalone';
 
 @Injectable({
     providedIn: 'root'
@@ -38,12 +39,18 @@ export class PocketbaseService {
         'users': [],
     };
 
+    private singleRelationMappings: Record<string, string[]> = {
+        'workouts': ['day'],
+        'days': ['workout'],
+    };
+
     pb: PocketBase = new PocketBase(environment.apiURL);
     currentUser: User;
 
     constructor(
         private translateService: TranslateService,
-        private toastService: ToastService
+        private toastService: ToastService,
+        private loadingCtrl: LoadingController
     ) {
         this.init();
     }
@@ -60,20 +67,31 @@ export class PocketbaseService {
         }
 
         this.pb.afterSend = (response, data, options?: any) => {
-            if (options && options.headers && options.headers.notoast) return data;
-
             if (response.status != 200) {
+                try {
+                    this.loadingCtrl.dismiss();
+                } catch { }
                 switch (response.status) {
                     case 400:
+                    case 409:
                         let messages = '';
-                        if (data.data)
+                        if (data.data) {
                             Object.keys(data.data).forEach(key => {
                                 const d = data.data as { code: string, message: string };
-                                messages += this.translateService.instant((key.charAt(0).toUpperCase() + key.slice(1)) + " - " + data.data[key].message) + ' ';
+                                messages += this.translateService.instant((key.charAt(0).toUpperCase() + key.slice(1))
+                                    + " - "
+                                    + this.translateService.instant(d[key].code));
                             })
-                        this.toastService.error(data?.message + ' ' + messages);
-                        break;
+                        }
 
+                        messages = messages || 'errors.unexpected_error';
+                        if (response.status == 409) {
+                            this.toastService.info(messages);
+                        } else {
+                            this.toastService.error(messages);
+                        }
+
+                        break;
                     case 500:
                         this.toastService.error('errors.unexpected_error');
                         break;
@@ -81,12 +99,13 @@ export class PocketbaseService {
                         break;
                 }
             } else if (options?.method == "POST" || options?.method == "PATCH" || options?.method == "DELETE") {
-                this.toastService.success();
+                if (!options?.headers?.notoast) {
+                    this.toastService.success();
+                }
             }
 
             if (response.status == 200) {
                 const mapped = this.mapRecordModel(data);
-                console.log('Fetched & mapped', mapped);
                 return mapped;
             }
 
@@ -145,7 +164,6 @@ export class PocketbaseService {
     }
     //#endregion
 
-
     /**
      * Maps returned {@link RecordModel} object to a more usable type format.
      *
@@ -199,180 +217,226 @@ export class PocketbaseService {
         return result as ExpandedResult<T>;
     }
 
-
-    // TODO: improve `disableAutoCancel` logic: unnecessary requests?
     /**
-     * Recursively upserts a record and its nested collections
-     * @param collectionName Name of the collection for this record
-     * @param data Record data including any nested collections as arrays of objects
-     * @returns The created/updated record
+     * Creates or updates a record in the specified collection, handling nested collections.
+     *
+     * @param collectionName - The name of the collection to create/update the record in
+     * @param data - The record data to be created or updated
+     * @param showToast - Whether to show a success toast notification after completion
+     * @param disableAutoCancel - Whether to disable auto-cancellation of the request
+     * @param depth - The current depth of nested processing (used for recursion)
+     * @returns A promise resolving to the created/updated record
      */
-    async upsertRecord<T = any>(
+    async upsertRecord<T extends { id?: string }>(
         collectionName: Collection,
-        data: T | any,
+        data: any,
         showToast: boolean = true,
         disableAutoCancel: boolean = false,
-        depth: number = 0,
-    ): Promise<RecordModel> {
+        depth: number = 0
+    ): Promise<T> {
         const recordData = JSON.parse(JSON.stringify(data));
-
         const recordId = recordData.id && recordData.id !== "" ? recordData.id : null;
         delete recordData.id;
 
-        const { collections, jsonFields } = this.separateCollectionsAndJsonFields(
+        const { collections, singleRelations, obj } = this.separateCollectionAndPrimitiveProperties(
             collectionName,
             recordData
         );
-        Object.assign(recordData, jsonFields);
 
-        // create/update the main record
-        let result: RecordModel;
-        if (recordId) {
-            result = await this.pb.collection(collectionName).update(
-                recordId,
-                recordData,
-                {
-                    ...this.updateNestedOptions,
-                    requestKey: disableAutoCancel ? null : undefined
-                }
-            );
-        } else {
-            result = await this.pb.collection(collectionName).create(
-                recordData,
-                {
-                    ...this.updateNestedOptions,
-                    requestKey: disableAutoCancel ? null : undefined
-                }
-            );
+        const requestOptions = {
+            ...this.updateNestedOptions,
+            requestKey: disableAutoCancel ? null : undefined
+        };
+
+        const result = recordId
+            ? await this.pb.collection(collectionName).update<T>(recordId, obj, requestOptions)
+            : await this.pb.collection(collectionName).create<T>(obj, requestOptions);
+
+        const relationReferences = await this.processSingleRelations(
+            collectionName,
+            result.id,
+            singleRelations,
+            disableAutoCancel,
+            depth
+        );
+
+        const { backReferences, processedCollections } = await this.processNestedCollections(
+            collectionName,
+            result.id,
+            collections,
+            requestOptions,
+            disableAutoCancel,
+            depth
+        );
+
+        console.log(backReferences);
+
+        if (Object.keys(backReferences).length > 0) {
+            await this.pb.collection(collectionName).update(result.id, backReferences, requestOptions);
         }
 
-        // process collection references
-        const childReferences = {};
-        for (const [collectionKey, items] of Object.entries(collections)) {
-            if (!Array.isArray(items) || items.length === 0) continue;
-
-            childReferences[collectionKey] = [];
-
-            for (const item of items as any[]) {
-                if (item.id === "") {
-                    delete item.id;
-                }
-
-                // parent ref
-                const parentField = this.getSingularName(collectionName);
-                item[parentField] = result['id'];
-
-                // process child item
-                let itemResult;
-                if (item.id) {
-                    const itemId = item.id;
-                    delete item.id; // remove ID from payload
-                    itemResult = await this.pb.collection(collectionKey).update(
-                        itemId,
-                        item,
-                        {
-                            ...this.updateNestedOptions,
-                            requestKey: disableAutoCancel ? null : undefined
-                        }
-                    );
-                } else {
-                    itemResult = await this.pb.collection(collectionKey).create(
-                        item,
-                        {
-                            ...this.updateNestedOptions,
-                            requestKey: disableAutoCancel ? null : undefined
-                        }
-                    );
-                }
-
-                childReferences[collectionKey].push(itemResult.id);
-
-                // check for nested
-                const { collections: nestedCollections } = this.separateCollectionsAndJsonFields(
-                    collectionKey,
-                    item
-                );
-                if (Object.keys(nestedCollections).length > 0) {
-                    const nestedRefs = {};
-
-                    for (const [nestedKey, nestedItems] of Object.entries(nestedCollections)) {
-                        nestedRefs[nestedKey] = [];
-
-                        for (const nestedItem of nestedItems as any[]) {
-                            const nestedParentField = this.getSingularName(collectionKey);
-                            nestedItem[nestedParentField] = itemResult.id;
-
-                            const nestedResult = await this.upsertRecord(nestedKey as Collection, nestedItem, false, disableAutoCancel, depth + 1);
-                            nestedRefs[nestedKey].push(nestedResult.id);
-                        }
-                    }
-
-                    if (Object.keys(nestedRefs).length > 0) {
-                        await this.pb.collection(collectionKey).update(
-                            itemResult.id,
-                            nestedRefs,
-                            {
-                                ...this.updateNestedOptions,
-                                requestKey: disableAutoCancel ? null : undefined
-                            }
-                        );
-                    }
-                }
-            }
-        }
-
-        // update parent with references to children
-        if (Object.keys(childReferences).length > 0) {
-            await this.pb.collection(collectionName).update(
-                result['id'],
-                childReferences,
-                {
-                    ...this.updateNestedOptions,
-                    requestKey: disableAutoCancel ? null : undefined
-                }
-            );
+        if (Object.keys(relationReferences).length > 0) {
+            await this.pb.collection(collectionName).update(result.id, relationReferences, requestOptions);
         }
 
         if (depth === 0 && showToast) {
             this.toastService.success();
         }
 
+        // TODO: merge back returned result?
+        // const completeResult = {
+        //     ...result,
+        //     ...processedCollections,
+        //     ...singleRelations
+        // };
+
         return result;
     }
 
-    /**
-     * Separates collections from JSON fields based on the collection mapping
-     */
-    private separateCollectionsAndJsonFields(collectionName: string, data: any): {
-        collections: Record<string, any[]>,
-        jsonFields: Record<string, any>
-    } {
-        const collections: Record<string, any[]> = {};
-        const jsonFields: Record<string, any> = {};
+    private async processSingleRelations(
+        parentCollection: Collection,
+        parentId: string,
+        singleRelations: Record<string, any>,
+        disableAutoCancel: boolean = false,
+        depth: number = 0
+    ): Promise<Record<string, string>> {
+        const relationReferences: Record<string, string> = {};
 
-        Object.keys(data).forEach(key => {
-            if (Array.isArray(data[key]) && data[key].length > 0 &&
-                typeof data[key][0] === 'object') {
+        for (const [relationName, relationData] of Object.entries(singleRelations)) {
+            if (!relationData) continue;
 
-                const isCollection = this.collectionMappings[collectionName]?.includes(key);
-
-                if (isCollection) {
-                    // collection relationship - process separately
-                    collections[key] = data[key];
-                } else {
-                    // JSON field - keep it with the main record
-                    jsonFields[key] = data[key];
+            try {
+                if (typeof relationData === 'string') {
+                    relationReferences[`${relationName}`] = relationData;
+                    continue;
                 }
-            } else {
-                // regular field
-                jsonFields[key] = data[key];
-            }
-        });
 
-        return { collections, jsonFields };
+                const collectionName = Object.values(COLLECTIONS).find(c => c.startsWith(relationName));
+
+                const backRefCollectionName = this.singleRelationMappings[collectionName].find(c => parentCollection.startsWith(c));
+                relationData[backRefCollectionName] = parentId;
+
+                const result = await this.upsertRecord(
+                    collectionName as Collection,
+                    relationData,
+                    false,
+                    disableAutoCancel,
+                    depth + 1
+                );
+
+                relationReferences[`${relationName}`] = result.id;
+                singleRelations[relationName] = result;
+            } catch (error) {
+                console.error(`Error processing single relation ${relationName}:`, error);
+            }
+        }
+
+        return relationReferences;
     }
 
-    private getSingularName(collectionName: string): string {
+    private async processNestedCollections(
+        parentCollection: Collection,
+        parentId: string,
+        collections: Record<string, any[]>,
+        requestOptions: any,
+        disableAutoCancel: boolean = false,
+        depth: number = 0
+    ): Promise<{
+        backReferences: Record<string, any>;
+        processedCollections: Record<string, any[]>;
+    }> {
+        const parentRef = this.getParentRef(parentCollection);
+        const nestedCollectionNames = this.collectionMappings[parentCollection] || [];
+
+        const backReferences: Record<string, any> = {};
+        const processedCollections: Record<string, any[]> = {};
+
+        for (const collectionName of nestedCollectionNames) {
+            if (!collections[collectionName]) continue;
+
+            const items = collections[collectionName];
+            const processedIds: string[] = [];
+            const processedObjects: any[] = [];
+
+            const existingItems = await this.pb.collection(collectionName).getFullList({
+                filter: `${parentRef}="${parentId}"`,
+                ...requestOptions
+            });
+
+            const existingMap = new Map(existingItems.map(item => [item.id, item]));
+            const processedIdsSet = new Set<string>();
+
+            for (const item of items) {
+                item[parentRef] = parentId;
+
+                try {
+                    const result = await this.upsertRecord(
+                        collectionName as Collection,
+                        item,
+                        false,
+                        disableAutoCancel,
+                        depth + 1
+                    );
+
+                    processedIds.push(result.id);
+                    processedObjects.push(result);
+
+                    if (item.id) {
+                        processedIdsSet.add(item.id);
+                    }
+                } catch (error) {
+                    console.error(`Error processing nested collection ${collectionName}:`, error);
+                }
+            }
+
+            for (const [id] of existingMap.entries()) {
+                if (!processedIdsSet.has(id)) {
+                    await this.pb.collection(collectionName).delete(id, requestOptions);
+                }
+            }
+
+            if (processedIds.length > 0) {
+                if (collectionName) {
+                    backReferences[collectionName] = processedIds;
+                    processedCollections[collectionName] = processedObjects;
+                }
+            }
+        }
+
+        return { backReferences, processedCollections };
+    }
+
+    private separateCollectionAndPrimitiveProperties(
+        collectionName: Collection,
+        data: any
+    ): { collections: Record<string, any[]>; singleRelations: Record<string, any[]>; obj: any } {
+        const collections: Record<string, any[]> = {};
+        const singleRelations: Record<string, any> = {};
+        const obj = { ...data };
+
+        const nestedCollectionNames = this.collectionMappings[collectionName] || [];
+        const singleRelationNames = this.singleRelationMappings[collectionName] || [];
+
+        console.log(nestedCollectionNames, singleRelationNames);
+        for (const nestedCollection of nestedCollectionNames) {
+            if (obj[nestedCollection]) {
+                console.log(nestedCollection)
+                collections[nestedCollection] = obj[nestedCollection];
+                delete obj[nestedCollection];
+            }
+        }
+
+        for (const relationName of singleRelationNames) {
+            if (obj[relationName]) {
+                singleRelations[relationName] = obj[relationName];
+                delete obj[relationName];
+            }
+        }
+
+        return { collections, singleRelations, obj };
+    }
+
+    private getParentRef(collectionName: string): string {
         if (collectionName.endsWith('ies')) {
             return collectionName.slice(0, -3) + 'y';
         }
@@ -382,6 +446,7 @@ export class PocketbaseService {
 
         return collectionName;
     }
+
 }
 
 type Model<T> = {

@@ -1,0 +1,5 @@
+<ion-button size="large" expand="round" shape="round" color="primary" (click)="skipRest()"
+    [style.display]="!isResting ? 'none' : ''">
+    <ion-icon slot="start" name="timer-outline"></ion-icon>
+    {{'skip' | translate}} ({{ restTimeRemaining | duration }})
+</ion-button>

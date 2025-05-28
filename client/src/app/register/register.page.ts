@@ -6,7 +6,7 @@ import { AccountService } from '../core/services/account.service';
 import { RegisterBM, } from '../core/models/bm/register-bm';
 import { FormType } from '../core/helpers/form-helpers';
 import { ErrorMessageDirective } from '../core/directives/error-message.directive';
-import { UserType } from '../core/models/user-type';
+import { UserType } from '../core/models/enums/user-type';
 
 @Component({
     selector: 'app-register',

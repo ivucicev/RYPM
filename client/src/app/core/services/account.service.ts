@@ -9,7 +9,7 @@ import { VerificationStateService } from './verification-state-service';
 import { ToastService } from './toast-service';
 import { StorageKeys } from '../constants/storage-keys';
 import { PB } from '../constants/pb-constants';
-import { User } from '../models/user';
+import { User } from '../models/collections/user';
 import { environment } from 'src/environments/environment';
 import { COLLECTIONS } from '../constants/collections';
 
@@ -73,6 +73,8 @@ export class AccountService {
         // await this.navCtrl.navigateForward(['/verification']);
         this.pocketbase.collection('users').requestVerification(model.email);
         this.toastService.info('info.confirm_account');
+
+        this.navCtrl.navigateBack('/sign-in');
 
         return record;
     }

@@ -1,23 +1,23 @@
 import { Injectable, OnDestroy } from "@angular/core";
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Exercise } from "../models/exercise";
-import { RepType } from "../models/rep-type";
-import { WeightType } from "../models/weight-type";
+import { FormArray, FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { Exercise } from "../models/collections/exercise";
+import { RepType } from "../models/enums/rep-type";
+import { WeightType } from "../models/enums/weight-type";
 import { FormType } from "../helpers/form-helpers";
-import { Set } from "../models/exercise-set";
-import { Week } from "../models/week";
-import { Day } from "../models/day";
-import { Program } from "../models/program";
+import { Set } from "../models/collections/exercise-set";
+import { Week } from "../models/collections/week";
+import { Day } from "../models/collections/day";
+import { Program } from "../models/collections/program";
 import { distinctUntilChanged, Subject, takeUntil } from "rxjs";
 import { ExerciseSelectorComponent } from "src/app/exercise-selector/exercise-selector.component";
 import { ModalController } from "@ionic/angular/standalone";
-import { SetBM } from "../models/bm/set-bm";
+import { SetBM } from "../models/bm/exercise-set-bm";
 import { WeekBM } from "../models/bm/week-bm";
 import { DayBM } from "../models/bm/day-bm";
 import { ExerciseBM } from "../models/bm/exercise-bm";
 import { ProgramBM } from "../models/bm/program-bm";
 import { TemplateBM } from "../models/bm/template-bm";
-import { Template } from "../models/template";
+import { Template } from "../models/collections/template";
 
 @Injectable()
 export class FormsService implements OnDestroy {
@@ -39,7 +39,7 @@ export class FormsService implements OnDestroy {
             id: [program?.id],
             name: [program?.name],
             description: [program?.description],
-            numberOfWeeks: [program?.numberOfWeeks || 1],
+            numberOfWeeks: [program?.numberOfWeeks ?? 1],
             weeks: this.formBuilder.array<WeekFormGroup>([]),
             // users: this.formBuilder.array<ProgramUserGroup>([]) // TODO: Trainer
         });
@@ -82,10 +82,11 @@ export class FormsService implements OnDestroy {
     createExerciseFormGroup(exercise?: Exercise): ExerciseFormGroup {
         const exerciseGroup: ExerciseFormGroup = this.formBuilder.group({
             id: new FormControl(exercise?.id),
+            completedAt: new FormControl(exercise?.completedAt),
             name: new FormControl(exercise?.name),
-            tags: new FormControl(exercise?.tags || []),
-            restDuration: new FormControl(exercise?.restDuration || 0),
-            notes: new FormControl(exercise?.notes || ''),
+            tags: new FormControl(exercise?.tags ?? []),
+            restDuration: new FormControl(exercise?.restDuration ?? 0),
+            notes: new FormControl(exercise?.notes ?? ''),
             sets: this.formBuilder.array<ExerciseSetFormGroup>([]),
             completed: new FormControl(false),
         });
@@ -123,18 +124,20 @@ export class FormsService implements OnDestroy {
 
     createSetFormGroup(set?: Set): ExerciseSetFormGroup {
         const fg: ExerciseSetFormGroup = this.formBuilder.group({
-            id: [''],
-            completed: [set?.completed || false],
-            previousValue: new FormControl(set?.previousValue || 0),
-            previousWeight: new FormControl(set?.previousWeight || 0),
-            currentValue: new FormControl(set?.currentValue || 0),
-            currentWeight: new FormControl(set?.currentWeight || 0),
-            weight: new FormControl(set?.weight || 0),
-            weightType: new FormControl<WeightType>(set?.weightType || WeightType.KG),
-            type: new FormControl(set?.type || RepType.Reps),
-            value: new FormControl(set?.value || 0),
-            minValue: new FormControl(set?.minValue || 0),
-            maxValue: new FormControl(set?.maxValue || 0)
+            id: [set?.id],
+            completed: [set?.completed ?? false],
+            completedAt: [set?.completedAt ?? null],
+            restSkipped: [set?.restSkipped ?? false],
+            previousValue: new FormControl(set?.previousValue ?? 0),
+            previousWeight: new FormControl(set?.previousWeight ?? 0),
+            currentValue: new FormControl(set?.currentValue ?? 0),
+            currentWeight: new FormControl(set?.currentWeight ?? 0),
+            weight: new FormControl(set?.weight ?? 0),
+            weightType: new FormControl<WeightType>(set?.weightType ?? WeightType.KG),
+            type: new FormControl(set?.type ?? RepType.Reps),
+            value: new FormControl(set?.value ?? 0),
+            minValue: new FormControl(set?.minValue ?? 0),
+            maxValue: new FormControl(set?.maxValue ?? 0)
         });
 
         fg.controls.type.valueChanges
@@ -164,7 +167,6 @@ export class FormsService implements OnDestroy {
 
         const daysArray = fg.controls.days as FormArray<DayFormGroup>;
 
-        console.log(week);
         week?.days?.forEach(day => {
             const dayForm = this.createDayFormGroup(day);
             daysArray.push(dayForm);

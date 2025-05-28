@@ -1,9 +1,9 @@
-import { RepType } from "../rep-type";
-import { WeightType } from "../weight-type";
+import { EntityBase } from "../entity-base";
+import { RepType } from "../enums/rep-type";
+import { WeightType } from "../enums/weight-type";
 
-
-export interface SetBM {
-    id?: string;
+export interface Set extends EntityBase {
+    index?: number;
 
     type: RepType;
     weightType: WeightType;
@@ -13,6 +13,10 @@ export interface SetBM {
     maxValue?: number;
 
     completed?: boolean;
+    completedAt?: Date;
+
+    restSkipped?: boolean;
+
     currentWeight?: number;
     currentValue?: number;
 

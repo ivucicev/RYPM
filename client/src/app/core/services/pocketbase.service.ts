@@ -14,6 +14,7 @@ import { Template } from '../models/collections/template';
 import { PB } from '../constants/pb-constants';
 import { Collection, COLLECTIONS } from '../constants/collections';
 import { LoadingController } from '@ionic/angular/standalone';
+import { ExerciseTemplate } from '../models/collections/exercise-templates';
 
 @Injectable({
     providedIn: 'root'
@@ -37,6 +38,7 @@ export class PocketbaseService {
         'templates': [],
         'sets': [],
         'users': [],
+        'exercise_templates': []
     };
 
     private singleRelationMappings: Record<string, string[]> = {
@@ -145,6 +147,10 @@ export class PocketbaseService {
 
     public get exercises() {
         return this.pb.collection<Exercise>(COLLECTIONS.exercises);
+    }
+
+    public get exercise_templates() {
+        return this.pb.collection<ExerciseTemplate>(COLLECTIONS.exercise_templates);
     }
 
     public get sets() {
@@ -268,8 +274,6 @@ export class PocketbaseService {
             disableAutoCancel,
             depth
         );
-
-        console.log(backReferences);
 
         if (Object.keys(backReferences).length > 0) {
             await this.pb.collection(collectionName).update(result.id, backReferences, requestOptions);
@@ -417,10 +421,8 @@ export class PocketbaseService {
         const nestedCollectionNames = this.collectionMappings[collectionName] || [];
         const singleRelationNames = this.singleRelationMappings[collectionName] || [];
 
-        console.log(nestedCollectionNames, singleRelationNames);
         for (const nestedCollection of nestedCollectionNames) {
             if (obj[nestedCollection]) {
-                console.log(nestedCollection)
                 collections[nestedCollection] = obj[nestedCollection];
                 delete obj[nestedCollection];
             }

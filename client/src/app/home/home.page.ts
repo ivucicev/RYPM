@@ -122,8 +122,11 @@ export class HomePage {
             this.programs = programs.map(p => {
                 const tagsToTake = 3;
 
-                const tags = [...new Set(p.weeks.flatMap(w => w.days ?? []).flatMap(d => d.exercises ?? []).flatMap(e => e?.tags))];
-                const tagsToShow = tags.splice(0, tagsToTake);
+                const tags = [
+                    ...new Set(p.weeks.flatMap(w => w.days ?? []).flatMap(d => d.exercises ?? [])
+                        .flatMap(e => [...e?.primaryMuscles, ...e?.secondaryMuscles]))
+                ];
+                const tagsToShow: string[] = tags.splice(0, tagsToTake);
 
                 if (tags.length > tagsToTake) {
                     tagsToShow.push(`+${tags.length - 3}`);
@@ -146,8 +149,6 @@ export class HomePage {
                     tags: tagsToShow
                 }
             });
-
-            console.log(this.programs);
         });
     }
 

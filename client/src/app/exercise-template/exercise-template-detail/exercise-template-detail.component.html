@@ -1,0 +1,83 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>
+            <h1>{{ exercise.name }}</h1>
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss()">
+                <ion-icon name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding-x content">
+
+    <!-- <div class="tags ion-margin-top">
+        @if(exercise.level) {
+        <ion-chip size="small" color="primary" outline>
+            {{ exercise.level }}
+        </ion-chip>
+        }
+    </div> -->
+
+    @if(exercise.category) {
+    <div class="category-section">
+        <h3>
+            {{'category' | translate}}
+        </h3>
+        <div class="muscle-tags">
+            <ion-chip color="primary" outline>{{ exercise.category | translate }}</ion-chip>
+        </div>
+    </div>
+    }
+
+    @if(exercise.equipment) {
+    <div class="equipment-section">
+        <h3>
+            {{'equipment' | translate}}
+        </h3>
+        <div class="muscle-tags">
+            <ion-chip color="primary" outline>{{ exercise.equipment | translate }}</ion-chip>
+        </div>
+    </div>
+    }
+
+    @if (exercise.primaryMuscles?.length) {
+    <div class="muscle-section">
+        <h3>
+            {{'primary_muscles' | translate}}
+        </h3>
+        <div class="muscle-tags">
+            @for (muscle of exercise.primaryMuscles; track muscle) {
+            <ion-chip color="primary" outline>{{ muscle | translate }}</ion-chip>
+            }
+        </div>
+    </div>
+    }
+
+    @if (exercise.secondaryMuscles?.length) {
+    <div class="muscle-section">
+        <h3>
+            {{'secondary_muscles' | translate}}
+        </h3>
+        <div class="muscle-tags">
+            @for (muscle of exercise.secondaryMuscles; track muscle) {
+            <ion-chip color="primary" outline>{{ muscle | translate }}</ion-chip>
+            }
+        </div>
+    </div>
+    }
+
+    @if (exercise.instructions?.length) {
+    <div class="instructions-section">
+        <h3>
+            {{'instructions' | translate}}
+        </h3>
+        <div class="notes">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            {{ exercise.instructions }}
+        </div>
+    </div>
+    }
+</ion-content>

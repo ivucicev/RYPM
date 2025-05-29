@@ -32,9 +32,11 @@
         @if (currentExercise() != null) {
         <div class="exercise-header">
             <div class="tags">
-                @for (tag of currentExercise().controls.tags.value; track tag) {
+                @for (tag of currentExercise().controls.primaryMuscles.value; track tag) {
                 <ion-chip color="primary" outline>{{ tag }}</ion-chip>
                 }
+                @for (tag of currentExercise().controls.secondaryMuscles.value; track tag) {
+                <ion-chip color="secondary" outline>{{ tag }}</ion-chip> }
             </div>
         </div>
         @if (currentExercise().controls.notes.value) {

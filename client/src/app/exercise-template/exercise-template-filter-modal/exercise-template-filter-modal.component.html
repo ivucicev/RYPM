@@ -1,0 +1,123 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title> {{ 'filter' | translate }}</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="cancel()">{{'cancel' | translate }}</ion-button>
+            <ion-button (click)="applyFilters()" [strong]="true" color="primary">
+                {{ 'apply' | translate }} ({{ activeFiltersCount }})
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding-x">
+    <div class="filter-section">
+        <ion-item>
+            <ion-label>
+                <h2>{{'equipment' | translate }}</h2>
+            </ion-label>
+        </ion-item>
+        <div class="chip-container">
+            @for (equipment of equipmentOptions; track equipment) {
+            <ion-chip [color]="tempFilters['equipment']?.includes(equipment) ? 'primary' : 'medium'"
+                (click)="toggleFilter('equipment', equipment)">
+                {{ equipment | translate }}
+            </ion-chip>
+            }
+        </div>
+    </div>
+
+    <div class="filter-section">
+        <ion-item>
+            <ion-label>
+                <h2>{{'level' | translate }}</h2>
+            </ion-label>
+        </ion-item>
+        <div class="chip-container">
+            @for (level of levelOptions; track level) {
+            <ion-chip [color]="tempFilters['level']?.includes(level) ? 'primary' : 'medium'"
+                (click)="toggleFilter('level', level)">
+                {{ level | translate }}
+            </ion-chip>
+            }
+        </div>
+    </div>
+
+    <div class="filter-section">
+        <ion-item>
+            <ion-label>
+                <h2>{{'category' | translate}}</h2>
+            </ion-label>
+        </ion-item>
+        <div class="chip-container">
+            @for (category of categoryOptions; track category) {
+            <ion-chip [color]="tempFilters['category']?.includes(category) ? 'primary' : 'medium'"
+                (click)="toggleFilter('category', category)">
+                {{ category | translate }}
+            </ion-chip>
+            }
+        </div>
+    </div>
+
+    <div class="filter-section">
+        <ion-item>
+            <ion-label>
+                <h2>{{'primary_muscles' | translate}}</h2>
+            </ion-label>
+        </ion-item>
+        <div class="chip-container">
+            @for (muscle of muscleOptions; track muscle) {
+            <ion-chip size="small" [color]="tempFilters['primaryMuscles']?.includes(muscle) ? 'primary' : 'medium'"
+                (click)="toggleFilter('primaryMuscles', muscle);">
+                {{ muscle | translate }}
+            </ion-chip>
+            }
+        </div>
+    </div>
+
+    <div class="filter-section">
+        <ion-item>
+            <ion-label>
+                <h2> {{ 'force_&_mechanic' | translate }}</h2>
+            </ion-label>
+        </ion-item>
+
+        <ion-grid>
+            <ion-row>
+                <ion-col size="6">
+                    <ion-label>{{ 'force' | translate }}:</ion-label>
+                    <div class="chip-container">
+                        @for (force of forceOptions; track force) {
+                        <ion-chip size="small" [color]="tempFilters['force']?.includes(force) ? 'primary' : 'medium'"
+                            (click)="toggleFilter('force', force)">
+                            {{ force | translate }}
+                        </ion-chip>
+                        }
+                    </div>
+                </ion-col>
+
+                <ion-col size="6">
+                    <ion-label>{{ 'mechanic' | translate }}:</ion-label>
+                    <div class="chip-container">
+                        @for (mechanic of mechanicOptions; track mechanic) {
+                        <ion-chip size="small"
+                            [color]="tempFilters['mechanic']?.includes(mechanic) ? 'primary' : 'medium'"
+                            (click)="toggleFilter('mechanic', mechanic)">
+                            {{ mechanic | translate }}
+                        </ion-chip>
+                        }
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-button expand="full" fill="clear" (click)="clearAllFilters()">
+            <ion-icon name="refresh-outline"></ion-icon>
+            {{ 'clear_all_filters' | translate}}
+        </ion-button>
+    </ion-toolbar>
+</ion-footer>

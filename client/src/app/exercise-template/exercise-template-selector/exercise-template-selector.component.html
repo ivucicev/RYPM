@@ -1,0 +1,103 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>
+            <div class="header-title">
+                {{ 'select_exercise' | translate }}
+                @if(isLoading) {
+                <ion-spinner [style.align-self]="'center'"> </ion-spinner>
+                }
+
+            </div>
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss()">{{ 'cancel' | translate }}</ion-button>
+            <ion-button (click)="addSelected()" [strong]="true" color="primary">
+                {{ 'add' | translate }} ({{ getSelectedCount() }})
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+
+    <ion-toolbar>
+        <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="onSearchChange($event)"
+            placeholder="{{ 'search_exercises' | translate }}" debounce="500">
+        </ion-searchbar>
+        <ion-button fill="clear" slot="end" (click)="openFilters()">
+            <ion-icon name="filter-outline"></ion-icon>
+            @if (appliedFiltersCount > 0) {
+            <ion-badge color="primary">{{ appliedFiltersCount }}</ion-badge>
+            }
+        </ion-button>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+
+        @for (exercise of exercises; track exercise.id) {
+        <ion-item>
+            <ion-button slot="start" fill="clear" size="small" (click)="openExerciseDetail(exercise)">
+                <ion-icon name="information-circle-outline" color="medium"></ion-icon>
+            </ion-button>
+
+            <ion-label (click)="toggleExercise(exercise)" class="exercise-label">
+                <ion-text [color]="exercise.selected ? 'primary' : ''">
+                    <h2>{{ exercise.name }}</h2>
+                </ion-text>
+
+                <div class="key-tags">
+                    @if(exercise.level) {
+                    <ion-chip style="pointer-events: none;" size="small" color="primary" outline>
+                        {{ exercise.level | translate }}
+                    </ion-chip>
+                    }
+                    @if(exercise.equipment) {
+                    <ion-chip style="pointer-events: none;" size="small" color="primary" outline>
+                        {{ exercise.equipment | translate }}
+                    </ion-chip>
+                    }
+                    @if(exercise.category) {
+                    <ion-chip style="pointer-events: none;" size="small" color="primary" outline>
+                        {{ exercise.category | translate }}
+                    </ion-chip>
+                    }
+                </div>
+
+                <ion-note color="medium" class="exercise-note">
+                    @if(exercise.force) {
+                    {{ exercise.force | translate }}
+                    }
+                    @if (exercise.mechanic) {
+                    {{ exercise.mechanic | translate }}
+                    }
+                    @for(muscle of exercise.primaryMuscles; track $index) {
+                    {{ muscle | translate }}
+                    }
+                    @for(muscle of exercise.secondaryMuscles; track $index) {
+                    {{ muscle | translate }}
+                    }
+                </ion-note>
+            </ion-label>
+
+            <ion-checkbox slot="end" [(ngModel)]="exercise.selected" (click)="$event.stopPropagation()">
+            </ion-checkbox>
+        </ion-item>
+        }
+
+        @if (exercises.length === 0 && !isLoading) {
+        <ion-item>
+            <ion-label class="ion-text-center">{{ 'no_exercises_found' | translate }}</ion-label>
+        </ion-item>
+        }
+    </ion-list>
+
+    <ion-infinite-scroll (ionInfinite)="loadMore($event)" [disabled]="!hasMoreData">
+        <ion-infinite-scroll-content [loadingText]="('loading' | translate) + '...'">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+    @if (isLoading && exercises.length === 0) {
+    <div class="loading-container">
+        <ion-spinner></ion-spinner>
+    </div>
+    }
+</ion-content>

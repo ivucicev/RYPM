@@ -9,7 +9,6 @@ import { Week } from "../models/collections/week";
 import { Day } from "../models/collections/day";
 import { Program } from "../models/collections/program";
 import { distinctUntilChanged, Subject, takeUntil } from "rxjs";
-import { ExerciseSelectorComponent } from "src/app/exercise-selector/exercise-selector.component";
 import { ModalController } from "@ionic/angular/standalone";
 import { SetBM } from "../models/bm/exercise-set-bm";
 import { WeekBM } from "../models/bm/week-bm";
@@ -18,9 +17,93 @@ import { ExerciseBM } from "../models/bm/exercise-bm";
 import { ProgramBM } from "../models/bm/program-bm";
 import { TemplateBM } from "../models/bm/template-bm";
 import { Template } from "../models/collections/template";
+import { Equipment, Muscle } from "../models/autogen/enums";
+import { ExerciseTemplateSelectorComponent } from "src/app/exercise-template/exercise-template-selector/exercise-template-selector.component";
+import { ExerciseTemplate } from "../models/collections/exercise-templates";
 
 @Injectable()
 export class FormsService implements OnDestroy {
+
+    private EQUIPMENT_SET_MAP: Record<Equipment, Set> = {
+        [Equipment.Barbell]: {
+            weightType: WeightType.KG,
+            type: RepType.Reps,
+            value: 10,
+            weight: 60
+        },
+
+        [Equipment.Dumbbell]: {
+            weightType: WeightType.KG,
+            type: RepType.Reps,
+            value: 12,
+            weight: 60
+        },
+
+        [Equipment.Cable]: {
+            weightType: WeightType.KG,
+            type: RepType.Reps,
+            value: 12,
+            weight: 60
+        },
+
+        [Equipment.Machine]: {
+            weightType: WeightType.KG,
+            type: RepType.Reps,
+            value: 12,
+            weight: 60
+        },
+
+        [Equipment.Kettlebells]: {
+            weightType: WeightType.KG,
+            type: RepType.Reps,
+            value: 10,
+            weight: 60
+        },
+
+        [Equipment.BodyOnly]: {
+            weightType: WeightType.BW,
+            type: RepType.Reps,
+            value: 15,
+        },
+
+        [Equipment.Bands]: {
+            weightType: WeightType.NA,
+            type: RepType.Reps,
+            value: 15,
+        },
+
+        [Equipment.MedicineBall]: {
+            weightType: WeightType.KG,
+            type: RepType.Reps,
+            value: 12,
+            weight: 60
+        },
+
+        [Equipment.ExerciseBall]: {
+            weightType: WeightType.NA,
+            type: RepType.Duration,
+            value: 30,
+        },
+
+        [Equipment.FoamRoll]: {
+            weightType: WeightType.NA,
+            type: RepType.Duration,
+            value: 60,
+        },
+
+        [Equipment.EZCurlBar]: {
+            weightType: WeightType.KG,
+            type: RepType.Reps,
+            value: 12,
+            weight: 60
+        },
+
+        [Equipment.Other]: {
+            weightType: WeightType.NA,
+            type: RepType.Reps,
+            value: 10,
+        },
+    };
 
     private subject = new Subject();
 
@@ -80,16 +163,23 @@ export class FormsService implements OnDestroy {
 
 
     createExerciseFormGroup(exercise?: Exercise): ExerciseFormGroup {
-        const exerciseGroup: ExerciseFormGroup = this.formBuilder.group({
-            id: new FormControl(exercise?.id),
-            completedAt: new FormControl(exercise?.completedAt),
-            name: new FormControl(exercise?.name),
-            tags: new FormControl(exercise?.tags ?? []),
-            restDuration: new FormControl(exercise?.restDuration ?? 0),
-            notes: new FormControl(exercise?.notes ?? ''),
+        const exerciseGroup = this.formBuilder.group({
+            id: [exercise?.id],
+            name: [exercise?.name ?? ''],
+            force: [exercise?.force],
+            level: [exercise?.level],
+            mechanic: [exercise?.mechanic],
+            equipment: [exercise?.equipment ?? ''],
+            primaryMuscles: new FormControl<Muscle[]>(exercise?.primaryMuscles as Muscle[] ?? []),
+            secondaryMuscles: new FormControl<Muscle[]>(exercise?.secondaryMuscles as Muscle[] ?? []),
+            instructions: [exercise?.instructions ?? []],
+            category: [exercise?.category],
+            notes: [exercise?.notes ?? ''],
+            restDuration: [exercise?.restDuration ?? 0],
+            completed: [exercise?.completed ?? false],
+            completedAt: [exercise?.completedAt],
             sets: this.formBuilder.array<ExerciseSetFormGroup>([]),
-            completed: new FormControl(false),
-        });
+        }) as ExerciseFormGroup;
 
         const setsArray = exerciseGroup.get('sets') as FormArray<ExerciseSetFormGroup>;
 
@@ -98,7 +188,8 @@ export class FormsService implements OnDestroy {
                 setsArray.push(this.createSetFormGroup(set));
             });
         } else {
-            setsArray.push(this.createSetFormGroup());
+            const set = this.getSetFromExerciseTemplate(exercise) as Set;
+            setsArray.push(this.createSetFormGroup(set));
         }
 
         return exerciseGroup;
@@ -128,16 +219,16 @@ export class FormsService implements OnDestroy {
             completed: [set?.completed ?? false],
             completedAt: [set?.completedAt ?? null],
             restSkipped: [set?.restSkipped ?? false],
-            previousValue: new FormControl(set?.previousValue ?? 0),
-            previousWeight: new FormControl(set?.previousWeight ?? 0),
-            currentValue: new FormControl(set?.currentValue ?? 0),
-            currentWeight: new FormControl(set?.currentWeight ?? 0),
-            weight: new FormControl(set?.weight ?? 0),
-            weightType: new FormControl<WeightType>(set?.weightType ?? WeightType.KG),
-            type: new FormControl(set?.type ?? RepType.Reps),
-            value: new FormControl(set?.value ?? 0),
-            minValue: new FormControl(set?.minValue ?? 0),
-            maxValue: new FormControl(set?.maxValue ?? 0)
+            previousValue: [set?.previousValue ?? 0],
+            previousWeight: [set?.previousWeight ?? 0],
+            currentValue: [set?.currentValue ?? 0],
+            currentWeight: [set?.currentWeight ?? 0],
+            weight: [set?.weight ?? 0],
+            weightType: [set?.weightType ?? WeightType.KG],
+            type: [set?.type ?? RepType.Reps],
+            value: [set?.value ?? 0],
+            minValue: [set?.minValue ?? 0],
+            maxValue: [set?.maxValue ?? 0]
         });
 
         fg.controls.type.valueChanges
@@ -260,19 +351,19 @@ export class FormsService implements OnDestroy {
     }
 
     async addExercisesToDay(programForm: ProgramFormGroup, weekIndex: number, dayIndex: number) {
-        const exercises = await this.getExercises();
-        if (!exercises || !exercises.length) return;
+        const exercisesTemplates = await this.getExerciseTemplates();
+        if (!exercisesTemplates || !exercisesTemplates.length) return;
 
         const exercisesArray = this.getExercisesArray(programForm, weekIndex, dayIndex);
-        exercises.map(e => {
+        exercisesTemplates.map(e => {
             const fg = this.createExerciseFormGroup(e);
             exercisesArray.push(fg);
         })
     }
 
-    async getExercises(): Promise<Exercise[]> {
+    async getExerciseTemplates(): Promise<ExerciseTemplate[]> {
         const modal = await this.modalCtrl.create({
-            component: ExerciseSelectorComponent,
+            component: ExerciseTemplateSelectorComponent,
             breakpoints: [0, 0.5, 0.75, 1],
             initialBreakpoint: 1,
             componentProps: {
@@ -283,7 +374,14 @@ export class FormsService implements OnDestroy {
         await modal.present();
         const { data } = await modal.onDidDismiss();
 
-        return data?.exercises;
+        const exercises = data?.exercises as ExerciseTemplate[] ?? [];
+
+        return exercises?.map(e => {
+            return {
+                ...e,
+                id: null
+            }
+        });
     }
 
     removeSet(programForm: ProgramFormGroup, weekIndex: number, dayIndex: number, exerciseIndex: number) {
@@ -312,6 +410,25 @@ export class FormsService implements OnDestroy {
 
         formArray.setControl(index1, control2);
         formArray.setControl(index2, control1);
+    }
+
+    private getSetFromExerciseTemplate(
+        exercise: { equipment: string; name: string },
+        userPreferences?: { weightUnit?: WeightType; defaultSets?: number }
+    ): Partial<Set> {
+        const equipmentKey = exercise.equipment as Equipment;
+        const template = this.EQUIPMENT_SET_MAP[equipmentKey] || this.EQUIPMENT_SET_MAP[Equipment.Other];
+
+        const weightType = userPreferences?.weightUnit || template.weightType;
+
+        return {
+            type: template.type,
+            weightType: weightType,
+            weight: template.weight,
+            value: template.value,
+            minValue: template.minValue,
+            maxValue: template.maxValue,
+        };
     }
     //#endregion
 }

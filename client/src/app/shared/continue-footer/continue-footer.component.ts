@@ -57,12 +57,19 @@ export class ContinueFooterComponent {
                 .sort((a, b) => new Date(b.updated).getDate() - new Date(a.updated)?.getTime())
                 .find(s => s.completed && !s.restSkipped)
 
-            if (!lastCompletedSet) return;
+            if (!lastCompletedSet) {
+                return;
+            }
 
             const lastCompletedSetExercise = this.workout.exercises.find(e => e.sets.includes(lastCompletedSet));
 
-            this.lastCompletedSet = lastCompletedSet;
-            this.lastCompletedSetExercise = lastCompletedSetExercise;
+            if (this.lastCompletedSet?.restSkipped != lastCompletedSet.restSkipped
+                || this.lastCompletedSet?.completedAt != lastCompletedSet.completedAt
+                || this.lastCompletedSet?.id != lastCompletedSet.id
+            ) {
+                this.lastCompletedSet = lastCompletedSet;
+                this.lastCompletedSetExercise = lastCompletedSetExercise;
+            }
         })
     }
 

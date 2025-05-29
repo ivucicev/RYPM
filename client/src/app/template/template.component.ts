@@ -85,7 +85,7 @@ export class TemplateComponent implements OnInit, OnDestroy {
     }
 
     async addExercises() {
-        const exercises = await this.programFormService.getExercises();
+        const exercises = await this.programFormService.getExerciseTemplates();
         if (!exercises || !exercises.length) return;
 
         exercises.map(e => {

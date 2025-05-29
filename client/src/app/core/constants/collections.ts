@@ -3,6 +3,7 @@ export const COLLECTIONS = {
     templates: 'templates',
     workouts: 'workouts',
     exercises: 'exercises',
+    exercise_templates: 'exercise_templates',
     sets: 'sets',
     weeks: 'weeks',
     days: 'days',

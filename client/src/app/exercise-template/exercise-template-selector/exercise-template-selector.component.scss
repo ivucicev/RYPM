@@ -1,0 +1,45 @@
+.exercise-label {
+    cursor: pointer;
+}
+
+.header-title {
+    display: flex;
+    gap: 10px;
+}
+
+.key-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 8px 0;
+}
+
+.exercise-note {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.85em;
+    line-height: 1.3;
+}
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+ion-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    min-width: 16px;
+    height: 16px;
+    font-size: 10px;
+}
+
+ion-item {
+    --padding-start: 8px;
+
+    ion-button[slot="start"] {
+        margin-right: 8px;
+    }
+}

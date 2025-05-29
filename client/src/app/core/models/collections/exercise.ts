@@ -1,9 +1,8 @@
 import { EntityBase } from "../entity-base";
 import { Set } from "./exercise-set";
+import { ExerciseTemplate } from "./exercise-templates";
 
-export interface Exercise extends EntityBase {
-    name: string;
-    tags?: string[];
+export interface Exercise extends EntityBase, ExerciseTemplate {
     notes?: string;
     restDuration?: number;
 

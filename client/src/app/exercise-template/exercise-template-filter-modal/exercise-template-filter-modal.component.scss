@@ -1,0 +1,43 @@
+.filter-section {
+    // margin-bottom: 16px;
+
+    ion-item {
+        --padding-start: 16px;
+        --inner-padding-end: 16px;
+    }
+
+    h2 {
+        font-weight: 600;
+        color: var(--ion-color-primary);
+    }
+}
+
+.chip-container {
+    padding: 8px 16px 16px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    ion-chip {
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+}
+
+ion-grid {
+    padding: 0 16px;
+
+    ion-label {
+        font-weight: 500;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .chip-container {
+        padding: 8px 0 16px 0;
+    }
+}

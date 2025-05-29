@@ -76,6 +76,8 @@ import {
     fileTrayOutline,
     fileTray,
     fitness,
+    fitnessOutline,
+    accessibilityOutline,
 } from 'ionicons/icons';
 
 export function registerIcons(): void {
@@ -103,6 +105,8 @@ export function registerIcons(): void {
         fileTray,
         ellipseOutline,
         fitness,
+        fitnessOutline,
+        accessibilityOutline,
 
         // Navigation icons
         chevronUp,

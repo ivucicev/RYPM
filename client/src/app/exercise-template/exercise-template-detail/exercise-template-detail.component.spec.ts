@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { ExerciseSelectorComponent } from './exercise-selector.component';
+import { ExerciseTemplateDetailComponent } from './exercise-template-detail.component';
 
-describe('ExerciseSelectorComponent', () => {
-  let component: ExerciseSelectorComponent;
-  let fixture: ComponentFixture<ExerciseSelectorComponent>;
+describe('ExerciseTemplateDetailComponent', () => {
+  let component: ExerciseTemplateDetailComponent;
+  let fixture: ComponentFixture<ExerciseTemplateDetailComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExerciseSelectorComponent ],
+      declarations: [ ExerciseTemplateDetailComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ExerciseSelectorComponent);
+    fixture = TestBed.createComponent(ExerciseTemplateDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

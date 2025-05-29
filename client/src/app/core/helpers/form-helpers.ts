@@ -7,3 +7,4 @@ export type FormType<T> = {
     : FormControl<T[K]>                  // Array of primitives -> FormControl<ArrayType>
     : FormControl<T[K]>;                 // Single value -> FormControl
 };
+

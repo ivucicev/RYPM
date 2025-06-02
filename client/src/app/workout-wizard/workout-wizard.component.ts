@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, signal, computed, ElementRef } from '@angular/core';
-import { ActionSheetController, IonicModule, LoadingController } from '@ionic/angular';
+import { ActionSheetController, AnimationController, IonicModule, LoadingController, ModalController, NavController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormsModule } from '@angular/forms';
 import { Exercise } from 'src/app/core/models/collections/exercise';
@@ -8,7 +8,6 @@ import { WeightType } from 'src/app/core/models/enums/weight-type';
 import { ExerciseFormComponent } from '../form/exercise-form/exercise-form.component';
 import { ExerciseFormGroup, ExerciseSetFormGroup, FormsService } from '../core/services/forms.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { AnimationController, NavController } from '@ionic/angular/standalone';
 import { Constants } from '../core/constants/constants';
 import { TimeBadgeComponent } from '../shared/time-badge/time-badge.component';
 import { PocketbaseService } from '../core/services/pocketbase.service';
@@ -22,6 +21,7 @@ import { Set } from '../core/models/collections/exercise-set';
 import { PB } from '../core/constants/pb-constants';
 import { NoDataComponent } from "../shared/no-data/no-data.component";
 import { RestBadgeComponent } from "../shared/rest-badge/rest-badge.component";
+import { ExerciseTemplateDetailComponent } from '../exercise-template/exercise-template-detail/exercise-template-detail.component';
 
 @Component({
     selector: 'app-workout-wizard',
@@ -81,6 +81,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         private animationCtrl: AnimationController,
         private pocketbaseService: PocketbaseService,
         private activatedRoute: ActivatedRoute,
+        private modalCtrl: ModalController,
         private navCtrl: NavController,
         private translateService: TranslateService,
         private autosaveService: AutosaveService,
@@ -116,9 +117,9 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
             // rest set
             const lastCompletedSet = this.workout.exercises.flatMap(e => e.sets)
-                .sort((a, b) => new Date(b.updated).getDate() - new Date(a.updated)?.getTime())
-                .find(s => s.completed && !s.restSkipped)
-            if (lastCompletedSet) {
+                .filter(s => s.completed && s.completedAt)
+                .sort((a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt)?.getTime())[0];
+            if (lastCompletedSet && !lastCompletedSet.restSkipped) {
                 const lastCompletedSetExercise = this.workout.exercises.find(e => e.sets.includes(lastCompletedSet));
 
                 this.lastCompletedSet = this.exercises.flatMap(e => e.controls.sets.controls).find(s => s.controls.id.value == lastCompletedSet.id);
@@ -242,14 +243,20 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
             end: new Date()
         } as Workout;
 
-        const loading = await this.loadingCtrl.create({});
-        loading.present();
-
         await this.handleUncompletedSets();
         this.pocketbaseService.workouts.update(model.id, model).then((_) => {
-            loading.dismiss();
             this.navCtrl.navigateBack(['./tabs']);
         })
+    }
+
+    async openExerciseInfo() {
+        const modal = await this.modalCtrl.create({
+            component: ExerciseTemplateDetailComponent,
+            componentProps: { exercise: this.currentExercise().getRawValue() },
+            presentingElement: await this.modalCtrl.getTop()
+        });
+
+        await modal.present();
     }
 
     async openSettings() {

@@ -30,9 +30,8 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content #content scrollEvents="true" (ionScroll)="onScroll($event)">
     <ion-list>
-
         @for (exercise of exercises; track exercise.id) {
         <ion-item>
             <ion-button slot="start" fill="clear" size="small" (click)="openExerciseDetail(exercise)">
@@ -100,4 +99,11 @@
         <ion-spinner></ion-spinner>
     </div>
     }
+
+    <ion-fab [style.display]="!showScrollToTop ? 'none' : ''" vertical="bottom" horizontal="end" slot="fixed"
+        class="animate__animated animate__fadeInUp">
+        <ion-fab-button (click)="content.scrollToTop(300);" size="small">
+            <ion-icon name="chevron-up-outline"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 </ion-content>

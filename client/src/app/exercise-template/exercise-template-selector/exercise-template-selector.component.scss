@@ -42,4 +42,23 @@ ion-item {
     ion-button[slot="start"] {
         margin-right: 8px;
     }
+
+    &:last-child {
+        margin-bottom: 40px;
+    }
+}
+
+
+// prevent missclick on list item
+ion-fab {
+    &::before {
+        content: '';
+        position: absolute;
+        top: -20px;
+        right: -20px;
+        bottom: -20px;
+        left: -20px;
+        pointer-events: auto;
+        z-index: -1;
+    }
 }

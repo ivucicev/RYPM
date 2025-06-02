@@ -1,4 +1,4 @@
-import { Component, input, model } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { IonicModule, NavController } from '@ionic/angular';
 import { RestBadgeComponent } from '../rest-badge/rest-badge.component';
 import { PocketbaseService } from 'src/app/core/services/pocketbase.service';
@@ -54,10 +54,10 @@ export class ContinueFooterComponent {
             this.workout = workout;
 
             const lastCompletedSet = this.workout.exercises.flatMap(e => e.sets)
-                .sort((a, b) => new Date(b.updated).getDate() - new Date(a.updated)?.getTime())
-                .find(s => s.completed && !s.restSkipped)
+                .filter(s => s.completed && s.completedAt)
+                .sort((a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt)?.getTime())[0]
 
-            if (!lastCompletedSet) {
+            if (!lastCompletedSet || lastCompletedSet.restSkipped) {
                 return;
             }
 

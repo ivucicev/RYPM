@@ -20,7 +20,7 @@
             {{ currentExercise()?.controls.name.value }}
         </ion-title>
         @if (currentExercise() != null) {
-        <ion-button fill="clear" color="dark" slot="end">
+        <ion-button fill="clear" color="dark" slot="end" (click)="openExerciseInfo()">
             <ion-icon name="information-circle-outline"></ion-icon>
         </ion-button>
         }

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormArray } from '@angular/forms';
-import { ActionSheetController, IonicModule, NavController } from '@ionic/angular';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { IonicModule, NavController } from '@ionic/angular';
+import { TranslateModule } from '@ngx-translate/core';
 import { ExerciseFormComponent } from '../form/exercise-form/exercise-form.component';
 import { RepType } from '../core/models/enums/rep-type';
 import { WeightType } from '../core/models/enums/weight-type';
@@ -10,9 +10,10 @@ import { FormType } from '../core/helpers/form-helpers';
 import { TemplateBM } from '../core/models/bm/template-bm';
 import { PocketbaseService } from '../core/services/pocketbase.service';
 import { ActivatedRoute } from '@angular/router';
-import { lastValueFrom, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { AutosaveService } from '../core/services/autosave.service';
 import { Template } from '../core/models/collections/template';
+import { TemplateActionKey, TemplateService } from '../core/services/template.service';
 
 @Component({
     selector: 'app-template',
@@ -32,6 +33,7 @@ export class TemplateComponent implements OnInit, OnDestroy {
 
     private unsubscribeAll = new Subject<void>();
 
+    template: Template;
     templateForm: FormGroup<FormType<TemplateBM>> = this.programFormService.createTemplateFormGroup();
 
     RepType = RepType;
@@ -43,8 +45,7 @@ export class TemplateComponent implements OnInit, OnDestroy {
         private pocketbaseService: PocketbaseService,
         private activatedRoute: ActivatedRoute,
         private autosaveService: AutosaveService,
-        private translateService: TranslateService,
-        private actionSheetCtrl: ActionSheetController,
+        private templateService: TemplateService,
         private navCtrl: NavController
     ) {
     }
@@ -64,6 +65,7 @@ export class TemplateComponent implements OnInit, OnDestroy {
     }
 
     init(template?: Template) {
+        this.template = template;
         this.templateForm = this.programFormService.createTemplateFormGroup(template);
         this.autosaveService.register<TemplateBM>(this.templateForm, 'templates', false)
             .subscribe();
@@ -95,32 +97,15 @@ export class TemplateComponent implements OnInit, OnDestroy {
     }
 
     async openSettings() {
-        const translations = await lastValueFrom(this.translateService.get([
-            'delete', 'cancel'
-        ]));
-
-        const actionSheet = await this.actionSheetCtrl.create({
-            header: translations.workout,
-            buttons: [
-                {
-                    text: translations.delete,
-                    icon: 'trash-outline',
-                    role: 'destructive',
-                    handler: () => {
-                        this.pocketbaseService.templates.delete(this.templateForm.get('id')?.value).then(() => {
-                            this.navCtrl.navigateBack(['./tabs']);
-                        })
-                    }
-                },
-                {
-                    text: translations.cancel,
-                    icon: 'close-outline',
-                    role: 'cancel'
-                }
-            ]
-        });
-
-        await actionSheet.present();
+        const excludeActions: TemplateActionKey = {
+            edit: true
+        };
+        const actionSheet = await this.templateService.presentTemplateActionSheet(this.template, excludeActions);
+        actionSheet.onDidDismiss().then(e => {
+            if (e.data?.destructive || e.data?.constructive) {
+                this.navCtrl.navigateBack(['./tabs']);
+            }
+        })
     }
 
     removeExercise(index: number) {

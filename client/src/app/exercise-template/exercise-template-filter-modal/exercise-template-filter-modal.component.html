@@ -1,6 +1,11 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title> {{ 'filter' | translate }}</ion-title>
+        <ion-buttons slot="start">
+            <ion-button fill="clear" (click)="clearAllFilters()">
+                <ion-icon name="refresh-outline"></ion-icon>
+                {{ 'clear_all_filters' | translate}}
+            </ion-button>
+        </ion-buttons>
         <ion-buttons slot="end">
             <ion-button (click)="cancel()">{{'cancel' | translate }}</ion-button>
             <ion-button (click)="applyFilters()" [strong]="true" color="primary">
@@ -10,7 +15,7 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding-x">
+<ion-content class="ion-padding-x" #content>
     <div class="filter-section">
         <ion-item>
             <ion-label>
@@ -112,12 +117,3 @@
         </ion-grid>
     </div>
 </ion-content>
-
-<ion-footer>
-    <ion-toolbar>
-        <ion-button expand="full" fill="clear" (click)="clearAllFilters()">
-            <ion-icon name="refresh-outline"></ion-icon>
-            {{ 'clear_all_filters' | translate}}
-        </ion-button>
-    </ion-toolbar>
-</ion-footer>

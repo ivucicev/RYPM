@@ -95,6 +95,7 @@ export class ExerciseFormComponent implements OnChanges {
 
         for (let i = 0; i < sets.length; i++) {
             const set = sets.at(i);
+            if (set.controls.completed.value) continue;
 
             set.controls.currentValue.setValue(set.controls.value.value || 0);
             set.controls.currentWeight.setValue(set.controls.weight.value || 0);
@@ -139,7 +140,10 @@ export class ExerciseFormComponent implements OnChanges {
 
     addSet() {
         const sets = this.setsArray;
+
         const lastSet = sets.at(sets.length - 1)?.value as Set;
+        lastSet.id = null;
+
         const sfg = this.programFormService.createSetFormGroup(lastSet);
         sets.push(sfg);
     }

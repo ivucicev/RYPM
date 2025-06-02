@@ -6,14 +6,14 @@ import { PocketbaseService } from './pocketbase.service';
 })
 export class HelloWorldService {
 
-    private pocketBase = this.pocketBaseService.pb;
+    private pocketbase = this.pocketbaseService.pb;
 
     constructor(
-        private pocketBaseService: PocketbaseService
+        private pocketbaseService: PocketbaseService
     ) {
     }
 
     public hello(name: string): Promise<any> {
-        return this.pocketBase.send('/api/hello-world/hello', { query: { name: name } });
+        return this.pocketbase.send('/api/hello-world/hello', { query: { name: name } });
     }
 }

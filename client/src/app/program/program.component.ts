@@ -1,24 +1,22 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { ActionSheetController, IonicModule, ModalController } from '@ionic/angular';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { IonicModule } from '@ionic/angular';
+import { TranslateModule } from '@ngx-translate/core';
 import { ErrorMessageDirective } from '../core/directives/error-message.directive';
 import { NavController, PopoverController } from '@ionic/angular/standalone';
 import { RepType } from '../core/models/enums/rep-type';
 import { WeightType } from '../core/models/enums/weight-type';
 import { ExerciseFormComponent } from '../form/exercise-form/exercise-form.component';
 import { ProgramFormGroup, FormsService } from '../core/services/forms.service';
-import { lastValueFrom, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { DayActionsPopoverComponent } from '../day-actions-popover/day-actions-popover.component';
-import { AssignModalComponent } from '../assign-program-modal/assign-modal.component';
-import { PocketbaseService } from '../core/services/pocketbase.service';
 import { ActivatedRoute } from '@angular/router';
-import { Program } from '../core/models/collections/program';
 import { ProgramBM } from '../core/models/bm/program-bm';
 import { AutosaveService } from '../core/services/autosave.service';
 import { WorkoutState } from '../core/models/enums/workout-state';
 import { Day } from '../core/models/collections/day';
 import { WorkoutStateColorPipe } from '../core/pipes/workout-state-color.pipe';
+import { ProgramInfo, ProgramService, ProgramActionKey } from '../core/services/program.service';
 
 @Component({
     selector: 'app-program',
@@ -33,7 +31,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
 
     private unsubscribeAll = new Subject<void>();
 
-    program: Program;
+    program: ProgramInfo;
 
     programForm: ProgramFormGroup = this.programFormService.createProgramFormGroup();
     subject: Subject<void>;
@@ -61,13 +59,10 @@ export class ProgramComponent implements OnInit, OnDestroy {
     constructor(
         private popoverCtrl: PopoverController,
         private programFormService: FormsService,
-        private modalCtrl: ModalController,
-        private pocketbaseService: PocketbaseService,
         private navCtrl: NavController,
         private activatedRoute: ActivatedRoute,
-        private translateService: TranslateService,
-        private actionSheetCtrl: ActionSheetController,
         private autosaveService: AutosaveService,
+        private programService: ProgramService
     ) {
     }
 
@@ -85,12 +80,12 @@ export class ProgramComponent implements OnInit, OnDestroy {
         this.unsubscribeAll.complete();
     }
 
-    init(program?: Program) {
+    init(program?: ProgramInfo) {
         this.program = program;
 
         this.programForm = this.programFormService.createProgramFormGroup(program);
         this.autosaveService.register<ProgramBM>(this.programForm, 'programs', false)
-            .subscribe();
+            .subscribe(); // TODO: autosave, get/map new changes or take all info from form?
     }
 
     async refresh(id: string) {
@@ -99,7 +94,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.pocketbaseService.programs.getOne(id, { expand: 'weeks,weeks.days,weeks.days.workout' }).then((res) => {
+        this.programService.getProgramInfoById(id).then((res) => {
             this.init(res);
         });
     }
@@ -224,31 +219,14 @@ export class ProgramComponent implements OnInit, OnDestroy {
     // }
 
     async openSettings() {
-        const translations = await lastValueFrom(this.translateService.get([
-            'delete', 'cancel'
-        ]));
-
-        const actionSheet = await this.actionSheetCtrl.create({
-            header: translations.workout,
-            buttons: [
-                {
-                    text: translations.delete,
-                    icon: 'trash-outline',
-                    role: 'destructive',
-                    handler: () => {
-                        this.pocketbaseService.programs.delete(this.programForm.get('id')?.value).then(() => {
-                            this.navCtrl.navigateBack(['./tabs']);
-                        })
-                    }
-                },
-                {
-                    text: translations.cancel,
-                    icon: 'close-outline',
-                    role: 'cancel'
-                }
-            ]
-        });
-
-        await actionSheet.present();
+        const excludeActions: ProgramActionKey = {
+            edit: true
+        };
+        const actionSheet = await this.programService.presentProgramActionSheet(null, this.program, excludeActions);
+        actionSheet.onDidDismiss().then(e => {
+            if (e.data?.destructive || e.data?.constructive) {
+                this.navCtrl.navigateBack(['./tabs']);
+            }
+        })
     }
 }

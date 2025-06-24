@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
@@ -9,7 +9,6 @@ import { WeightType } from '../core/models/enums/weight-type';
 import { ExerciseFormComponent } from '../form/exercise-form/exercise-form.component';
 import { ProgramFormGroup, FormsService } from '../core/services/forms.service';
 import { Subject, takeUntil } from 'rxjs';
-import { DayActionsPopoverComponent } from '../day-actions-popover/day-actions-popover.component';
 import { ActivatedRoute } from '@angular/router';
 import { ProgramBM } from '../core/models/bm/program-bm';
 import { AutosaveService } from '../core/services/autosave.service';
@@ -42,6 +41,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
     RepType = RepType;
     WeightType = WeightType;
     WorkoutState = WorkoutState;
+    public dayActionsPopoverOpen = false;
 
     weeks = Array.from({ length: 12 }, (_, i) => i + 1);
 
@@ -55,6 +55,8 @@ export class ProgramComponent implements OnInit, OnDestroy {
     //             avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
     //         },
     //     ];
+
+    @ViewChild('popover') popover!: HTMLIonPopoverElement;
 
     constructor(
         private popoverCtrl: PopoverController,
@@ -84,8 +86,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
         this.program = program;
 
         this.programForm = this.programFormService.createProgramFormGroup(program);
-        this.autosaveService.register<ProgramBM>(this.programForm, 'programs', false)
-            .subscribe(); // TODO: autosave, get/map new changes or take all info from form?
+        //this.autosaveService.register<ProgramBM>(this.programForm, 'programs', false).subscribe(); // TODO: autosave, get/map new changes or take all info from form?
     }
 
     async refresh(id: string) {
@@ -161,38 +162,70 @@ export class ProgramComponent implements OnInit, OnDestroy {
         await this.programFormService.addExercisesToDay(this.programForm, weekIndex, dayIndex);
     }
 
-    async presentDayActionPopover(event: Event, weekIndex: number, dayIndex: number) {
-        const daysArrayLength = this.getDaysArray(weekIndex).length;
-        const popover = await this.popoverCtrl.create({
-            component: DayActionsPopoverComponent,
-            event: event,
-            translucent: true,
-            componentProps: {
-                canDelete: daysArrayLength > 1,
-                canMoveUp: dayIndex > 0,
-                canMoveDown: dayIndex < (daysArrayLength - 1),
-                moveUpHandler: () => {
-                    this.programFormService.moveDay(this.programForm, weekIndex, dayIndex, 'up');
-                    this.activeDayIndex = dayIndex - 1;
-                },
-                moveDownHandler: () => {
-                    this.programFormService.moveDay(this.programForm, weekIndex, dayIndex, 'down');
-                    this.activeDayIndex = dayIndex + 1;
-                },
-                removeHandler: () => {
-                    this.programFormService.removeDay(this.programForm, weekIndex, dayIndex);
-                    let lastDayIndex = this.getDaysArray(weekIndex).length - 1;
-                    if (dayIndex > lastDayIndex) {
-                        this.activeDayIndex = lastDayIndex;
-                    }
-                }
-            },
-            dismissOnSelect: true,
-            arrow: true
-        });
-
-        await popover.present();
+    public moveUpHandler = (weekIndex: number) => {
+        this.programFormService.moveDay(this.programForm, weekIndex, this.activeDayIndex, 'up');
+        this.activeDayIndex = this.activeDayIndex - 1;
     }
+
+    public moveDownHandler = (weekIndex: number) => {
+        this.programFormService.moveDay(this.programForm, weekIndex, this.activeDayIndex, 'down');
+        this.activeDayIndex = this.activeDayIndex + 1;
+    }
+
+    public removeHandler = (weekIndex: number) => {
+        this.programFormService.removeDay(this.programForm, weekIndex, this.activeDayIndex);
+        let lastDayIndex = this.getDaysArray(weekIndex).length - 1;
+        if (this.activeDayIndex > lastDayIndex) {
+            this.activeDayIndex = lastDayIndex;
+        }
+    }
+
+    public copyToNextWeek = (weekIndex: number) => {
+        const current = this.getDaysArray(weekIndex);
+
+        if (current.length === 0) return;
+
+        const currentDay = current.controls[this.activeDayIndex];
+
+        if (!currentDay) return;
+
+        const currentDayValue = currentDay.getRawValue();
+
+        this.programFormService.addDay(this.programForm, weekIndex + 1,);
+
+        const daysArray = this.getDaysArray(weekIndex + 1);
+
+        
+        /*for (let i = 0; i <= daysArray.length; i++) {
+            if (!daysArray.controls[i]?.value?.exercises?.length) {
+                console.log('Removing empty day at index:', i);
+                this.removeDay(weekIndex + 1, i); // Remove empty days
+            }
+        }*/
+        
+        const newDay = this.programFormService.createDayFormGroup(currentDayValue as any, true);
+        daysArray.push(newDay);
+        
+
+    }
+
+    public copyToAllWeeks = () => {
+
+    }
+
+    public duplicateDay = () => {
+
+    }
+
+    public duplicateWeek = () => {
+
+    }
+
+    public presentPopover(e) {
+        this.dayActionsPopoverOpen = true;
+        this.popover.event = e
+    }
+
 
     // TODO: Trainer
     // removeAssignedUser(userId: string) {
@@ -217,6 +250,10 @@ export class ProgramComponent implements OnInit, OnDestroy {
     //         this.programFormService.addUser(this.programForm, user);
     //     });
     // }
+
+    ionViewWillLeave() {
+        this.autosaveService.save('programs', this.programForm.getRawValue())
+    }
 
     async openSettings() {
         const excludeActions: ProgramActionKey = {

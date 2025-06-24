@@ -46,7 +46,7 @@ export class AutosaveService {
                     debounceTime(debounceMs),
                     filter(() => form.valid),
                     switchMap((model) =>
-                        this.pocketbaseService.upsertRecord<T>(collection, model, showToast)
+                        this.pocketbaseService.upsertRecord<T>(collection, model, showToast, true)
                     ),
                     takeUntil(destroy$)
                 )
@@ -66,6 +66,11 @@ export class AutosaveService {
         );
 
         return saveResult$;
+    }
+
+    save(collection: Collection, model: any) {
+        this.pocketbaseService.upsertRecord(collection, model, false, true)
+
     }
 
     unregister(form: AbstractControl) {

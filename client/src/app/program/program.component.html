@@ -56,13 +56,12 @@
             @for (week of program?.weeks; track $index; let weekIndex = $index) {
             <ion-item>
                 <ion-label>
-                    <h3>{{('week' | translate) }} {{ weekIndex}}</h3>
-
+                    <h3>{{('week' | translate) }} {{ weekIndex + 1}}</h3>
                     <div class="days-scroll">
                         @for (day of week.days; track $index; let dayIndex = $index) {
                         <ion-chip [color]="day.workout?.state | workoutStateColor" (click)="navigateToWorkout(day)">
 
-                            <ion-label>{{ ('day' | translate) }} {{ dayIndex}}</ion-label>
+                            <ion-label>{{ ('day' | translate) }} {{ dayIndex + 1}}</ion-label>
 
                             @if (day.workout?.state === WorkoutState.Completed) {
                             <ion-icon name="checkmark" slot="end"></ion-icon>
@@ -146,10 +145,33 @@
                         <div class="day-header">
                             <h3 class="ion-color-light">{{ 'day' | translate }} {{activeDayIndex+1}}</h3>
                             <div class="day-actions">
-                                <ion-button fill="clear" size="small" [color]="'medium'"
-                                    (click)="presentDayActionPopover($event, weekIndex, activeDayIndex)">
-                                    <ion-icon name="ellipsis-vertical"></ion-icon>
+                                <ion-button fill="clear" size="small" [color]="'medium'" (click)="presentPopover($event)">
+                                    <ion-icon name="copy-outline"></ion-icon>
                                 </ion-button>
+                                <ion-button fill="clear" size="small" [color]="'medium'" (click)="moveUpHandler($index)" [disabled]="!(activeDayIndex > 0)">
+                                    <ion-icon name="chevron-up-outline"></ion-icon>
+                                </ion-button>
+                                <ion-button fill="clear" size="small" [color]="'medium'" (click)="moveDownHandler($index)" [disabled]="!(activeDayIndex < (getDaysArray(weekIndex).length - 1))">
+                                    <ion-icon name="chevron-down-outline"></ion-icon>
+                                </ion-button>
+                                <ion-button fill="clear" size="small" [color]="'medium'" (click)="removeHandler($index)" [disabled]="(getDaysArray(weekIndex).length <= 1)">
+                                    <ion-icon name="trash-outline"></ion-icon>
+                                </ion-button>
+                                <ion-popover #popover [isOpen]="dayActionsPopoverOpen" (didDismiss)="dayActionsPopoverOpen = false">
+                                    <ng-template>
+                                        <ion-list>
+                                            <ion-item button (click)="copyToNextWeek($index)">
+                                                <ion-label>{{ 'copy_to_next_week' | translate }}</ion-label>
+                                            </ion-item>
+                                            <ion-item button (click)="copyToAllWeeks()">
+                                                <ion-label>{{ 'copy_to_all_weeks' | translate }}</ion-label>
+                                            </ion-item>
+                                            <ion-item button (click)="duplicateDay()">
+                                                <ion-label>{{ 'duplicate_day' | translate }}</ion-label>
+                                            </ion-item>
+                                        </ion-list>
+                                    </ng-template>
+                                </ion-popover>
                             </div>
                         </div>
 

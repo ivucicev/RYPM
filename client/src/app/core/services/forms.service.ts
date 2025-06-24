@@ -117,7 +117,7 @@ export class FormsService implements OnDestroy {
     }
 
     //#region Init
-    createProgramFormGroup(program?: Program) {
+    createProgramFormGroup(program?: Program): ProgramFormGroup {
         const programForm: ProgramFormGroup = this.formBuilder.group({
             id: [program?.id],
             name: [program?.name],
@@ -144,11 +144,10 @@ export class FormsService implements OnDestroy {
                         weeksArray.removeAt(weeksArray.length - 1);
                     }
                 }
-                else if (durationWeeks > weeksArray.length) {
+                else if (durationWeeks > weeksArray.length && !program) {
                     for (let i = weeksArray.length; i < durationWeeks; i++) {
                         const weekForm = this.createWeekFormGroup();
                         weeksArray.push(weekForm);
-
                         this.addDay(programForm, i);
                     }
                 }
@@ -162,9 +161,9 @@ export class FormsService implements OnDestroy {
     }
 
 
-    createExerciseFormGroup(exercise?: Exercise): ExerciseFormGroup {
+    createExerciseFormGroup(exercise?: Exercise, isNew: boolean = false): ExerciseFormGroup {
         const exerciseGroup = this.formBuilder.group({
-            id: [exercise?.id],
+            id: isNew ? [null] : [exercise?.id],
             name: [exercise?.name ?? ''],
             force: [exercise?.force],
             level: [exercise?.level],
@@ -185,11 +184,11 @@ export class FormsService implements OnDestroy {
 
         if (exercise?.sets?.length > 0) {
             exercise.sets.forEach(set => {
-                setsArray.push(this.createSetFormGroup(set));
+                setsArray.push(this.createSetFormGroup(set, isNew));
             });
         } else {
             const set = this.getSetFromExerciseTemplate(exercise) as Set;
-            setsArray.push(this.createSetFormGroup(set));
+            setsArray.push(this.createSetFormGroup(set, isNew));
         }
 
         return exerciseGroup;
@@ -213,9 +212,9 @@ export class FormsService implements OnDestroy {
         return templateForm;
     }
 
-    createSetFormGroup(set?: Set): ExerciseSetFormGroup {
+    createSetFormGroup(set?: Set, isNew: boolean = false): ExerciseSetFormGroup {
         const fg: ExerciseSetFormGroup = this.formBuilder.group({
-            id: [set?.id],
+            id: isNew ? [null] : [set?.id],
             completed: [set?.completed ?? false],
             completedAt: [set?.completedAt ?? null],
             restSkipped: [set?.restSkipped ?? false],
@@ -266,16 +265,16 @@ export class FormsService implements OnDestroy {
         return fg;
     }
 
-    createDayFormGroup(day?: Day): DayFormGroup {
+    createDayFormGroup(day?: Day, isNew: boolean = false): DayFormGroup {
         const fg = this.formBuilder.group({
-            id: [day?.id],
+            id: isNew ? [null] : [day?.id],
             exercises: this.formBuilder.array<ExerciseFormGroup>([])
         });
 
         const exercisesArray = fg.controls.exercises as FormArray<ExerciseFormGroup>;
 
         day?.exercises?.forEach(exercise => {
-            const exerciseForm = this.createExerciseFormGroup(exercise);
+            const exerciseForm = this.createExerciseFormGroup(exercise, isNew);
             exercisesArray.push(exerciseForm);
         });
 
@@ -335,6 +334,7 @@ export class FormsService implements OnDestroy {
     // }
 
     addDay(programForm: ProgramFormGroup, weekIndex: number) {
+        console.log('Adding day to week', weekIndex);
         const daysArray = this.getDaysArray(programForm, weekIndex);
         daysArray.push(this.createDayFormGroup());
     }

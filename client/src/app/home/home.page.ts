@@ -65,7 +65,7 @@ export class HomePage {
 
     //#region Init
     ionViewWillEnter() {
-        this.refresh();
+       this.refresh();
     }
 
     async refresh() {

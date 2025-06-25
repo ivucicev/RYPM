@@ -4,7 +4,7 @@
             <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
         </ion-buttons>
         <ion-title>
-            {{'custom_program' | translate}}
+            {{'Custom programs' | translate}}
         </ion-title>
         <ion-label slot="end">
             @if (programForm.controls.id.value) {
@@ -18,12 +18,12 @@
     <ion-row class="ion-padding-x">
         <ion-segment scrollable [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" (ionChange)="tabChange()">
             <ion-segment-button value="info">
-                <ion-label>{{ 'info' | translate }}</ion-label>
+                <ion-label>{{ 'Info' | translate }}</ion-label>
             </ion-segment-button>
 
             @for (week of getWeeksArray().controls; track $index; let i = $index) {
             <ion-segment-button [value]="'week-'+i">
-                <ion-label> {{ 'week' | translate }} {{i+1}}</ion-label>
+                <ion-label> {{ 'Week' | translate }} {{i+1}}</ion-label>
             </ion-segment-button>
             }
         </ion-segment>
@@ -35,19 +35,19 @@
         @if (activeTab === 'info') {
         <div class="form">
             <ion-item>
-                <ion-input label="{{ 'name' | translate }}" labelPlacement="floating" formControlName="name"
+                <ion-input label="{{ 'Name' | translate }}" labelPlacement="floating" formControlName="name"
                     type="text"></ion-input>
             </ion-item>
             <ion-item>
-                <ion-textarea label="{{ 'description' | translate }}" labelPlacement="floating"
+                <ion-textarea label="{{ 'Description' | translate }}" labelPlacement="floating"
                     formControlName="description" rows="3"></ion-textarea>
             </ion-item>
             <ion-item>
-                <ion-label>{{ 'duration_weeks' | translate }}</ion-label>
+                <ion-label>{{ 'Duration' | translate }}</ion-label>
                 <ion-select formControlName="numberOfWeeks">
                     @for (num of weeks; track num) {
                     <ion-select-option [value]="num">
-                        {{num}} {{ 'weeks' | translate }}
+                        {{num}} {{ 'Weeks' | translate }}
                     </ion-select-option>
                     }
                 </ion-select>
@@ -56,12 +56,12 @@
             @for (week of program?.weeks; track $index; let weekIndex = $index) {
             <ion-item>
                 <ion-label>
-                    <h3>{{('week' | translate) }} {{ weekIndex + 1}}</h3>
+                    <h3>{{('Week' | translate) }} {{ weekIndex + 1}}</h3>
                     <div class="days-scroll">
                         @for (day of week.days; track $index; let dayIndex = $index) {
                         <ion-chip [color]="day.workout?.state | workoutStateColor" (click)="navigateToWorkout(day)">
 
-                            <ion-label>{{ ('day' | translate) }} {{ dayIndex + 1}}</ion-label>
+                            <ion-label>{{ ('Day' | translate) }} {{ dayIndex + 1}}</ion-label>
 
                             @if (day.workout?.state === WorkoutState.Completed) {
                             <ion-icon name="checkmark" slot="end"></ion-icon>
@@ -101,14 +101,14 @@
                         } @empty{
                         <ion-item lines="none">
                             <ion-label class="ion-text-center" [color]="'medium'">
-                                {{ 'no_users_assigned' | translate }}
+                                {{ 'No users assigned' | translate }}
                             </ion-label>
                         </ion-item>
                         }
                     </ion-list>
                     <div class="ion-padding-bottom">
                         <ion-button size="medium" expand="block" fill="clear" (click)="openAssignUsersModal()">
-                            {{ 'add_user' | translate }}
+                            {{ 'Add user' | translate }}
                         </ion-button>
                     </div>
                 </ion-label>
@@ -143,7 +143,7 @@
                     @if (getDaysArray(weekIndex).length > 0 && activeDayIndex !== null) {
                     <div [formGroupName]="activeDayIndex">
                         <div class="day-header">
-                            <h3 class="ion-color-light">{{ 'day' | translate }} {{activeDayIndex+1}}</h3>
+                            <h3 class="ion-color-light">{{ 'Week' | translate }} {{ weekIndex + 1 }} {{ 'Day' | translate }} {{activeDayIndex+1}}</h3>
                             <div class="day-actions">
                                 <ion-button fill="clear" size="small" [color]="'medium'" (click)="presentPopover($event)">
                                     <ion-icon name="copy-outline"></ion-icon>
@@ -160,14 +160,16 @@
                                 <ion-popover #popover [isOpen]="dayActionsPopoverOpen" (didDismiss)="dayActionsPopoverOpen = false">
                                     <ng-template>
                                         <ion-list>
-                                            <ion-item button (click)="copyToNextWeek($index)">
-                                                <ion-label>{{ 'copy_to_next_week' | translate }}</ion-label>
-                                            </ion-item>
-                                            <ion-item button (click)="copyToAllWeeks()">
-                                                <ion-label>{{ 'copy_to_all_weeks' | translate }}</ion-label>
-                                            </ion-item>
+                                            @if (weekIndex < getWeeksArray().controls?.length - 1 ) {
+                                                <ion-item button (click)="copyToNextWeek($index)">
+                                                    <ion-label>{{ 'Copy to next week' | translate }}</ion-label>
+                                                </ion-item>
+                                                <ion-item button (click)="copyToAllWeeks()">
+                                                    <ion-label>{{ 'Copy to all weeks' | translate }}</ion-label>
+                                                </ion-item>
+                                            }
                                             <ion-item button (click)="duplicateDay()">
-                                                <ion-label>{{ 'duplicate_day' | translate }}</ion-label>
+                                                <ion-label>{{ 'Duplicate day' | translate }}</ion-label>
                                             </ion-item>
                                         </ion-list>
                                     </ng-template>
@@ -189,13 +191,13 @@
                             }
                             @empty {
                             <ion-label [color]="'medium'">
-                                {{ 'no_exercise_added' | translate }}
+                                {{ 'No excercises added yet.' | translate }}
                             </ion-label>
                             }
 
                             <ion-button fill="clear" expand="block"
                                 (click)="addExerciseToDay(weekIndex, activeDayIndex)">
-                                {{ 'add_exercise' | translate }}
+                                {{ 'Add exercise' | translate }}
                             </ion-button>
                         </div>
                     </div>

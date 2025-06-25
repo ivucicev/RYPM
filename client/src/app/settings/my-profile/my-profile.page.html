@@ -4,7 +4,7 @@
             <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
         </ion-buttons>
         <ion-title>
-            {{'my_profile' | translate}}
+            {{'My profile' | translate}}
         </ion-title>
     </ion-toolbar>
 </ion-header>
@@ -21,19 +21,19 @@
         <div class="form">
             <ion-list>
                 <ion-item class="animate__animated animate__fadeInUp">
-                    <ion-input formControlName="name" labelPlacement="floating" [label]="'name' | translate" mode="md"
+                    <ion-input formControlName="name" labelPlacement="floating" [label]="'Name' | translate" mode="md"
                         type="name"></ion-input>
                 </ion-item>
 
                 <ion-item>
-                    <ion-textarea fill="clear" formControlName="about" label="{{ 'about' | translate }}"
+                    <ion-textarea fill="clear" formControlName="about" label="{{ 'About' | translate }}"
                         labelPlacement="floating" [counter]="true" maxlength="500" rows="4"
-                        helperText="{{ 'about_helperText' | translate }}"></ion-textarea>
+                        helperText="{{ 'Write about yourself...' | translate }}"></ion-textarea>
                 </ion-item>
 
                 <ion-item lines="none">
                     <ion-toggle [slot]="'start'" formControlName="isPublic" (ionChange)="onIsPublicToggle()">
-                        {{ 'public' | translate }}
+                        {{ 'Public' | translate }}
                     </ion-toggle>
                 </ion-item>
             </ion-list>
@@ -46,14 +46,14 @@
         <div class="button-group ion-padding">
             @if (isEditing) {
             <ion-button expand="round" color="light" (click)="cancelEditMode()" class="btn">
-                {{ 'cancel' | translate }}
+                {{ 'Cancel' | translate }}
             </ion-button>
             <ion-button expand="round" class="btn" (click)="saveChanges()">
-                {{ 'save' | translate}}
+                {{ 'Save' | translate}}
             </ion-button>
             } @else {
             <ion-button expand="round" class="btn" (click)="enterEditMode()">
-                {{ 'edit' | translate }}
+                {{ 'Edit' | translate }}
             </ion-button>
             }
         </div>

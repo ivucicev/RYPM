@@ -2,7 +2,7 @@
     <ion-toolbar>
         <ion-title>
             <div class="header-title">
-                {{ 'select_exercise' | translate }}
+                {{ 'Select exercise' | translate }}
                 @if(isLoading) {
                 <ion-spinner [style.align-self]="'center'"> </ion-spinner>
                 }
@@ -10,16 +10,16 @@
             </div>
         </ion-title>
         <ion-buttons slot="end">
-            <ion-button (click)="dismiss()">{{ 'cancel' | translate }}</ion-button>
+            <ion-button (click)="dismiss()">{{ 'Cancel' | translate }}</ion-button>
             <ion-button (click)="addSelected()" [strong]="true" color="primary">
-                {{ 'add' | translate }} ({{ getSelectedCount() }})
+                {{ 'Add' | translate }} ({{ getSelectedCount() }})
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
 
     <ion-toolbar>
         <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="onSearchChange($event)"
-            placeholder="{{ 'search_exercises' | translate }}" debounce="500">
+            placeholder="{{ 'Search' | translate }}" debounce="500">
         </ion-searchbar>
         <ion-button fill="clear" slot="end" (click)="openFilters()">
             <ion-icon name="filter-outline"></ion-icon>
@@ -84,13 +84,13 @@
 
         @if (exercises.length === 0 && !isLoading) {
         <ion-item>
-            <ion-label class="ion-text-center">{{ 'no_exercises_found' | translate }}</ion-label>
+            <ion-label class="ion-text-center">{{ 'No exercises found' | translate }}</ion-label>
         </ion-item>
         }
     </ion-list>
 
     <ion-infinite-scroll (ionInfinite)="loadMore($event)" [disabled]="!hasMoreData">
-        <ion-infinite-scroll-content [loadingText]="('loading' | translate) + '...'">
+        <ion-infinite-scroll-content [loadingText]="('Loading...' | translate) + '...'">
         </ion-infinite-scroll-content>
     </ion-infinite-scroll>
 

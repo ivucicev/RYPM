@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>{{'activity' | translate}}</ion-title>
+        <ion-title>{{'Activity' | translate}}</ion-title>
         <ion-buttons slot="end">
             <!-- TODO: calendar -->
             <ion-button>
@@ -50,13 +50,13 @@
                         }
                     </div>
                     <!-- <ion-button expand="block" (click)="continueWorkout()">
-                        {{ 'continue' | translate }}
+                        {{ 'Continue' | translate }}
                     </ion-button> -->
                 </ion-card-content>
             </div>
         </ion-card>
         } @empty {
-        <ion-note> {{ 'no_activity' | translate }}</ion-note>
+        <ion-note> {{ 'No activities yet.' | translate }}</ion-note>
         }
     </ion-list>
 </ion-content>

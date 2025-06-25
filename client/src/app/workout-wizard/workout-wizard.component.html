@@ -3,7 +3,7 @@
         <ion-buttons slot="start">
             <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
         </ion-buttons>
-        <ion-title>{{ 'workout' | translate }}</ion-title>
+        <ion-title>{{ 'Workout' | translate }}</ion-title>
         <ion-label slot="end">
             <div class="ion-align-items-center" style="display: flex">
                 @if (workout != null) {
@@ -51,7 +51,7 @@
             </app-exercise-form>
         </div>
         } @else if (currentExerciseIndex() == -1) {
-        <app-no-data [text]="'no_exercises' | translate"></app-no-data>
+        <app-no-data [text]="'No excercises found.' | translate"></app-no-data>
         } @else {
         <ion-spinner class="fullscreen" name="dots"></ion-spinner>
         }
@@ -76,13 +76,13 @@
                 </ion-button>
                 @if (nextExercise()) {
                 <div class="next-exercise">
-                    <p class="next-label">{{ 'next' | translate }}: {{ nextExercise().controls.name.value }}
+                    <p class="next-label">{{ 'Next' | translate }}: {{ nextExercise().controls.name.value }}
                         ({{ nextExercise().controls.sets.value?.length }} {{'sets' | translate}})</p>
                 </div>
                 }
                 @if (currentExerciseIndex() === exercises.length - 1 || currentExerciseIndex() === -1) {
                 <ion-button fill="clear" shape="round" [disabled]="" (click)="completeWorkout()">
-                    <ion-note class="ion-color-primary ion-color">{{ 'complete' | translate }}</ion-note>
+                    <ion-note class="ion-color-primary ion-color">{{ 'Complete' | translate }}</ion-note>
                     <!-- <ion-icon name="checkmark-done-outline"></ion-icon> -->
                 </ion-button>
 

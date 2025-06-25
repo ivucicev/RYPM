@@ -14,7 +14,7 @@
                 <ion-list>
                     <ion-item button (click)="onRemoveExerciseEvent.emit()" class="delete-item">
                         <ion-icon name="trash-outline" slot="start" color="danger"></ion-icon>
-                        <ion-label color="danger">{{ 'remove_exercise' | translate }}</ion-label>
+                        <ion-label color="danger">{{ 'Remove excersize' | translate }}</ion-label>
                     </ion-item>
                 </ion-list>
             </ng-template>
@@ -24,7 +24,7 @@
 
     <div class="exercise-settings-container">
         <ion-icon name="timer-outline"></ion-icon>
-        <span>{{ 'rest' | translate }}:</span>
+        <span>{{ 'Rest' | translate }}:</span>
         <ion-button fill="clear" color="dark" size="small" (click)="openRestPickerModal()">
             {{ exercise.get('restDuration')?.value | duration }}
             <ion-icon size="small" name="chevron-down-outline" slot="end"></ion-icon>
@@ -34,12 +34,12 @@
             <ng-template>
                 <ion-header>
                     <ion-toolbar>
-                        <ion-title slot="start">{{ 'set' | translate }} {{selectedSetIndex + 1}}</ion-title>
+                        <ion-title slot="start">{{ 'Set' | translate }} {{selectedSetIndex + 1}}</ion-title>
                         <ion-buttons slot="end">
-                            <ion-button (click)="cancelPicker()">{{ 'cancel' | translate }}</ion-button>
+                            <ion-button (click)="cancelPicker()">{{ 'Cancel' | translate }}</ion-button>
                         </ion-buttons>
                         <ion-buttons slot="end">
-                            <ion-button (click)="confirmRestPicker()">{{ 'confirm' | translate }}</ion-button>
+                            <ion-button (click)="confirmRestPicker()">{{ 'Ok' | translate }}</ion-button>
                         </ion-buttons>
                     </ion-toolbar>
                 </ion-header>
@@ -116,10 +116,10 @@
     <div class="set-buttons">
         <ion-button size="small" fill="clear" color="medium" expand="block" (click)="removeSet()"
             [disabled]="setsArray.length <= 1" color="medium">
-            {{ 'remove_set' | translate }}
+            {{ 'Remove set' | translate }}
         </ion-button>
         <ion-button size="small" fill="clear" color="medium" expand="block" (click)="addSet()">
-            {{ 'add_set' | translate }}
+            {{ 'Add set' | translate }}
         </ion-button>
     </div>
 </div>
@@ -127,7 +127,7 @@
 <ng-template #setValueTemplate let-set="set" let-previous="previous">
     <div class="set-display-container">
         @if (previous) {
-        {{ 'prev' | translate }}:
+        {{ 'Previous' | translate }}:
         }
         @if (set.get('weightType').value !== WeightType.NA) {
         <div class="weight-value">
@@ -193,12 +193,12 @@
     <ng-template>
         <ion-header>
             <ion-toolbar>
-                <ion-title slot="start">{{ 'set' | translate }} {{selectedSetIndex + 1}}</ion-title>
+                <ion-title slot="start">{{ 'Set' | translate }} {{selectedSetIndex + 1}}</ion-title>
                 <ion-buttons slot="end">
-                    <ion-button (click)="cancelPicker()">{{ 'cancel' | translate }}</ion-button>
+                    <ion-button (click)="cancelPicker()">{{ 'Cancel' | translate }}</ion-button>
                 </ion-buttons>
                 <ion-buttons slot="end">
-                    <ion-button (click)="confirmSetPicker()">{{ 'confirm' | translate }}</ion-button>
+                    <ion-button (click)="confirmSetPicker()">{{ 'Confirm' | translate }}</ion-button>
                 </ion-buttons>
             </ion-toolbar>
 

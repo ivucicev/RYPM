@@ -4,7 +4,7 @@
             <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
         </ion-buttons>
         <ion-title>
-            {{'account' | translate}}
+            {{'Account' | translate}}
         </ion-title>
     </ion-toolbar>
 </ion-header>
@@ -14,7 +14,7 @@
         <div class="form">
             <ion-list>
                 <ion-item class="animate__animated animate__fadeInUp">
-                    <ion-input formControlName="email" labelPlacement="floating" [label]="'email' | translate" mode="md"
+                    <ion-input formControlName="email" labelPlacement="floating" [label]="'Email' | translate" mode="md"
                         type="email"></ion-input>
                 </ion-item>
             </ion-list>
@@ -27,14 +27,14 @@
         <div class="button-group ion-padding">
             @if (isEditing) {
             <ion-button expand="round" color="light" (click)="cancelEditMode()" class="btn">
-                {{ 'cancel' | translate }}
+                {{ 'Cancel' | translate }}
             </ion-button>
             <ion-button expand="round" color="primary" class="btn" (click)="saveChanges()">
-                {{ 'save' | translate}}
+                {{ 'Save' | translate}}
             </ion-button>
             } @else {
             <ion-button expand="round" color="primary" class="btn" (click)="enterEditMode()">
-                {{ 'edit' | translate }}
+                {{ 'Edit' | translate }}
             </ion-button>
             }
         </div>

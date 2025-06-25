@@ -4,7 +4,7 @@
             <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
         </ion-buttons>
         <ion-title>
-            <ion-searchbar [(ngModel)]="searchTerm" placeholder="{{ 'search' | translate }}..."
+            <ion-searchbar [(ngModel)]="searchTerm" placeholder="{{ 'Search' | translate }}..."
                 (ionInput)="filterResults()"></ion-searchbar>
         </ion-title>
     </ion-toolbar>
@@ -17,7 +17,7 @@
 
     @if (filteredResults.length === 0) {
     <div class="no-results ion-text-center ion-padding">
-        {{ 'no_results_found' | translate }}
+        {{ 'No users found.' | translate }}
     </div>
     }
 

@@ -3,13 +3,13 @@
         <ion-buttons slot="start">
             <ion-button fill="clear" (click)="clearAllFilters()">
                 <ion-icon name="refresh-outline"></ion-icon>
-                {{ 'clear_all_filters' | translate}}
+                {{ 'Clear filters' | translate}}
             </ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
             <ion-button (click)="cancel()">{{'cancel' | translate }}</ion-button>
             <ion-button (click)="applyFilters()" [strong]="true" color="primary">
-                {{ 'apply' | translate }} ({{ activeFiltersCount }})
+                {{ 'Apply' | translate }} ({{ activeFiltersCount }})
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
@@ -19,7 +19,7 @@
     <div class="filter-section">
         <ion-item>
             <ion-label>
-                <h2>{{'equipment' | translate }}</h2>
+                <h2>{{'Equipment' | translate }}</h2>
             </ion-label>
         </ion-item>
         <div class="chip-container">
@@ -35,7 +35,7 @@
     <div class="filter-section">
         <ion-item>
             <ion-label>
-                <h2>{{'level' | translate }}</h2>
+                <h2>{{'Level' | translate }}</h2>
             </ion-label>
         </ion-item>
         <div class="chip-container">
@@ -51,7 +51,7 @@
     <div class="filter-section">
         <ion-item>
             <ion-label>
-                <h2>{{'category' | translate}}</h2>
+                <h2>{{'Category' | translate}}</h2>
             </ion-label>
         </ion-item>
         <div class="chip-container">
@@ -67,7 +67,7 @@
     <div class="filter-section">
         <ion-item>
             <ion-label>
-                <h2>{{'primary_muscles' | translate}}</h2>
+                <h2>{{'Primary muscles' | translate}}</h2>
             </ion-label>
         </ion-item>
         <div class="chip-container">
@@ -83,14 +83,14 @@
     <div class="filter-section">
         <ion-item>
             <ion-label>
-                <h2> {{ 'force_&_mechanic' | translate }}</h2>
+                <h2> {{ 'Force & Mechanic' | translate }}</h2>
             </ion-label>
         </ion-item>
 
         <ion-grid>
             <ion-row>
                 <ion-col size="6">
-                    <ion-label>{{ 'force' | translate }}:</ion-label>
+                    <ion-label>{{ 'Force' | translate }}:</ion-label>
                     <div class="chip-container">
                         @for (force of forceOptions; track force) {
                         <ion-chip size="small" [color]="tempFilters['force']?.includes(force) ? 'primary' : 'medium'"
@@ -102,7 +102,7 @@
                 </ion-col>
 
                 <ion-col size="6">
-                    <ion-label>{{ 'mechanic' | translate }}:</ion-label>
+                    <ion-label>{{ 'Mechanic' | translate }}:</ion-label>
                     <div class="chip-container">
                         @for (mechanic of mechanicOptions; track mechanic) {
                         <ion-chip size="small"

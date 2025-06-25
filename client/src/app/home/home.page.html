@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>{{'workout' | translate}}</ion-title>
+        <ion-title>{{'Workout' | translate}}</ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="openNewWorkout()">
                 <ion-icon name="add-circle-outline"></ion-icon>
@@ -18,7 +18,7 @@
 
     @if (workouts?.length) {
     <div class="ion-padding-x">
-        <ion-label>{{ 'active' | translate }}</ion-label>
+        <ion-label>{{ 'Active' | translate }}</ion-label>
         <swiper-container slides-per-view="auto" space-between="15" style="width:100%;height:min-content;">
             <!-- [pagination]="true" scrollbar-hide="true" -->
             @for (workout of workouts; track $index) {
@@ -38,7 +38,7 @@
                                 @if (workout.nextExercise.restDuration) {
                                 <span class="rest-info">
                                     <ion-icon name="timer-outline"></ion-icon>
-                                    <span>{{ 'rest' | translate }}: {{ workout.nextExercise.restDuration }}s</span>
+                                    <span>{{ 'Rest' | translate }}: {{ workout.nextExercise.restDuration }}s</span>
                                 </span>
                                 }
                             </div>
@@ -57,7 +57,7 @@
                             <div class="next-set-row">
                                 <ion-icon name="checkmark-circle-outline" [color]="'primary'"></ion-icon>
                                 <ion-label>
-                                    {{ 'all_exercises_completed' | translate }}
+                                    {{ 'All excersizes completed' | translate }}
                                 </ion-label>
                             </div>
                         </div>
@@ -74,12 +74,12 @@
         <ion-segment mode="ios" [(ngModel)]="tab" lines="none">
             <ion-segment-button mode="ios" value="programs">
                 <ion-label>
-                    {{'programs' | translate}}
+                    {{'Programs' | translate}}
                 </ion-label>
             </ion-segment-button>
             <ion-segment-button mode="ios" value="templates">
                 <ion-label>
-                    {{'templates' | translate}}
+                    {{'Templates' | translate}}
                 </ion-label>
             </ion-segment-button>
         </ion-segment>
@@ -87,13 +87,13 @@
             <ng-container *ngSwitchCase="'programs'">
                 <ion-button expand="block" fill="clear" size="small" color="primary" (click)="newProgram()">
                     <ion-icon slot="start" name="layers-outline"></ion-icon>
-                    {{ 'add_program' | translate }}
+                    {{ 'Add program' | translate }}
                 </ion-button>
             </ng-container>
             <ng-container *ngSwitchCase="'templates'">
                 <ion-button expand="block" fill="clear" color="primary" size="small" (click)="newTemplate()">
                     <ion-icon slot="start" name="shapes-outline"></ion-icon>
-                    {{ 'add_template' | translate }}
+                    {{ 'Add template' | translate }}
                 </ion-button>
             </ng-container>
         </div>
@@ -107,10 +107,10 @@
                     <ion-item [button]="true" (click)="presentProgramActionSheet(program)">
                         <ion-label>
                             <div>
-                                <h2>{{ program.name || ('program' | translate) }}</h2>
+                                <h2>{{ program.name || ('Program' | translate) }}</h2>
                                 <span class="duration">
                                     <ion-icon name="time-outline" size="small"></ion-icon>
-                                    {{ program.numberOfWeeks || 'N/A' }} {{ 'weeks' | translate }}
+                                    {{ program.numberOfWeeks || 'N/A' }} {{ 'Weeks' | translate }}
                                 </span>
                             </div>
 
@@ -122,13 +122,13 @@
                                     </div>
                                 </div>
                                 <span class="progress-text">
-                                    {{ program.completedDaysCount }}/{{ program.totalDaysCount }} {{ 'days_completed' |
+                                    {{ program.completedDaysCount }}/{{ program.totalDaysCount }} {{ 'Completion' |
                                     translate }}
                                 </span>
                             </div>
                             }
 
-                            <ion-note>{{ program.description || ('no_description' | translate) }}</ion-note>
+                            <ion-note>{{ program.description || ('No description' | translate) }}</ion-note>
                             @if (program.tags?.length > 0) {
                             <div class="tag-container">
                                 @for (tag of program.tags; track $index) {
@@ -151,7 +151,7 @@
                     </ion-item-options>
                 </ion-item-sliding>
                 } @empty {
-                <app-no-data [text]="'no_programs' | translate"></app-no-data>
+                <app-no-data [text]="'No programs' | translate"></app-no-data>
                 }
             </ion-list>
         </ng-container>
@@ -162,14 +162,14 @@
                 <ion-item-sliding class="animate__animated animate__fadeInUp">
                     <ion-item [button]="true" (click)="presentTemplateActionSheet(template)">
                         <ion-label>
-                            <h2> {{ template.name ?? ('template' | translate) }} ({{ template.exercises.length
+                            <h2> {{ template.name ?? ('Template' | translate) }} ({{ template.exercises.length
                                 }})
                             </h2>
                             <ion-note>
                                 @for (exercise of template.exercises.slice(0, 3); track $index) {
                                 {{ exercise.name }}{{ !$last ? ', ' : '' }}
                                 } @empty {
-                                {{ 'blank_template' | translate }}
+                                {{ 'Blank template' | translate }}
                                 }
                             </ion-note>
                         </ion-label>
@@ -186,7 +186,7 @@
                     </ion-item-options>
                 </ion-item-sliding>
                 } @empty {
-                <app-no-data [text]="'no_templates' | translate"></app-no-data>
+                <app-no-data [text]="'No templates' | translate"></app-no-data>
                 }
             </ion-list>
         </ng-container>

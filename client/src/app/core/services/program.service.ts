@@ -27,13 +27,13 @@ export type ProgramInfo = (
 export type ProgramActionKey = { [key in keyof typeof PROGRAM_ACTIONS]?: boolean };
 
 export const PROGRAM_ACTIONS = {
-    start: 'start',
-    continue: 'continue',
-    edit: 'edit',
-    close: 'close',
-    delete: 'delete',
-    assign: 'assign',
-    copy: 'copy'
+    start: 'Start',
+    continue: 'Continue',
+    edit: 'Edit',
+    close: 'Close',
+    delete: 'Delete',
+    assign: 'Assign',
+    copy: 'Copy'
 };
 
 @Injectable({
@@ -102,20 +102,21 @@ export class ProgramService {
         };
 
         const translations = await lastValueFrom(this.translateService.get(Object.values(PROGRAM_ACTIONS)));
+
         const actionSheet = await this.actionSheetCtrl.create({
             header: program.name,
             buttons: [
                 !excludeActions[PROGRAM_ACTIONS.start] && !program.completed ? {
                     text: program.started
-                        ? translations.continue
-                        : translations.start,
+                        ? translations.Continue
+                        : translations.Start,
                     icon: 'play-outline',
                     handler: () => {
                         return this.startWorkoutFromProgram(program);
                     },
                 } : null,
                 !excludeActions[PROGRAM_ACTIONS.edit] ? {
-                    text: translations.edit,
+                    text: translations.Edit,
                     icon: 'create-outline',
                     handler: () => {
                         return this.editProgram(program.id);
@@ -130,7 +131,7 @@ export class ProgramService {
                 //     },
                 // },
                 !excludeActions[PROGRAM_ACTIONS.copy] ? {
-                    text: translations.copy,
+                    text: translations.Copy,
                     icon: 'copy-outline',
                     data: {
                         reload: true,
@@ -141,7 +142,7 @@ export class ProgramService {
                     },
                 } : null,
                 !excludeActions[PROGRAM_ACTIONS.delete] ? {
-                    text: translations.delete,
+                    text: translations.Delete,
                     icon: 'trash-outline',
                     role: 'destructive',
                     data: {
@@ -153,7 +154,7 @@ export class ProgramService {
                     },
                 } : null,
                 {
-                    text: translations.close,
+                    text: translations.Close,
                     icon: 'close-outline',
                     role: 'cancel',
                 },

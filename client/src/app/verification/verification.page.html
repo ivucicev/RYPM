@@ -4,7 +4,7 @@
             <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
         </ion-buttons>
         <ion-title>
-            {{'verification' | translate}}
+            {{'Verification' | translate}}
         </ion-title>
     </ion-toolbar>
 </ion-header>
@@ -15,20 +15,20 @@
         <div class="banner_img center_img">
             <img src="assets/images/banner_img.png" class="crop_img">
         </div>
-        <p class="animate__animated animate__fadeInUp"> {{'verification_text' | translate}}<br>{{'verification_text2' |
+        <p class="animate__animated animate__fadeInUp"> {{'Verify' | translate}}<br>{{'verification_text2' |
             translate}}</p>
     </div>
 
     <div class="form">
         <ion-list lines="none">
             <ion-item lines="none" class="animate__animated animate__fadeInUp">
-                <ion-input #input labelPlacement="floating" [label]="'enter_verification_code' | translate" mode="md"
+                <ion-input #input labelPlacement="floating" [label]="'Verification code' | translate" mode="md"
                     type="number"></ion-input>
             </ion-item>
         </ion-list>
 
         <ion-button size="large" expand="round" class="btn animate__animated animate__fadeInUp"
-            (click)="submit(input.value)">{{'submit'
+            (click)="submit(input.value)">{{'Submit'
             | translate}}</ion-button>
 
     </div>

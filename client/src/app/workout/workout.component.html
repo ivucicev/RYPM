@@ -4,7 +4,7 @@
             <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
         </ion-buttons>
         <ion-title>
-            {{ 'workout' | translate }}
+            {{ 'Workout' | translate }}
         </ion-title>
     </ion-toolbar>
 </ion-header>
@@ -23,12 +23,12 @@
                     }
                     @empty {
                     <ion-label class="ion-text-center ion-padding" [color]="'medium'">
-                        {{ 'no_exercise_added' | translate }}
+                        {{ 'No exercises added yet.' | translate }}
                     </ion-label>
                     }
 
                     <ion-button fill="clear" expand="block" (click)="addExercises()">
-                        {{ 'add_exercise' | translate }}
+                        {{ 'Add exercise' | translate }}
                     </ion-button>
                 </ion-label>
             </ion-item>
@@ -42,7 +42,7 @@
             <ion-button color="primary" [disabled]="workoutForm.invalid" expand="round" class="btn"
                 (click)="saveChanges()">
                 <ion-icon slot="start" name="play-outline"></ion-icon>
-                {{ 'start' | translate }}
+                {{ 'Start' | translate }}
             </ion-button>
         </div>
     </ion-toolbar>

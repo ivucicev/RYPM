@@ -53,11 +53,8 @@ export class AutosaveService {
                 .subscribe({
                     next: async (result) => {
                         form.patchValue({ id: result.id }, { emitEvent: false });
-
                         if (collection == COLLECTIONS.workouts && result['day'])
-
                             saveResult$.next(Promise.resolve(result));
-                        // console.log('Autosaved', result);
                     },
                     error: (err) => {
                         saveResult$.next(Promise.reject(err));

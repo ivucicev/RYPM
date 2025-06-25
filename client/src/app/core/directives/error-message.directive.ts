@@ -57,7 +57,7 @@ export class ErrorMessageDirective implements OnInit, OnDestroy {
 
             if (control.invalid && (control.touched || control.dirty)) {
                 const errorKey = Object.keys(control.errors)[0];
-                const errorMessage = this.translateService.instant(this.validationMessages[errorKey] || 'validators_invalid');
+                const errorMessage = this.translateService.instant(this.validationMessages[errorKey] || 'Invalid input');
                 ionInput.errorText = errorMessage;
             } else {
                 ionInput.errorText = undefined;

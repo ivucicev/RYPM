@@ -1,15 +1,15 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>{{ 'notes_for' | translate }} {{exerciseName}}</ion-title>
+        <ion-title>{{ 'Notes' | translate }} {{exerciseName}}</ion-title>
         <ion-buttons slot="end">
-            <ion-button (click)="dismiss()">{{ 'cancel' | translate }}</ion-button>
-            <ion-button (click)="save()" strong>{{ 'save' | translate }}</ion-button>
+            <ion-button (click)="dismiss()">{{ 'Cancel' | translate }}</ion-button>
+            <ion-button (click)="save()" strong>{{ 'Save' | translate }}</ion-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
     <ion-item lines="none">
-        <ion-textarea #textArea fill="clear" [(ngModel)]="notesText" placeholder="{{ 'description' | translate }}..."
+        <ion-textarea #textArea fill="clear" [(ngModel)]="notesText" placeholder="{{ 'Description' | translate }}..."
             rows="10" class="notes-textarea" autoGrow="true" expand="block"></ion-textarea>
     </ion-item>
 </ion-content>

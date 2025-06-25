@@ -12,12 +12,12 @@ import { AssignModalComponent } from 'src/app/assign-modal/assign-modal.componen
 export type TemplateActionKey = { [key in keyof typeof TEMPLATE_ACTIONS]?: boolean };
 
 export const TEMPLATE_ACTIONS = {
-    create_workout: 'create_workout',
-    edit: 'edit',
-    close: 'close',
-    delete: 'delete',
-    assign: 'assign',
-    copy: 'copy'
+    create_workout: 'Create',
+    edit: 'Edit',
+    close: 'Close',
+    delete: 'Delete',
+    assign: 'Assign',
+    copy: 'Copy'
 };
 
 

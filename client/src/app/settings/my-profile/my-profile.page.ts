@@ -104,7 +104,7 @@ export class MyProfilePage implements OnInit {
     async onIsPublicToggle() {
         const newValue = this.profileForm.controls.isPublic.value;
         const t = await lastValueFrom(this.translateService.get(
-            ['info', 'cancel', 'switch_to_public', 'switch_to_private']
+            ['Info', 'Cancel', 'Switch to public', 'Switch to private']
         ));
         const alert = await this.alertCtrl.create({
             header: t.info,

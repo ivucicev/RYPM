@@ -6,10 +6,10 @@
         </ion-buttons>
         <ion-title>
             <div class="title_inner d-flex">
-                {{'sign_in' | translate}}
+                {{'Sign in' | translate}}
                 <span class="end" (click)="register()">
                     <ion-icon class="zmdi zmdi-plus"></ion-icon>
-                    {{'register' | translate}}
+                    {{'Register' | translate}}
                 </span>
             </div>
         </ion-title>
@@ -29,30 +29,30 @@
         <div class="form">
             <ion-list>
                 <ion-item class="animate__animated animate__fadeInUp">
-                    <ion-input formControlName="email" [label]="'email_address' | translate" labelPlacement="floating"
+                    <ion-input formControlName="email" [label]="'Email' | translate" labelPlacement="floating"
                         mode="md" type="email"></ion-input>
                 </ion-item>
                 <ion-item class="animate__animated animate__fadeInUp">
-                    <ion-input formControlName="password" [label]="'password' | translate" class="password" mode="md"
+                    <ion-input formControlName="password" [label]="'Password' | translate" class="password" mode="md"
                         labelPlacement="floating" type="password">
                         <h3 class="end" (click)="forgot_password()">{{"forgot" | translate}}</h3>
                     </ion-input>
                 </ion-item>
             </ion-list>
             <ion-button size="large" expand="round" class="btn animate__animated animate__fadeInUp"
-                (click)="signIn()">{{'sign_in_now' | translate}}</ion-button>
+                (click)="signIn()">{{'Sign In' | translate}}</ion-button>
             <div class="or_continue_with animate__animated animate__fadeInUp">
-                <h3 class="ion-text-center">{{'or_continue_with' | translate}}</h3>
+                <h3 class="ion-text-center">{{'Or continue with' | translate}}</h3>
                 <ion-row>
                     <ion-col size="6">
                         <ion-button size="large" expand="round" fill="outline" class="btn" (click)="signInFacebook()">
                             <ion-icon class="zmdi zmdi-facebook"></ion-icon>
-                            {{'facebook' | translate}}</ion-button>
+                            {{'Facebook' | translate}}</ion-button>
                     </ion-col>
                     <ion-col size="6">
                         <ion-button size="large" expand="round" fill="outline" class="btn" (click)="signInGoogle()">
                             <ion-icon class="zmdi zmdi-google"></ion-icon>
-                            {{'google' | translate}}</ion-button>
+                            {{'Google' | translate}}</ion-button>
                     </ion-col>
                 </ion-row>
             </div>

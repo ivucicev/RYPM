@@ -24,7 +24,7 @@
     @if(exercise.category) {
     <div class="category-section">
         <h3>
-            {{'category' | translate}}
+            {{'Category' | translate}}
         </h3>
         <div class="muscle-tags">
             <ion-chip color="primary" outline>{{ exercise.category | translate }}</ion-chip>
@@ -35,7 +35,7 @@
     @if(exercise.equipment) {
     <div class="equipment-section">
         <h3>
-            {{'equipment' | translate}}
+            {{'Equipment' | translate}}
         </h3>
         <div class="muscle-tags">
             <ion-chip color="primary" outline>{{ exercise.equipment | translate }}</ion-chip>
@@ -46,7 +46,7 @@
     @if (exercise.primaryMuscles?.length) {
     <div class="muscle-section">
         <h3>
-            {{'primary_muscles' | translate}}
+            {{'Primary muscles' | translate}}
         </h3>
         <div class="muscle-tags">
             @for (muscle of exercise.primaryMuscles; track muscle) {
@@ -59,7 +59,7 @@
     @if (exercise.secondaryMuscles?.length) {
     <div class="muscle-section">
         <h3>
-            {{'secondary_muscles' | translate}}
+            {{'Secondary muscles' | translate}}
         </h3>
         <div class="muscle-tags">
             @for (muscle of exercise.secondaryMuscles; track muscle) {
@@ -72,7 +72,7 @@
     @if (exercise.instructions?.length) {
     <div class="instructions-section">
         <h3>
-            {{'instructions' | translate}}
+            {{'Instructions' | translate}}
         </h3>
         <div class="notes">
             <ion-icon name="information-circle-outline"></ion-icon>

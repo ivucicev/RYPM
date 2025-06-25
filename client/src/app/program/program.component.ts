@@ -86,7 +86,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
         this.program = program;
 
         this.programForm = this.programFormService.createProgramFormGroup(program);
-        //this.autosaveService.register<ProgramBM>(this.programForm, 'programs', false).subscribe(); // TODO: autosave, get/map new changes or take all info from form?
+        this.autosaveService.register<ProgramBM>(this.programForm, 'programs', false).subscribe(); // TODO: autosave, get/map new changes or take all info from form?
     }
 
     async refresh(id: string) {
@@ -135,7 +135,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
 
     removeDay(weekIndex: number, dayIndex: number) {
         this.programFormService.removeDay(this.programForm, weekIndex, dayIndex);
-        if (this.activeDayIndex == dayIndex) {
+        if (this.activeDayIndex == dayIndex && this.selectedWeekIndex === weekIndex) {
             const newDayIndex = this.getDaysArray(weekIndex).length - 1;
             this.activeDayIndex = newDayIndex;
         }
@@ -146,6 +146,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
     }
 
     setActiveDay(dayIndex: number) {
+        if (dayIndex < 0) return;
         this.activeDayIndex = dayIndex;
     }
 
@@ -191,21 +192,14 @@ export class ProgramComponent implements OnInit, OnDestroy {
 
         const currentDayValue = currentDay.getRawValue();
 
-        this.programFormService.addDay(this.programForm, weekIndex + 1,);
-
         const daysArray = this.getDaysArray(weekIndex + 1);
 
-        
-        /*for (let i = 0; i <= daysArray.length; i++) {
-            if (!daysArray.controls[i]?.value?.exercises?.length) {
-                console.log('Removing empty day at index:', i);
+        for (let i = 0; i <= daysArray.length; i++)
+            if (!daysArray.controls[i]?.value?.exercises?.length)
                 this.removeDay(weekIndex + 1, i); // Remove empty days
-            }
-        }*/
         
         const newDay = this.programFormService.createDayFormGroup(currentDayValue as any, true);
         daysArray.push(newDay);
-        
 
     }
 
@@ -214,10 +208,6 @@ export class ProgramComponent implements OnInit, OnDestroy {
     }
 
     public duplicateDay = () => {
-
-    }
-
-    public duplicateWeek = () => {
 
     }
 
@@ -252,7 +242,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
     // }
 
     ionViewWillLeave() {
-        this.autosaveService.save('programs', this.programForm.getRawValue())
+        //this.autosaveService.save('programs', this.programForm.getRawValue())
     }
 
     async openSettings() {

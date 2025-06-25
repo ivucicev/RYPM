@@ -144,7 +144,7 @@ export class FormsService implements OnDestroy {
                         weeksArray.removeAt(weeksArray.length - 1);
                     }
                 }
-                else if (durationWeeks > weeksArray.length && !program) {
+                else if (durationWeeks > weeksArray.length) {
                     for (let i = weeksArray.length; i < durationWeeks; i++) {
                         const weekForm = this.createWeekFormGroup();
                         weeksArray.push(weekForm);
@@ -334,7 +334,6 @@ export class FormsService implements OnDestroy {
     // }
 
     addDay(programForm: ProgramFormGroup, weekIndex: number) {
-        console.log('Adding day to week', weekIndex);
         const daysArray = this.getDaysArray(programForm, weekIndex);
         daysArray.push(this.createDayFormGroup());
     }

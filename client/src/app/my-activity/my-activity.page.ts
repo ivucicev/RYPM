@@ -41,7 +41,7 @@ export class MyActivityPage {
     // TODO: change/implement
     async openSettings() {
         const translations = await lastValueFrom(this.translateService.get([
-            'chat_w_trainer', 'edit', 'end', 'delete', 'cancel', 'workout'
+            'Chat with trainer', 'Edit', 'End', 'Delete', 'Cancel', 'Workout'
         ]));
 
         const actionSheet = await this.actionSheetCtrl.create({

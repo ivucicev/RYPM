@@ -70,6 +70,8 @@ export class ContinueFooterComponent {
                 this.lastCompletedSet = lastCompletedSet;
                 this.lastCompletedSetExercise = lastCompletedSetExercise;
             }
+        }).catch(err => {
+            // ignore
         })
     }
 

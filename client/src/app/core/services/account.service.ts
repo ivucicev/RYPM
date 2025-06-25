@@ -228,9 +228,10 @@ export class AccountService {
     }
 
     public async getCurrentUser(reload: boolean = false): Promise<User> {
+
         if (this._currentUser() && !reload) return this._currentUser();
 
-        const user = await this.pocketbase.collection('users').getOne<User>(this.pocketbase.authStore.record?.id);
+        const user = await this.pocketbase.collection('users').getOne<User>(this.pocketbase.authStore.record?.id, { $autoCancel: false });
 
         const avatarUrl = user.avatar ? (environment.apiURL + `/api/files/users/${user.id}/${user.avatar}`) : null;
         user.avatar = avatarUrl;

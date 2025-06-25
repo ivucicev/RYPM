@@ -261,7 +261,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
     async openSettings() {
         const translations = await lastValueFrom(this.translateService.get([
-            'delete', 'cancel'
+            'Delete', 'Cancel'
         ]));
 
         const actionSheet = await this.actionSheetCtrl.create({

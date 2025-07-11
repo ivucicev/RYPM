@@ -1,0 +1,4 @@
+Workouts screen - 
+    - Add program complete test
+    - Add template complete test
+    - New empty excersize [ok]

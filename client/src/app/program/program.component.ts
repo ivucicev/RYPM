@@ -16,6 +16,7 @@ import { WorkoutState } from '../core/models/enums/workout-state';
 import { Day } from '../core/models/collections/day';
 import { WorkoutStateColorPipe } from '../core/pipes/workout-state-color.pipe';
 import { ProgramInfo, ProgramService, ProgramActionKey } from '../core/services/program.service';
+import { ToastService } from '../core/services/toast-service';
 
 @Component({
     selector: 'app-program',
@@ -24,7 +25,7 @@ import { ProgramInfo, ProgramService, ProgramActionKey } from '../core/services/
     standalone: true,
     imports: [IonicModule, TranslateModule, ReactiveFormsModule, FormsModule, ErrorMessageDirective,
         ExerciseFormComponent, WorkoutStateColorPipe],
-    providers: [FormsService, AutosaveService]
+    providers: [FormsService, AutosaveService, ToastService]
 })
 export class ProgramComponent implements OnInit, OnDestroy {
 
@@ -64,7 +65,8 @@ export class ProgramComponent implements OnInit, OnDestroy {
         private navCtrl: NavController,
         private activatedRoute: ActivatedRoute,
         private autosaveService: AutosaveService,
-        private programService: ProgramService
+        private programService: ProgramService,
+        private toastService: ToastService
     ) {
     }
 
@@ -200,6 +202,9 @@ export class ProgramComponent implements OnInit, OnDestroy {
         for (let i = 0; i <= daysArray.length; i++)
             if (!daysArray.controls[i]?.value?.exercises?.length)
                 this.removeDay(weekIndex + 1, i); // Remove empty days
+
+        this.toastService.success();
+        this.dayActionsPopoverOpen = false;
         
     }
 
@@ -229,13 +234,17 @@ export class ProgramComponent implements OnInit, OnDestroy {
                 }
             }
         }
+
+        this.toastService.success();
+        this.dayActionsPopoverOpen = false;
+
     }
 
     public duplicateDay = () => {
         const currentDayArray = this.getDaysArray(this.selectedWeekIndex);
 
         if (currentDayArray.length === 0) return;
-        
+
         const currentDay = currentDayArray.controls[this.activeDayIndex];
         if (!currentDay) return;
 
@@ -245,6 +254,9 @@ export class ProgramComponent implements OnInit, OnDestroy {
 
         const newDay = this.programFormService.createDayFormGroup(currentDayValue as any, true);
         daysArray.push(newDay);
+
+        this.toastService.success();
+        this.dayActionsPopoverOpen = false;
     }
 
     public presentPopover(e) {

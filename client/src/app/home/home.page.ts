@@ -104,9 +104,16 @@ export class HomePage {
                 const tagsToTake = 3;
 
                 const tags = [
-                    ...new Set(p.weeks.flatMap(w => w.days ?? []).flatMap(d => d.exercises ?? [])
-                        .flatMap(e => [...e?.primaryMuscles, ...e?.secondaryMuscles]))
+                    ...new Set(
+                        p.weeks?.flatMap(w => w?.days ?? [])
+                            ?.flatMap(d => d?.exercises ?? [])
+                            ?.flatMap(e => [
+                                ...(e?.primaryMuscles ?? []),
+                                ...(e?.secondaryMuscles ?? [])
+                            ])
+                    )
                 ];
+
                 const tagsToShow: string[] = tags.splice(0, tagsToTake);
 
                 if (tags.length > tagsToTake) {

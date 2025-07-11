@@ -1,7 +1,9 @@
-import { Component, input, model, output, SimpleChanges } from '@angular/core';
+import { Component, input, model, output, SimpleChanges, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { DurationPipe } from 'src/app/core/pipes/duration.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
+
+const REST_BADGE_STORAGE_KEY = 'restBadgeTimer';
 
 @Component({
     selector: 'app-rest-badge',
@@ -10,23 +12,40 @@ import { TranslatePipe } from '@ngx-translate/core';
     standalone: true,
     imports: [IonicModule, DurationPipe, TranslatePipe]
 })
-export class RestBadgeComponent {
+export class RestBadgeComponent implements OnInit {
 
     isResting = false;
-
     restTimeRemaining = 0;
     restTimerId: any;
 
-    initialTime = input<Date>();
-    duration = input.required<number>();
+    initialTime = model<Date>();
+    duration = model.required<number>();
 
     onRestSkippedEvent = output<boolean>();
 
     constructor() { }
 
+    ngOnInit() {
+        // Try to restore timer from localStorage
+        const stored = localStorage.getItem(REST_BADGE_STORAGE_KEY);
+        if (stored) {
+            const { initialTime, duration } = JSON.parse(stored);
+            if (initialTime && duration) {
+                this.initialTime.set(new Date(initialTime));
+                this.duration.set(duration);
+                this.ngOnChanges({});
+            }
+        }
+    }
+
     ngOnChanges(_: SimpleChanges) {
         const initialTime = this.initialTime();
         if (initialTime != null) {
+            // Save to localStorage
+            localStorage.setItem(REST_BADGE_STORAGE_KEY, JSON.stringify({
+                initialTime,
+                duration: this.duration()
+            }));
 
             const start = new Date(initialTime);
             const end = start.setSeconds(start.getSeconds() + this.duration());
@@ -44,9 +63,7 @@ export class RestBadgeComponent {
 
     startRest(duration: number) {
         this.stopRest();
-
         this.restTimeRemaining = duration;
-
         this.isResting = true;
 
         this.restTimerId = setInterval(() => {
@@ -64,11 +81,11 @@ export class RestBadgeComponent {
             this.restTimerId = null;
         }
         this.isResting = false;
+        localStorage.removeItem(REST_BADGE_STORAGE_KEY);
     }
 
     skipRest() {
         this.onRestSkippedEvent.emit(true);
-
         this.stopRest();
     }
 }

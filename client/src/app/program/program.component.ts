@@ -194,21 +194,57 @@ export class ProgramComponent implements OnInit, OnDestroy {
 
         const daysArray = this.getDaysArray(weekIndex + 1);
 
+        const newDay = this.programFormService.createDayFormGroup(currentDayValue as any, true);
+        daysArray.push(newDay);
+
         for (let i = 0; i <= daysArray.length; i++)
             if (!daysArray.controls[i]?.value?.exercises?.length)
                 this.removeDay(weekIndex + 1, i); // Remove empty days
         
-        const newDay = this.programFormService.createDayFormGroup(currentDayValue as any, true);
-        daysArray.push(newDay);
-
     }
 
     public copyToAllWeeks = () => {
+        const totalWeeks = this.getWeeksArray().length;
+        const currentDayArray = this.getDaysArray(this.selectedWeekIndex);
 
+        if (currentDayArray.length === 0) return;
+
+        const currentDay = currentDayArray.controls[this.activeDayIndex];
+        if (!currentDay) return;
+
+        const currentDayValue = currentDay.getRawValue();
+
+        for (let weekIndex = 0; weekIndex < totalWeeks; weekIndex++) {
+            if (weekIndex === this.selectedWeekIndex) continue;
+
+            const daysArray = this.getDaysArray(weekIndex);
+
+            const newDay = this.programFormService.createDayFormGroup(currentDayValue as any, true);
+            daysArray.push(newDay);
+
+            // Remove empty days
+            for (let i = daysArray.length - 1; i >= 0; i--) {
+                if (!daysArray.controls[i]?.value?.exercises?.length) {
+                    this.removeDay(weekIndex, i);
+                }
+            }
+        }
     }
 
     public duplicateDay = () => {
+        const currentDayArray = this.getDaysArray(this.selectedWeekIndex);
 
+        if (currentDayArray.length === 0) return;
+        
+        const currentDay = currentDayArray.controls[this.activeDayIndex];
+        if (!currentDay) return;
+
+        const currentDayValue = currentDay.getRawValue();
+
+        const daysArray = this.getDaysArray(this.selectedWeekIndex);
+
+        const newDay = this.programFormService.createDayFormGroup(currentDayValue as any, true);
+        daysArray.push(newDay);
     }
 
     public presentPopover(e) {

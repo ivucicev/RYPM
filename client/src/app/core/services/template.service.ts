@@ -12,7 +12,7 @@ import { AssignModalComponent } from 'src/app/assign-modal/assign-modal.componen
 export type TemplateActionKey = { [key in keyof typeof TEMPLATE_ACTIONS]?: boolean };
 
 export const TEMPLATE_ACTIONS = {
-    create_workout: 'Create',
+    start: 'Start',
     edit: 'Edit',
     close: 'Close',
     delete: 'Delete',
@@ -46,15 +46,15 @@ export class TemplateService {
         const actionSheet = await this.actionSheetCtrl.create({
             header: template.name ?? translations.template,
             buttons: [
-                !excludeActions[TEMPLATE_ACTIONS.create_workout] ? {
-                    text: translations.create_workout,
+                !excludeActions[TEMPLATE_ACTIONS.start] ? {
+                    text: translations['Start'],
                     icon: 'play-outline',
                     handler: () => {
                         return this.startWorkoutFromTemplate(template);
                     },
                 } : null,
                 !excludeActions[TEMPLATE_ACTIONS.edit] ? {
-                    text: translations.edit,
+                    text: translations.Edit,
                     icon: 'create-outline',
                     handler: () => {
                         return this.editTemplate(templateId);
@@ -69,7 +69,7 @@ export class TemplateService {
                 //     },
                 // },
                 !excludeActions[TEMPLATE_ACTIONS.copy] ? {
-                    text: translations.copy,
+                    text: translations.Copy,
                     icon: 'copy-outline',
                     data: {
                         reload: true,
@@ -80,7 +80,7 @@ export class TemplateService {
                     },
                 } : null,
                 !excludeActions[TEMPLATE_ACTIONS.delete] ? {
-                    text: translations.delete,
+                    text: translations.Delete,
                     icon: 'trash-outline',
                     role: 'destructive',
                     data: {
@@ -92,7 +92,7 @@ export class TemplateService {
                     },
                 } : null,
                 {
-                    text: translations.close,
+                    text: translations.Close,
                     icon: 'close-outline',
                     role: 'cancel',
                 },

@@ -50,6 +50,10 @@ export class TemplateComponent implements OnInit, OnDestroy {
     ) {
     }
 
+    ok() {
+        this.navCtrl.navigateBack(['./tabs']);
+    }
+
     ngOnInit() {
         this.activatedRoute.params
             .pipe(takeUntil(this.unsubscribeAll))

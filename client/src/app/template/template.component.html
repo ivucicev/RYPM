@@ -1,17 +1,20 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+            <ion-back-button #back text="" icon="chevron-back-outline"></ion-back-button>
         </ion-buttons>
         <ion-title>
             {{ 'Template' | translate }}
         </ion-title>
         <ion-label slot="end">
             @if (templateForm.controls.id.value) {
-            <ion-button color="dark" fill="clear" size="small" (click)="openSettings()">
-                <ion-icon name="ellipsis-vertical"></ion-icon>
-            </ion-button>
+                <ion-button color="dark" fill="clear" size="small" (click)="openSettings()">
+                    <ion-icon name="ellipsis-vertical"></ion-icon>
+                </ion-button>
             }
+            <ion-button color="dark" fill="clear" size="small" (click)="ok()">
+                OK
+            </ion-button>
         </ion-label>
     </ion-toolbar>
 </ion-header>

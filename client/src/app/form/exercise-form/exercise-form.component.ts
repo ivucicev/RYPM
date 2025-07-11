@@ -74,7 +74,7 @@ export class ExerciseFormComponent implements OnChanges {
         private modalCtrl: ModalController,
         private programFormService: FormsService,
     ) {
-        for (let seconds = 5; seconds <= 600; seconds += 5) {
+        for (let seconds = 15; seconds <= 600; seconds += 15) {
             this.durationOptions.push({ value: seconds });
         }
     }

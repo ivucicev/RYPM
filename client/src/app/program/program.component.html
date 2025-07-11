@@ -15,7 +15,7 @@
         </ion-label>
     </ion-toolbar>
 
-    <ion-row class="ion-padding-x">
+    <ion-row class="ion-padding-x flex ion-justify-content-center">
         <ion-segment scrollable [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" (ionChange)="tabChange()">
             <ion-segment-button value="info">
                 <ion-label>{{ 'Info' | translate }}</ion-label>

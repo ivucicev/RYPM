@@ -66,5 +66,7 @@
     "avg": "Avg",
     "Continue": "Continue",
     "recent_activities": "Recent Activities",
-    "Statr": "Start"
+    "Start": "Start",
+    "Cancel": "Cancel",
+    "Delete": "Delete"
 }

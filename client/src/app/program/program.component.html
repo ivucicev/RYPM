@@ -64,11 +64,8 @@
                             <ion-label>{{ ('Day' | translate) }} {{ dayIndex + 1}}</ion-label>
 
                             @if (day.workout?.state === WorkoutState.Completed) {
-                            <ion-icon name="checkmark" slot="end"></ion-icon>
-                            }
-                            @else if (day.workout && day.workout.state !== WorkoutState.Completed) {
-                            <ion-icon name="timer-outline" slot="end"></ion-icon>
-                            }
+                            <ion-icon name="checkmark-circle-outline"></ion-icon> }
+                    
                         </ion-chip>
                         }
                     </div>
@@ -143,34 +140,41 @@
                     @if (getDaysArray(weekIndex).length > 0 && activeDayIndex !== null) {
                     <div [formGroupName]="activeDayIndex">
                         <div class="day-header">
-                            <h3 class="ion-color-light">{{ 'Week' | translate }} {{ weekIndex + 1 }} {{ 'Day' | translate }} {{activeDayIndex+1}}</h3>
+                            <h3 class="ion-color-light">{{ 'Week' | translate }} {{ weekIndex + 1 }} {{ 'Day' |
+                                translate }} {{activeDayIndex+1}}</h3>
                             <div class="day-actions">
-                                <ion-button fill="clear" size="small" [color]="'medium'" (click)="presentPopover($event)">
+                                <ion-button fill="clear" size="small" [color]="'medium'"
+                                    (click)="presentPopover($event)">
                                     <ion-icon name="copy-outline"></ion-icon>
                                 </ion-button>
-                                <ion-button fill="clear" size="small" [color]="'medium'" (click)="moveUpHandler($index)" [disabled]="!(activeDayIndex > 0)">
+                                <ion-button fill="clear" size="small" [color]="'medium'" (click)="moveUpHandler($index)"
+                                    [disabled]="!(activeDayIndex > 0)">
                                     <ion-icon name="chevron-up-outline"></ion-icon>
                                 </ion-button>
-                                <ion-button fill="clear" size="small" [color]="'medium'" (click)="moveDownHandler($index)" [disabled]="!(activeDayIndex < (getDaysArray(weekIndex).length - 1))">
+                                <ion-button fill="clear" size="small" [color]="'medium'"
+                                    (click)="moveDownHandler($index)"
+                                    [disabled]="!(activeDayIndex < (getDaysArray(weekIndex).length - 1))">
                                     <ion-icon name="chevron-down-outline"></ion-icon>
                                 </ion-button>
-                                <ion-button fill="clear" size="small" [color]="'medium'" (click)="removeHandler($index)" [disabled]="(getDaysArray(weekIndex).length <= 1)">
+                                <ion-button fill="clear" size="small" [color]="'medium'" (click)="removeHandler($index)"
+                                    [disabled]="(getDaysArray(weekIndex).length <= 1)">
                                     <ion-icon name="trash-outline"></ion-icon>
                                 </ion-button>
-                                <ion-popover #popover [isOpen]="dayActionsPopoverOpen" (didDismiss)="dayActionsPopoverOpen = false">
+                                <ion-popover #popover [isOpen]="dayActionsPopoverOpen"
+                                    (didDismiss)="dayActionsPopoverOpen = false">
                                     <ng-template>
                                         <ion-list>
-                                            @if (weekIndex < getWeeksArray().controls?.length - 1 ) {
-                                                <ion-item button (click)="copyToNextWeek($index)">
-                                                    <ion-label>{{ 'Copy to next week' | translate }}</ion-label>
+                                            @if (weekIndex < getWeeksArray().controls?.length - 1 ) { <ion-item button
+                                                (click)="copyToNextWeek($index)">
+                                                <ion-label>{{ 'Copy to next week' | translate }}</ion-label>
                                                 </ion-item>
                                                 <ion-item button (click)="copyToAllWeeks()">
                                                     <ion-label>{{ 'Copy to all weeks' | translate }}</ion-label>
                                                 </ion-item>
-                                            }
-                                            <ion-item button (click)="duplicateDay()">
-                                                <ion-label>{{ 'Duplicate day' | translate }}</ion-label>
-                                            </ion-item>
+                                                }
+                                                <ion-item button (click)="duplicateDay()">
+                                                    <ion-label>{{ 'Duplicate day' | translate }}</ion-label>
+                                                </ion-item>
                                         </ion-list>
                                     </ng-template>
                                 </ion-popover>

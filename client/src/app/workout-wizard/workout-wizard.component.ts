@@ -48,6 +48,8 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
     animationDirection = null;
 
+    isDayCompleted = false;
+
     currentExercise = computed(() => {
         const currentExercise = this.exercises[this.currentExerciseIndex()];
 
@@ -103,40 +105,48 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         this.unsubscribeAll.complete();
     }
 
+    async getPreviousOfWorkoutType() {
+        // get previous weights and values for the current workout type
+    }
+
     async refresh(id: string) {
         if (!id) return;
 
         this.workoutId = id;
 
-        this.pocketbaseService.workouts.getOne(id, { expand: 'exercises,exercises.sets' }).then((res) => {
-            this.workout = res;
+        const res = await this.pocketbaseService.workouts.getOne(id, { expand: 'exercises,exercises.sets' });
+        this.workout = res;
 
-            this.exercises = res.exercises.map(exercise =>
-                this.programFormsService.createExerciseFormGroup(exercise)
-            );
+        // get oprevious weights and values
+        await this.getPreviousOfWorkoutType();
 
-            // rest set
-            const lastCompletedSet = this.workout.exercises.flatMap(e => e.sets)
-                .filter(s => s.completed && s.completedAt)
-                .sort((a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt)?.getTime())[0];
-            if (lastCompletedSet && !lastCompletedSet.restSkipped) {
-                const lastCompletedSetExercise = this.workout.exercises.find(e => e.sets.includes(lastCompletedSet));
+        this.isDayCompleted = this.workout.state === WorkoutState.Completed;
 
-                this.lastCompletedSet = this.exercises.flatMap(e => e.controls.sets.controls).find(s => s.controls.id.value == lastCompletedSet.id);
-                this.lastCompletedSetExercise = this.exercises.find(e => e.controls.id.value == lastCompletedSetExercise.id);
-            } else {
-                this.lastCompletedSet = null;
-                this.lastCompletedSetExercise = null;
-            }
+        this.exercises = res.exercises.map(exercise =>
+            this.programFormsService.createExerciseFormGroup(exercise)
+        );
 
-            const nextIncompleteExercise = this.getNextIncompleteExercise(res.exercises);
-            const lastExerciseIndex = (this.exercises?.length ?? 0) - 1;
+        // rest set
+        const lastCompletedSet = this.workout.exercises.flatMap(e => e.sets)
+            .filter(s => s.completed && s.completedAt)
+            .sort((a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt)?.getTime())[0];
+        if (lastCompletedSet && !lastCompletedSet.restSkipped) {
+            const lastCompletedSetExercise = this.workout.exercises.find(e => e.sets.includes(lastCompletedSet));
 
-            this.currentExerciseIndex.set(nextIncompleteExercise
-                ? res.exercises.findIndex(ex => ex.id === nextIncompleteExercise.id)
-                : lastExerciseIndex
-            );
-        });
+            this.lastCompletedSet = this.exercises.flatMap(e => e.controls.sets.controls).find(s => s.controls.id.value == lastCompletedSet.id);
+            this.lastCompletedSetExercise = this.exercises.find(e => e.controls.id.value == lastCompletedSetExercise.id);
+        } else {
+            this.lastCompletedSet = null;
+            this.lastCompletedSetExercise = null;
+        }
+
+        const nextIncompleteExercise = this.getNextIncompleteExercise(res.exercises);
+        const lastExerciseIndex = (this.exercises?.length ?? 0) - 1;
+
+        this.currentExerciseIndex.set(nextIncompleteExercise
+            ? res.exercises.findIndex(ex => ex.id === nextIncompleteExercise.id)
+            : lastExerciseIndex
+        );
     }
 
     getNextIncompleteExercise(exercises: Exercise[]): Exercise | undefined {
@@ -223,8 +233,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
                 await this.pocketbaseService.sets.update(
                     set.id,
                     {
-                        currentValue: 0,
-                        currentWeight: 0
+                        completed: true
                     } as Set,
                     {
                         headers: { ...PB.HEADER.NO_TOAST }
@@ -243,10 +252,12 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
             end: new Date()
         } as Workout;
 
-        await this.handleUncompletedSets();
+        await this.handleUncompletedSets(); // TF is this??
+
         this.pocketbaseService.workouts.update(model.id, model).then((_) => {
             this.navCtrl.navigateBack(['./tabs']);
-        })
+        });
+        
     }
 
     async openExerciseInfo() {

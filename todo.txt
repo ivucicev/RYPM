@@ -1,4 +1,33 @@
 Workouts screen - 
-    - Add program complete test
-    - Add template complete test
-    - New empty excersize [ok]
+    - [x] Add program complete test [ok]
+    - [x] Add template complete test [ok]
+    - [x] New empty excersize [ok]
+    - [] Do whole program test []
+    - [] When just checking chekmark without selecting values on active workout it set reps and values as 0 []
+    - [] Rate traingin day after completing day (perceived rating 1-10, 1-bad, 10-all out), also to add some comment
+    - [] When creating program - adding lots of weeks causes 404 in console and lots of requests
+    - [] adding multiple excersizes with search causes selected excersizes to deselect
+    - [] Reorder workouts on day
+    - [] three dots on new program do not work 
+    - [] adding description to workout, that will not be propagated to next workout
+    - [] Rest timer does not get copied when copying or duplicating
+    - [] Super Sets
+    - [] Drop Sets
+
+    Activity screen
+        - []
+
+    Chat
+        - [] AI Trainer
+        - [] Human Trainer
+
+    Settings
+        - []
+
+
+    General
+        - [] PWA notifications for Rest timer
+        - White labeling
+
+    Admin / Trainer
+        - []

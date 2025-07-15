@@ -369,10 +369,11 @@ export class PocketbaseService {
 
             const existingMap = new Map(existingItems.map(item => [item.id, item]));
             const processedIdsSet = new Set<string>();
-
+            let idx = 0;
             for (const item of items) {
                 item[parentRef] = parentId;
-
+                item['index'] = idx;
+                idx++;
                 try {
                     const result = await this.upsertRecord(
                         collectionName as Collection,

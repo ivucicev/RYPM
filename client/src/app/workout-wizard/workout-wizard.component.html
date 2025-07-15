@@ -6,7 +6,7 @@
         <ion-title>{{ 'Workout' | translate }}</ion-title>
         <ion-label slot="end">
             <div class="ion-align-items-center" style="display: flex">
-                @if (workout != null) {
+                @if (workout != null && !isDayCompleted) {
                 <app-time-badge [initialTime]="workout.start" style="display: flex"></app-time-badge>
                 }
                 <ion-button color="dark" fill="clear" size="small" (click)="openSettings()">
@@ -58,7 +58,7 @@
     </div>
 </ion-content>
 
-@if(lastCompletedSet && lastCompletedSetExercise) {
+@if(lastCompletedSet && lastCompletedSetExercise && !isDayCompleted) {
 <ion-footer class="ion-no-border animate__animated animate__fadeInUp ion-padding-bottom skip-footer">
     <app-rest-badge [initialTime]="lastCompletedSet.controls.completedAt.value" (onRestSkippedEvent)="onRestSkipped()"
         [duration]="lastCompletedSetExercise.controls.restDuration.value"></app-rest-badge>
@@ -81,12 +81,11 @@
                 </div>
                 }
                 @if (currentExerciseIndex() === exercises.length - 1 || currentExerciseIndex() === -1) {
+                @if (!isDayCompleted) {
                 <ion-button fill="clear" shape="round" [disabled]="" (click)="completeWorkout()">
                     <ion-note class="ion-color-primary ion-color">{{ 'Complete' | translate }}</ion-note>
-                    <!-- <ion-icon name="checkmark-done-outline"></ion-icon> -->
                 </ion-button>
-
-
+                }
                 } @else {
                 <ion-button fill="clear" shape="round" [disabled]="" (click)="goToNextExercise()">
                     <ion-icon name="play-skip-forward-outline" name="chevron-forward-outline"></ion-icon>

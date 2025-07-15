@@ -215,6 +215,37 @@ export class ProgramService {
     }
 
     private async createAndNavToWorkout(workout: Workout) {
+        const excersizes = workout.exercises.map(e => e.name);
+        const filter = excersizes.map(name => `exercise.name = '${name}'`).join(' || ');
+        const sets = await this.pocketbaseService.sets.getList(0, 20,
+            {
+            expand: 'exercise',
+            filter,
+            sort: '-completedAt, -index'
+            }
+        );
+
+        const groupedSets = sets.items.reduce((acc, set: any) => {
+            const name = set.exercise?.name;
+            if (!name) return acc;
+            if (!acc[name]) acc[name] = [];
+            acc[name].push(set);
+            return acc;
+        }, {} as Record<string, typeof sets.items>);
+
+        // Fill in previousValue for each set in workout.exercises from groupedSets
+        workout.exercises.forEach(ex => {
+            const setsForExercise = groupedSets[ex.name];
+            if (!setsForExercise) return;
+            ex.sets.forEach((set, index) => {
+            const previousSet = setsForExercise.find(s => s.index === index);
+            if (previousSet) {
+                set.previousValue = previousSet.currentValue;
+                set.previousWeight = previousSet.currentWeight;
+            }
+            });
+        });
+        
         this.pocketbaseService.upsertRecord('workouts', workout).then((workout) => {
             this.navCtrl.navigateForward([`./workout-wizard/${workout.id}`]);
         });

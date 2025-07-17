@@ -29,7 +29,16 @@ export class ContinueFooterComponent {
     constructor(
         private pocketbaseService: PocketbaseService,
         private navCtrl: NavController
-    ) { }
+    ) { 
+       /* if ('Notification' in window && Notification.permission !== 'granted') {
+            Notification.requestPermission();
+
+            new Notification('Rest timer completed', {
+                body: 'Time to continue your workout!',
+                //icon: '/assets/icons/icon-72x72.png'
+            });
+        }*/
+    }
 
     navToActiveWorkout() {
         this.navCtrl.navigateForward(['./workout-wizard', this.workout.id]);
@@ -73,6 +82,10 @@ export class ContinueFooterComponent {
         }).catch(err => {
             // ignore
         })
+    }
+
+    timerCompleted() {
+       
     }
 
     onRestSkipped() {

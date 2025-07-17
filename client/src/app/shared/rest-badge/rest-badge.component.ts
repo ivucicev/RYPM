@@ -22,6 +22,7 @@ export class RestBadgeComponent implements OnInit {
     duration = model.required<number>();
 
     onRestSkippedEvent = output<boolean>();
+    onTimerCompletedEvent = output<boolean>();
 
     constructor() { }
 
@@ -59,6 +60,11 @@ export class RestBadgeComponent implements OnInit {
         }
 
         this.stopRest();
+
+        if (this.restTimeRemaining <= 0)
+            this.onTimerCompletedEvent.emit(true);
+
+
     }
 
     startRest(duration: number) {

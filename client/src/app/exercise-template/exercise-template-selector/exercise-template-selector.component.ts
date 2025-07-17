@@ -39,6 +39,8 @@ export class ExerciseTemplateSelectorComponent implements OnInit {
 
     showScrollToTop = false;
 
+    selectedExercises = [];
+
     constructor(
         private modalCtrl: ModalController,
         private pb: PocketbaseService
@@ -81,6 +83,13 @@ export class ExerciseTemplateSelectorComponent implements OnInit {
             }
 
             this.hasMoreData = this.currentPage < result.totalPages;
+
+            if (this.selectedExercises && this.selectedExercises.length > 0) {
+                const selectedIds = new Set(this.selectedExercises.map(ex => ex.id));
+                this.exercises.forEach(ex => {
+                    ex.selected = selectedIds.has(ex.id);
+                });
+            }
 
         } catch (error) {
             console.error('Error loading exercises:', error);
@@ -144,17 +153,19 @@ export class ExerciseTemplateSelectorComponent implements OnInit {
         await modal.present();
     }
 
-    getSelectedCount(): number {
-        return this.exercises.filter(ex => ex.selected).length;
-    }
-
     toggleExercise(exercise: SelectableExerciseTemplate) {
-        exercise.selected = !exercise.selected;
+        const index = this.selectedExercises.findIndex(ex => ex.id === exercise.id);
+        if (index > -1) {
+            this.selectedExercises.splice(index, 1);
+            exercise.selected = false;
+        } else {
+            this.selectedExercises.push(exercise);
+            exercise.selected = true;
+        }
     }
 
     addSelected() {
-        const selected = this.exercises.filter(ex => ex.selected);
-        this.modalCtrl.dismiss({ exercises: selected });
+        this.modalCtrl.dismiss({ exercises: this.selectedExercises });
     }
 
     dismiss() {

@@ -82,7 +82,7 @@
                 }
                 @if (currentExerciseIndex() === exercises.length - 1 || currentExerciseIndex() === -1) {
                 @if (!isDayCompleted) {
-                <ion-button fill="clear" shape="round" [disabled]="" (click)="completeWorkout()">
+                <ion-button fill="clear" shape="round" [disabled]="" (click)="openEffortModal()">
                     <ion-note class="ion-color-primary ion-color">{{ 'Complete' | translate }}</ion-note>
                 </ion-button>
                 }

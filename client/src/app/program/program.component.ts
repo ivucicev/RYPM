@@ -97,9 +97,8 @@ export class ProgramComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.programService.getProgramInfoById(id).then((res) => {
-            this.init(res);
-        });
+        const res = await this.programService.getProgramInfoById(id)
+        this.init(res);
     }
 
     tabChange() {
@@ -161,6 +160,28 @@ export class ProgramComponent implements OnInit, OnDestroy {
         this.activeDayIndex = newDayIndex;
     }
 
+    moveExerciseDown(index) {
+        const exercisesArray = this.getExercisesArray(this.selectedWeekIndex, this.activeDayIndex);
+        if (index < 0 || index >= exercisesArray.length - 1) return;
+
+        const currentExercise = exercisesArray.at(index);
+        const nextExercise = exercisesArray.at(index + 1);
+
+        exercisesArray.setControl(index, nextExercise);
+        exercisesArray.setControl(index + 1, currentExercise);
+    }
+
+    moveExerciseUp(index) {
+        const exercisesArray = this.getExercisesArray(this.selectedWeekIndex, this.activeDayIndex);
+        if (index <= 0 || index >= exercisesArray.length) return;
+
+        const currentExercise = exercisesArray.at(index);
+        const previousExercise = exercisesArray.at(index - 1);
+
+        exercisesArray.setControl(index, previousExercise);
+        exercisesArray.setControl(index - 1, currentExercise);
+    }
+
     async addExerciseToDay(weekIndex: number, dayIndex: number) {
         await this.programFormService.addExercisesToDay(this.programForm, weekIndex, dayIndex);
     }
@@ -205,7 +226,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
 
         this.toastService.success();
         this.dayActionsPopoverOpen = false;
-        
+
     }
 
     public copyToAllWeeks = () => {
@@ -296,6 +317,9 @@ export class ProgramComponent implements OnInit, OnDestroy {
     async openSettings() {
         const excludeActions: ProgramActionKey = {
             edit: true
+        };
+        if (!this.program || !this.program.id) {
+            await this.refresh(this.programForm.get('id')?.value || '');
         };
         const actionSheet = await this.programService.presentProgramActionSheet(null, this.program, excludeActions);
         actionSheet.onDidDismiss().then(e => {

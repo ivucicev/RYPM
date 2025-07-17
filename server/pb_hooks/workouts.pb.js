@@ -11,7 +11,7 @@ onRecordCreate((e) => {
 
     if (existingWorkout && existingWorkout.id !== e.record.id) {
         throw new ApiError(409, "Workout already in progress.", {
-            "workout": new ValidationError("workout.already_in_progress", "Already in progress."),
+            "workout": new ValidationError("Workout already in progress", "Workout already in progress."),
         })
     }
 

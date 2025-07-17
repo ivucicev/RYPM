@@ -1,0 +1,21 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>{{ 'Rate you effort' | translate }}</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss()">{{ 'Cancel' | translate }}</ion-button>
+            <ion-button (click)="save()" strong>{{ 'Save' | translate }}</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+    <ion-item lines="none" class="ion-align-items-center">
+        <ion-chip style="margin: 0 auto; font-size: 24px;" class="ion-align-self-center" [color]="workoutEffortValues[effort].color" size="small">{{ workoutEffortValues[effort].label | translate}}</ion-chip> <br>
+    </ion-item>
+    <ion-item lines="none">
+        <ion-range [(ngModel)]="effort" [ticks]="false" [snaps]="true" [step]="1" [pin]="true" [min]="1" [max]="10"></ion-range>
+    </ion-item>
+    <ion-item lines="none">
+        <ion-textarea [(ngModel)]="comment" #textArea fill="clear" [(ngModel)]="comment" placeholder="{{ 'Comment' | translate }}..."
+            rows="10" class="notes-textarea" autoGrow="true" expand="block"></ion-textarea>
+    </ion-item>
+</ion-content>

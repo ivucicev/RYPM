@@ -22,6 +22,7 @@ import { PB } from '../core/constants/pb-constants';
 import { NoDataComponent } from "../shared/no-data/no-data.component";
 import { RestBadgeComponent } from "../shared/rest-badge/rest-badge.component";
 import { ExerciseTemplateDetailComponent } from '../exercise-template/exercise-template-detail/exercise-template-detail.component';
+import { ExerciseEffortModalComponent } from '../exercise-effort-modal/exercise-effort-modal.component';
 
 @Component({
     selector: 'app-workout-wizard',
@@ -245,11 +246,43 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         return lastValueFrom(of(true));
     }
 
+    async openEffortModal() {
+
+        const modal = await this.modalCtrl.create({
+            component: ExerciseEffortModalComponent,
+            breakpoints: [0, 0.75, 1],
+            initialBreakpoint: 0.75,
+            componentProps: {
+                effort: this.workout.effort,
+                comment: this.workout.comment
+            }
+        });
+
+        await modal.present();
+
+        const { data } = await modal.onWillDismiss();
+
+        if (data && data.comment !== undefined) {
+            this.workout.comment = data.comment;
+        }
+
+        if (data && data.effort !== undefined) {
+            this.workout.effort = data.effort;
+        }
+
+        if (data)
+            await this.completeWorkout();
+
+    }
+
     async completeWorkout() {
+
         const model = {
             id: this.workout.id,
             state: WorkoutState.Completed,
-            end: new Date()
+            end: new Date(),
+            effort: this.workout.effort,
+            comment: this.workout.comment,
         } as Workout;
 
         await this.handleUncompletedSets(); // TF is this??
@@ -257,7 +290,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         this.pocketbaseService.workouts.update(model.id, model).then((_) => {
             this.navCtrl.navigateBack(['./tabs']);
         });
-        
+
     }
 
     async openExerciseInfo() {
@@ -279,7 +312,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
             header: translations.workout,
             buttons: [
                 {
-                    text: translations.delete,
+                    text: translations.Delete,
                     icon: 'trash-outline',
                     role: 'destructive',
                     handler: () => {
@@ -289,7 +322,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
                     }
                 },
                 {
-                    text: translations.cancel,
+                    text: translations.Cancel,
                     icon: 'close-outline',
                     role: 'cancel'
                 }

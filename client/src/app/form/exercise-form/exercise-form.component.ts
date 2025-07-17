@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, output, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, input, Input, OnChanges, output, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormArray } from '@angular/forms';
 import { IonicModule, ModalController, IonModal, ItemReorderEventDetail } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
@@ -65,6 +65,12 @@ export class ExerciseFormComponent implements OnChanges {
     onCompletedEvent = output<number>();
     onAllCompletedEvent = output<void>();
     onRemoveExerciseEvent = output<void>();
+
+    moveExerciseUpEvent = output<void>();
+    moveExerciseDownEvent = output<void>();
+
+    canMoveExerciseUp = input<boolean>(true);
+    canMoveExerciseDown = input<boolean>(true);
 
     @ViewChild('setPickerModal') setPickerModal: IonModal;
     @ViewChild('restPickerModal') restPickerModal: IonModal;
@@ -200,9 +206,9 @@ export class ExerciseFormComponent implements OnChanges {
 
         this.numSets = 1;
         this.selectedWeightType = currentSet.weightType;
-        this.selectedWeight = currentSet.weight || 1;
+        this.selectedWeight = currentSet.currentWeight == currentSet.weight ? currentSet.previousWeight : currentSet.currentWeight || currentSet.weight || 1;
         this.selectedRepType = currentSet.type;
-        this.selectedValue = currentSet.value || 1;
+        this.selectedValue = currentSet.currentValue == currentSet.value ? currentSet.previousValue : currentSet.currentValue || currentSet.value || 1;
         this.selectedMinValue = currentSet.minValue || 1;
         this.selectedMaxValue = currentSet.maxValue || 1;
 

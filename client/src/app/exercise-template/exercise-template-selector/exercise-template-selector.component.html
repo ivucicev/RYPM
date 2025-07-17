@@ -12,7 +12,7 @@
         <ion-buttons slot="end">
             <ion-button (click)="dismiss()">{{ 'Cancel' | translate }}</ion-button>
             <ion-button (click)="addSelected()" [strong]="true" color="primary">
-                {{ 'Add' | translate }} ({{ getSelectedCount() }})
+                {{ 'Add' | translate }} ({{ selectedExercises.length }})
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
@@ -31,6 +31,7 @@
 </ion-header>
 
 <ion-content #content scrollEvents="true" (ionScroll)="onScroll($event)">
+
     <ion-list>
         @for (exercise of exercises; track exercise.id) {
         <ion-item>
@@ -77,8 +78,9 @@
                 </ion-note>
             </ion-label>
 
-            <ion-checkbox slot="end" [(ngModel)]="exercise.selected" (click)="$event.stopPropagation()">
+            <ion-checkbox slot="end" [(ngModel)]="exercise.selected" (ionChange)="toggleExercise(exercise)">
             </ion-checkbox>
+
         </ion-item>
         }
 

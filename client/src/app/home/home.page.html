@@ -1,12 +1,14 @@
 <ion-header>
     <ion-toolbar>
         <ion-title>{{'Workout' | translate}}</ion-title>
+        @if (workouts?.length == 0) {
         <ion-buttons slot="end">
             <ion-button (click)="openNewWorkout()">
                 {{ 'New workout' | translate }} &nbsp;
                 <ion-icon name="add-circle-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
+        }
     </ion-toolbar>
     <!--
      <ion-toolbar>

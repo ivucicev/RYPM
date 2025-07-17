@@ -1,64 +1,103 @@
 <ion-header>
     <ion-toolbar>
         <ion-title>{{'Activity' | translate}}</ion-title>
-        <ion-buttons slot="end">
-            <!-- TODO: calendar -->
+        <!--<ion-buttons slot="end">
             <ion-button>
                 <ion-icon name="calendar-clear-outline"></ion-icon>
             </ion-button>
-            <!-- TODO: analytics -->
             <ion-button>
                 <ion-icon name="analytics-outline"></ion-icon>
             </ion-button>
-        </ion-buttons>
+        </ion-buttons>-->
     </ion-toolbar>
 </ion-header>
 
 <ion-content class="bg_color ion-padding-x" fullscreen>
-    <ion-list lines="none">
+    <ion-row class="segment-toolbar ion-padding">
+        <ion-segment mode="ios" lines="none" [(ngModel)]="tab" (ngModelChange)="onTabChange($event)">
+            <ion-segment-button mode="ios" value="workouts">
+                <ion-label>
+                    {{'Workouts' | translate}}
+                </ion-label>
+            </ion-segment-button>
+            <ion-segment-button mode="ios" value="stats">
+                <ion-label>
+                    {{'Statistics' | translate}}
+                </ion-label>
+            </ion-segment-button>
+        </ion-segment>
+    </ion-row>
 
-        <!-- TODO: view -->
-        @for(workout of workouts; track $index) {
-        <ion-card>
-            <div class="inner-card">
-                <ion-card-header>
-                    <div class="card-header-container">
-                        <div class="user-info">
-                            <ion-icon name="person-circle" size="small"></ion-icon>
-                            <!-- <span class="creator-name">
-                                {{ workout.workout.isCurrentUser ? 'Me' : workout.createdBy.name }}
-                            </span> -->
-                        </div>
-                        <div class="datetime">
-                            {{ workout.start | dateTime }}
-                        </div>
-                        <div class="action-area">
-                            <!-- <div class="status-indicator" [class.active]="workout.state == WorkoutState.InProgress">
-                            </div> -->
-                            <ion-button color="dark" fill="clear" size="small" (click)="openSettings()">
-                                <ion-icon name="ellipsis-vertical"></ion-icon>
-                            </ion-button>
-                        </div>
+    <ng-container [ngSwitch]="tab">
+        <ng-container *ngSwitchCase="'workouts'">
+            <ion-list lines="none">
+
+                <!-- TODO: view -->
+                @for(workout of workouts; track $index) {
+                <ion-card>
+                    <div class="inner-card">
+                        <ion-card-header>
+                            <div class="card-header-container">
+                                <div class="user-info">
+                                    <ion-icon name="person-circle" size="small"></ion-icon>
+                                    <span class="creator-name">
+                                        {{ workout?.user.name }}
+                                    </span>
+                                </div>
+                                <div class="datetime">
+                                    {{ workout.start | dateTime }}
+                                </div>
+                                <div class="action-area">
+                                    <ion-button color="dark" fill="clear" size="small" (click)="openSettings()">
+                                        <ion-icon name="ellipsis-vertical"></ion-icon>
+                                    </ion-button>
+                                </div>
+                            </div>
+                        </ion-card-header>
+                        <ion-card-content>
+                            <div class="exercises-list">
+                                @for(exercise of workout.exercises; track $index) {
+                                <span class="exercise-item">
+                                    {{ exercise.name }} ({{ exercise.sets?.length }} sets)
+                                </span>
+                                @if ($index < workout.exercises.length - 1){,&nbsp;} } <br>
+                                    @if (workout.load) {
+                                    <span>
+                                        {{ 'Training load' | translate }}: {{ workout.load || 0 }} kg
+                                    </span>
+                                    }
+                            </div>
+                            @if (workout.tags?.length > 0) {
+                            <div class="tag-container">
+                                @for (tag of workout.tags; track $index) {
+                                <ion-chip color="primary" size="small">{{ tag }}</ion-chip>
+                                }
+                            </div>
+                            }
+                        </ion-card-content>
                     </div>
-                </ion-card-header>
-                <ion-card-content>
-                    <div class="exercises-list">
-                        @for(exercise of workout.exercises; track $index) {
-                        <div class="exercise-item">
-                            {{ exercise.name }} ({{ exercise.sets?.length }} sets)
-                        </div>
-                        }
-                    </div>
-                    <!-- <ion-button expand="block" (click)="continueWorkout()">
-                        {{ 'Continue' | translate }}
-                    </ion-button> -->
-                </ion-card-content>
+                </ion-card>
+                } @empty {
+                <ion-note> {{ 'No activities yet.' | translate }}</ion-note>
+                }
+            </ion-list>
+        </ng-container>
+        <ng-container *ngSwitchCase="'stats'">
+            <div class="ion-padding-x">
+                <h3>{{ 'Total volume' | translate }}</h3>
+                <canvas #volumeChart></canvas>
+                <h3>{{ 'Effort' | translate }}</h3>
+                <canvas #effortChart></canvas>
+                <h3>{{ 'Max. Per workout' | translate }}</h3>
+                <canvas #maxPerWorkout></canvas>
+                <h3>{{ 'Max. per workout' | translate }}</h3>
+                <canvas #maxLoadPerWorkout></canvas>
+                <h3>{{ 'Max. Volume per workout' | translate }}</h3>
+                <canvas #volumePerWorkout></canvas>
             </div>
-        </ion-card>
-        } @empty {
-        <ion-note> {{ 'No activities yet.' | translate }}</ion-note>
-        }
-    </ion-list>
+        </ng-container>
+    </ng-container>
+
 </ion-content>
 
 <app-continue-footer></app-continue-footer>

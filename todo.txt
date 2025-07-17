@@ -2,20 +2,27 @@ Workouts screen -
     - [x] Add program complete test [ok]
     - [x] Add template complete test [ok]
     - [x] New empty excersize [ok]
-    - [] Do whole program test []
-    - [] When just checking chekmark without selecting values on active workout it set reps and values as 0 []
-    - [] Rate traingin day after completing day (perceived rating 1-10, 1-bad, 10-all out), also to add some comment
+    - [x] Do whole program test []
+    - [x] When just checking chekmark without selecting values on active workout it set reps and values as 0 []
+    - [x] Rate traingin day after completing day (perceived rating 1-10, 1-bad, 10-all out), also to add some comment
     - [] When creating program - adding lots of weeks causes 404 in console and lots of requests
-    - [] adding multiple excersizes with search causes selected excersizes to deselect
-    - [] Reorder workouts on day
-    - [] three dots on new program do not work 
-    - [] adding description to workout, that will not be propagated to next workout
-    - [] Rest timer does not get copied when copying or duplicating
+    - [X] adding multiple excersizes with search causes selected excersizes to deselect
+    - [x] Reorder workouts on day
+    - [X] three dots on new program do not work 
+    - [x] adding description to workout, that will not be propagated to next workout
+    - [x] Rest timer does not get copied when copying or duplicating
     - [] Super Sets
     - [] Drop Sets
+    - [] RPE
+    - [] AMRAP
 
     Activity screen
-        - []
+        - [] Charts, Stats, Workouts
+        - [x] Volume -> over time
+        - [x] Volume -> over time per workout
+        - [x] Volume -> overtime per workout Max.
+        - [x] Effort -> over time
+
 
     Chat
         - [] AI Trainer
@@ -23,6 +30,7 @@ Workouts screen -
 
     Settings
         - []
+        /profile -> body stats, measurements, pictures...
 
 
     General

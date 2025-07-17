@@ -65,7 +65,10 @@
 
                             @if (day.workout?.state === WorkoutState.Completed) {
                             <ion-icon name="checkmark-circle-outline"></ion-icon> }
-                    
+
+                            @if (day.workout?.state === WorkoutState.InProgress) {
+                            <ion-icon name="time-outline"></ion-icon> }
+
                         </ion-chip>
                         }
                     </div>
@@ -186,11 +189,13 @@
                             $index; let
                             exIndex = $index) {
                             <ng-container [formGroupName]="exIndex">
+
                                 <ion-item lines="none" class="ion-no-border ion-no-padding">
-                                    <app-exercise-form [style.width]="'100%'" [exercise]="exercise"
+                                    <app-exercise-form [style.width]="'100%'" [exercise]="exercise" [canMoveExerciseDown]="$index < getExercisesArray(weekIndex, activeDayIndex).controls.length - 1" [canMoveExerciseUp]="$index > 0" (moveExerciseDownEvent)="moveExerciseDown($index)" (moveExerciseUpEvent)="moveExerciseUp($index)"
                                         (onRemoveExerciseEvent)="removeExercise(weekIndex, activeDayIndex, exIndex)">
                                     </app-exercise-form>
                                 </ion-item>
+
                             </ng-container>
                             }
                             @empty {

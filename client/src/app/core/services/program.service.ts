@@ -208,6 +208,8 @@ export class ProgramService {
             start: new Date(),
             day: program.nextDay,
             exercises: program.nextDay.exercises,
+            effort: 5,
+            comment: '',
             state: WorkoutState.InProgress
         };
 
@@ -219,9 +221,9 @@ export class ProgramService {
         const filter = excersizes.map(name => `exercise.name = '${name}'`).join(' || ');
         const sets = await this.pocketbaseService.sets.getList(0, 20,
             {
-            expand: 'exercise',
-            filter,
-            sort: '-completedAt, -index'
+                expand: 'exercise',
+                filter,
+                sort: '-completedAt, -index'
             }
         );
 
@@ -235,17 +237,18 @@ export class ProgramService {
 
         // Fill in previousValue for each set in workout.exercises from groupedSets
         workout.exercises.forEach(ex => {
-            const setsForExercise = groupedSets[ex.name];
+            const setsForExercise: any = groupedSets[ex.name];
+            ex.notes = setsForExercise[0]?.exercise?.notes || '';
             if (!setsForExercise) return;
             ex.sets.forEach((set, index) => {
-            const previousSet = setsForExercise.find(s => s.index === index);
-            if (previousSet) {
-                set.previousValue = previousSet.currentValue;
-                set.previousWeight = previousSet.currentWeight;
-            }
+                const previousSet = setsForExercise.find(s => s.index === index);
+                if (previousSet) {
+                    set.previousValue = previousSet.currentValue;
+                    set.previousWeight = previousSet.currentWeight;
+                }
             });
         });
-        
+
         this.pocketbaseService.upsertRecord('workouts', workout).then((workout) => {
             this.navCtrl.navigateForward([`./workout-wizard/${workout.id}`]);
         });

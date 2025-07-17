@@ -9,7 +9,8 @@ export interface Workout {
     state: WorkoutState;
     exercises: Exercise[];
     day?: Day;
-
+    effort?: number; // total effort in seconds
+    comment?: string;
     completedAt?: Date;
     updated?: Date;
     created?: Date;

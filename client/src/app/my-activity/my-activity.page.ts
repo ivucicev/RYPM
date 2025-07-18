@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild, viewChild } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ActionSheetController, IonicModule } from '@ionic/angular';
+import { ActionSheetController, IonicModule, NavController } from '@ionic/angular';
 import { lastValueFrom } from 'rxjs';
 import { DateTimePipe } from '../core/pipes/datetime.pipe';
 import { PocketbaseService } from '../core/services/pocketbase.service';
@@ -39,7 +39,8 @@ export class MyActivityPage {
     constructor(
         private actionSheetCtrl: ActionSheetController,
         private translateService: TranslateService,
-        private pocketbaseService: PocketbaseService
+        private pocketbaseService: PocketbaseService,
+        private navCtrl: NavController
     ) {
 
         this.getSessions();
@@ -294,8 +295,7 @@ export class MyActivityPage {
         this.refresh();
     }
 
-    // TODO: change/implement
-    async openSettings() {
+    async openSettings(workout) {
         const translations = await lastValueFrom(this.translateService.get([
             'Edit', 'Delete'
         ]));
@@ -307,13 +307,17 @@ export class MyActivityPage {
                     text: translations.Edit,
                     icon: 'create-outline',
                     handler: () => {
+                        this.navCtrl.navigateForward([`./workout-wizard/${workout.id}`]);
                     }
                 },
                 {
                     text: translations.Delete,
                     icon: 'trash-outline',
                     role: 'destructive',
-                    handler: () => {
+                    handler: async() => {
+                        // delete workout
+                        await this.pocketbaseService.workouts.delete(workout.id);
+                        this.workouts = this.workouts.filter(w => w.id !== workout.id);
                     }
                 }
             ]

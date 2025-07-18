@@ -254,7 +254,9 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
             initialBreakpoint: 0.75,
             componentProps: {
                 effort: this.workout.effort,
-                comment: this.workout.comment
+                comment: this.workout.comment,
+                start: this.workout.start ? new Date(this.workout.start).toISOString() : new Date().toISOString(),
+                end: this.workout.end ? new Date(this.workout.end).toISOString() : new Date().toISOString()
             }
         });
 
@@ -262,12 +264,21 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
         const { data } = await modal.onWillDismiss();
 
+        
         if (data && data.comment !== undefined) {
             this.workout.comment = data.comment;
         }
 
         if (data && data.effort !== undefined) {
             this.workout.effort = data.effort;
+        }
+
+        if (data && data.start) {
+            this.workout.start = new Date(data.start);
+        }
+
+        if (data && data.end) {
+            this.workout.end = new Date(data.end); 
         }
 
         if (data)
@@ -280,7 +291,8 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         const model = {
             id: this.workout.id,
             state: WorkoutState.Completed,
-            end: new Date(),
+            start: this.workout.start ?? new Date(),
+            end: this.workout.end ?? new Date(),
             effort: this.workout.effort,
             comment: this.workout.comment,
         } as Workout;

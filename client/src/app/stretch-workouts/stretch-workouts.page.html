@@ -19,13 +19,13 @@
     </ion-toolbar>
 
     <div class="tab_button">
-        <ion-segment mode="ios" [(ngModel)]="tab" lines="none">
-            <ion-segment-button mode="ios" value="workouts">
+        <ion-segment [(ngModel)]="tab" lines="none">
+            <ion-segment-button value="workouts">
                 <ion-label>
                     {{'Workouts' | translate}}
                 </ion-label>
             </ion-segment-button>
-            <ion-segment-button mode="ios" value="trainer">
+            <ion-segment-button value="trainer">
                 <ion-label>
                     {{'Trainer' | translate}}
                 </ion-label>

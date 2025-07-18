@@ -14,18 +14,18 @@
         </ion-title>
     </ion-toolbar>
 
-    <ion-segment mode="ios" [(ngModel)]="tab" lines="none">
-        <ion-segment-button mode="ios" value="beginers">
+    <ion-segment [(ngModel)]="tab" lines="none">
+        <ion-segment-button value="beginers">
             <ion-label>
                 {{'Beginers' | translate}}
             </ion-label>
         </ion-segment-button>
-        <ion-segment-button mode="ios" value="skills">
+        <ion-segment-button value="skills">
             <ion-label>
                 {{'Skills' | translate}}
             </ion-label>
         </ion-segment-button>
-        <ion-segment-button mode="ios" value="master">
+        <ion-segment-button value="master">
             <ion-label>
                 {{'Master' | translate}}
             </ion-label>

@@ -43,7 +43,7 @@
                 <ion-icon [size]="'medium'" class="zmdi" [class]="isDark() ? 'zmdi-sun' : 'zmdi-circle-o'"
                     slot="icon-only"></ion-icon>
                 <div class="text_box">
-                    <h2>{{ (isDark() ? 'light' : 'dark' ) | translate}}</h2>
+                    <h2>{{ (isDark() ? 'Light' : 'Dark' ) | translate}}</h2>
                     <h3>{{'Theme' | translate}}</h3>
                 </div>
             </div>
@@ -83,8 +83,8 @@
             <div class="item-inner d-flex">
                 <ion-icon class="zmdi zmdi-help ion-text-start"></ion-icon>
                 <div class="text_box">
-                    <h2>{{'Need help?' | translate}}?</h2>
-                    <h3>{{'Chat with us' | translate}}</h3>
+                    <h2>{{'Help us improve' | translate}}</h2>
+                    <h3>{{'Chat with us if you need help or you want to help us improve' | translate}}</h3>
                 </div>
             </div>
         </ion-item>
@@ -93,8 +93,17 @@
             <div class="item-inner d-flex">
                 <ion-icon class="zmdi zmdi-assignment ion-text-start"></ion-icon>
                 <div class="text_box">
-                    <h2>{{'Terms & Conditions' | translate}}?</h2>
+                    <h2>{{'Terms & Conditions' | translate}}</h2>
                     <h3>{{'Click here to check terms and conditions.' | translate}}</h3>
+                </div>
+            </div>
+        </ion-item>
+
+        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="logout()">
+            <div class="item-inner d-flex">
+                <ion-icon class="zmdi zmdi-sign-in ion-text-start"></ion-icon>
+                <div class="text_box">
+                    <h2>{{'Logout' | translate}}</h2>
                 </div>
             </div>
         </ion-item>

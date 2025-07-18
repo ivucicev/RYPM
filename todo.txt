@@ -22,6 +22,7 @@ Workouts screen -
         - [x] Volume -> over time per workout
         - [x] Volume -> overtime per workout Max.
         - [x] Effort -> over time
+        - [] measurements
 
 
     Chat
@@ -31,11 +32,21 @@ Workouts screen -
     Settings
         - []
         /profile -> body stats, measurements, pictures...
+        - [] plates -> for increments
+        - [] measurements -> custom -> add whatever custom name
+        - [] Account settings
+        - [] Languages
+        - [] Chat with us, help us improve / contact...
+        - [] Terms & Conditions
 
 
     General
+        - [] PWA Setup 
         - [] PWA notifications for Rest timer
-        - White labeling
+        - [] White labeling
+        - [] Docker deploy
+        - [] Name, Domain
+        - [] Gihub actions
 
     Admin / Trainer
-        - []
+        - [] TBD

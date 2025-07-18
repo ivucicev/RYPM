@@ -10,6 +10,7 @@ import { AccountSwitchPopoverComponent } from './account-switch-popover/account-
 import { AccountService } from '../core/services/account.service';
 import { User } from '../core/models/collections/user';
 import { ThemeService } from '../core/services/theme.service';
+import { PocketbaseService } from '../core/services/pocketbase.service';
 
 @Component({
     selector: 'app-settings',
@@ -35,7 +36,8 @@ export class SettingsPage {
         private route: Router,
         private modalController: ModalController,
         private accountService: AccountService,
-        private themeService: ThemeService
+        private themeService: ThemeService,
+        private pocketbaseService: PocketbaseService
     ) {
     }
 
@@ -105,5 +107,10 @@ export class SettingsPage {
     // TODO
     buyappalert() {
         this.modalController.create({ component: BuyappalertPage }).then((modalElement) => modalElement.present());
+    }
+
+    async logout() {
+        this.accountService.logout();
+        this.route.navigate(['./sign-in']);
     }
 }

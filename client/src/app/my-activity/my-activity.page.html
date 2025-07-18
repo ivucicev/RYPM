@@ -14,13 +14,13 @@
 
 <ion-content class="bg_color ion-padding-x" fullscreen>
     <ion-row class="segment-toolbar ion-padding">
-        <ion-segment mode="ios" lines="none" [(ngModel)]="tab" (ngModelChange)="onTabChange($event)">
-            <ion-segment-button mode="ios" value="workouts">
+        <ion-segment lines="none" [(ngModel)]="tab" (ngModelChange)="onTabChange($event)">
+            <ion-segment-button value="workouts">
                 <ion-label>
                     {{'Workouts' | translate}}
                 </ion-label>
             </ion-segment-button>
-            <ion-segment-button mode="ios" value="stats">
+            <ion-segment-button value="stats">
                 <ion-label>
                     {{'Statistics' | translate}}
                 </ion-label>
@@ -48,7 +48,7 @@
                                     {{ workout.start | dateTime }}
                                 </div>
                                 <div class="action-area">
-                                    <ion-button color="dark" fill="clear" size="small" (click)="openSettings()">
+                                    <ion-button color="dark" fill="clear" size="small" (click)="openSettings(workout)">
                                         <ion-icon name="ellipsis-vertical"></ion-icon>
                                     </ion-button>
                                 </div>

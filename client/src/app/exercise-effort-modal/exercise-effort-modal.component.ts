@@ -15,6 +15,8 @@ export class ExerciseEffortModalComponent implements OnInit {
 
     @Input() effort: string = '';
     @Input() comment: string = '';
+    @Input() start: string = '';
+    @Input() end: string = '';
 
     @ViewChild('textArea') textArea: IonTextarea;
 
@@ -32,11 +34,20 @@ export class ExerciseEffortModalComponent implements OnInit {
         { value: 10, label: 'All Out', color: 'danger' }
     ];
 
+    locale: string = 'en-US'; // Default locale, can be changed based on user preference
 
-    constructor(private modalController: ModalController) { }
+    constructor(private modalController: ModalController) { 
+
+        if (navigator.language) {
+            this.locale = navigator.language;
+        }
+    }
 
     ngOnInit() {
         this.effort = this.effort;
+        this.comment = this.comment;
+        this.start = this.start;
+        this.end = this.end;
     }
 
     ionViewDidEnter() {
@@ -50,7 +61,9 @@ export class ExerciseEffortModalComponent implements OnInit {
     save() {
         this.modalController.dismiss({
             comment: this.comment,
-            effort: this.effort
+            effort: this.effort,
+            start: this.start,
+            end: this.end   
         });
     }
 

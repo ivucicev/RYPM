@@ -74,13 +74,13 @@
     }
 
     <ion-row class="segment-toolbar ion-padding">
-        <ion-segment mode="ios" [(ngModel)]="tab" lines="none">
-            <ion-segment-button mode="ios" value="programs">
+        <ion-segment [(ngModel)]="tab" lines="none">
+            <ion-segment-button value="programs">
                 <ion-label>
                     {{'Programs' | translate}}
                 </ion-label>
             </ion-segment-button>
-            <ion-segment-button mode="ios" value="templates">
+            <ion-segment-button value="templates">
                 <ion-label>
                     {{'Templates' | translate}}
                 </ion-label>

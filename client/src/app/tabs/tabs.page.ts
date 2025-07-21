@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule, IonTabs } from '@ionic/angular';
+import { settingsOutline } from 'ionicons/icons';
 
 @Component({
     selector: 'app-tabs',
@@ -11,7 +12,8 @@ import { IonicModule, IonTabs } from '@ionic/angular';
 })
 export class TabsPage {
     private activeTab?: HTMLElement;
-
+    settingsIcon = settingsOutline
+    
     constructor() { }
 
     tabChange(tabsRef: IonTabs) {

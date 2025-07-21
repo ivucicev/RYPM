@@ -18,7 +18,7 @@
             <div class="profile_img center_img">
                 <div class="img_box center_img ion-bo" [style.backgroundImage]="'url(' + (user?.avatar ) + ')'">
                     @if (!user?.avatar) {
-                    <ion-icon class="zmdi zmdi-account"></ion-icon>
+                    <ion-icon [src]="accountIcon"></ion-icon>
                     }
                 </div>
             </div>
@@ -40,7 +40,7 @@
     <ion-list lines="none">
         <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="toggleTheme()">
             <div class="item-inner d-flex">
-                <ion-icon [size]="'medium'" class="zmdi" [class]="isDark() ? 'zmdi-sun' : 'zmdi-circle-o'"
+                <ion-icon [size]="'medium'" [src]="isDark() ? lightIcon : darkIcon"
                     slot="icon-only"></ion-icon>
                 <div class="text_box">
                     <h2>{{ (isDark() ? 'Light' : 'Dark' ) | translate}}</h2>
@@ -51,7 +51,7 @@
 
         <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="measurements()">
             <div class="item-inner d-flex">
-                <ion-icon [size]="'medium'" class="zmdi zmdi-ruler" slot="icon-only"></ion-icon>
+                <ion-icon [size]="'medium'" [src]="measurementsIcon" slot="icon-only"></ion-icon>
                 <div class="text_box">
                     <h2>{{ 'Measurements' | translate}}</h2>
                     <h3>{{'Select default measurements' | translate}}</h3>
@@ -61,9 +61,9 @@
 
         <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="account_settings()">
             <div class="item-inner d-flex">
-                <ion-icon [size]="'medium'" class="zmdi zmdi-lock-outline" slot="icon-only"></ion-icon>
+                <ion-icon [size]="'medium'" [src]="accountSettingsIcon" slot="icon-only"></ion-icon>
                 <div class="text_box">
-                    <h2>{{ 'Account' | translate}}</h2>
+                    <h2>{{'Account' | translate}}</h2>
                     <h3>{{'Settings' | translate}}</h3>
                 </div>
             </div>
@@ -71,7 +71,7 @@
 
         <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="change_language()">
             <div class="item-inner d-flex">
-                <ion-icon class="zmdi zmdi-globe ion-text-start"></ion-icon>
+                <ion-icon class="ion-text-start" [src]="langIcon"></ion-icon>
                 <div class="text_box">
                     <h2>{{'Language' | translate}}</h2>
                     <h3>{{'Select language' | translate}}</h3>
@@ -81,7 +81,7 @@
 
         <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="help()">
             <div class="item-inner d-flex">
-                <ion-icon class="zmdi zmdi-help ion-text-start"></ion-icon>
+                <ion-icon class="ion-text-start" [src]="helpIcon"></ion-icon>
                 <div class="text_box">
                     <h2>{{'Help us improve' | translate}}</h2>
                     <h3>{{'Chat with us if you need help or you want to help us improve' | translate}}</h3>
@@ -91,7 +91,7 @@
 
         <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="terms_condition()">
             <div class="item-inner d-flex">
-                <ion-icon class="zmdi zmdi-assignment ion-text-start"></ion-icon>
+                <ion-icon [src]="termsIcon" class="ion-text-start"></ion-icon>
                 <div class="text_box">
                     <h2>{{'Terms & Conditions' | translate}}</h2>
                     <h3>{{'Click here to check terms and conditions.' | translate}}</h3>
@@ -101,7 +101,7 @@
 
         <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="logout()">
             <div class="item-inner d-flex">
-                <ion-icon class="zmdi zmdi-sign-in ion-text-start"></ion-icon>
+                <ion-icon class="ion-text-start" [src]="logoutIcon"></ion-icon>
                 <div class="text_box">
                     <h2>{{'Logout' | translate}}</h2>
                 </div>

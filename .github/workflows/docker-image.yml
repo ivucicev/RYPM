@@ -21,6 +21,7 @@ jobs:
         run: |
             git config --local user.name "github-actions"
             git config --local user.email "github-actions@github.com"
+            cd client
             VER=$(npm version patch)
             echo "Bumped version to $VER"
             git add . || "Nothing changed"

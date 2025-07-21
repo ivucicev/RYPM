@@ -23,14 +23,12 @@ Workouts screen -
         - [x] Effort -> over time
         - [] Measurements all custom
 
-
     Chat
         - [] AI Trainer
         - [] Human Trainer
 
     Settings
-        - []
-        /profile -> body stats, measurements, pictures...
+        - [] profile -> body stats, measurements, pictures...
         - [] plates -> for increments
         - [] measurements -> custom -> add whatever custom name
         - [] Account settings
@@ -38,15 +36,14 @@ Workouts screen -
         - [] Chat with us, help us improve / contact...
         - [] Terms & Conditions
 
-
     General
         - [] PWA Setup 
         - [] PWA notifications for Rest timer
         - [] White labeling
-        - [] Docker deploy
-        - [] Name, Domain
-        - [] Gihub actions
-        - [] Repo Transfer
+        - [x] Docker deploy
+        - [x] Name, Domain
+        - [x] Gihub actions
+        - [x] Repo Transfer
 
     Admin / Trainer
         - [] TBD

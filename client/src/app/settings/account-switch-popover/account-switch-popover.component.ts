@@ -3,6 +3,7 @@ import { IonicModule, NavController, PopoverController } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { User } from '../../core/models/collections/user';
 import { AccountService, UserMap } from '../../core/services/account.service';
+import { personAddOutline } from 'ionicons/icons';
 
 @Component({
     selector: 'app-account-switch-popover',
@@ -14,6 +15,7 @@ import { AccountService, UserMap } from '../../core/services/account.service';
 export class AccountSwitchPopoverComponent {
 
     user: User;
+    addPlusIcon = personAddOutline;
 
     accounts: UserMap[] = [];
 

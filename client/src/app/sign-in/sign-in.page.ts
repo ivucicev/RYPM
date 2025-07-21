@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { LoginBM } from '../core/models/bm/login-bm';
 import { FormType } from '../core/helpers/form-helpers';
 import { filter, Subject, takeUntil } from 'rxjs';
+import { logoFacebook, logoGoogle } from 'ionicons/icons';
 
 @Component({
     selector: 'app-sign-in',
@@ -21,6 +22,8 @@ export class SignInPage implements OnInit {
 
     loginForm: FormGroup<FormType<LoginBM>>;
     navigatedTo = false;
+    logoFacebook = logoFacebook;
+    logoGoogle = logoGoogle;
 
     constructor(
         private router: Router,

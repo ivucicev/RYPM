@@ -11,6 +11,7 @@ import { AccountService } from '../core/services/account.service';
 import { User } from '../core/models/collections/user';
 import { ThemeService } from '../core/services/theme.service';
 import { PocketbaseService } from '../core/services/pocketbase.service';
+import { accessibilityOutline, bookOutline, globeOutline, helpCircleOutline, logOutOutline, moonOutline, personCircleOutline, personOutline, sunnyOutline } from 'ionicons/icons';
 
 @Component({
     selector: 'app-settings',
@@ -28,6 +29,16 @@ export class SettingsPage {
     showToolbar = false;
     user: User;
 
+    accountIcon = personOutline;
+    darkIcon = moonOutline;
+    lightIcon = sunnyOutline;
+    measurementsIcon = accessibilityOutline;
+    accountSettingsIcon = personCircleOutline;
+    langIcon = globeOutline;
+    helpIcon = helpCircleOutline;
+    termsIcon = bookOutline;
+    logoutIcon = logOutOutline;
+    
     isDark: Signal<boolean> = this.themeService.isDark;
 
     constructor(

@@ -8,6 +8,5 @@
         "server": "cd ./server && ./pocketbase serve --http 127.0.0.1:4444",
         "client": "cd ./client && ng serve --port 4000",
         "serve": "npm run server & npm run client"
-    },
-    "version": "0.0.8"
+    }
 }

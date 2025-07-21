@@ -9,5 +9,5 @@
         "client": "cd ./client && ng serve --port 4000",
         "serve": "npm run server & npm run client"
     },
-    "version": "0.0.6"
+    "version": "0.0.7"
 }

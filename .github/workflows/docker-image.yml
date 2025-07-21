@@ -50,7 +50,7 @@ jobs:
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
           context: .
-          file: ./dockerfile.web
+          file: ./docker/dockerfile.web
           push: true
           tags: |
             ivucicev/rypm-app:latest
@@ -63,7 +63,7 @@ jobs:
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
           context: .
-          file: ./server/dockerfile.api
+          file: ./docker/dockerfile.api
           push: true
           tags: |
             ivucicev/rypm-api:latest

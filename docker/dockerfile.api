@@ -23,7 +23,7 @@ WORKDIR /pb
 
 EXPOSE 8090
 
-COPY entrypoint-api.sh /pb/entrypoint.sh
+COPY ../docker/entrypoint-api.sh /pb/entrypoint.sh
 RUN chmod +x /pb/entrypoint.sh
 
 CMD ["/pb/entrypoint.sh"]

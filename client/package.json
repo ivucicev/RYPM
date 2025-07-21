@@ -1,8 +1,8 @@
 {
-    "name": "gym-app",
+    "name": "rypm-app",
     "version": "1.0.0",
-    "author": "Ionic Framework",
-    "homepage": "https://ionicframework.com/",
+    "author": "ivucicev@gmail.com",
+    "homepage": "https://rypm.app/",
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
@@ -38,7 +38,7 @@
         "@ngx-translate/http-loader": "^16.0.1",
         "animate.css": "^4.1.1",
         "chart.js": "^2.9.4",
-        "ionicons": "^7.2.1",
+        "ionicons": "^8.0.13",
         "ng-circle-progress": "^1.7.1",
         "ng-circle-progress-day-countdown": "^0.16.1",
         "pocketbase": "^0.25.1",
@@ -75,5 +75,5 @@
         "karma-jasmine-html-reporter": "~2.1.0",
         "typescript": "~5.4.0"
     },
-    "description": "An Ionic project"
+    "description": "RYPM - only workout app you'll ever need. Track your workouts, set goals, and stay motivated with RYPM."
 }

@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  rypm-app:
+    image: ivucicev/rypm-app:latest
+    environment:
+      API_URL: http://localhost:8090
+    ports:
+      - "80:80"
+
+  eenvo-api:
+    image: ivucicev/rypm-api:latest
+    volumes:
+      - ./pb_data:/pb/pb_data
+    ports:
+      - "8090:8090"
+    environment:
+      POCKETBASE_ADMIN_EMAIL: ${POCKETBASE_ADMIN_EMAIL}
+      POCKETBASE_ADMIN_PASS: ${POCKETBASE_ADMIN_PASS}

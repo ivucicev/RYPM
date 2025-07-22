@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   rypm-app:
     image: ivucicev/rypm-app:latest

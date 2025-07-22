@@ -1,2 +1,4 @@
 server/pocketbase
 server/.DS_Store
+*/pb_data
+server/pb_data

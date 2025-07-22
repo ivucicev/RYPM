@@ -30,7 +30,7 @@ onBootstrap((e) => {
 
         console.log("Reading exercises.json file...");
 
-        const fileBytes = $os.readFile("./pb_data/exercise-templates.json");
+        const fileBytes = $os.readFile("./pb_import/exercise-templates.json");
         const bytesToString = (bytes) => {
             if (typeof bytes === 'string') return bytes;
 

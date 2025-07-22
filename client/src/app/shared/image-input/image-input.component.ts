@@ -4,7 +4,7 @@ import { IonicModule } from '@ionic/angular';
 
 @Component({
     selector: 'app-image-input',
-    templateUrl: './image-input.component.html',
+    templateUrl: 'image-input.component.html',
     styleUrls: ['./image-input.component.scss'],
     providers: [
         {

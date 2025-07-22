@@ -4,7 +4,7 @@ import { IonicModule } from '@ionic/angular';
 
 @Component({
     selector: 'app-get-pro',
-    templateUrl: './get-pro.page.html',
+    templateUrl: 'get-pro.page.html',
     styleUrls: ['./get-pro.page.scss'],
     standalone: true,
     imports: [IonicModule, TranslateModule],

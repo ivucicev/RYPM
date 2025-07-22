@@ -16,7 +16,7 @@ interface SelectableExerciseTemplate extends ExerciseTemplate {
 
 @Component({
     selector: 'app-exercise-template-selector',
-    templateUrl: './exercise-template-selector.component.html',
+    templateUrl: 'exercise-template-selector.component.html',
     styleUrls: ['./exercise-template-selector.component.scss'],
     standalone: true,
     imports: [IonicModule, FormsModule, TranslateModule, CommonModule]

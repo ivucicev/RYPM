@@ -6,7 +6,7 @@ import { ExerciseTemplate } from '../../core/models/collections/exercise-templat
 
 @Component({
     selector: 'app-exercise-template-detail',
-    templateUrl: './exercise-template-detail.component.html',
+    templateUrl: 'exercise-template-detail.component.html',
     styleUrls: ['./exercise-template-detail.component.scss'],
     standalone: true,
     imports: [IonicModule, CommonModule, TranslateModule]

@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 @Component({
     selector: 'app-chest-workouts',
-    templateUrl: './chest-workouts.page.html',
+    templateUrl: 'chest-workouts.page.html',
     styleUrls: ['./chest-workouts.page.scss'],
     standalone: true,
     imports: [

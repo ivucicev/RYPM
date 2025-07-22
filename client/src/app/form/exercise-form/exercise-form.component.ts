@@ -15,7 +15,7 @@ import { IonPopover } from '@ionic/angular/standalone';
 
 @Component({
     selector: 'app-exercise-form',
-    templateUrl: './exercise-form.component.html',
+    templateUrl: 'exercise-form.component.html',
     styleUrls: ['./exercise-form.component.scss'],
     standalone: true,
     imports: [

@@ -12,7 +12,7 @@ import { ToastService } from 'src/app/core/services/toast-service';
 
 @Component({
     selector: 'app-account',
-    templateUrl: './account.component.html',
+    templateUrl: 'account.component.html',
     styleUrls: ['./account.component.scss'],
     standalone: true,
     imports: [IonicModule, TranslateModule, ReactiveFormsModule, FormsModule, ErrorMessageDirective],

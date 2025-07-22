@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 @Component({
     selector: 'app-stretch-workouts',
-    templateUrl: './stretch-workouts.page.html',
+    templateUrl: 'stretch-workouts.page.html',
     styleUrls: ['./stretch-workouts.page.scss'],
     standalone: true,
     imports: [

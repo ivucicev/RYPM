@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-exercise-notes-modal',
-    templateUrl: './exercise-notes-modal.component.html',
+    templateUrl: 'exercise-notes-modal.component.html',
     styleUrls: ['./exercise-notes-modal.component.scss'],
     imports: [IonicModule, FormsModule, TranslateModule],
     standalone: true

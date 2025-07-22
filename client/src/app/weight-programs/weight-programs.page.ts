@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 @Component({
     selector: 'app-weight-programs',
-    templateUrl: './weight-programs.page.html',
+    templateUrl: 'weight-programs.page.html',
     styleUrls: ['./weight-programs.page.scss'],
     standalone: true,
     imports: [

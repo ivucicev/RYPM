@@ -17,7 +17,7 @@ import { TemplateActionKey, TemplateService } from '../core/services/template.se
 
 @Component({
     selector: 'app-template',
-    templateUrl: './template.component.html',
+    templateUrl: 'template.component.html',
     styleUrls: ['./template.component.scss'],
     standalone: true,
     imports: [

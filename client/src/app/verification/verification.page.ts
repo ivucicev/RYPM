@@ -7,7 +7,7 @@ import { PocketbaseService } from '../core/services/pocketbase.service';
 
 @Component({
     selector: 'app-verification',
-    templateUrl: './verification.page.html',
+    templateUrl: 'verification.page.html',
     styleUrls: ['./verification.page.scss'],
     standalone: true,
     imports: [IonicModule, TranslateModule],

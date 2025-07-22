@@ -5,7 +5,7 @@ import { LoadingController, ModalController, NavController, ToastController, Ion
 
 @Component({
   selector: 'app-vt-popup',
-  templateUrl: './vt-popup.page.html',
+  templateUrl: 'vt-popup.page.html',
   styleUrls: ['./vt-popup.page.scss'],
   standalone: true,
   imports: [IonIcon, IonButton, IonItem, IonList, IonCard, IonContent, FormsModule],

@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-qr-code-modal',
-    templateUrl: './qr-code-modal.component.html',
+    templateUrl: 'qr-code-modal.component.html',
     styleUrls: ['./qr-code-modal.component.scss'],
     standalone: true,
     imports: [IonicModule, TranslateModule, CommonModule],

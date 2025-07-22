@@ -12,7 +12,7 @@ import { PB } from 'src/app/core/constants/pb-constants';
 
 @Component({
     selector: 'app-continue-footer',
-    templateUrl: './continue-footer.component.html',
+    templateUrl: 'continue-footer.component.html',
     styleUrls: ['./continue-footer.component.scss'],
     imports: [IonicModule, RestBadgeComponent, TranslatePipe],
     standalone: true

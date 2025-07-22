@@ -13,7 +13,7 @@ import { WorkoutState } from '../core/models/enums/workout-state';
 
 @Component({
     selector: 'app-workout',
-    templateUrl: './workout.component.html',
+    templateUrl: 'workout.component.html',
     styleUrls: ['./workout.component.scss'],
     standalone: true,
     imports: [

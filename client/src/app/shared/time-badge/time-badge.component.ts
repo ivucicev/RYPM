@@ -3,7 +3,7 @@ import { IonicModule } from '@ionic/angular';
 
 @Component({
     selector: 'app-time-badge',
-    templateUrl: './time-badge.component.html',
+    templateUrl: 'time-badge.component.html',
     styleUrls: ['./time-badge.component.scss'],
     standalone: true,
     imports: [IonicModule]

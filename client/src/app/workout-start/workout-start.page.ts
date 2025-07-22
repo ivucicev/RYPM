@@ -8,7 +8,7 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 
 @Component({
   selector: 'app-workout-start',
-  templateUrl: './workout-start.page.html',
+  templateUrl: 'workout-start.page.html',
   styleUrls: ['./workout-start.page.scss'],
   standalone: true,
   imports: [

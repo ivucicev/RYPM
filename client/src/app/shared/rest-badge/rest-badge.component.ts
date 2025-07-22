@@ -7,7 +7,7 @@ const REST_BADGE_STORAGE_KEY = 'restBadgeTimer';
 
 @Component({
     selector: 'app-rest-badge',
-    templateUrl: './rest-badge.component.html',
+    templateUrl: 'rest-badge.component.html',
     styleUrls: ['./rest-badge.component.scss'],
     standalone: true,
     imports: [IonicModule, DurationPipe, TranslatePipe]

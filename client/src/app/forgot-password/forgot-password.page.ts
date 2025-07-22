@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-forgot-password',
-    templateUrl: './forgot-password.page.html',
+    templateUrl: 'forgot-password.page.html',
     styleUrls: ['./forgot-password.page.scss'],
     standalone: true,
     imports: [IonicModule, TranslateModule, FormsModule],

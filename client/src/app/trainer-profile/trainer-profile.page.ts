@@ -6,7 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 @Component({
     selector: 'app-trainer-profile',
-    templateUrl: './trainer-profile.page.html',
+    templateUrl: 'trainer-profile.page.html',
     styleUrls: ['./trainer-profile.page.scss'],
     standalone: true,
     imports: [IonicModule, TranslateModule],

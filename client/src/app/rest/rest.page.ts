@@ -5,7 +5,7 @@ import { CircleProgressComponent, NgCircleProgressModule } from 'ng-circle-progr
 
 @Component({
   selector: 'app-rest',
-  templateUrl: './rest.page.html',
+  templateUrl: 'rest.page.html',
   styleUrls: ['./rest.page.scss'],
   standalone: true,
   imports: [IonicModule, NgCircleProgressModule, TranslateModule]

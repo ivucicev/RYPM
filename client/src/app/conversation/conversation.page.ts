@@ -6,7 +6,7 @@ import { Keyboard } from '@capacitor/keyboard';
 
 @Component({
     selector: 'app-conversation',
-    templateUrl: './conversation.page.html',
+    templateUrl: 'conversation.page.html',
     styleUrls: ['./conversation.page.scss'],
     standalone: true,
     imports: [IonicModule, TranslateModule],

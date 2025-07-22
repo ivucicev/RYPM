@@ -5,7 +5,7 @@ import { IonicModule } from '@ionic/angular';
 
 @Component({
     selector: 'app-help',
-    templateUrl: './help.page.html',
+    templateUrl: 'help.page.html',
     styleUrls: ['./help.page.scss'],
     standalone: true,
     imports: [

@@ -8,7 +8,7 @@ import { ExerciseTemplate } from 'src/app/core/models/collections/exercise-templ
 
 @Component({
     selector: 'app-exercise-template-filter-modal',
-    templateUrl: './exercise-template-filter-modal.component.html',
+    templateUrl: 'exercise-template-filter-modal.component.html',
     styleUrls: ['./exercise-template-filter-modal.component.scss'],
     standalone: true,
     imports: [IonicModule, FormsModule, TranslateModule, CommonModule]

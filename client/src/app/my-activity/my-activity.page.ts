@@ -10,11 +10,11 @@ import { ContinueFooterComponent } from '../shared/continue-footer/continue-foot
 import { FormsModule } from '@angular/forms';
 import { NgSwitch, NgSwitchCase } from '@angular/common';
 
-import * as chart from 'chart.js';
+//import * as chart from 'chart.js';
 
 @Component({
     selector: 'app-my-activity',
-    templateUrl: './my-activity.page.html',
+    templateUrl: 'my-activity.page.html',
     styleUrls: ['./my-activity.page.scss'],
     standalone: true,
     imports: [IonicModule, TranslateModule, FormsModule, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent],
@@ -27,7 +27,7 @@ export class MyActivityPage {
 
     continueFooter = viewChild(ContinueFooterComponent);
 
-    chartInstance: chart.Chart | null = null;
+    //chartInstance: chart.Chart | null = null;
     tab: 'workouts' | 'stats' = 'workouts';
 
     @ViewChild('volumeChart') chart: ElementRef<HTMLCanvasElement>;
@@ -46,7 +46,6 @@ export class MyActivityPage {
         this.getSessions();
     }
 
-    // TODO: fetch
     async refresh() {
         this.continueFooter().refresh();
     }
@@ -59,9 +58,9 @@ export class MyActivityPage {
         if (!ctx) return;
 
         // Destroy previous chart instance if exists
-        if (this.chartInstance) {
-            this.chartInstance.destroy();
-        }
+        // if (this.chartInstance) {
+        //     this.chartInstance.destroy();
+        // }
 
         // Chart 1: Load over time (only show values > 0)
         const loadLabels = sortedWorkouts
@@ -69,27 +68,27 @@ export class MyActivityPage {
         const loadData = sortedWorkouts
             .map(w => w.load > 0 ? w.load : null);
 
-        this.chartInstance = new chart.Chart(ctx, {
-            type: 'line',
-            data: {
-            labels: loadLabels,
-            datasets: [{
-                label: 'Workout Load',
-                data: loadData,
-                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-            },
-            options: {
-            responsive: true,
-            scales: {
-                y: {
-                beginAtZero: true
-                }
-            }
-            }
-        });
+        // this.chartInstance = new chart.Chart(ctx, {
+        //     type: 'line',
+        //     data: {
+        //     labels: loadLabels,
+        //     datasets: [{
+        //         label: 'Workout Load',
+        //         data: loadData,
+        //         backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        //         borderColor: 'rgba(54, 162, 235, 1)',
+        //         borderWidth: 1
+        //     }]
+        //     },
+        //     options: {
+        //     responsive: true,
+        //     scales: {
+        //         y: {
+        //         beginAtZero: true
+        //         }
+        //     }
+        //     }
+        // });
 
         // Chart 2: Volume per workout name, with one line per workout
         // Prepare data: each workout name gets its own dataset (line)
@@ -117,21 +116,21 @@ export class MyActivityPage {
             };
         });
 
-        new chart.Chart(this.chartPerWorkout?.nativeElement.getContext('2d'), {
-            type: 'line',
-            data: {
-            labels: sortedWorkouts.map(w => new Date(w.created).toLocaleDateString()),
-            datasets: datasets
-            },
-            options: {
-            responsive: true,
-            scales: {
-                y: {
-                beginAtZero: true
-                }
-            }
-            }
-        });
+        // new chart.Chart(this.chartPerWorkout?.nativeElement.getContext('2d'), {
+        //     type: 'line',
+        //     data: {
+        //     labels: sortedWorkouts.map(w => new Date(w.created).toLocaleDateString()),
+        //     datasets: datasets
+        //     },
+        //     options: {
+        //     responsive: true,
+        //     scales: {
+        //         y: {
+        //         beginAtZero: true
+        //         }
+        //     }
+        //     }
+        // });
 
         // Chart 3: Effort over time
         const effortCtx = this.effortChart?.nativeElement.getContext('2d');
@@ -139,27 +138,27 @@ export class MyActivityPage {
             const effortLabels = sortedWorkouts.map(w => new Date(w.created).toLocaleDateString());
             const effortData = sortedWorkouts.map(w => w.effort ?? null);
 
-            new chart.Chart(effortCtx, {
-                type: 'line',
-                data: {
-                    labels: effortLabels,
-                    datasets: [{
-                        label: 'Workout Effort',
-                        data: effortData,
-                        backgroundColor: 'rgba(255, 206, 86, 0.5)',
-                        borderColor: 'rgba(255, 206, 86, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
+            // new chart.Chart(effortCtx, {
+            //     type: 'line',
+            //     data: {
+            //         labels: effortLabels,
+            //         datasets: [{
+            //             label: 'Workout Effort',
+            //             data: effortData,
+            //             backgroundColor: 'rgba(255, 206, 86, 0.5)',
+            //             borderColor: 'rgba(255, 206, 86, 1)',
+            //             borderWidth: 1
+            //         }]
+            //     },
+            //     options: {
+            //         responsive: true,
+            //         scales: {
+            //             y: {
+            //                 beginAtZero: true
+            //             }
+            //         }
+            //     }
+            // });
         }
 
         const maxPerWorkoutCtx = this.maxPerWorkout?.nativeElement.getContext('2d');
@@ -191,21 +190,21 @@ export class MyActivityPage {
                 };
             });
 
-            new chart.Chart(maxPerWorkoutCtx, {
-                type: 'line',
-                data: {
-                    labels: sortedWorkouts.map(w => new Date(w.created).toLocaleDateString()),
-                    datasets: datasets
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
+            // new chart.Chart(maxPerWorkoutCtx, {
+            //     type: 'line',
+            //     data: {
+            //         labels: sortedWorkouts.map(w => new Date(w.created).toLocaleDateString()),
+            //         datasets: datasets
+            //     },
+            //     options: {
+            //         responsive: true,
+            //         scales: {
+            //             y: {
+            //                 beginAtZero: true
+            //             }
+            //         }
+            //     }
+            // });
         }
 
         // Chart 4: Max load per workout name over time
@@ -242,21 +241,21 @@ export class MyActivityPage {
             };
             });
 
-            new chart.Chart(maxLoadPerWorkoutCtx, {
-            type: 'line',
-            data: {
-                labels: sortedWorkouts.map(w => new Date(w.created).toLocaleDateString()),
-                datasets: datasets
-            },
-            options: {
-                responsive: true,
-                scales: {
-                y: {
-                    beginAtZero: true
-                }
-                }
-            }
-            });
+            // new chart.Chart(maxLoadPerWorkoutCtx, {
+            // type: 'line',
+            // data: {
+            //     labels: sortedWorkouts.map(w => new Date(w.created).toLocaleDateString()),
+            //     datasets: datasets
+            // },
+            // options: {
+            //     responsive: true,
+            //     scales: {
+            //     y: {
+            //         beginAtZero: true
+            //     }
+            //     }
+            // }
+            // });
         }
         
     }

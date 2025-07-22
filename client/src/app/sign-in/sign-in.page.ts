@@ -11,7 +11,7 @@ import { logoFacebook, logoGoogle } from 'ionicons/icons';
 
 @Component({
     selector: 'app-sign-in',
-    templateUrl: './sign-in.page.html',
+    templateUrl: 'sign-in.page.html',
     styleUrls: ['./sign-in.page.scss'],
     standalone: true,
     imports: [IonicModule, TranslateModule, ReactiveFormsModule],

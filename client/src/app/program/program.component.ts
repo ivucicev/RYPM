@@ -20,7 +20,7 @@ import { ToastService } from '../core/services/toast-service';
 
 @Component({
     selector: 'app-program',
-    templateUrl: './program.component.html',
+    templateUrl: 'program.component.html',
     styleUrls: ['./program.component.scss'],
     standalone: true,
     imports: [IonicModule, TranslateModule, ReactiveFormsModule, FormsModule, ErrorMessageDirective,

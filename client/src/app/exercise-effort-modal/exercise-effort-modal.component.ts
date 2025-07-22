@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-exercise-effort-modal',
-    templateUrl: './exercise-effort-modal.component.html',
+    templateUrl: 'exercise-effort-modal.component.html',
     styleUrls: ['./exercise-effort-modal.component.scss'],
     imports: [IonicModule, FormsModule, TranslateModule],
     standalone: true

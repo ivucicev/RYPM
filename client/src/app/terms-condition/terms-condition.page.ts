@@ -4,7 +4,7 @@ import { IonicModule } from '@ionic/angular';
 
 @Component({
     selector: 'app-terms-condition',
-    templateUrl: './terms-condition.page.html',
+    templateUrl: 'terms-condition.page.html',
     styleUrls: ['./terms-condition.page.scss'],
     standalone: true,
     imports: [IonicModule, TranslateModule],

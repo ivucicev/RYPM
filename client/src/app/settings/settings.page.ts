@@ -15,7 +15,7 @@ import { accessibilityOutline, bookOutline, globeOutline, helpCircleOutline, log
 
 @Component({
     selector: 'app-settings',
-    templateUrl: './settings.page.html',
+    templateUrl: 'settings.page.html',
     styleUrls: ['./settings.page.scss'],
     standalone: true,
     imports: [

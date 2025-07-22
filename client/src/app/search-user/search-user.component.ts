@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-search-user',
-    templateUrl: './search-user.component.html',
+    templateUrl: 'search-user.component.html',
     styleUrls: ['./search-user.component.scss'],
     standalone: true,
     imports: [IonicModule, FormsModule, TranslateModule]

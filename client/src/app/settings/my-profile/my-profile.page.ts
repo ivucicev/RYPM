@@ -12,7 +12,7 @@ import { lastValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-my-profile',
-    templateUrl: './my-profile.page.html',
+    templateUrl: 'my-profile.page.html',
     styleUrls: ['./my-profile.page.scss'],
     standalone: true,
     imports: [IonicModule, TranslateModule, ReactiveFormsModule, FormsModule, ErrorMessageDirective, ImageInputComponent],

@@ -5,8 +5,8 @@ import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-assign-modal',
-    templateUrl: './assign-modal.component.html',
-    styleUrls: ['./assign-modal.component.scss'],
+    templateUrl: 'assign-modal.component.html',
+    styleUrls: ['assign-modal.component.scss'],
     standalone: true,
     imports: [IonicModule, FormsModule, TranslateModule]
 })

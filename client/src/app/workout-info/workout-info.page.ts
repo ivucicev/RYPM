@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from '@ionic/angular';
 @Component({
     selector: 'app-workout-info',
-    templateUrl: './workout-info.page.html',
+    templateUrl: 'workout-info.page.html',
     styleUrls: ['./workout-info.page.scss'],
     standalone: true,
     imports: [IonicModule, TranslateModule],

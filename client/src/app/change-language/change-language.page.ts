@@ -10,8 +10,8 @@ import { Constants } from 'src/app/core/constants/constants';
 
 @Component({
     selector: 'app-change-language',
-    templateUrl: './change-language.page.html',
-    styleUrls: ['./change-language.page.scss'],
+    templateUrl: 'change-language.page.html',
+    styleUrls: ['change-language.page.scss'],
     standalone: true,
     imports: [
         IonicModule,

@@ -5,8 +5,8 @@ import { IonicModule } from '@ionic/angular';
 
 @Component({
   selector: 'app-buyappalert',
-  templateUrl: './buyappalert.page.html',
-  styleUrls: ['./buyappalert.page.scss'],
+  templateUrl: 'buyappalert.page.html',
+  styleUrls: ['buyappalert.page.scss'],
   standalone: true,
   imports: [IonicModule]
 })

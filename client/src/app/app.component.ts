@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { Platform, NavController, ModalController, IonApp } from '@ionic/angular/standalone';
+import { Platform, NavController, ModalController, IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { TranslateService } from '@ngx-translate/core';
 import { APP_CONFIG, AppConfig } from './app.config';
 import { VtPopupPage } from './vt-popup/vt-popup.page';
@@ -19,10 +19,9 @@ import { register } from 'swiper/element/bundle';
     templateUrl: 'app.component.html',
     styleUrls: ['app.component.scss'],
     standalone: true,
-    imports: [IonApp, IonicModule],
+    imports: [IonApp, IonicModule, IonRouterOutlet],
 })
 export class AppComponent {
-    rtlSide = "left";
     selectedIndex: any;
     appPages: any;
 
@@ -90,20 +89,6 @@ export class AppComponent {
         this.translate.setDefaultLang("en");
         let defaultLangCode = this.config.availableLanguages[0].code;
         this.translate.use(languagePriority && languagePriority.length ? languagePriority : defaultLangCode);
-        this.setDirectionAccordingly(languagePriority && languagePriority.length ? languagePriority : defaultLangCode);
-    }
-
-    setDirectionAccordingly(lang: string) {
-        switch (lang) {
-            case 'ar': {
-                this.rtlSide = "rtl";
-                break;
-            }
-            default: {
-                this.rtlSide = "ltr";
-                break;
-            }
-        }
     }
 
     async presentModal() {

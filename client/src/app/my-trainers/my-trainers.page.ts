@@ -5,7 +5,7 @@ import { IonicModule } from '@ionic/angular';
 
 @Component({
     selector: 'app-my-trainers',
-    templateUrl: './my-trainers.page.html',
+    templateUrl: 'my-trainers.page.html',
     styleUrls: ['./my-trainers.page.scss'],
     standalone: true,
     imports: [IonicModule, TranslateModule],

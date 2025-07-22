@@ -26,7 +26,7 @@ import { ExerciseEffortModalComponent } from '../exercise-effort-modal/exercise-
 
 @Component({
     selector: 'app-workout-wizard',
-    templateUrl: './workout-wizard.component.html',
+    templateUrl: 'workout-wizard.component.html',
     styleUrls: ['./workout-wizard.component.scss'],
     standalone: true,
     imports: [IonicModule, CommonModule, FormsModule, ExerciseFormComponent, TranslateModule, TimeBadgeComponent, NoDataComponent, RestBadgeComponent],

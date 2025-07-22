@@ -18,8 +18,8 @@ interface ChatItem {
 
 @Component({
     selector: 'app-chats',
-    templateUrl: './chats.page.html',
-    styleUrls: ['./chats.page.scss'],
+    templateUrl: 'chats.page.html',
+    styleUrls: ['chats.page.scss'],
     standalone: true,
     imports: [IonicModule, TranslateModule, CommonModule, FormsModule, ContinueFooterComponent],
 })

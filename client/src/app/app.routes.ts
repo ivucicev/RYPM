@@ -1,19 +1,20 @@
 import { Routes } from '@angular/router';
+import { SignInPage } from './sign-in/sign-in.page';
 
 // TODO: add guards/auth
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: '',
+        redirectTo: 'sign-in',
         pathMatch: 'full'
-    },
-    {
-        path: '',
-        loadChildren: () => import('./tabs/tabs.routes').then(m => m.routes)
     },
     {
         path: 'sign-in',
         loadChildren: () => import('./sign-in/sign-in.routes').then(m => m.routes)
+    },
+    {
+        path: '',
+        loadChildren: () => import('./tabs/tabs.routes').then(m => m.routes)
     },
     {
         path: 'register',

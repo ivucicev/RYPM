@@ -7,7 +7,7 @@ import { personAddOutline } from 'ionicons/icons';
 
 @Component({
     selector: 'app-account-switch-popover',
-    templateUrl: './account-switch-popover.component.html',
+    templateUrl: 'account-switch-popover.component.html',
     styleUrls: ['./account-switch-popover.component.scss'],
     imports: [IonicModule, TranslateModule],
     standalone: true

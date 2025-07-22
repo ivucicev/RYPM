@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-    appId: 'io.ionic.starter',
-    appName: 'photo-gallery',
+    appId: 'ivucicev.rypm.app',
+    appName: 'rypm-app',
     webDir: 'www/browser',
     // TODO: to remove?
     // cordova: {

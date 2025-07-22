@@ -10,7 +10,7 @@ import { PB } from '../core/constants/pb-constants';
 
 @Component({
     selector: 'app-measurements',
-    templateUrl: './measurements.component.html',
+    templateUrl: 'measurements.component.html',
     styleUrls: ['./measurements.component.scss'],
     standalone: true,
     imports: [IonicModule, TranslateModule, WeightTypePipe]

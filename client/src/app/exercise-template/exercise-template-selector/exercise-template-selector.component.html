@@ -24,13 +24,19 @@
         <ion-button fill="clear" slot="end" (click)="openFilters()">
             <ion-icon name="filter-outline"></ion-icon>
             @if (appliedFiltersCount > 0) {
-            <ion-badge color="primary">{{ appliedFiltersCount }}</ion-badge>
+            <ion-badge class="filter-badge" color="primary">{{ appliedFiltersCount }}</ion-badge>
             }
         </ion-button>
     </ion-toolbar>
 </ion-header>
 
 <ion-content #content scrollEvents="true" (ionScroll)="onScroll($event)">
+    <div class="ion-text-center">
+        <ion-button size="'small'" (click)="openCreateModal()" [strong]="true" fill="clear" color="primary">
+            {{ 'Create' | translate }}
+            <ion-icon name="add-outline" color="primary"></ion-icon>
+        </ion-button>
+    </div>
 
     <ion-list>
         @for (exercise of exercises; track exercise.id) {
@@ -41,7 +47,12 @@
 
             <ion-label (click)="toggleExercise(exercise)" class="exercise-label">
                 <ion-text [color]="exercise.selected ? 'primary' : ''">
-                    <h2>{{ exercise.name }}</h2>
+                    <h2>{{ exercise.name }} 
+
+                        @if (exercise.isCommunity) {
+                        &nbsp; <ion-badge slot="start" class="community-badge" color="success">{{ 'Community' | translate }}</ion-badge>
+                        }
+                    </h2>
                 </ion-text>
 
                 <div class="key-tags">

@@ -26,10 +26,11 @@
                 <ion-item class="animate__animated animate__fadeInUp">
                     <ion-input formControlName="password" [label]="'Password' | translate" class="password" mode="md"
                         labelPlacement="floating" type="password">
-                        <h3 class="end" (click)="forgot_password()">{{"Forgot password" | translate}}</h3>
+                        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
                     </ion-input>
                 </ion-item>
             </ion-list>
+            <h3 class="end" (click)="forgot_password()">{{"Forgot password" | translate}}</h3>
             <ion-button size="large" expand="round" class="btn animate__animated animate__fadeInUp"
                 (click)="signIn()">{{'Sign In' | translate}}</ion-button>
             <div class="or_continue_with animate__animated animate__fadeInUp">

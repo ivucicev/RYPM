@@ -9,6 +9,7 @@ import { buildFilter } from 'src/app/core/utils/filter-builder';
 import { ExerciseTemplateDetailComponent } from '../exercise-template-detail/exercise-template-detail.component';
 import { ExerciseTemplateFilterModalComponent } from '../exercise-template-filter-modal/exercise-template-filter-modal.component';
 import { ExerciseTemplate, exerciseTemplatesArrayFields } from 'src/app/core/models/collections/exercise-templates';
+import { ExerciseCreateModalComponent } from 'src/app/exercise-create-modal/exercise-create-modal.component';
 
 interface SelectableExerciseTemplate extends ExerciseTemplate {
     selected?: boolean;
@@ -54,6 +55,27 @@ export class ExerciseTemplateSelectorComponent implements OnInit {
         await this.loadExercises();
     }
 
+    async openCreateModal() {
+
+        const modal = await this.modalCtrl.create({
+            component: ExerciseCreateModalComponent,
+            breakpoints: [0, 0.75, 1],
+            initialBreakpoint: 0.75,
+            componentProps: {
+
+            }
+        });
+
+        await modal.present();
+        const { data } = await modal.onWillDismiss();
+
+        if (data && data.name) {
+            data.isCommunity = true;
+            data.user = this.pb.currentUser?.id || null;
+            await this.pb.upsertRecord<ExerciseTemplate>('exercise_templates', data, true, false);
+        }
+    }
+
     async loadExercises(append: boolean = false) {
         if (this.isLoading) return;
 
@@ -70,6 +92,46 @@ export class ExerciseTemplateSelectorComponent implements OnInit {
                 filter: filterString,
                 sort: 'name'
             });
+
+            // Collect all unique values for each property into separate arrays
+            // const allMuscles: string[] = [];
+            // const allForce: string[] = [];
+            // const allLevel: string[] = [];
+            // const allMechanic: string[] = [];
+            // const allEquipment: string[] = [];
+            // const allCategory: string[] = [];
+
+            // (result.items as ExerciseTemplate[]).forEach(item => {
+            //     if (Array.isArray(item.primaryMuscles)) {
+            //         allMuscles.push(...item.primaryMuscles);
+            //     }
+            //     if (Array.isArray(item.secondaryMuscles)) {
+            //         allMuscles.push(...item.secondaryMuscles);
+            //     }
+            //     if (item.force) {
+            //         allForce.push(item.force);
+            //     }
+            //     if (item.level) {
+            //         allLevel.push(item.level);
+            //     }
+            //     if (item.mechanic) {
+            //         allMechanic.push(item.mechanic);
+            //     }
+            //     if (item.equipment) {
+            //         allEquipment.push(item.equipment);
+            //     }
+            //     if (item.category) {
+            //         allCategory.push(item.category);
+            //     }
+            // });
+
+            // Remove duplicates for each array
+            // const uniqueMuscles = Array.from(new Set(allMuscles));
+            // const uniqueForce = Array.from(new Set(allForce));
+            // const uniqueLevel = Array.from(new Set(allLevel));
+            // const uniqueMechanic = Array.from(new Set(allMechanic));
+            // const uniqueEquipment = Array.from(new Set(allEquipment));
+            // const uniqueCategory = Array.from(new Set(allCategory));
 
             const exercisesWithSelection = (result.items as ExerciseTemplate[]).map(exercise => ({
                 ...exercise,

@@ -12,6 +12,7 @@ import { User } from '../core/models/collections/user';
 import { ThemeService } from '../core/services/theme.service';
 import { PocketbaseService } from '../core/services/pocketbase.service';
 import { accessibilityOutline, bookOutline, globeOutline, helpCircleOutline, logOutOutline, moonOutline, personCircleOutline, personOutline, sunnyOutline } from 'ionicons/icons';
+import packageJson from '../../../package.json';
 
 @Component({
     selector: 'app-settings',
@@ -38,8 +39,9 @@ export class SettingsPage {
     helpIcon = helpCircleOutline;
     termsIcon = bookOutline;
     logoutIcon = logOutOutline;
-    
+
     isDark: Signal<boolean> = this.themeService.isDark;
+    version: any = packageJson.version;
 
     constructor(
         private popoverCtrl: PopoverController,

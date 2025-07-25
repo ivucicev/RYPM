@@ -30,9 +30,11 @@
                     </ion-input>
                 </ion-item>
             </ion-list>
-            <h3 class="end" (click)="forgot_password()">{{"Forgot password" | translate}}</h3>
+            <span  class="or_continue_with animate__animated animate__fadeInUp">
+                <h3 class="ion-text-end" (click)="forgot_password()">{{"Forgot password" | translate}}?</h3>
+            </span>
             <ion-button size="large" expand="round" class="btn animate__animated animate__fadeInUp"
-                (click)="signIn()">{{'Sign In' | translate}}</ion-button>
+            (click)="signIn()">{{'Sign In' | translate}}</ion-button>
             <div class="or_continue_with animate__animated animate__fadeInUp">
                 <h3 class="ion-text-center">{{'Or continue with' | translate}}</h3>
                 <ion-row>
@@ -53,6 +55,9 @@
             </div>
             <ion-button size="large" expand="round" class="btn animate__animated animate__fadeInUp"
                 (click)="register()">{{'Register' | translate}}</ion-button>
+            <div class="or_continue_with animate__animated animate__fadeInUp">
+                <h3 class="ion-text-end">{{'RYPM.' | translate}} v{{version}}</h3>
+            </div>
         </div>
     </form>
 </ion-content>

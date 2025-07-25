@@ -8,6 +8,7 @@ import { LoginBM } from '../core/models/bm/login-bm';
 import { FormType } from '../core/helpers/form-helpers';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { logoFacebook, logoGoogle } from 'ionicons/icons';
+import packageJson from '../../../package.json';
 
 @Component({
     selector: 'app-sign-in',
@@ -24,6 +25,7 @@ export class SignInPage implements OnInit {
     navigatedTo = false;
     logoFacebook = logoFacebook;
     logoGoogle = logoGoogle;
+    version = packageJson.version;
 
     constructor(
         private router: Router,

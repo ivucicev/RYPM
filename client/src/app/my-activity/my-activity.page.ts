@@ -10,14 +10,15 @@ import { ContinueFooterComponent } from '../shared/continue-footer/continue-foot
 import { FormsModule } from '@angular/forms';
 import { NgSwitch, NgSwitchCase } from '@angular/common';
 
-//import * as chart from 'chart.js';
+import * as chart from 'chart.js';
+import { NoDataComponent } from '../shared/no-data/no-data.component';
 
 @Component({
     selector: 'app-my-activity',
     templateUrl: 'my-activity.page.html',
     styleUrls: ['./my-activity.page.scss'],
     standalone: true,
-    imports: [IonicModule, TranslateModule, FormsModule, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent],
+    imports: [IonicModule, NoDataComponent, TranslateModule, FormsModule, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent],
 })
 export class MyActivityPage {
 
@@ -27,7 +28,7 @@ export class MyActivityPage {
 
     continueFooter = viewChild(ContinueFooterComponent);
 
-    //chartInstance: chart.Chart | null = null;
+    chartInstance: chart.Chart | null = null;
     tab: 'workouts' | 'stats' = 'workouts';
 
     @ViewChild('volumeChart') chart: ElementRef<HTMLCanvasElement>;
@@ -57,10 +58,10 @@ export class MyActivityPage {
         const ctx = this.chart?.nativeElement.getContext('2d');
         if (!ctx) return;
 
-        // Destroy previous chart instance if exists
-        // if (this.chartInstance) {
-        //     this.chartInstance.destroy();
-        // }
+        //Destroy previous chart instance if exists
+        if (this.chartInstance) {
+            this.chartInstance.destroy();
+        }
 
         // Chart 1: Load over time (only show values > 0)
         const loadLabels = sortedWorkouts
@@ -68,27 +69,27 @@ export class MyActivityPage {
         const loadData = sortedWorkouts
             .map(w => w.load > 0 ? w.load : null);
 
-        // this.chartInstance = new chart.Chart(ctx, {
-        //     type: 'line',
-        //     data: {
-        //     labels: loadLabels,
-        //     datasets: [{
-        //         label: 'Workout Load',
-        //         data: loadData,
-        //         backgroundColor: 'rgba(54, 162, 235, 0.5)',
-        //         borderColor: 'rgba(54, 162, 235, 1)',
-        //         borderWidth: 1
-        //     }]
-        //     },
-        //     options: {
-        //     responsive: true,
-        //     scales: {
-        //         y: {
-        //         beginAtZero: true
-        //         }
-        //     }
-        //     }
-        // });
+        this.chartInstance = new chart.Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: loadLabels,
+                datasets: [{
+                    label: 'Workout Load',
+                    data: loadData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
 
         // Chart 2: Volume per workout name, with one line per workout
         // Prepare data: each workout name gets its own dataset (line)
@@ -99,38 +100,38 @@ export class MyActivityPage {
         // For each workout, map volume per exercise name (only show values > 0)
         const datasets = workoutNames.map(name => {
             const data = sortedWorkouts.map(workout =>
-            workout.exercises
-                .filter((ex: any) => ex.name === name)
-                .reduce((sum: number, ex: any) =>
-                sum + (ex.sets?.reduce((s: number, set: any) => s + (set.weight || 0), 0) || 0)
-                , 0)
+                workout.exercises
+                    .filter((ex: any) => ex.name === name)
+                    .reduce((sum: number, ex: any) =>
+                        sum + (ex.sets?.reduce((s: number, set: any) => s + (set.weight || 0), 0) || 0)
+                        , 0)
             ).map(v => v > 0 ? v : null);
 
             return {
-            label: name,
-            data,
-            fill: true,
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: `rgba(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},1)`,
-            borderWidth: 2
+                label: name,
+                data,
+                fill: true,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: `rgba(${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)},1)`,
+                borderWidth: 2
             };
         });
 
-        // new chart.Chart(this.chartPerWorkout?.nativeElement.getContext('2d'), {
-        //     type: 'line',
-        //     data: {
-        //     labels: sortedWorkouts.map(w => new Date(w.created).toLocaleDateString()),
-        //     datasets: datasets
-        //     },
-        //     options: {
-        //     responsive: true,
-        //     scales: {
-        //         y: {
-        //         beginAtZero: true
-        //         }
-        //     }
-        //     }
-        // });
+        new chart.Chart(this.chartPerWorkout?.nativeElement.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: sortedWorkouts.map(w => new Date(w.created).toLocaleDateString()),
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
 
         // Chart 3: Effort over time
         const effortCtx = this.effortChart?.nativeElement.getContext('2d');
@@ -138,27 +139,27 @@ export class MyActivityPage {
             const effortLabels = sortedWorkouts.map(w => new Date(w.created).toLocaleDateString());
             const effortData = sortedWorkouts.map(w => w.effort ?? null);
 
-            // new chart.Chart(effortCtx, {
-            //     type: 'line',
-            //     data: {
-            //         labels: effortLabels,
-            //         datasets: [{
-            //             label: 'Workout Effort',
-            //             data: effortData,
-            //             backgroundColor: 'rgba(255, 206, 86, 0.5)',
-            //             borderColor: 'rgba(255, 206, 86, 1)',
-            //             borderWidth: 1
-            //         }]
-            //     },
-            //     options: {
-            //         responsive: true,
-            //         scales: {
-            //             y: {
-            //                 beginAtZero: true
-            //             }
-            //         }
-            //     }
-            // });
+            new chart.Chart(effortCtx, {
+                type: 'line',
+                data: {
+                    labels: effortLabels,
+                    datasets: [{
+                        label: 'Workout Effort',
+                        data: effortData,
+                        backgroundColor: 'rgba(255, 206, 86, 0.5)',
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
         }
 
         const maxPerWorkoutCtx = this.maxPerWorkout?.nativeElement.getContext('2d');
@@ -185,26 +186,26 @@ export class MyActivityPage {
                     data,
                     fill: false,
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: `rgba(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},1)`,
+                    borderColor: `rgba(${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)},1)`,
                     borderWidth: 2
                 };
             });
 
-            // new chart.Chart(maxPerWorkoutCtx, {
-            //     type: 'line',
-            //     data: {
-            //         labels: sortedWorkouts.map(w => new Date(w.created).toLocaleDateString()),
-            //         datasets: datasets
-            //     },
-            //     options: {
-            //         responsive: true,
-            //         scales: {
-            //             y: {
-            //                 beginAtZero: true
-            //             }
-            //         }
-            //     }
-            // });
+            new chart.Chart(maxPerWorkoutCtx, {
+                type: 'line',
+                data: {
+                    labels: sortedWorkouts.map(w => new Date(w.created).toLocaleDateString()),
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
         }
 
         // Chart 4: Max load per workout name over time
@@ -212,52 +213,52 @@ export class MyActivityPage {
         if (maxLoadPerWorkoutCtx) {
             // Get all unique workout names
             const workoutNames = Array.from(new Set(sortedWorkouts.flatMap(w =>
-            w.exercises.map((ex: any) => ex.name)
+                w.exercises.map((ex: any) => ex.name)
             )));
 
             // For each workout name, build a dataset of max load per day
             const datasets = workoutNames.map(name => {
-            const data = sortedWorkouts.map(workout => {
-                // Find all sets for this exercise name in this workout
-                const sets = workout.exercises
-                .filter((ex: any) => ex.name === name)
-                .flatMap((ex: any) => ex.sets || []);
-                // Get max weight for this workout for this exercise
-                const maxWeight = sets.length > 0 ? Math.max(...sets.map((set: any) => set.weight || 0)) : null;
-                // Count how many times max weight was lifted
-                const maxWeightCount = sets.filter((set: any) => set.weight === maxWeight).length;
-                // Load is max weight * count
-                const maxLoad = (maxWeight && maxWeight > 0) ? maxWeight * maxWeightCount : null;
-                return maxLoad;
+                const data = sortedWorkouts.map(workout => {
+                    // Find all sets for this exercise name in this workout
+                    const sets = workout.exercises
+                        .filter((ex: any) => ex.name === name)
+                        .flatMap((ex: any) => ex.sets || []);
+                    // Get max weight for this workout for this exercise
+                    const maxWeight = sets.length > 0 ? Math.max(...sets.map((set: any) => set.weight || 0)) : null;
+                    // Count how many times max weight was lifted
+                    const maxWeightCount = sets.filter((set: any) => set.weight === maxWeight).length;
+                    // Load is max weight * count
+                    const maxLoad = (maxWeight && maxWeight > 0) ? maxWeight * maxWeightCount : null;
+                    return maxLoad;
+                });
+
+                return {
+                    label: `${name} (Max Load)`,
+                    data,
+                    fill: false,
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderColor: `rgba(${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)},1)`,
+                    borderWidth: 2
+                };
             });
 
-            return {
-                label: `${name} (Max Load)`,
-                data,
-                fill: false,
-                backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                borderColor: `rgba(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},1)`,
-                borderWidth: 2
-            };
+            new chart.Chart(maxLoadPerWorkoutCtx, {
+                type: 'line',
+                data: {
+                    labels: sortedWorkouts.map(w => new Date(w.created).toLocaleDateString()),
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
             });
-
-            // new chart.Chart(maxLoadPerWorkoutCtx, {
-            // type: 'line',
-            // data: {
-            //     labels: sortedWorkouts.map(w => new Date(w.created).toLocaleDateString()),
-            //     datasets: datasets
-            // },
-            // options: {
-            //     responsive: true,
-            //     scales: {
-            //     y: {
-            //         beginAtZero: true
-            //     }
-            //     }
-            // }
-            // });
         }
-        
+
     }
 
     async initCharts() {
@@ -313,7 +314,7 @@ export class MyActivityPage {
                     text: translations.Delete,
                     icon: 'trash-outline',
                     role: 'destructive',
-                    handler: async() => {
+                    handler: async () => {
                         // delete workout
                         await this.pocketbaseService.workouts.delete(workout.id);
                         this.workouts = this.workouts.filter(w => w.id !== workout.id);

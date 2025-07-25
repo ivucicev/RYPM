@@ -78,11 +78,11 @@
                     </div>
                 </ion-card>
                 } @empty {
-                <ion-note> {{ 'No activities yet.' | translate }}</ion-note>
+                    <app-no-data [text]="'No activities yet.' | translate"></app-no-data>
                 }
             </ion-list>
         </ng-container>
-        <!-- <ng-container *ngSwitchCase="'stats'">
+        <ng-container *ngSwitchCase="'stats'">
             <div class="ion-padding-x">
                 <h3>{{ 'Total volume' | translate }}</h3>
                 <canvas #volumeChart></canvas>
@@ -95,7 +95,7 @@
                 <h3>{{ 'Max. Volume per workout' | translate }}</h3>
                 <canvas #volumePerWorkout></canvas>
             </div>
-        </ng-container> -->
+        </ng-container>
     </ng-container>
 
 </ion-content>

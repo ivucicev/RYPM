@@ -10,6 +10,7 @@ import { ExerciseTemplateDetailComponent } from '../exercise-template-detail/exe
 import { ExerciseTemplateFilterModalComponent } from '../exercise-template-filter-modal/exercise-template-filter-modal.component';
 import { ExerciseTemplate, exerciseTemplatesArrayFields } from 'src/app/core/models/collections/exercise-templates';
 import { ExerciseCreateModalComponent } from 'src/app/exercise-create-modal/exercise-create-modal.component';
+import { flashOutline, handLeftOutline, speedometerOutline } from 'ionicons/icons';
 
 interface SelectableExerciseTemplate extends ExerciseTemplate {
     selected?: boolean;
@@ -41,6 +42,9 @@ export class ExerciseTemplateSelectorComponent implements OnInit {
     showScrollToTop = false;
 
     selectedExercises = [];
+    flashIcon: any = flashOutline;
+    handIcon: any = handLeftOutline;
+    speedIcon: any = speedometerOutline;
 
     constructor(
         private modalCtrl: ModalController,

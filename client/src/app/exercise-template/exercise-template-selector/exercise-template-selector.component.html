@@ -47,44 +47,42 @@
 
             <ion-label (click)="toggleExercise(exercise)" class="exercise-label">
                 <ion-text [color]="exercise.selected ? 'primary' : ''">
-                    <h2>{{ exercise.name }} 
-
+                    <h2>{{ exercise.name }}
                         @if (exercise.isCommunity) {
-                        &nbsp; <ion-badge slot="start" class="community-badge" color="success">{{ 'Community' | translate }}</ion-badge>
+                        &nbsp; <ion-badge slot="start" class="community-badge" color="success">{{ 'Community' |
+                            translate }}</ion-badge>
                         }
                     </h2>
                 </ion-text>
 
                 <div class="key-tags">
-                    @if(exercise.level) {
+                    @for(muscle of exercise.primaryMuscles; track $index) {
                     <ion-chip style="pointer-events: none;" size="small" color="primary" outline>
-                        {{ exercise.level | translate }}
+                        {{ muscle | translate }}
                     </ion-chip>
                     }
-                    @if(exercise.equipment) {
-                    <ion-chip style="pointer-events: none;" size="small" color="primary" outline>
-                        {{ exercise.equipment | translate }}
-                    </ion-chip>
-                    }
-                    @if(exercise.category) {
-                    <ion-chip style="pointer-events: none;" size="small" color="primary" outline>
-                        {{ exercise.category | translate }}
+                    @for(muscle of exercise.secondaryMuscles; track $index) {
+                    <ion-chip style="pointer-events: none;" size="small" color="secondary" outline>
+                        {{ muscle | translate }}
                     </ion-chip>
                     }
                 </div>
 
                 <ion-note color="medium" class="exercise-note">
+                    @if(exercise.level) {
+                    {{ exercise.level | translate }},
+                    }
+                    @if(exercise.equipment) {
+                    {{ exercise.equipment | translate }},
+                    }
+                    @if(exercise.category) {
+                    {{ exercise.category | translate }},
+                    }
                     @if(exercise.force) {
-                    {{ exercise.force | translate }}
+                    {{ exercise.force | translate }},
                     }
                     @if (exercise.mechanic) {
                     {{ exercise.mechanic | translate }}
-                    }
-                    @for(muscle of exercise.primaryMuscles; track $index) {
-                    {{ muscle | translate }}
-                    }
-                    @for(muscle of exercise.secondaryMuscles; track $index) {
-                    {{ muscle | translate }}
                     }
                 </ion-note>
             </ion-label>

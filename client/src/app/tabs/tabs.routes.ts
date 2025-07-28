@@ -11,7 +11,7 @@ export const routes: Routes = [
                 loadChildren: () => import('../home/home.routes').then(m => m.routes)
             },
             {
-                path: 'my_activity',
+                path: 'activity',
                 loadChildren: () => import('../my-activity/my-activity.routes').then(m => m.routes)
             },
             {

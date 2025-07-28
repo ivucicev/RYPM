@@ -12,6 +12,7 @@ import { settingsOutline } from 'ionicons/icons';
 })
 export class TabsPage {
     private activeTab?: HTMLElement;
+
     settingsIcon = settingsOutline
     
     constructor() { }

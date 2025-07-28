@@ -1,11 +1,11 @@
 <ion-tabs #tabs (ionTabsDidChange)="tabChange(tabs)">
     <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="home">
+        <ion-tab-button tab="home" id="home">
             <ion-icon name="barbell-outline"></ion-icon>
             <ion-label>{{'Workouts' | translate}}</ion-label>
         </ion-tab-button>
 
-        <ion-tab-button tab="my_activity">
+        <ion-tab-button tab="activity" id="activity">
             <ion-icon name="analytics-outline"></ion-icon>
             <ion-label>{{'Activity' | translate}}</ion-label>
         </ion-tab-button>
@@ -13,9 +13,9 @@
         <!--<ion-tab-button tab="chats">
             <ion-icon name="chatbubble-outline"></ion-icon>
             <ion-label>{{'Chat' | translate}}</ion-label>
-        </ion-tab-button> -->
+        </ion-tab-button>-->
 
-        <ion-tab-button tab="settings">
+        <ion-tab-button tab="settings" id="settings">
             <ion-icon [src]="settingsIcon"></ion-icon>
             <ion-label>{{'Settings' | translate}}</ion-label>
         </ion-tab-button>

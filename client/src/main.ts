@@ -20,7 +20,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http);
 }
 
-// this here causes issues with scrolling passing the ion-router-outlet
+// TODO: this here causes issues with scrolling passing the ion-router-outlet
 //import { defineCustomElements } from '@ionic/core/loader';
 //defineCustomElements(window);
 

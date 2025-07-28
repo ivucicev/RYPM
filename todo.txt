@@ -47,3 +47,5 @@ Workouts screen -
 
     Admin / Trainer
         - [] TBD
+        - Trainer profile
+        - Trainer chat

@@ -1,17 +1,17 @@
-<ion-header class="bg_transparent">
+<ion-header>
     <ion-toolbar [class.show-background]="showToolbar">
         <ion-title>{{'Settings' | translate}}</ion-title>
     </ion-toolbar>
 </ion-header>
 
 
-<ion-content class="bg_color" fullscreen [scrollEvents]="true" (ionScroll)="onScroll($event)">
+<ion-content class="bg_color" fullscreen>
 
-    <div class="buy_this_app end" (click)="buyappalert()" *ngIf="config.demoMode">
+    <!-- <div class="buy_this_app end" (click)="buyappalert()">
         <h2>
             {{"Buy or donate" | translate}}
         </h2>
-    </div>
+    </div> -->
 
     <div class="d-flex">
         <div class="profile d-flex" (click)="my_profile()">
@@ -35,13 +35,12 @@
     <div class="get_pro d-flex" (click)="get_pro()">
         <h2>Get Access to 1000+ Cources</h2>
         <h3 class="end">{{'get_pro' | translate}}</h3>
-    </div> 
+    </div>
 
     <ion-list lines="none">
         <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="toggleTheme()">
             <div class="item-inner d-flex">
-                <ion-icon [size]="'medium'" [src]="isDark() ? lightIcon : darkIcon"
-                    slot="icon-only"></ion-icon>
+                <ion-icon [size]="'medium'" [src]="isDark() ? lightIcon : darkIcon" slot="icon-only"></ion-icon>
                 <div class="text_box">
                     <h2>{{ (isDark() ? 'Light' : 'Dark' ) | translate}}</h2>
                     <h3>{{'Theme' | translate}}</h3>
@@ -117,11 +116,11 @@
     </ion-list>
 </ion-content>
 
-<ion-footer class="ion-no-border" style="bottom: 43px; background: var(--bg-color);">
+<!--<ion-footer class="ion-no-border" style="bottom: 43px; background: var(--bg-color);">
     <div class="developed_by d-flex" (click)="developed_by()" *ngIf="config.demoMode">
         <h2>{{"Developed by" | translate}}</h2>
         <div class="img_box end">
             <img src="assets/images/opus_logo_light.png">
         </div>
     </div>
-</ion-footer>
+</ion-footer>-->

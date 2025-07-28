@@ -1,10 +1,10 @@
 import { Component, Inject, Signal } from '@angular/core';
 import { BuyappalertPage } from '../buyappalert/buyappalert.page';
 import { ModalController } from '@ionic/angular/standalone';
-import { AppConfig, APP_CONFIG } from '../app.config';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgIf } from '@angular/common';
-import { IonicModule, PopoverController } from '@ionic/angular';
+import { PopoverController } from '@ionic/angular/standalone';
+import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AccountSwitchPopoverComponent } from './account-switch-popover/account-switch-popover.component';
 import { AccountService } from '../core/services/account.service';
@@ -20,9 +20,8 @@ import packageJson from '../../../package.json';
     styleUrls: ['./settings.page.scss'],
     standalone: true,
     imports: [
-        IonicModule,
-        NgIf,
-        TranslateModule
+        TranslateModule,
+        IonicModule
     ],
 })
 export class SettingsPage {
@@ -45,7 +44,6 @@ export class SettingsPage {
 
     constructor(
         private popoverCtrl: PopoverController,
-        @Inject(APP_CONFIG) public config: AppConfig,
         private route: Router,
         private modalController: ModalController,
         private accountService: AccountService,
@@ -69,12 +67,6 @@ export class SettingsPage {
         await popover.present();
     }
 
-    onScroll($event) {
-        if ($event && $event.detail && $event.detail.scrollTop) {
-            const scrollTop = $event.detail.scrollTop;
-            this.showToolbar = scrollTop >= 300;
-        }
-    }
 
     toggleTheme() {
         this.themeService.toggleTheme();

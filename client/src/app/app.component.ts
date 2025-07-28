@@ -1,12 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { Platform, NavController, ModalController, IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { TranslateService } from '@ngx-translate/core';
-import { APP_CONFIG, AppConfig } from './app.config';
 import { VtPopupPage } from './vt-popup/vt-popup.page';
-import { StatusBar } from '@capacitor/status-bar';
-import { SplashScreen } from '@capacitor/splash-screen';
-import { addIcons } from 'ionicons';
-import { IonicModule } from '@ionic/angular';
 import { MyEvent } from './core/services/myevent.services';
 import { AccountService } from './core/services/account.service';
 import { Constants } from './core/constants/constants';
@@ -19,14 +14,13 @@ import { register } from 'swiper/element/bundle';
     templateUrl: 'app.component.html',
     styleUrls: ['app.component.scss'],
     standalone: true,
-    imports: [IonApp, IonicModule, IonRouterOutlet],
+    imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent {
     selectedIndex: any;
     appPages: any;
 
     constructor(
-        @Inject(APP_CONFIG) public config: AppConfig,
         private platform: Platform,
         private navCtrl: NavController,
         private modalController: ModalController,
@@ -49,13 +43,6 @@ export class AppComponent {
     public component = AppComponent;
 
     async initializeApp() {
-        if (this.config.demoMode && this.platform.is('cordova') && !window.localStorage.getItem(Constants.KEY_IS_DEMO_MODE)) {
-            window.localStorage.setItem(Constants.KEY_IS_DEMO_MODE, "true");
-            this.language();
-            setTimeout(() => this.presentModal(), 30000);
-        } else {
-            this.navCtrl.navigateRoot(['./']);
-        }
         this.platform.ready().then(async () => {
 
             // swiper
@@ -87,8 +74,7 @@ export class AppComponent {
 
     globalize(languagePriority: any) {
         this.translate.setDefaultLang("en");
-        let defaultLangCode = this.config.availableLanguages[0].code;
-        this.translate.use(languagePriority && languagePriority.length ? languagePriority : defaultLangCode);
+        this.translate.use(languagePriority && languagePriority.length ? languagePriority : 'en');
     }
 
     async presentModal() {

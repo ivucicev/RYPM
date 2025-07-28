@@ -72,7 +72,7 @@ export class AccountService {
         // TODO: remove verification comp.: all is done on PB backend?
         // await this.navCtrl.navigateForward(['/verification']);
         this.pocketbase.collection('users').requestVerification(model.email);
-        this.toastService.info('info.confirm_account');
+        this.toastService.info('Please verify your account.');
 
         this.navCtrl.navigateBack('/sign-in');
 
@@ -87,7 +87,7 @@ export class AccountService {
             await this.getCurrentUser(true);
 
             this.navCtrl.navigateRoot(['./tabs']);
-            this.toastService.success('welcome_back');
+            this.toastService.success('Welcome back!');
 
             return authData;
         } catch (error) {
@@ -96,11 +96,11 @@ export class AccountService {
 
                 // await this.navCtrl.navigateForward(['/verification']);
                 this.pocketbase.collection('users').requestVerification(model.email);
-                this.toastService.info('info.confirm_account');
+                this.toastService.info('Please verify your account.');
 
                 this.verificationStateService.clearCredentials();
             } else {
-                this.toastService.error('errors.invalid_email_password');
+                this.toastService.error('Invalid credentials, please try again.');
             }
             throw error;
         }
@@ -150,14 +150,14 @@ export class AccountService {
     async requestPasswordReset(email: string): Promise<void> {
         this.pocketbase.collection('users').requestPasswordReset(email);
 
-        this.toastService.info('info.password_reset');
+        this.toastService.info('Password reset email sent. Please check your inbox.');
 
         this.navCtrl.navigateBack('/sign-in');
     }
 
     async requestEmailChange(newEmail: string): Promise<void> {
         this.pocketbase.collection('users').requestEmailChange(newEmail);
-        this.toastService.info('info.email_change');
+        this.toastService.info('Email change request sent. Please check your inbox to confirm the new email address.');
     }
 
     isAuthenticated(): boolean {

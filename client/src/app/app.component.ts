@@ -64,7 +64,6 @@ export class AppComponent {
                 // TODO: remove, used for testing + add AUTH GUARD
                 // this.navCtrl.navigateRoot(['./tabs']);
                 // return;
-                //console.log("Autologin y/n", res)
                 if (!res) {
                     this.navCtrl.navigateRoot(['./sign-in']);
                 } else {

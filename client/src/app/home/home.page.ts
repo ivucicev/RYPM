@@ -1,8 +1,7 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, viewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NavController } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonSegment, IonSegmentButton, NavController } from '@ionic/angular/standalone';
 import { Exercise } from '../core/models/collections/exercise';
 import { Program } from '../core/models/collections/program';
 import { Template } from '../core/models/collections/template';
@@ -19,6 +18,7 @@ import { WorkoutState } from '../core/models/enums/workout-state';
 import { ContinueFooterComponent } from '../shared/continue-footer/continue-footer.component';
 import { ProgramInfo, ProgramService } from '../core/services/program.service';
 import { TemplateService } from '../core/services/template.service';
+import { FormsModule } from '@angular/forms';
 
 type WorkoutInfo = (Workout & { nextExercise?: (Exercise & { nextSet?: Set }) });
 
@@ -28,14 +28,17 @@ type WorkoutInfo = (Workout & { nextExercise?: (Exercise & { nextSet?: Set }) })
     styleUrls: ['./home.page.scss'],
     standalone: true,
     imports: [
-        FormsModule,
         NgSwitch,
         NgSwitchCase,
         TranslateModule,
-        ReactiveFormsModule,
         TimeBadgeComponent,
+        IonSegment,
+        IonSegmentButton,
+        IonContent,
+        IonButton,
         DateTimePipe,
         NgTemplateOutlet,
+        FormsModule,
         WeightTypePipe,
         NoDataComponent,
         ContinueFooterComponent

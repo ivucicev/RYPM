@@ -20,7 +20,7 @@
 <ion-content class="bg_color" fullscreen fixed-slot-placement="before">
 
     @if (workouts?.length) {
-    <div class="ion-padding-x">
+    <div class="ion-padding-x ion-padding">
         <ion-label>{{ 'Active' | translate }}</ion-label>
         <swiper-container slides-per-view="auto" space-between="15" style="width:100%;height:min-content;">
             <!-- [pagination]="true" scrollbar-hide="true" -->
@@ -72,7 +72,6 @@
         </swiper-container>
     </div>
     }
-
     <ion-row class="segment-toolbar ion-padding">
         <ion-segment [(ngModel)]="tab" lines="none">
             <ion-segment-button value="programs">

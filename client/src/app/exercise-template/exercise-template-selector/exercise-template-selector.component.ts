@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ModalController, ScrollDetail, IonFab, IonFabButton, IonIcon, IonSpinner, IonInfiniteScroll, IonInfiniteScrollContent, IonLabel, IonItem, IonNote, IonChip, IonText, IonButton, IonList, IonContent, IonToolbar, IonBadge, IonButtons, IonTitle, IonHeader, IonSearchbar } from '@ionic/angular/standalone';
+import { ModalController, ScrollDetail, IonFab, IonFabButton, IonIcon, IonSpinner, IonInfiniteScroll, IonInfiniteScrollContent, IonLabel, IonItem, IonNote, IonChip, IonText, IonButton, IonList, IonContent, IonToolbar, IonBadge, IonButtons, IonTitle, IonHeader, IonSearchbar, IonCheckbox } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { Exercise } from 'src/app/core/models/collections/exercise';
 import { PocketbaseService } from 'src/app/core/services/pocketbase.service';
@@ -21,7 +21,7 @@ interface SelectableExerciseTemplate extends ExerciseTemplate {
     templateUrl: 'exercise-template-selector.component.html',
     styleUrls: ['./exercise-template-selector.component.scss'],
     standalone: true,
-    imports: [IonHeader, IonTitle, IonButtons, IonSearchbar, IonBadge, IonToolbar, IonContent, IonList, IonButton, IonText, IonChip, IonNote, IonItem, IonLabel, IonInfiniteScrollContent, IonInfiniteScroll, IonSpinner, IonIcon, IonFabButton, IonFab, FormsModule, TranslateModule, CommonModule]
+    imports: [IonHeader, IonTitle, IonButtons, IonCheckbox, IonSearchbar, IonBadge, IonToolbar, IonContent, IonList, IonButton, IonText, IonChip, IonNote, IonItem, IonLabel, IonInfiniteScrollContent, FormsModule, IonInfiniteScroll, IonSpinner, IonIcon, IonFabButton, IonFab, IonSearchbar, TranslateModule, CommonModule]
 })
 export class ExerciseTemplateSelectorComponent implements OnInit {
 

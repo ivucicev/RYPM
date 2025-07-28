@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ModalController, IonItem, IonLabel, IonChip, IonContent, IonButton, IonButtons, IonHeader, IonSelectOption, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { ModalController, IonItem, IonLabel, IonChip, IonContent, IonButton, IonButtons, IonHeader, IonSelectOption, IonTitle, IonToolbar, IonSelect, IonTextarea, IonInput } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -8,7 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
     templateUrl: './exercise-create-modal.component.html',
     styleUrls: ['./exercise-create-modal.component.scss'],
     standalone: true,
-    imports: [IonToolbar, IonTitle, IonHeader, IonButtons, IonSelectOption, IonButton, IonContent, IonChip, IonLabel, IonItem, FormsModule, TranslateModule]
+    imports: [IonToolbar, IonSelectOption, IonInput, IonTextarea, IonSelect, IonTitle, IonHeader, IonButtons, IonSelectOption, IonButton, IonContent, IonChip, IonLabel, IonItem, FormsModule, TranslateModule]
 })
 export class ExerciseCreateModalComponent {
 

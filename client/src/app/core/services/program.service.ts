@@ -238,6 +238,7 @@ export class ProgramService {
         // Fill in previousValue for each set in workout.exercises from groupedSets
         workout.exercises.forEach(ex => {
             const setsForExercise: any = groupedSets[ex.name];
+            if (!setsForExercise || setsForExercise?.length === 0) return;
             ex.notes = setsForExercise[0]?.exercise?.notes || '';
             if (!setsForExercise) return;
             ex.sets.forEach((set, index) => {

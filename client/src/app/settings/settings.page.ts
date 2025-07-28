@@ -1,7 +1,6 @@
 import { Component, Inject, Signal } from '@angular/core';
 import { BuyappalertPage } from '../buyappalert/buyappalert.page';
 import { ModalController, IonFooter, IonItem, IonIcon, IonBadge, IonButton, IonContent, IonList, IonHeader, IonToolbar, IonTitle } from '@ionic/angular/standalone';
-import { AppConfig, APP_CONFIG } from '../app.config';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgIf } from '@angular/common';
 import { PopoverController } from '@ionic/angular/standalone';
@@ -12,6 +11,7 @@ import { User } from '../core/models/collections/user';
 import { ThemeService } from '../core/services/theme.service';
 import { PocketbaseService } from '../core/services/pocketbase.service';
 import { accessibilityOutline, bookOutline, globeOutline, helpCircleOutline, logOutOutline, moonOutline, personCircleOutline, personOutline, sunnyOutline } from 'ionicons/icons';
+// @ts-ignore
 import packageJson from '../../../package.json';
 
 @Component({
@@ -19,8 +19,7 @@ import packageJson from '../../../package.json';
     templateUrl: 'settings.page.html',
     styleUrls: ['./settings.page.scss'],
     standalone: true,
-    imports: [IonTitle, IonToolbar, IonHeader, IonList, IonContent, IonButton, IonBadge, IonIcon, IonItem, IonFooter,
-        NgIf,
+    imports: [IonTitle, IonToolbar, IonHeader, IonList, IonContent, IonButton, IonIcon, IonItem,
         TranslateModule
     ],
 })

@@ -1,24 +1,24 @@
 import { Component, ElementRef, ViewChild, viewChild } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ActionSheetController, NavController, IonCardContent, IonChip, IonButton, IonIcon, IonCardHeader, IonCard, IonList, IonTitle, IonRow, IonContent, IonLabel, IonToolbar, IonSegmentButton, IonHeader } from '@ionic/angular/standalone';
+import { ActionSheetController, NavController, IonCardContent, IonChip, IonButton, IonIcon, IonCardHeader, IonCard, IonList, IonTitle, IonRow, IonContent, IonLabel, IonToolbar, IonSegmentButton, IonHeader, IonSegment } from '@ionic/angular/standalone';
 import { lastValueFrom } from 'rxjs';
 import { DateTimePipe } from '../core/pipes/datetime.pipe';
 import { PocketbaseService } from '../core/services/pocketbase.service';
 import { Workout } from '../core/models/collections/workout';
 import { WorkoutState } from '../core/models/enums/workout-state';
 import { ContinueFooterComponent } from '../shared/continue-footer/continue-footer.component';
-import { FormsModule } from '@angular/forms';
 import { NgSwitch, NgSwitchCase } from '@angular/common';
 
 import * as chart from 'chart.js';
 import { NoDataComponent } from '../shared/no-data/no-data.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-my-activity',
     templateUrl: 'my-activity.page.html',
     styleUrls: ['./my-activity.page.scss'],
     standalone: true,
-    imports: [IonHeader, IonSegmentButton, IonToolbar, IonLabel, IonContent, IonRow, IonTitle, IonList, IonCard, IonCardHeader, IonIcon, IonButton, IonChip, IonCardContent, NoDataComponent, TranslateModule, FormsModule, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent],
+    imports: [IonHeader, IonSegmentButton, IonToolbar, IonLabel, IonContent, IonRow, IonTitle, IonList, IonCard, IonCardHeader, IonIcon, IonButton, IonChip, IonCardContent, NoDataComponent, TranslateModule, FormsModule, IonSegment, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent],
 })
 export class MyActivityPage {
 

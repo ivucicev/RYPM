@@ -1,6 +1,6 @@
 import { Component, EventEmitter, input, Input, OnChanges, output, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormArray } from '@angular/forms';
-import { ModalController, IonModal, ItemReorderEventDetail, IonButton, IonIcon, IonList, IonItem, IonLabel, IonToolbar, IonSegmentButton, IonSegment, IonPicker, IonPickerColumn, IonPickerColumnOption, IonButtons, IonHeader, IonTitle, IonReorderGroup, IonItemOptions, IonReorder, IonItemOption } from '@ionic/angular/standalone';
+import { ModalController, IonModal, ItemReorderEventDetail, IonButton, IonIcon, IonList, IonItem, IonLabel, IonToolbar, IonSegmentButton, IonSegment, IonPicker, IonPickerColumn, IonPickerColumnOption, IonButtons, IonHeader, IonTitle, IonReorderGroup, IonItemOptions, IonReorder, IonItemOption, IonCheckbox } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { RepType } from 'src/app/core/models/enums/rep-type';
 import { WeightType } from 'src/app/core/models/enums/weight-type';
@@ -21,13 +21,13 @@ import { IonPopover } from '@ionic/angular/standalone';
     imports: [IonItemOption, IonReorder, IonItemOptions, IonReorderGroup, IonTitle, IonHeader, IonButtons, IonPicker, IonSegment, IonSegmentButton, IonToolbar, IonLabel, IonItem, IonList, IonIcon, IonButton,
         TranslateModule,
         ReactiveFormsModule,
-        FormsModule,
         DurationPipe,
         WeightTypePipe,
         RepTypePipe,
         IonPopover,
         IonModal,
         IonPickerColumn,
+        IonCheckbox,
         IonPickerColumnOption,
         NgTemplateOutlet
     ],

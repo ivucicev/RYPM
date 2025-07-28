@@ -36,8 +36,6 @@ export class ExerciseTemplateFilterModalComponent implements OnInit {
     }
 
     setFilters(filters: Partial<Record<keyof ExerciseTemplate, any>>, copy = false) {
-        console.log(this.tempFilters, filters)
-
         this.tempFilters = (copy ? JSON.parse(JSON.stringify(filters)) : filters) ?? {};
         const activeCount = Object.values(this.tempFilters).reduce((count, filter) => {
             return count + (Array.isArray(filter) ? filter.length : 0);
@@ -64,7 +62,6 @@ export class ExerciseTemplateFilterModalComponent implements OnInit {
     }
 
     clearAllFilters() {
-        console.log('test')
         this.setFilters({});
     }
 

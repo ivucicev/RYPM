@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ErrorMessageDirective } from '../core/directives/error-message.directive';
-import { NavController, PopoverController, IonLabel, IonItem, IonButton, IonIcon, IonPopover, IonList, IonChip, IonContent, IonSegmentButton, IonRow, IonHeader, IonToolbar, IonTitle, IonBackButton, IonInput, IonButtons, IonTextarea, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
+import { NavController, PopoverController, IonLabel, IonItem, IonButton, IonIcon, IonPopover, IonList, IonChip, IonContent, IonSegmentButton, IonRow, IonHeader, IonToolbar, IonTitle, IonBackButton, IonInput, IonButtons, IonTextarea, IonSelect, IonSelectOption, IonSegment } from '@ionic/angular/standalone';
 import { RepType } from '../core/models/enums/rep-type';
 import { WeightType } from '../core/models/enums/weight-type';
 import { ExerciseFormComponent } from '../form/exercise-form/exercise-form.component';
@@ -22,7 +22,7 @@ import { ToastService } from '../core/services/toast-service';
     templateUrl: 'program.component.html',
     styleUrls: ['./program.component.scss'],
     standalone: true,
-    imports: [IonButtons, IonBackButton, IonTitle, IonToolbar, IonHeader, IonRow, IonSegmentButton, IonContent, IonChip, IonList, IonPopover, IonIcon, IonButton, IonItem, IonLabel, TranslateModule, ReactiveFormsModule, FormsModule, ErrorMessageDirective, IonInput, IonTextarea, IonSelect, IonSelectOption,
+    imports: [IonButtons, IonBackButton, IonTitle, IonToolbar, IonHeader, IonRow, IonSegmentButton, IonContent, IonChip, IonList, IonPopover, IonIcon, IonButton, IonItem, IonLabel, TranslateModule, ReactiveFormsModule, FormsModule, IonSegment, ErrorMessageDirective, IonInput, IonTextarea, IonSelect, IonSelectOption,
         ExerciseFormComponent, WorkoutStateColorPipe],
     providers: [FormsService, AutosaveService, ToastService]
 })

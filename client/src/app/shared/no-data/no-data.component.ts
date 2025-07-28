@@ -1,4 +1,3 @@
-import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { Component, Input } from '@angular/core';
 
@@ -7,7 +6,7 @@ import { Component, Input } from '@angular/core';
     templateUrl: 'no-data.component.html',
     styleUrls: ['./no-data.component.scss'],
     standalone: true,
-    imports: [IonicModule, TranslateModule],
+    imports: [TranslateModule],
 })
 export class NoDataComponent {
 

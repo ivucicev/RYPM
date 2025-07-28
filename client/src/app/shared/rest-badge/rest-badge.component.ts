@@ -1,7 +1,7 @@
 import { Component, input, model, output, SimpleChanges, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
 import { DurationPipe } from 'src/app/core/pipes/duration.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
+import { IonButton, IonIcon } from "@ionic/angular/standalone";
 
 const REST_BADGE_STORAGE_KEY = 'restBadgeTimer';
 
@@ -10,7 +10,7 @@ const REST_BADGE_STORAGE_KEY = 'restBadgeTimer';
     templateUrl: 'rest-badge.component.html',
     styleUrls: ['./rest-badge.component.scss'],
     standalone: true,
-    imports: [IonicModule, DurationPipe, TranslatePipe]
+    imports: [IonIcon, IonButton, DurationPipe, TranslatePipe]
 })
 export class RestBadgeComponent implements OnInit {
 

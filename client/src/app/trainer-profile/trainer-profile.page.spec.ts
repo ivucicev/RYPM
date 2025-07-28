@@ -1,23 +1,23 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular/standalone';
 
 import { TrainerProfilePage } from './trainer-profile.page';
 
 describe('TrainerProfilePage', () => {
-  let component: TrainerProfilePage;
-  let fixture: ComponentFixture<TrainerProfilePage>;
+    let component: TrainerProfilePage;
+    let fixture: ComponentFixture<TrainerProfilePage>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-    imports: [IonicModule.forRoot(), TrainerProfilePage]
-}).compileComponents();
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [IonicModule.forRoot(), TrainerProfilePage]
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(TrainerProfilePage);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+        fixture = TestBed.createComponent(TrainerProfilePage);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    }));
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { IonicModule, NavController } from '@ionic/angular';
+import { NavController, IonButton, IonCol, IonRow, IonIcon, IonList, IonContent, IonToolbar, IonHeader, IonButtons, IonBackButton, IonItem, IonInput, IonInputPasswordToggle } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { AccountService } from '../core/services/account.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -15,7 +15,7 @@ import packageJson from '../../../package.json';
     templateUrl: 'sign-in.page.html',
     styleUrls: ['./sign-in.page.scss'],
     standalone: true,
-    imports: [IonicModule, TranslateModule, ReactiveFormsModule],
+    imports: [IonItem, IonBackButton, IonButtons, IonHeader, IonToolbar, IonContent, IonList, IonIcon, IonRow, IonCol, IonButton, TranslateModule, ReactiveFormsModule, IonInput, IonInputPasswordToggle],
 })
 export class SignInPage implements OnInit {
 

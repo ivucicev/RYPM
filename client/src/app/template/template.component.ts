@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormArray } from '@angular/forms';
-import { IonicModule, NavController } from '@ionic/angular';
+import { NavController, IonHeader, IonBackButton, IonButtons, IonToolbar, IonTitle, IonLabel, IonButton, IonContent, IonList, IonItem, IonIcon, IonInput } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { ExerciseFormComponent } from '../form/exercise-form/exercise-form.component';
 import { RepType } from '../core/models/enums/rep-type';
@@ -20,9 +20,8 @@ import { TemplateActionKey, TemplateService } from '../core/services/template.se
     templateUrl: 'template.component.html',
     styleUrls: ['./template.component.scss'],
     standalone: true,
-    imports: [
-        IonicModule,
-        TranslateModule,
+    imports: [IonIcon, IonItem, IonList, IonContent, IonButton, IonLabel, IonTitle, IonToolbar, IonButtons, IonBackButton, IonHeader,
+        TranslateModule, IonInput,
         ReactiveFormsModule,
         FormsModule,
         ExerciseFormComponent

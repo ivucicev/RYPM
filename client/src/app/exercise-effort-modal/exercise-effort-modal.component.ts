@@ -1,14 +1,14 @@
 import { JsonPipe } from '@angular/common';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, IonTextarea, ModalController } from '@ionic/angular';
+import { IonTextarea, ModalController, IonHeader, IonButtons, IonToolbar, IonButton, IonItem, IonContent, IonChip, IonTitle, IonModal, IonDatetimeButton, IonRange, IonDatetime } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-exercise-effort-modal',
     templateUrl: 'exercise-effort-modal.component.html',
     styleUrls: ['./exercise-effort-modal.component.scss'],
-    imports: [IonicModule, FormsModule, TranslateModule],
+    imports: [IonDatetimeButton, IonModal, IonTextarea, IonRange, IonDatetime, IonTitle, IonChip, IonContent, IonItem, IonButton, IonToolbar, IonButtons, IonHeader, FormsModule, TranslateModule],
     standalone: true
 })
 export class ExerciseEffortModalComponent implements OnInit {
@@ -36,7 +36,7 @@ export class ExerciseEffortModalComponent implements OnInit {
 
     locale: string = 'en-US'; // Default locale, can be changed based on user preference
 
-    constructor(private modalController: ModalController) { 
+    constructor(private modalController: ModalController) {
 
         if (navigator.language) {
             this.locale = navigator.language;
@@ -63,7 +63,7 @@ export class ExerciseEffortModalComponent implements OnInit {
             comment: this.comment,
             effort: this.effort,
             start: this.start,
-            end: this.end   
+            end: this.end
         });
     }
 

@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { IonicModule, NavController } from '@ionic/angular';
+import { NavController, IonIcon, IonButton, IonFooter } from '@ionic/angular/standalone';
 import { RestBadgeComponent } from '../rest-badge/rest-badge.component';
 import { PocketbaseService } from 'src/app/core/services/pocketbase.service';
 import { Workout } from 'src/app/core/models/collections/workout';
@@ -14,7 +14,7 @@ import { PB } from 'src/app/core/constants/pb-constants';
     selector: 'app-continue-footer',
     templateUrl: 'continue-footer.component.html',
     styleUrls: ['./continue-footer.component.scss'],
-    imports: [IonicModule, RestBadgeComponent, TranslatePipe],
+    imports: [IonFooter, IonButton, IonIcon, RestBadgeComponent, TranslatePipe],
     standalone: true
 })
 export class ContinueFooterComponent {
@@ -29,15 +29,15 @@ export class ContinueFooterComponent {
     constructor(
         private pocketbaseService: PocketbaseService,
         private navCtrl: NavController
-    ) { 
-       /* if ('Notification' in window && Notification.permission !== 'granted') {
-            Notification.requestPermission();
+    ) {
+        /* if ('Notification' in window && Notification.permission !== 'granted') {
+             Notification.requestPermission();
 
-            new Notification('Rest timer completed', {
-                body: 'Time to continue your workout!',
-                //icon: '/assets/icons/icon-72x72.png'
-            });
-        }*/
+             new Notification('Rest timer completed', {
+                 body: 'Time to continue your workout!',
+                 //icon: '/assets/icons/icon-72x72.png'
+             });
+         }*/
     }
 
     navToActiveWorkout() {
@@ -85,7 +85,7 @@ export class ContinueFooterComponent {
     }
 
     timerCompleted() {
-       
+
     }
 
     onRestSkipped() {

@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { VerificationStateService } from '../core/services/verification-state-service';
 import { AccountService } from '../core/services/account.service';
 import { PocketbaseService } from '../core/services/pocketbase.service';
+import { IonButton, IonToolbar, IonBackButton, IonList, IonContent, IonTitle, IonInput, IonHeader, IonButtons, IonItem } from "@ionic/angular/standalone";
 
 @Component({
     selector: 'app-verification',
     templateUrl: 'verification.page.html',
     styleUrls: ['./verification.page.scss'],
     standalone: true,
-    imports: [IonicModule, TranslateModule],
+    imports: [IonItem, IonButtons, IonHeader, IonInput, IonTitle, IonContent, IonList, IonBackButton, IonToolbar, IonButton, TranslateModule],
 })
 export class VerificationPage implements OnInit {
 

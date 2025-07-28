@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, ModalController } from '@ionic/angular';
+import { ModalController, IonHeader, IonLabel, IonItem, IonContent, IonButton, IonToolbar, IonAvatar, IonList, IonItemOption, IonTitle, IonItemSliding, IonText, IonItemOptions, IonButtons, IonNote, IonIcon } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -8,7 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
     templateUrl: 'assign-modal.component.html',
     styleUrls: ['assign-modal.component.scss'],
     standalone: true,
-    imports: [IonicModule, FormsModule, TranslateModule]
+    imports: [IonIcon, IonNote, IonButtons, IonItemOptions, IonText, IonItemSliding, IonTitle, IonItemOption, IonList, IonAvatar, IonToolbar, IonButton, IonContent, IonItem, IonLabel, IonHeader, FormsModule, TranslateModule]
 })
 export class AssignModalComponent implements OnInit {
 

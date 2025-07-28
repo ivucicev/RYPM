@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { IonicModule } from '@ionic/angular';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AccountBM } from 'src/app/core/models/bm/account-bm';
 import { PB } from 'src/app/core/constants/pb-constants';
@@ -9,13 +8,14 @@ import { FormType } from 'src/app/core/helpers/form-helpers';
 import { AccountService } from 'src/app/core/services/account.service';
 import { PocketbaseService } from 'src/app/core/services/pocketbase.service';
 import { ToastService } from 'src/app/core/services/toast-service';
+import { IonFooter, IonToolbar, IonButton, IonItem, IonList, IonContent, IonBackButton, IonHeader, IonTitle, IonButtons, IonInput } from "@ionic/angular/standalone";
 
 @Component({
     selector: 'app-account',
     templateUrl: 'account.component.html',
     styleUrls: ['./account.component.scss'],
     standalone: true,
-    imports: [IonicModule, TranslateModule, ReactiveFormsModule, FormsModule, ErrorMessageDirective],
+    imports: [IonButtons, IonTitle, IonHeader, IonInput, IonBackButton, IonContent, IonList, IonItem, IonButton, IonToolbar, IonFooter, TranslateModule, ReactiveFormsModule, FormsModule, ErrorMessageDirective],
 })
 export class AccountComponent implements OnInit {
 

@@ -18,11 +18,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http);
 }
 
-// TODO: this here causes issues with scrolling passing the ion-router-outlet but then 
-// app doesnt load ionic custom components
-//import { defineCustomElements } from '@ionic/core/loader';
-//defineCustomElements(window);
-
 bootstrapApplication(AppComponent, {
     providers: [
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

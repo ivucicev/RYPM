@@ -2,7 +2,7 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, viewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IonicModule, NavController } from '@ionic/angular';
+import { NavController } from '@ionic/angular/standalone';
 import { Exercise } from '../core/models/collections/exercise';
 import { Program } from '../core/models/collections/program';
 import { Template } from '../core/models/collections/template';
@@ -28,7 +28,6 @@ type WorkoutInfo = (Workout & { nextExercise?: (Exercise & { nextSet?: Set }) })
     styleUrls: ['./home.page.scss'],
     standalone: true,
     imports: [
-        IonicModule,
         FormsModule,
         NgSwitch,
         NgSwitchCase,
@@ -65,7 +64,7 @@ export class HomePage {
 
     //#region Init
     ionViewWillEnter() {
-       this.refresh();
+        this.refresh();
     }
 
     async refresh() {

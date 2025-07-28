@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController, IonicModule } from '@ionic/angular';
+import { ModalController, IonChip, IonCol, IonLabel, IonItem, IonRow, IonGrid, IonContent, IonButton, IonButtons, IonIcon, IonToolbar, IonHeader } from '@ionic/angular/standalone';
 import { Equipment, Level, Category, Force, Mechanic, Muscle } from '../../core/models/autogen/enums';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -11,7 +11,7 @@ import { ExerciseTemplate } from 'src/app/core/models/collections/exercise-templ
     templateUrl: 'exercise-template-filter-modal.component.html',
     styleUrls: ['./exercise-template-filter-modal.component.scss'],
     standalone: true,
-    imports: [IonicModule, FormsModule, TranslateModule, CommonModule]
+    imports: [IonHeader, IonToolbar, IonIcon, IonButtons, IonButton, IonContent, IonGrid, IonRow, IonItem, IonLabel, IonCol, IonChip, FormsModule, TranslateModule, CommonModule]
 })
 export class ExerciseTemplateFilterModalComponent implements OnInit {
 

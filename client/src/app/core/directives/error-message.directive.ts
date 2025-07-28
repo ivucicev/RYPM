@@ -2,7 +2,7 @@ import { Directive, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { FormGroupDirective, StatusChangeEvent, TouchedChangeEvent, ValueChangeEvent } from '@angular/forms';
 import { Subscription, merge } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { IonInput } from '@ionic/angular';
+import { IonInput } from '@ionic/angular/standalone';
 
 @Directive({
     selector: '[formGroup]',

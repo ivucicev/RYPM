@@ -1,10 +1,9 @@
 import { Component, viewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { QrCodeModalComponent } from '../qr-code-modal/qr-code-modal.component';
-import { ModalController, NavController } from '@ionic/angular/standalone';
+import { ModalController, NavController, IonHeader, IonItem, IonContent, IonList, IonIcon, IonToolbar, IonButtons, IonTitle, IonButton } from '@ionic/angular/standalone';
 import { ContinueFooterComponent } from '../shared/continue-footer/continue-footer.component';
 
 interface ChatItem {
@@ -21,7 +20,7 @@ interface ChatItem {
     templateUrl: 'chats.page.html',
     styleUrls: ['chats.page.scss'],
     standalone: true,
-    imports: [IonicModule, TranslateModule, CommonModule, FormsModule, ContinueFooterComponent],
+    imports: [IonButton, IonTitle, IonButtons, IonToolbar, IonIcon, IonList, IonContent, IonItem, IonHeader, TranslateModule, CommonModule, FormsModule, ContinueFooterComponent],
 })
 export class ChatsPage {
     showSearchBar = false;

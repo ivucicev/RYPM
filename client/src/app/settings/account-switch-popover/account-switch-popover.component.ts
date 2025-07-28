@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicModule, NavController, PopoverController } from '@ionic/angular';
+import { NavController, PopoverController, IonIcon, IonItem, IonLabel, IonList } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { User } from '../../core/models/collections/user';
 import { AccountService, UserMap } from '../../core/services/account.service';
@@ -9,7 +9,7 @@ import { personAddOutline } from 'ionicons/icons';
     selector: 'app-account-switch-popover',
     templateUrl: 'account-switch-popover.component.html',
     styleUrls: ['./account-switch-popover.component.scss'],
-    imports: [IonicModule, TranslateModule],
+    imports: [IonList, IonLabel, IonItem, IonIcon, TranslateModule],
     standalone: true
 })
 export class AccountSwitchPopoverComponent {

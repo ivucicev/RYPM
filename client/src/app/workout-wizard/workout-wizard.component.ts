@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, signal, computed, ElementRef } from '@angular/core';
-import { ActionSheetController, AnimationController, IonicModule, LoadingController, ModalController, NavController } from '@ionic/angular';
+import { ActionSheetController, AnimationController, LoadingController, ModalController, NavController, IonHeader, IonButton, IonLabel, IonToolbar, IonTitle, IonIcon, IonContent, IonChip, IonBackButton, IonButtons, IonSpinner, IonFooter, IonNote } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormsModule } from '@angular/forms';
 import { Exercise } from 'src/app/core/models/collections/exercise';
@@ -29,7 +29,7 @@ import { ExerciseEffortModalComponent } from '../exercise-effort-modal/exercise-
     templateUrl: 'workout-wizard.component.html',
     styleUrls: ['./workout-wizard.component.scss'],
     standalone: true,
-    imports: [IonicModule, CommonModule, FormsModule, ExerciseFormComponent, TranslateModule, TimeBadgeComponent, NoDataComponent, RestBadgeComponent],
+    imports: [IonNote, IonFooter, IonSpinner, IonButtons, IonBackButton, IonChip, IonContent, IonIcon, IonTitle, IonToolbar, IonLabel, IonButton, IonHeader, CommonModule, FormsModule, ExerciseFormComponent, TranslateModule, TimeBadgeComponent, NoDataComponent, RestBadgeComponent],
     providers: [FormsService, AutosaveService]
 })
 export class WorkoutWizardComponent implements OnInit, OnDestroy {
@@ -264,7 +264,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
         const { data } = await modal.onWillDismiss();
 
-        
+
         if (data && data.comment !== undefined) {
             this.workout.comment = data.comment;
         }
@@ -278,7 +278,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         }
 
         if (data && data.end) {
-            this.workout.end = new Date(data.end); 
+            this.workout.end = new Date(data.end);
         }
 
         if (data)

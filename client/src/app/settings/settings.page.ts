@@ -1,10 +1,10 @@
 import { Component, Inject, Signal } from '@angular/core';
 import { BuyappalertPage } from '../buyappalert/buyappalert.page';
-import { ModalController } from '@ionic/angular/standalone';
+import { ModalController, IonFooter, IonItem, IonIcon, IonBadge, IonButton, IonContent, IonList, IonHeader, IonToolbar, IonTitle } from '@ionic/angular/standalone';
+import { AppConfig, APP_CONFIG } from '../app.config';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgIf } from '@angular/common';
 import { PopoverController } from '@ionic/angular/standalone';
-import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AccountSwitchPopoverComponent } from './account-switch-popover/account-switch-popover.component';
 import { AccountService } from '../core/services/account.service';
@@ -19,9 +19,9 @@ import packageJson from '../../../package.json';
     templateUrl: 'settings.page.html',
     styleUrls: ['./settings.page.scss'],
     standalone: true,
-    imports: [
-        TranslateModule,
-        IonicModule
+    imports: [IonTitle, IonToolbar, IonHeader, IonList, IonContent, IonButton, IonBadge, IonIcon, IonItem, IonFooter,
+        NgIf,
+        TranslateModule
     ],
 })
 export class SettingsPage {

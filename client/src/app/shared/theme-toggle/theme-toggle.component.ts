@@ -1,5 +1,5 @@
 import { Component, Signal } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular/standalone';
 import { ThemeService } from 'src/app/core/services/theme.service';
 
 @Component({

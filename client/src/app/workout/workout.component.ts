@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, FormArray } from '@angular/forms';
-import { IonicModule, NavController } from '@ionic/angular';
+import { NavController, IonButton, IonToolbar, IonFooter, IonIcon, IonLabel, IonContent, IonHeader, IonTitle, IonButtons, IonBackButton } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormType } from '../core/helpers/form-helpers';
 import { RepType } from '../core/models/enums/rep-type';
@@ -16,8 +16,7 @@ import { WorkoutState } from '../core/models/enums/workout-state';
     templateUrl: 'workout.component.html',
     styleUrls: ['./workout.component.scss'],
     standalone: true,
-    imports: [
-        IonicModule,
+    imports: [IonBackButton, IonButtons, IonTitle, IonHeader, IonContent, IonLabel, IonIcon, IonFooter, IonToolbar, IonButton,
         TranslateModule,
         ReactiveFormsModule,
         FormsModule,

@@ -3,15 +3,14 @@ import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgSwitch, NgSwitchCase } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonItem, IonContent, IonList, IonSegmentButton, IonTitle, IonBackButton, IonButtons, IonHeader, IonLabel, IonToolbar, IonIcon } from "@ionic/angular/standalone";
 
 @Component({
     selector: 'app-weight-programs',
     templateUrl: 'weight-programs.page.html',
     styleUrls: ['./weight-programs.page.scss'],
     standalone: true,
-    imports: [
-        IonicModule,
+    imports: [IonIcon, IonToolbar, IonLabel, IonHeader, IonButtons, IonBackButton, IonTitle, IonSegmentButton, IonList, IonContent, IonItem,
         FormsModule,
         NgSwitch,
         NgSwitchCase,
@@ -19,13 +18,13 @@ import { IonicModule } from '@ionic/angular';
     ],
 })
 export class WeightProgramsPage implements OnInit {
-  tab: string = "beginers";
-  constructor(private route: Router) { }
+    tab: string = "beginers";
+    constructor(private route: Router) { }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
- stretch_workouts() {
-    this.route.navigate(['./stretch-workouts']);
-  }  
+    stretch_workouts() {
+        this.route.navigate(['./stretch-workouts']);
+    }
 }

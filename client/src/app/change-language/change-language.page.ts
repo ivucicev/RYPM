@@ -1,19 +1,17 @@
 import { Component, Inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgFor } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { MyEvent } from 'src/app/core/services/myevent.services';
 import { Constants } from 'src/app/core/constants/constants';
-
+import { IonHeader, IonContent, IonRadio, IonFooter, IonButton, IonButtons, IonToolbar, IonTitle, IonItem, IonList, IonBackButton } from "@ionic/angular/standalone";
 
 @Component({
     selector: 'app-change-language',
     templateUrl: 'change-language.page.html',
     styleUrls: ['change-language.page.scss'],
     standalone: true,
-    imports: [
-        IonicModule,
+    imports: [IonBackButton, IonList, IonItem, IonTitle, IonToolbar, IonButtons, IonButton, IonFooter, IonRadio, IonContent, IonHeader,
         FormsModule,
         NgFor,
         TranslateModule,

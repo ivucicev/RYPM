@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { IonicModule, IonTabs } from '@ionic/angular';
+import { IonTabs, IonIcon, IonTabBar, IonTabButton, IonLabel } from '@ionic/angular/standalone';
 import { settingsOutline } from 'ionicons/icons';
 
 @Component({
@@ -8,13 +8,13 @@ import { settingsOutline } from 'ionicons/icons';
     templateUrl: 'tabs.page.html',
     styleUrls: ['tabs.page.scss'],
     standalone: true,
-    imports: [IonicModule, TranslateModule]
+    imports: [IonLabel, IonTabButton, IonTabBar, IonIcon, TranslateModule, IonTabs]
 })
 export class TabsPage {
     private activeTab?: HTMLElement;
 
     settingsIcon = settingsOutline
-    
+
     constructor() { }
 
     tabChange(tabsRef: IonTabs) {

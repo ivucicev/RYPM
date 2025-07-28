@@ -3,10 +3,12 @@
     <div class="exercise-header">
         <span class="title">{{exercise.get('name').value}}</span>
         <div class="exercise-actions">
-            <ion-button fill="clear" size="small" [color]="'medium'" [disabled]="!canMoveExerciseUp()" (click)="moveExerciseUpEvent.emit()">
+            <ion-button fill="clear" size="small" [color]="'medium'" [disabled]="!canMoveExerciseUp()"
+                (click)="moveExerciseUpEvent.emit()">
                 <ion-icon name="chevron-up-outline"></ion-icon>
             </ion-button>
-            <ion-button fill="clear" size="small" [color]="'medium'" [disabled]="!canMoveExerciseDown()" (click)="moveExerciseDownEvent.emit()">
+            <ion-button fill="clear" size="small" [color]="'medium'" [disabled]="!canMoveExerciseDown()"
+                (click)="moveExerciseDownEvent.emit()">
                 <ion-icon name="chevron-down-outline"></ion-icon>
             </ion-button>
             <ion-button fill="clear" size="small" [color]="'medium'" #exerciseButton (click)="togglePopover($event)">

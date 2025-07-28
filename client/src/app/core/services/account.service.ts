@@ -4,7 +4,7 @@ import { StorageService } from './storage.service';
 import { ClientResponseError, OAuth2AuthConfig, RecordAuthResponse, RecordModel } from 'pocketbase';
 import { RegisterBM } from '../models/bm/register-bm';
 import { LoginBM } from '../models/bm/login-bm';
-import { NavController } from '@ionic/angular';
+import { NavController } from '@ionic/angular/standalone';
 import { VerificationStateService } from './verification-state-service';
 import { ToastService } from './toast-service';
 import { StorageKeys } from '../constants/storage-keys';

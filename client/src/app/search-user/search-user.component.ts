@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonicModule, NavController } from '@ionic/angular';
+import { NavController, IonList, IonContent, IonButtons, IonTitle, IonToolbar, IonBackButton, IonHeader, IonSearchbar } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -9,7 +9,7 @@ import { TranslateModule } from '@ngx-translate/core';
     templateUrl: 'search-user.component.html',
     styleUrls: ['./search-user.component.scss'],
     standalone: true,
-    imports: [IonicModule, FormsModule, TranslateModule]
+    imports: [IonHeader, IonBackButton, IonSearchbar, IonToolbar, IonTitle, IonButtons, IonContent, IonList, FormsModule, TranslateModule]
 })
 export class SearchUserComponent {
 

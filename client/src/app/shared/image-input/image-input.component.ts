@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, ViewChild, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonIcon } from "@ionic/angular/standalone";
 
 @Component({
     selector: 'app-image-input',
@@ -14,7 +14,7 @@ import { IonicModule } from '@ionic/angular';
         }
     ],
     standalone: true,
-    imports: [IonicModule]
+    imports: [IonIcon,]
 })
 export class ImageInputComponent implements ControlValueAccessor {
     @ViewChild('imgInput') imgInput: ElementRef;

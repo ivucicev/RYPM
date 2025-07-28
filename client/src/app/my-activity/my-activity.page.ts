@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild, viewChild } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ActionSheetController, IonicModule, NavController } from '@ionic/angular';
+import { ActionSheetController, NavController, IonCardContent, IonChip, IonButton, IonIcon, IonCardHeader, IonCard, IonList, IonTitle, IonRow, IonContent, IonLabel, IonToolbar, IonSegmentButton, IonHeader } from '@ionic/angular/standalone';
 import { lastValueFrom } from 'rxjs';
 import { DateTimePipe } from '../core/pipes/datetime.pipe';
 import { PocketbaseService } from '../core/services/pocketbase.service';
@@ -18,7 +18,7 @@ import { NoDataComponent } from '../shared/no-data/no-data.component';
     templateUrl: 'my-activity.page.html',
     styleUrls: ['./my-activity.page.scss'],
     standalone: true,
-    imports: [IonicModule, NoDataComponent, TranslateModule, FormsModule, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent],
+    imports: [IonHeader, IonSegmentButton, IonToolbar, IonLabel, IonContent, IonRow, IonTitle, IonList, IonCard, IonCardHeader, IonIcon, IonButton, IonChip, IonCardContent, NoDataComponent, TranslateModule, FormsModule, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent],
 })
 export class MyActivityPage {
 

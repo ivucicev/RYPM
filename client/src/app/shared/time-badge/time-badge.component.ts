@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonBadge } from "@ionic/angular/standalone";
 
 @Component({
     selector: 'app-time-badge',
     templateUrl: 'time-badge.component.html',
     styleUrls: ['./time-badge.component.scss'],
     standalone: true,
-    imports: [IonicModule]
+    imports: [IonBadge,]
 })
 export class TimeBadgeComponent implements OnInit {
 

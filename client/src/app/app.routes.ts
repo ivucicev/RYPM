@@ -9,12 +9,12 @@ export const routes: Routes = [
         pathMatch: 'full'
     },
     {
-        path: 'sign-in',
-        loadChildren: () => import('./sign-in/sign-in.routes').then(m => m.routes)
-    },
-    {
         path: '',
         loadChildren: () => import('./tabs/tabs.routes').then(m => m.routes)
+    },
+    {
+        path: 'sign-in',
+        loadChildren: () => import('./sign-in/sign-in.routes').then(m => m.routes)
     },
     {
         path: 'register',

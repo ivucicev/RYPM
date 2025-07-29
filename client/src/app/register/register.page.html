@@ -15,30 +15,11 @@
             <div class="banner_img center_img">
                 <img src="assets/images/banner_img.png" class="crop_img">
                 <div class="logo animate__animated animate__fadeInUp">
-                    <h1>{{ 'Welcome' | translate }} to RYPM.!</h1>
+                    <h1>{{ 'Welcome' | translate }} {{ 'to' | translate }} RYPM.</h1>
                 </div>
             </div>
         </div>
         <div class="form ion-padding-top ion-padding-bottom">
-            <!-- <ion-radio-group #group formControlName="type">
-                <ion-item lines="none">
-                    <ion-icon [color]="group.value == userTypes.User ? 'primary' : ''" slot="end"
-                        name="person-outline"></ion-icon>
-                    <ion-radio labelPlacement="end" slot="start" [value]="userTypes.User">
-                        <h5>{{ 'User' | translate }}</h5>
-                        <p> {{ 'register_user_description' | translate }}</p>
-                    </ion-radio>
-                </ion-item>
-
-                <ion-item lines="none">
-                    <ion-icon [color]="group.value == userTypes.Trainer ? 'primary' : ''" slot="end"
-                        name="barbell-outline"></ion-icon>
-                    <ion-radio labelPlacement="end" slot="start" [value]="userTypes.Trainer">
-                        <h5>{{ 'Trainer' | translate }}</h5>
-                        <p> {{ 'register_trainer_description' | translate }}</p>
-                    </ion-radio>
-                </ion-item>
-            </ion-radio-group> -->
 
             <div class="user-type-selector">
                 <ion-segment formControlName="type" mode="md" class="custom-segment">
@@ -76,7 +57,6 @@
                 </div>
             </div>
 
-
             <ion-list>
                 <ion-item class="animate__animated animate__fadeInUp">
                     <ion-input formControlName="name" labelPlacement="floating" [label]="'Name' | translate" mode="md"
@@ -96,11 +76,11 @@
                     </ion-input>
                 </ion-item>
             </ion-list>
+
         </div>
     </form>
 </ion-content>
 
 <ion-footer class="ion-no-border animate__animated animate__fadeInUp">
-    <ion-button size="large" expand="round" class="btn" (click)="register()">{{'Register' |
-        translate}}</ion-button>
+    <ion-button size="large" expand="round" class="btn" (click)="register()">{{'Register' | translate}}</ion-button>
 </ion-footer>

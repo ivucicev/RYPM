@@ -6,14 +6,14 @@ import { RegisterBM, } from '../core/models/bm/register-bm';
 import { FormType } from '../core/helpers/form-helpers';
 import { ErrorMessageDirective } from '../core/directives/error-message.directive';
 import { UserType } from '../core/models/enums/user-type';
-import { IonItem, IonFooter, IonButton, IonList, IonSegmentButton, IonIcon, IonContent, IonBackButton, IonToolbar, IonHeader, IonTitle, IonButtons, IonInput } from "@ionic/angular/standalone";
+import { IonItem, IonFooter, IonButton, IonList, IonSegmentButton, IonIcon, IonContent, IonBackButton, IonToolbar, IonHeader, IonTitle, IonButtons, IonInput, IonSegment } from "@ionic/angular/standalone";
 
 @Component({
     selector: 'app-register',
     templateUrl: 'register.page.html',
     styleUrls: ['./register.page.scss'],
     standalone: true,
-    imports: [IonButtons, IonInput, IonTitle, IonHeader, IonToolbar, IonBackButton, IonContent, IonIcon, IonSegmentButton, IonList, IonButton, IonFooter, IonItem, TranslateModule, ReactiveFormsModule, ErrorMessageDirective],
+    imports: [IonButtons, IonInput, IonTitle, IonHeader, IonToolbar, IonBackButton, IonContent, IonIcon, IonSegmentButton, IonSegment, IonList, IonButton, IonFooter, IonItem, TranslateModule, ReactiveFormsModule, ErrorMessageDirective],
 })
 export class RegisterPage implements OnInit {
 

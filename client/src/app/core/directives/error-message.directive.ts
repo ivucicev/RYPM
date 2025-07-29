@@ -11,11 +11,11 @@ import { IonInput } from '@ionic/angular/standalone';
 export class ErrorMessageDirective implements OnInit, OnDestroy {
     private subscription: Subscription;
     private readonly validationMessages: Record<string, string> = {
-        required: 'validators_required',
-        email: 'validators_email',
-        minlength: 'validators_minlength',
-        maxlength: 'validators_maxlength',
-        pattern: 'validators_pattern'
+        required: 'Field is required',
+        email: 'Email is invalid',
+        minlength: 'Too short',
+        maxlength: 'Maximum length exceeded',
+        pattern: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
     };
 
     constructor(

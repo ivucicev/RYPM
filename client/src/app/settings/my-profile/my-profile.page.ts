@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { AlertController, IonToolbar, IonFooter, IonButton, IonItem, IonList, IonContent, IonBackButton, IonTitle, IonButtons, IonHeader, IonTextarea, IonInput } from '@ionic/angular/standalone';
+import { AlertController, IonToolbar, IonFooter, IonButton, IonItem, IonList, IonContent, IonBackButton, IonTitle, IonButtons, IonHeader, IonTextarea, IonInput, IonToggle } from '@ionic/angular/standalone';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormType } from '../../core/helpers/form-helpers';
 import { ProfileBM } from '../../core/models/bm/profile-bm';
@@ -15,7 +15,7 @@ import { lastValueFrom } from 'rxjs';
     templateUrl: 'my-profile.page.html',
     styleUrls: ['./my-profile.page.scss'],
     standalone: true,
-    imports: [IonHeader, IonButtons, IonInput, IonTitle, IonTextarea, IonBackButton, IonContent, IonList, IonItem, IonButton, IonFooter, IonToolbar, TranslateModule, ReactiveFormsModule, FormsModule, ErrorMessageDirective, ImageInputComponent],
+    imports: [IonHeader, IonButtons, IonToggle, IonInput, IonTitle, IonTextarea, IonBackButton, IonContent, IonList, IonItem, IonButton, IonFooter, IonToolbar, TranslateModule, ReactiveFormsModule, FormsModule, ErrorMessageDirective, ImageInputComponent],
 })
 export class MyProfilePage implements OnInit {
 

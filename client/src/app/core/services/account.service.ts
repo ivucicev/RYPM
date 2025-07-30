@@ -233,7 +233,7 @@ export class AccountService {
 
         const user = await this.pocketbase.collection('users').getOne<User>(this.pocketbase.authStore.record?.id, { $autoCancel: false });
 
-        const avatarUrl = user.avatar ? (environment.apiURL + `/api/files/users/${user.id}/${user.avatar}`) : null;
+        const avatarUrl = user.avatar ? (environment.api + `/api/files/users/${user.id}/${user.avatar}`) : null;
         user.avatar = avatarUrl;
 
         this.updateAccountMap(user);

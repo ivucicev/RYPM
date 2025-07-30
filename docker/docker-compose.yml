@@ -1,17 +1,31 @@
 services:
-  rypm-app:
-    image: ivucicev/rypm-app:latest
-    environment:
-      API_URL: http://localhost:8090
-    ports:
-      - "80:80"
+    rypm-app:
+        image: ivucicev/rypm-app:latest
+        container_name: app
+        environment:
+            API_URL: ${API_URL}
+        ports:
+            - "80:80"
+        restart: unless-stopped
 
-  rypm-api:
-    image: ivucicev/rypm-api:latest
-    volumes:
-      - ./pb_data:/pb/pb_data
-    ports:
-      - "8090:8090"
-    environment:
-      POCKETBASE_ADMIN_EMAIL: ${POCKETBASE_ADMIN_EMAIL}
-      POCKETBASE_ADMIN_PASS: ${POCKETBASE_ADMIN_PASS}
+    rypm-api:
+        image: ivucicev/rypm-api:latest
+        container_name: api
+        volumes:
+            - ./pb_data:/pb/pb_data
+        ports:
+            - "8090:8090"
+        environment:
+            POCKETBASE_ADMIN_EMAIL: ${POCKETBASE_ADMIN_EMAIL}
+            POCKETBASE_ADMIN_PASS: ${POCKETBASE_ADMIN_PASS}
+        restart: unless-stopped
+
+    # rypm-updater:
+    #     image: containrrr/watchtower:latest
+    #     container_name: updater
+    #     volumes:
+    #         - /var/run/docker.sock:/var/run/docker.sock
+    #     environment:
+    #         WATCHTOWER_CLEANUP: "true"
+    #         WATCHTOWER_POLL_INTERVAL: 300
+    #     restart: unless-stopped

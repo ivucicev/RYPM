@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { NavController, IonButton, IonCol, IonRow, IonIcon, IonList, IonContent, IonToolbar, IonHeader, IonButtons, IonBackButton, IonItem, IonInput, IonInputPasswordToggle, IonFooter } from '@ionic/angular/standalone';
+import { NavController, IonButton, IonCol, IonRow, IonIcon, IonList, IonContent, IonToolbar, IonHeader, IonButtons, IonBackButton, IonItem, IonInput, IonInputPasswordToggle } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { AccountService } from '../core/services/account.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -8,6 +8,8 @@ import { LoginBM } from '../core/models/bm/login-bm';
 import { FormType } from '../core/helpers/form-helpers';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { logoFacebook, logoGoogle } from 'ionicons/icons';
+
+// @ts-ignore
 import packageJson from '../../../package.json';
 
 @Component({
@@ -15,7 +17,7 @@ import packageJson from '../../../package.json';
     templateUrl: 'sign-in.page.html',
     styleUrls: ['./sign-in.page.scss'],
     standalone: true,
-    imports: [IonItem, IonBackButton, IonButtons, IonFooter, IonHeader, IonToolbar, IonContent, IonList, IonIcon, IonRow, IonCol, IonButton, TranslateModule, ReactiveFormsModule, IonInput, IonInputPasswordToggle, IonFooter],
+    imports: [IonItem, IonBackButton, IonButtons, IonHeader, IonToolbar, IonContent, IonList, IonIcon, IonRow, IonCol, IonButton, TranslateModule, ReactiveFormsModule, IonInput, IonInputPasswordToggle],
 })
 export class SignInPage implements OnInit {
 

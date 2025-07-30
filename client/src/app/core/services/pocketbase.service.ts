@@ -46,7 +46,7 @@ export class PocketbaseService {
         'days': ['workout'],
     };
 
-    pb: PocketBase = new PocketBase(environment.apiURL);
+    pb: PocketBase = new PocketBase(environment.api);
     currentUser: User;
 
     constructor(
@@ -54,7 +54,28 @@ export class PocketbaseService {
         private toastService: ToastService,
         private loadingCtrl: LoadingController
     ) {
+
+        if (this.isDemoSubdomain()) {
+            this.pb = new PocketBase(environment.demo);
+        } else {
+            this.pb = new PocketBase((window as any)['env']?.api || environment.api);
+        }
+
         this.init();
+    }
+
+    public isDemoSubdomain(): boolean {
+        const subdomain = this.getSubdomain();
+        return subdomain === 'demo';
+    }
+
+    private getSubdomain(): string | null {
+        const host = window.location.hostname;
+        const parts = host.split('.');
+        if (parts.length > 2) {
+            return parts[0]; // Assuming the subdomain is the first part
+        }
+        return null;
     }
 
     init() {

@@ -4,7 +4,8 @@
 
 export const environment = {
     production: false,
-    apiURL: 'http://localhost:8080/'
+    api: 'http://localhost:8080/',
+    demo: 'https://demo.rypm.app/'
 };
 
 /*

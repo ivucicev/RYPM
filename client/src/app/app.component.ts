@@ -62,7 +62,6 @@ export class AppComponent {
             // SplashScreen.show();
             // StatusBar.setOverlaysWebView({ overlay: false });
             // StatusBar.setBackgroundColor({ color: '#000000' });
-
             let defaultLang = window.localStorage.getItem(Constants.KEY_DEFAULT_LANGUAGE);
             this.globalize(defaultLang);
 

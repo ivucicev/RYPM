@@ -37,7 +37,7 @@ Workouts screen -
         - [] Terms & Conditions
 
     General
-        - [] PWA Setup 
+        - [x] PWA Setup 
         - [] PWA notifications for Rest timer
         - [] White labeling
         - [x] Docker deploy
@@ -47,5 +47,5 @@ Workouts screen -
 
     Admin / Trainer
         - [] TBD
-        - Trainer profile
-        - Trainer chat
+        - [] Trainer profile
+        - [] Trainer chat

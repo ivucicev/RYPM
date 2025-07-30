@@ -23,6 +23,7 @@ COPY --from=pocketbase-builder /pb /pb
 WORKDIR /pb
 
 EXPOSE 8090
+EXPOSE 8080
 
 COPY ../docker/entrypoint-api.sh /pb/entrypoint.sh
 RUN chmod +x /pb/entrypoint.sh

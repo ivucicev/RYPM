@@ -14,7 +14,7 @@ services:
         volumes:
             - ./pb_data:/pb/pb_data
         ports:
-            - "8090:8090"
+            - "8080:8080"
         environment:
             POCKETBASE_ADMIN_EMAIL: ${POCKETBASE_ADMIN_EMAIL}
             POCKETBASE_ADMIN_PASS: ${POCKETBASE_ADMIN_PASS}

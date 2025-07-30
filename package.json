@@ -5,7 +5,7 @@
         "watch": "ng build --watch --configuration development",
         "format": "prettier --write \"**/*.{js,mjs,ts,mts,d.ts,html}\" --cache",
         "test": "ng test",
-        "server": "cd ./server && ./pocketbase serve --http 127.0.0.1:4444",
+        "server": "cd ./server && PB_CORS_ALLOWED_ORIGINS=* && ./pocketbase serve --http 0.0.0.0:8080 --dev",
         "client": "cd ./client && ng serve --port 4000",
         "serve": "npm run server & npm run client"
     }

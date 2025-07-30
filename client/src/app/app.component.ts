@@ -1,6 +1,6 @@
-import { Component, Inject } from '@angular/core';
-import { Platform, NavController, ModalController, IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, HostListener, Inject } from '@angular/core';
+import { Platform, NavController, ModalController, IonApp, IonRouterOutlet, IonButton, IonIcon } from '@ionic/angular/standalone';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { VtPopupPage } from './vt-popup/vt-popup.page';
 import { StatusBar } from '@capacitor/status-bar';
 import { SplashScreen } from '@capacitor/splash-screen';
@@ -11,17 +11,23 @@ import { Constants } from './core/constants/constants';
 import { ThemeService } from './core/services/theme.service';
 import { registerIcons } from './core/constants/icons';
 import { register } from 'swiper/element/bundle';
+import { chevronBackCircleOutline, chevronBackOutline, chevronForwardCircleOutline, chevronForwardOutline, downloadOutline, shareOutline } from 'ionicons/icons';
 
 @Component({
     selector: 'app-root',
     templateUrl: 'app.component.html',
     styleUrls: ['app.component.scss'],
     standalone: true,
-    imports: [IonApp, IonRouterOutlet],
+    imports: [IonApp, IonRouterOutlet, IonButton, IonIcon, TranslateModule],
 })
 export class AppComponent {
     selectedIndex: any;
     appPages: any;
+    shareIcon = shareOutline;
+    forwardIcon = chevronForwardOutline;
+    backwardIcon = chevronBackOutline;
+    downloadIcon = downloadOutline;
+    isInstalled = window.matchMedia('(display-mode: standalone)').matches;
 
     constructor(
         private platform: Platform,
@@ -72,6 +78,11 @@ export class AppComponent {
                 // SplashScreen.hide();
             });
         });
+
+        if (!this.isInstalled)
+            setTimeout(() => {
+                this.showInstallButton = true;
+            }, 1500)
     }
 
     globalize(languagePriority: any) {
@@ -88,5 +99,29 @@ export class AppComponent {
 
     language(): void {
         this.navCtrl.navigateRoot(['./change-language']);
+    }
+
+    deferredPrompt: any = null;
+    showInstallButton = false;
+    showInstallDialog = false;
+
+    @HostListener('window:beforeinstallprompt', ['$event'])
+    onBeforeInstallPrompt(event: any) {
+        event.preventDefault(); // Prevent auto prompt
+        this.deferredPrompt = event;
+    }
+
+    triggerInstall() {
+        if (this.platform.is('ios')) {
+            this.showInstallDialog = true;
+            return;
+        }
+        if (this.deferredPrompt) {
+            this.deferredPrompt.prompt();
+            this.deferredPrompt.userChoice.then((choiceResult: any) => {
+                // Handle outcome
+                this.deferredPrompt = null;
+            });
+        }
     }
 }

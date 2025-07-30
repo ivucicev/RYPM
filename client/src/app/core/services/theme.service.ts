@@ -15,6 +15,11 @@ export class ThemeService {
         this.initializeTheme();
     }
 
+    private overrideMetaTheme(color?: string) {
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        metaThemeColor.setAttribute('content', color);
+    }
+
     async initializeTheme() {
         const userTheme = await this.storageService.getItem<string>(StorageKeys.THEME);
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -25,6 +30,11 @@ export class ThemeService {
             document.documentElement.setAttribute('data-theme', 'dark');
         }
         this.isDark.set(userTheme === 'dark')
+
+        this.isDark() ?
+            this.overrideMetaTheme('#EBEBEB') :
+            this.overrideMetaTheme('#1b1b20');
+
     }
 
     toggleTheme() {

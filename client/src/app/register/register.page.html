@@ -22,7 +22,7 @@
         <div class="form ion-padding-top ion-padding-bottom">
 
             <div class="user-type-selector">
-                <ion-segment formControlName="type" mode="md" class="custom-segment">
+                <ion-segment formControlName="type" class="custom-segment">
                     <ion-segment-button [value]="userTypes.User" class="segment-button">
                         <div class="segment-button-content">
                             <ion-icon name="person-outline"></ion-icon>
@@ -59,20 +59,20 @@
 
             <ion-list>
                 <ion-item class="animate__animated animate__fadeInUp">
-                    <ion-input formControlName="name" labelPlacement="floating" [label]="'Name' | translate" mode="md"
+                    <ion-input formControlName="name" labelPlacement="floating" [label]="'Name' | translate"
                         type="text">
                     </ion-input>
                 </ion-item>
 
                 <ion-item class="animate__animated animate__fadeInUp">
-                    <ion-input formControlName="email" labelPlacement="floating" [label]="'Email' | translate" mode="md"
+                    <ion-input formControlName="email" labelPlacement="floating" [label]="'Email' | translate"
                         type="email">
                     </ion-input>
                 </ion-item>
 
                 <ion-item class="animate__animated animate__fadeInUp">
                     <ion-input formControlName="password" labelPlacement="floating" [label]="'Password' | translate"
-                        class="password" mode="md" type="password">
+                        class="password" type="password">
                     </ion-input>
                 </ion-item>
             </ion-list>

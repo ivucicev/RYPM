@@ -1,49 +1,49 @@
  @font-face {
-   font-family: 'Google Sans';
-   src: url('../assets/font/GoogleSans-Italic.woff2') format('woff2'),
-     url('../assets/font/GoogleSans-Italic.woff') format('woff');
-   font-weight: normal;
-   font-style: italic;
+ 	font-family: 'Google Sans';
+ 	src: url('../assets/font/GoogleSans-Italic.woff2') format('woff2'),
+ 		url('../assets/font/GoogleSans-Italic.woff') format('woff');
+ 	font-weight: normal;
+ 	font-style: italic;
  }
 
  @font-face {
-   font-family: 'Google Sans';
-   src: url('../assets/font/GoogleSans-Regular.woff2') format('woff2'),
-     url('../assets/font/GoogleSans-Regular.woff') format('woff');
-   font-weight: normal;
-   font-style: normal;
+ 	font-family: 'Google Sans';
+ 	src: url('../assets/font/GoogleSans-Regular.woff2') format('woff2'),
+ 		url('../assets/font/GoogleSans-Regular.woff') format('woff');
+ 	font-weight: normal;
+ 	font-style: normal;
  }
 
  @font-face {
-   font-family: 'Google Sans';
-   src: url('../assets/font/GoogleSans-BoldItalic.woff2') format('woff2'),
-     url('../assets/font/GoogleSans-BoldItalic.woff') format('woff');
-   font-weight: bold;
-   font-style: italic;
+ 	font-family: 'Google Sans';
+ 	src: url('../assets/font/GoogleSans-BoldItalic.woff2') format('woff2'),
+ 		url('../assets/font/GoogleSans-BoldItalic.woff') format('woff');
+ 	font-weight: bold;
+ 	font-style: italic;
  }
 
  @font-face {
-   font-family: 'Google Sans';
-   src: url('../assets/font/GoogleSans-Bold.woff2') format('woff2'),
-     url('../assets/font/GoogleSans-Bold.woff') format('woff');
-   font-weight: bold;
-   font-style: normal;
+ 	font-family: 'Google Sans';
+ 	src: url('../assets/font/GoogleSans-Bold.woff2') format('woff2'),
+ 		url('../assets/font/GoogleSans-Bold.woff') format('woff');
+ 	font-weight: bold;
+ 	font-style: normal;
  }
 
  @font-face {
-   font-family: 'Google Sans';
-   src: url('../assets/font/GoogleSans-MediumItalic.woff2') format('woff2'),
-     url('../assets/font/GoogleSans-MediumItalic.woff') format('woff');
-   font-weight: 500;
-   font-style: italic;
+ 	font-family: 'Google Sans';
+ 	src: url('../assets/font/GoogleSans-MediumItalic.woff2') format('woff2'),
+ 		url('../assets/font/GoogleSans-MediumItalic.woff') format('woff');
+ 	font-weight: 500;
+ 	font-style: italic;
  }
 
  @font-face {
-   font-family: 'Google Sans';
-   src: url('../assets/font/GoogleSans-Medium.woff2') format('woff2'),
-     url('../assets/font/GoogleSans-Medium.woff') format('woff');
-   font-weight: 500;
-   font-style: normal;
+ 	font-family: 'Google Sans';
+ 	src: url('../assets/font/GoogleSans-Medium.woff2') format('woff2'),
+ 		url('../assets/font/GoogleSans-Medium.woff') format('woff');
+ 	font-weight: 500;
+ 	font-style: normal;
  }
 
  *,
@@ -59,10 +59,293 @@
  h6,
  strong,
  li {
-   --ion-font-family: 'Google Sans';
-   font-family: 'Google Sans';
+ 	--ion-font-family: 'Google Sans';
+ 	font-family: 'Google Sans';
  }
 
  .zmdi {
-   font: normal normal normal 14px/1 'Material-Design-Iconic-Font';
+ 	font: normal normal normal 14px/1 'Material-Design-Iconic-Font';
+ }
+
+ #install-dialog.opened {
+ 	transform: translateY(0%);
+ }
+
+ #install-dialog {
+ 	transform: translateY(100%);
+ 	transition: transform .3s ease-out;
+ 	background-color: rgb(48, 48, 48) !important;
+ 	box-shadow: none;
+ 	width: 100vw !important;
+ 	max-width: 100vw;
+ 	height: 75% !important;
+ 	margin: 0;
+ 	bottom: 0;
+ 	border-radius: 10px 10px 0 0;
+ }
+
+ #install-dialog,
+ #sensor-dialog,
+ #geolocation-dialog {
+ 	box-sizing: border-box;
+ 	width: 80%;
+ 	height: 80%;
+ 	padding-top: 4px;
+ 	background-color: #e5e5e5;
+ 	border-radius: 10px;
+ }
+
+ dialog {
+ 	border: none;
+ 	box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .24), 0 -2px 0 #eeeeee;
+ }
+
+ dialog:modal {
+ 	position: fixed;
+ 	overflow-x: auto;
+ 	overflow-y: auto;
+ 	inset-block-start: 0px;
+ 	inset-block-end: 0px;
+ 	max-width: calc(100% - 2em - 6px);
+ 	max-height: calc(100% - 2em - 6px);
+ 	visibility: visible;
+ }
+
+ dialog[open] {
+ 	display: block;
+ }
+
+ dialog {
+ 	position: absolute;
+ 	inset-inline-start: 0px;
+ 	inset-inline-end: 0px;
+ 	width: fit-content;
+ 	height: fit-content;
+ 	margin-top: auto;
+ 	margin-right: auto;
+ 	margin-bottom: auto;
+ 	margin-left: auto;
+ 	border-top-width: medium;
+ 	border-right-width: medium;
+ 	border-bottom-width: medium;
+ 	border-left-width: medium;
+
+ 	border-top-color: currentcolor;
+ 	border-right-color: currentcolor;
+ 	border-bottom-color: currentcolor;
+ 	border-left-color: currentcolor;
+ 	border-image-source: none;
+ 	border-image-slice: 100%;
+ 	border-image-width: 1;
+ 	border-image-outset: 0;
+ 	border-image-repeat: stretch;
+ 	padding-top: 1em;
+ 	padding-right: 1em;
+ 	padding-bottom: 1em;
+ 	padding-left: 1em;
+ 	background-color: canvas;
+ 	color: canvastext;
+ 	display: none;
+ }
+
+ #install-dialog::backdrop {
+ 	background-color: transparent;
+ }
+
+ dialog::backdrop {
+ 	background-image: none;
+ 	background-position-x: 0%;
+ 	background-position-y: 0%;
+ 	background-size: auto;
+ 	background-repeat: repeat;
+ 	background-attachment: scroll;
+ 	background-origin: padding-box;
+ 	background-clip: border-box;
+ 	background-color: rgba(0, 0, 0, 0.1);
+ }
+
+ ::backdrop {
+ 	display: block;
+ 	position: fixed;
+ 	top: 0px;
+ 	right: 0px;
+ 	bottom: 0px;
+ 	left: 0px;
+ }
+
+ :is(#install-dialog, #sensor-dialog, #geolocation-dialog) header {
+ 	justify-self: flex-start;
+ 	min-height: 50px;
+ 	display: flex;
+ 	align-items: center;
+ 	border-bottom: 1px solid #bababa;
+ }
+
+ #install-dialog header {
+ 	padding-block: .5rem;
+ 	width: 100%;
+ }
+
+ #install-dialog header img {
+ 	width: 60px;
+ }
+
+ #install-dialog header div.heading {
+ 	display: flex;
+ 	flex-direction: column;
+ 	justify-content: space-between;
+ 	flex-grow: 1;
+ 	padding-inline: 1rem;
+ }
+
+ #install-dialog header span:first-child {
+ 	font-weight: bold;
+ 	line-height: 26px;
+ }
+
+ #install-dialog ul {
+ 	list-style-type: none;
+ 	padding: 0;
+ 	margin-bottom: 2rem;
+ }
+
+ ul {
+ 	margin: 0;
+ 	padding-left: 20px;
+ }
+
+ ul,
+ menu,
+ dir {
+ 	display: block;
+ 	list-style-type: disc;
+ 	margin-block-start: 1em;
+ 	margin-block-end: 1em;
+ 	padding-inline-start: 40px;
+ }
+
+ #install-dialog ul li {
+ 	display: flex;
+ 	align-items: center;
+ 	padding: .5rem 0;
+ }
+
+ li {
+ 	margin-bottom: 10px;
+ }
+
+ li {
+ 	display: list-item;
+ 	text-align: match-parent;
+ }
+
+ #install-dialog ul {
+ 	list-style-type: none;
+ 	padding: 0;
+ 	margin-bottom: 2rem;
+ }
+
+ #install-dialog ul li img {
+ 	padding-inline: .5rem;
+ 	width: 24px;
+ }
+
+ li {
+ 	display: list-item;
+ 	text-align: match-parent;
+ }
+
+ #install-dialog ul {
+ 	list-style-type: none;
+ 	padding: 0;
+ 	margin-bottom: 2rem;
+ }
+
+ #install-dialog .screenshots,
+ #install-dialog .screenshots .scroll-div {
+ 	width: 100%;
+ 	overflow: auto;
+ 	position: relative;
+ }
+
+ address,
+ article,
+ aside,
+ div,
+ footer,
+ header,
+ hgroup,
+ main,
+ nav,
+ search,
+ section {
+ 	display: block;
+ }
+
+ #install-dialog .screenshots .back {
+ 	left: 8px;
+ 	z-index: 1;
+ }
+
+ #install-dialog .screenshots :is(.back, .forward) {
+ 	display: flex;
+ 	align-items: center;
+ 	position: absolute;
+ 	top: 0;
+ 	height: 100%;
+ }
+
+ #install-dialog .screenshots img {
+ 	height: 250px;
+ }
+
+ #install-dialog .screenshots .forward {
+ 	right: 8px;
+ }
+
+ #install-dialog .screenshots :is(.back, .forward) {
+ 	display: flex;
+ 	align-items: center;
+ 	position: absolute;
+ 	top: 0;
+ 	height: 100%;
+ }
+
+ #install-dialog button {
+ 	display: flex;
+ 	align-items: center;
+ 	justify-content: center;
+ 	width: 24px;
+ 	height: 24px;
+ 	border: none;
+ 	border-radius: 50%;
+ 	background-color: #c5c1c6;
+ }
+
+ #install-dialog .screenshots .scroll-div div {
+ 	display: flex;
+ 	gap: 1rem;
+ }
+
+ #install-dialog .screenshots img {
+ 	height: 250px;
+ }
+
+ .slide-in-button {
+	width: 300px;
+    margin: 50px auto;
+ 	transform: translateY(-150%);
+ 	opacity: 0;
+ 	animation: slideInTop 0.8s ease-out forwards;
+ 	color: white;
+ 	border: none;
+ 	border-radius: 9999px;
+ 	cursor: pointer;
+ }
+
+ @keyframes slideInTop {
+ 	to {
+ 		transform: translateY(0);
+ 		opacity: 1;
+ 	}
  }

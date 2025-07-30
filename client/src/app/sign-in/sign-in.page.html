@@ -20,15 +20,15 @@
         <div class="form">
             <ion-list>
                 <ion-item class="animate__animated animate__fadeInUp">
-                    <ion-input formControlName="email" [label]="'Email' | translate" labelPlacement="floating" mode="md"
+                    <ion-input formControlName="email" [label]="'Email' | translate" labelPlacement="stacked"
                         type="email"></ion-input>
                 </ion-item>
                 <ion-item class="animate__animated animate__fadeInUp">
-                    <ion-input formControlName="password" [label]="'Password' | translate" class="password" mode="md"
-                        labelPlacement="floating" type="password">
+                    <ion-input formControlName="password" [label]="'Password' | translate" class="password"
+                        labelPlacement="stacked" type="password">
                         <ion-input-password-toggle slot="end"></ion-input-password-toggle>
                     </ion-input>
-                </ion-item>
+                </ion-item>     
             </ion-list>
             <span  class="or_continue_with animate__animated animate__fadeInUp">
                 <h3 class="ion-text-end" (click)="forgot_password()">{{"Forgot password" | translate}}?</h3>
@@ -50,13 +50,17 @@
                     </ion-col>
                 </ion-row>
             </div>
-            <div class="or_continue_with animate__animated animate__fadeInUp">
-                <h3 class="ion-text-center">{{'Dont have an account?' | translate}}</h3>
+            <div class="or_continue_with padding-20 animate__animated animate__fadeInUp">
+                <h3 class="ion-text-center d-flex-register">
+                        {{'Dont have an account?' | translate}}
+                    <ion-button size="small" fill="clear" expand="round" class="animate__animated animate__fadeInUp"
+                        (click)="register()">{{'Register' | translate}}
+                        <ion-icon name="chevron-forward-outline"></ion-icon>
+                    </ion-button>
+                </h3>
             </div>
-            <ion-button size="large" expand="round" class="btn animate__animated animate__fadeInUp"
-                (click)="register()">{{'Register' | translate}}</ion-button>
-            <div class="or_continue_with animate__animated animate__fadeInUp">
-                <h3 class="ion-text-end">{{'RYPM.' | translate}} v{{version}}</h3>
+            <div class="or_continue_with  padding-20 animate__animated animate__fadeInUp ion-text-end ">
+                <span class="version">{{'RYPM.' | translate}} v{{version}}</span>
             </div>
         </div>
     </form>

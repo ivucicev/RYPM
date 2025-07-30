@@ -1,3 +1,65 @@
 <ion-app>
     <ion-router-outlet></ion-router-outlet>
+    @if (showInstallButton) {
+        <ion-button color="light" class="ion-padding-x ion-margin-top slide-in-button" (click)="triggerInstall()">
+            {{ 'Install App' | translate }} &nbsp;
+            <ion-icon [src]="downloadIcon"></ion-icon>
+        </ion-button>
+    }
 </ion-app>
+
+<dialog id="install-dialog" [attr.open]="showInstallButton" [class.opened]="showInstallDialog">
+
+    <section>
+        <header>
+            <img src="/assets/logo-light-sm.png">
+            <div class="heading">
+                <span>{{ 'RYPM.' | translate }}</span>
+                <span>{{ 'Only workout companion youll ever need.' | translate }}</span>
+            </div>
+            <div class="close">
+                <button type="button" id="close-install-dialog" (click)="showInstallDialog=false">
+                    <ion-icon name="close"></ion-icon> </button>
+            </div>
+        </header>
+
+        <div class="body">
+            <p>{{ 'To install the RYPM. app from Safari on MacOS or iOS:' | translate }}</p>
+            <ul>
+                <li>
+                    <ion-icon [src]="shareIcon"></ion-icon> &nbsp;
+                    {{ '1. Click Share' | translate }}
+                </li>
+                <li>
+                    <ion-icon name="add-circle-outline"></ion-icon> &nbsp;
+                    {{ '2. Click Add to Dock / Home Screen' | translate }}
+                </li>
+            </ul>
+        </div>
+        <div class="screenshots">
+            <div class="back">
+                <button type="button" id="back-button">
+                    <ion-icon [src]="backwardIcon"></ion-icon>
+                </button>
+            </div>
+            <div class="scroll-div">
+                <div>
+                    <img src="assets/screenshots/1.png" class="narrow">
+                    <img src="assets/screenshots/2.png" class="narrow">
+                    <img src="assets/screenshots/6.png" class="narrow">
+                    <img src="assets/screenshots/7.png" class="narrow">
+                    <img src="assets/screenshots/9.png" class="narrow">
+                    <img src="assets/screenshots/w3.png" class="wide">
+                    <img src="assets/screenshots/w2.png" class="wide">
+                    <img src="assets/screenshots/w1.png" class="wide">
+                    <img src="assets/screenshots/w4.png" class="wide">
+                </div>
+            </div>
+            <div class="forward">
+                <button type="button" id="forward-button">
+                    <ion-icon [src]="forwardIcon"></ion-icon>
+                </button>
+            </div>
+        </div>
+    </section>
+</dialog>

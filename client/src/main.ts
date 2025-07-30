@@ -5,10 +5,11 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppComponent } from './app/app.component';
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
-import { enableProdMode, importProvidersFrom } from '@angular/core';
+import { enableProdMode, importProvidersFrom, isDevMode } from '@angular/core';
 import { environment } from './environments/environment.prod';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { routes } from './app/app.routes';
+import { provideServiceWorker } from '@angular/service-worker';
 
 if (environment.production) {
     enableProdMode();
@@ -41,6 +42,9 @@ bootstrapApplication(AppComponent, {
             NgCircleProgressModule.forRoot({}),
         ),
         provideRouter(routes
-            , withPreloading(PreloadAllModules))
+            , withPreloading(PreloadAllModules)), provideServiceWorker('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            registrationStrategy: 'registerWhenStable:30000'
+          })
     ]
 });

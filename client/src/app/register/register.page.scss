@@ -39,8 +39,15 @@ ion-header,
     color: var(--ion-text-color);
 }
 
+.d-flex-register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-
+.terms {
+    padding-top: 5px;
+}
 
 .user-type-selector {
     margin: 16px 0;

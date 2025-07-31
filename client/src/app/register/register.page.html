@@ -59,22 +59,41 @@
 
             <ion-list>
                 <ion-item class="animate__animated animate__fadeInUp">
-                    <ion-input formControlName="name" labelPlacement="floating" [label]="'Name' | translate"
-                        type="text">
+                    <ion-input formControlName="name" labelPlacement="stacked" [label]="'Name' | translate" type="text">
                     </ion-input>
                 </ion-item>
 
                 <ion-item class="animate__animated animate__fadeInUp">
-                    <ion-input formControlName="email" labelPlacement="floating" [label]="'Email' | translate"
+                    <ion-input formControlName="email" labelPlacement="stacked" [label]="'Email' | translate"
                         type="email">
                     </ion-input>
                 </ion-item>
 
                 <ion-item class="animate__animated animate__fadeInUp">
-                    <ion-input formControlName="password" labelPlacement="floating" [label]="'Password' | translate"
+                    <ion-input formControlName="password" labelPlacement="stacked" [label]="'Password' | translate"
                         class="password" type="password">
+                        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
                     </ion-input>
                 </ion-item>
+
+                <ion-item class="animate__animated animate__fadeInUp">
+                    <ion-input formControlName="passwordConfirm" labelPlacement="stacked"
+                        [label]="'Password confirm' | translate" class="password" type="password">
+                        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+                    </ion-input>
+                </ion-item>
+
+                <ion-item class="animate__animated animate__fadeInUp">
+                    <ion-checkbox labelPlacement="end" formControlName="terms">
+                        <div class="d-flex-register">{{ 'I agree to the' | translate }}
+
+                            <ion-button type="button" size="small" fill="clear" expand="round" class="terms animate__animated animate__fadeInUp"
+                                (click)="showTerms()">{{'Terms & Conditions' | translate}}
+                            </ion-button>
+                        </div>
+                    </ion-checkbox>
+                </ion-item>
+
             </ion-list>
 
         </div>
@@ -82,5 +101,6 @@
 </ion-content>
 
 <ion-footer class="ion-no-border animate__animated animate__fadeInUp">
-    <ion-button size="large" expand="round" class="btn" (click)="register()">{{'Register' | translate}}</ion-button>
+    <ion-button [disabled]="registrationForm.invalid" size="large" expand="round" class="btn"
+        (click)="register()">{{'Register' | translate}}</ion-button>
 </ion-footer>

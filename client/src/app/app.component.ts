@@ -12,6 +12,7 @@ import { ThemeService } from './core/services/theme.service';
 import { registerIcons } from './core/constants/icons';
 import { register } from 'swiper/element/bundle';
 import { chevronBackCircleOutline, chevronBackOutline, chevronForwardCircleOutline, chevronForwardOutline, downloadOutline, shareOutline } from 'ionicons/icons';
+import { ActivatedRoute, NavigationStart, Route, Router } from '@angular/router';
 
 @Component({
     selector: 'app-root',
@@ -28,6 +29,7 @@ export class AppComponent {
     backwardIcon = chevronBackOutline;
     downloadIcon = downloadOutline;
     isInstalled = window.matchMedia('(display-mode: standalone)').matches;
+    canShowInstallButton = true;
 
     constructor(
         private platform: Platform,
@@ -35,9 +37,10 @@ export class AppComponent {
         private modalController: ModalController,
         private translate: TranslateService,
         private myEvent: MyEvent,
+        private router: Router,
         private accountService: AccountService,
         private themeService: ThemeService
-    ) {
+    ) { 
         this.themeService.initializeTheme();
         this.initializeApp();
 
@@ -45,6 +48,15 @@ export class AppComponent {
             this.navCtrl.navigateRoot(['./']);
             this.globalize(value);
         });
+
+        this.router.events.subscribe(e => {
+            if (e instanceof NavigationStart) {
+                if (!e?.url?.includes('sign-in')) {
+                    this.showInstallButton = false;
+                    this.canShowInstallButton = false;
+                }
+            }
+        }) 
 
         registerIcons();
     }
@@ -106,7 +118,7 @@ export class AppComponent {
 
     @HostListener('window:beforeinstallprompt', ['$event'])
     onBeforeInstallPrompt(event: any) {
-        event.preventDefault(); // Prevent auto prompt
+        event.preventDefault();
         this.deferredPrompt = event;
     }
 
@@ -118,7 +130,6 @@ export class AppComponent {
         if (this.deferredPrompt) {
             this.deferredPrompt.prompt();
             this.deferredPrompt.userChoice.then((choiceResult: any) => {
-                // Handle outcome
                 this.deferredPrompt = null;
             });
         }

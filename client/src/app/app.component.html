@@ -1,6 +1,6 @@
 <ion-app>
     <ion-router-outlet></ion-router-outlet>
-    @if (showInstallButton) {
+    @if (canShowInstallButton && showInstallButton) {
         <ion-button color="light" class="ion-padding-x ion-margin-top slide-in-button" (click)="triggerInstall()">
             {{ 'Install App' | translate }} &nbsp;
             <ion-icon [src]="downloadIcon"></ion-icon>

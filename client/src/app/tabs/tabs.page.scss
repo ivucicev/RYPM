@@ -6,6 +6,9 @@ ion-tabs {
         background: #0B0B0D;
         --background: var(--transparent) !important;
         height: 52px;
+        min-height: 52px;
+        max-height: 52px;
+        padding-bottom: 0px;
 
         ion-tab-button {
             --ripple-color: var(--transparent) !important;

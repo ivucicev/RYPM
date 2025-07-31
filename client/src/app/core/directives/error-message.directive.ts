@@ -15,6 +15,8 @@ export class ErrorMessageDirective implements OnInit, OnDestroy {
         email: 'Email is invalid',
         minlength: 'Too short',
         maxlength: 'Maximum length exceeded',
+        passwordConfirm: 'Passwords do not match',
+        requiredTrue: 'Terms and conditions must be accepted',
         pattern: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
     };
 

@@ -16,9 +16,9 @@ export class ThemeService {
     }
 
     private overrideMetaTheme(color?: string) {
-        // const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-        // metaThemeColor.setAttribute('content', color);
-    }
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        metaThemeColor.setAttribute('content', color);
+    } 
 
     async initializeTheme() {
         const userTheme = await this.storageService.getItem<string>(StorageKeys.THEME);
@@ -32,8 +32,8 @@ export class ThemeService {
         this.isDark.set(userTheme === 'dark')
 
         this.isDark() ?
-            this.overrideMetaTheme('white') :
-            this.overrideMetaTheme('black-translucent');
+            this.overrideMetaTheme('#EBEBEB') :
+            this.overrideMetaTheme('#1b1b20');
 
     }
 

@@ -5,6 +5,8 @@ export interface RegisterBM {
     email: string;
     type: UserType;
     password: string;
+    passwordConfirm: any;
     avatar: any;
+    terms: boolean;
 }
 

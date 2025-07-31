@@ -6,35 +6,57 @@ import { RegisterBM, } from '../core/models/bm/register-bm';
 import { FormType } from '../core/helpers/form-helpers';
 import { ErrorMessageDirective } from '../core/directives/error-message.directive';
 import { UserType } from '../core/models/enums/user-type';
-import { IonItem, IonFooter, IonButton, IonList, IonSegmentButton, IonIcon, IonContent, IonBackButton, IonToolbar, IonHeader, IonTitle, IonButtons, IonInput, IonSegment } from "@ionic/angular/standalone";
+import { IonItem, IonFooter, IonButton, IonList, IonSegmentButton, IonIcon, IonContent, IonBackButton, IonToolbar, IonHeader, IonTitle, IonButtons, IonInput, IonSegment, IonInputPasswordToggle, IonCheckbox } from "@ionic/angular/standalone";
+import { JsonPipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-register',
     templateUrl: 'register.page.html',
     styleUrls: ['./register.page.scss'],
     standalone: true,
-    imports: [IonButtons, IonInput, IonTitle, IonHeader, IonToolbar, IonBackButton, IonContent, IonIcon, IonSegmentButton, IonSegment, IonList, IonButton, IonFooter, IonItem, TranslateModule, ReactiveFormsModule, ErrorMessageDirective],
+    imports: [IonButtons, IonInput, IonTitle, IonCheckbox, IonInputPasswordToggle, IonHeader, IonToolbar, IonBackButton, IonContent, IonIcon, IonSegmentButton, IonSegment, IonList, IonButton, IonFooter, IonItem, TranslateModule, ReactiveFormsModule, ErrorMessageDirective],
 })
 export class RegisterPage implements OnInit {
 
-    registrationForm: FormGroup<FormType<RegisterBM>>;
+    registrationForm: FormGroup<FormType<any>>;
 
     userTypes = UserType;
 
     constructor(
         private formBuilder: FormBuilder,
-        private accountService: AccountService
+        private accountService: AccountService,
+        private route: Router
     ) {
     }
 
     ngOnInit() {
-        this.registrationForm = this.formBuilder.group({
+        this.registrationForm = this.formBuilder.group<any>({
             avatar: [],
             type: [UserType.User],
             name: ['', [Validators.required]],
             email: ['', [Validators.required, Validators.email]],
-            password: ['', [Validators.required, Validators.minLength(8)]]
+            password: ['', [Validators.required,
+            Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=[\\]{};:\'",.<>/?]).{8,}$'),
+                , Validators.minLength(8)]],
+            passwordConfirm: [
+                '',
+                [
+                    Validators.required,
+                    (control) => {
+                        const password = control.parent?.get('password')?.value;
+                        const passwordConfirm = control.value;
+                        return (password === passwordConfirm ? null : { passwordConfirm: true });
+                    },
+                    Validators.minLength(8)
+                ]
+            ],
+            terms: [false, [Validators.requiredTrue]]
         });
+    }
+
+    showTerms() {
+        this.route.navigate(['./terms-condition']);
     }
 
     register() {
@@ -44,6 +66,6 @@ export class RegisterPage implements OnInit {
             return;
         }
         const model = this.registrationForm.getRawValue();
-        this.accountService.register(model);
+        this.accountService.register(model as any);
     }
 }

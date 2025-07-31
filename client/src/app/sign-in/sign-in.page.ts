@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { NavController, IonButton, IonCol, IonRow, IonIcon, IonList, IonContent, IonToolbar, IonHeader, IonButtons, IonBackButton, IonItem, IonInput, IonInputPasswordToggle } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
@@ -12,7 +12,7 @@ import { logoFacebook, logoGoogle } from 'ionicons/icons';
 // @ts-ignore
 import packageJson from '../../../package.json';
 
-@Component({
+@Component({      
     selector: 'app-sign-in',
     templateUrl: 'sign-in.page.html',
     styleUrls: ['./sign-in.page.scss'],
@@ -28,7 +28,7 @@ export class SignInPage implements OnInit {
     logoFacebook = logoFacebook;
     logoGoogle = logoGoogle;
     version = packageJson.version;
-
+ 
     constructor(
         private router: Router,
         private accountService: AccountService,

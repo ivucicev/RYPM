@@ -19,35 +19,35 @@
         <div class="form ion-padding-top ion-padding-bottom">
 
             <div class="user-type-selector">
-                <ion-segment formControlName="type" class="custom-segment">
-                    <ion-segment-button [value]="userTypes.User" class="segment-button">
-                        <div class="segment-button-content">
-                            <ion-icon name="person-outline"></ion-icon>
-                            <div class="segment-text">
+                <ion-row class="segment-toolbar ion-padding">
+                    <ion-segment formControlName="type">
+                        <ion-segment-button [value]="userTypes.User">
+                            <ion-label class="d-flex">
+                                <ion-icon name="person-outline" class="ion-padding-x large"></ion-icon>
                                 <span>{{ 'User' | translate }}</span>
-                            </div>
-                        </div>
-                    </ion-segment-button>
+                            </ion-label>
+                        </ion-segment-button>
 
-                    <ion-segment-button [value]="userTypes.Trainer" class="segment-button">
-                        <div class="segment-button-content">
-                            <ion-icon name="barbell-outline"></ion-icon>
-                            <div class="segment-text">
+                        <ion-segment-button [value]="userTypes.Trainer">
+                            <ion-label class="d-flex">
+                                <ion-icon class="ion-padding-x large" name="barbell-outline"></ion-icon>
                                 <span>{{ 'Trainer' | translate }}</span>
-                            </div>
-                        </div>
-                    </ion-segment-button>
-                </ion-segment>
-
-                <div class="type-description">
+                            </ion-label>
+                        </ion-segment-button>
+                    </ion-segment>
+                </ion-row>
+                <div class="type-description ion-text-center">
 
                     @if (registrationForm.get('type').value === userTypes.Trainer) {
                     <p>
                         {{ 'Register as trainer to find your next potential client.' | translate }}
+                        {{ 'Registering as a trainer will still allow you to use the RYPM app for your own training.' | translate }}
+                        {{ 'Your profile will be private unless you specify otherwise.' | translate }}
                     </p>
                     } @else {
                     <p>
                         {{ 'Register as user to find your next trainer.' | translate }}
+                        {{ 'Your profile will be private unless you specify otherwise.' | translate }}
                     </p>
                     }
 
@@ -84,8 +84,9 @@
                     <ion-checkbox labelPlacement="end" formControlName="terms">
                         <div class="d-flex-register">{{ 'I agree to the' | translate }}
 
-                            <ion-button type="button" size="small" fill="clear" expand="round" class="terms animate__animated animate__fadeInUp"
-                                (click)="showTerms()">{{'Terms & Conditions' | translate}}
+                            <ion-button type="button" size="small" fill="clear" expand="round"
+                                class="terms animate__animated animate__fadeInUp" (click)="showTerms()">{{'Terms &
+                                Conditions' | translate}}
                             </ion-button>
                         </div>
                     </ion-checkbox>

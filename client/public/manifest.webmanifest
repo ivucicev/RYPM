@@ -2,7 +2,7 @@
 	"name": "RYPM.",
 	"short_name": "RYPM.",
 	"description": "RYPM. is a modern, open-source, and self-hosted workout partner app designed to help you find workout trainers and stay motivated.",
-	"display": "standalone",
+	"display": "fullscreen",
 	"scope": "./",
 	"start_url": "./",
 	"icons": [

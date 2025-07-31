@@ -16,8 +16,8 @@ export class ThemeService {
     }
 
     private overrideMetaTheme(color?: string) {
-        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-        metaThemeColor.setAttribute('content', color);
+        // const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        // metaThemeColor.setAttribute('content', color);
     }
 
     async initializeTheme() {

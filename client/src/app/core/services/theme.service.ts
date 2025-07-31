@@ -32,8 +32,8 @@ export class ThemeService {
         this.isDark.set(userTheme === 'dark')
 
         this.isDark() ?
-            this.overrideMetaTheme('#EBEBEB') :
-            this.overrideMetaTheme('#1b1b20');
+            this.overrideMetaTheme('white') :
+            this.overrideMetaTheme('black-translucent');
 
     }
 

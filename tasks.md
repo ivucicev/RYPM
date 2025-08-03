@@ -1,6 +1,8 @@
 BUGS -
      - [] Adding custom excersiz not visible immediatelly in selct excersizes screen
      - [x] Starting exersize from new workoute causes eror Effort required
+     - [ ] when in workout selected weight is zero then you have to scroll                  all      the way
+     - [ ] No need to select weight when creating program...
 
 Workouts screen - 
     - [x] Add program complete test [ok]

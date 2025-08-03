@@ -12,6 +12,7 @@ import { WeightTypePipe } from 'src/app/core/pipes/weight-type.pipe';
 import { RepTypePipe } from 'src/app/core/pipes/rep-type.pipe';
 import { NgTemplateOutlet } from '@angular/common';
 import { IonPopover } from '@ionic/angular/standalone';
+import { ReserveType } from 'src/app/core/models/enums/reserve-type';
 
 @Component({
     selector: 'app-exercise-form',
@@ -41,13 +42,16 @@ export class ExerciseFormComponent implements OnChanges {
 
     RepType = RepType;
     WeightType = WeightType;
+    ReserveType = ReserveType;
 
+    reserveTypes = Object.values(ReserveType).filter((value) => typeof value === 'number') as ReserveType[];
     weightTypes = Object.values(WeightType).filter((value) => typeof value === 'number') as WeightType[];
     repTypes = Object.values(RepType).filter((value) => typeof value === 'number') as RepType[];
 
     selectedSetIndex: number = 0;
 
     selectedRestValue: any = 0;
+    selectedReserveType: any = null;
     numSets: any = 1;
     selectedWeightType: any = WeightType.KG;
     selectedWeight: any = 60;
@@ -55,6 +59,10 @@ export class ExerciseFormComponent implements OnChanges {
     selectedValue: any = 10;
     selectedMinValue: any = 8;
     selectedMaxValue: any = 12;
+    rpes = [1,2,3,4,5,6,7,8,9,10];
+    rirs = [10,9,8,7,6,5,4,3,2,1];
+    selectedRPE;
+    selectedRIR;
 
     weightOptions = Array.from({ length: 240 }, (_, i) => (i + 1) * 0.5);
     setsOptions = Array.from({ length: 10 }, (_, i) => i + 1);
@@ -241,6 +249,10 @@ export class ExerciseFormComponent implements OnChanges {
         if (type == RepType.Duration) {
             this.selectedWeightType = WeightType.NA;
         }
+    }
+
+    setReserveType(type) {
+        this.selectedReserveType = type;
     }
 
     cancelPicker() {

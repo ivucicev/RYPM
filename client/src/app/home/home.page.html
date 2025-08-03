@@ -88,13 +88,13 @@
         <div [ngSwitch]="tab" [style.margin-left]="'auto'">
             <ng-container *ngSwitchCase="'programs'">
                 <ion-button expand="block" fill="clear" size="small" color="primary" (click)="newProgram()">
-                    <ion-icon slot="start" name="layers-outline"></ion-icon>
                     {{ 'Add program' | translate }}
+                    <ion-icon slot="end" name="layers-outline"></ion-icon>
                 </ion-button>
             </ng-container>
             <ng-container *ngSwitchCase="'templates'">
                 <ion-button expand="block" fill="clear" color="primary" size="small" (click)="newTemplate()">
-                    <ion-icon slot="start" name="shapes-outline"></ion-icon>
+                    <ion-icon slot="end" name="shapes-outline"></ion-icon>
                     {{ 'Add template' | translate }}
                 </ion-button>
             </ng-container>

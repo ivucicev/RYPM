@@ -47,7 +47,7 @@
                             <ion-button (click)="cancelPicker()">{{ 'Cancel' | translate }}</ion-button>
                         </ion-buttons>
                         <ion-buttons slot="end">
-                            <ion-button (click)="confirmRestPicker()">{{ 'Ok' | translate }}</ion-button>
+                            <ion-button (click)="confirmRestPicker()">{{ 'OK' | translate }}</ion-button>
                         </ion-buttons>
                     </ion-toolbar>
                 </ion-header>
@@ -230,6 +230,20 @@
                     }
                 </ion-segment>
             </ion-toolbar>
+
+            <ion-toolbar class="type-selector-toolbar">
+                <ion-segment [value]="selectedReserveType" (ionChange)="setReserveType($event.detail.value)">
+                    <ion-segment-button [value]="null">
+                        <ion-label>{{ 'N/A' | translate }}</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button [value]="ReserveType.RIR">
+                        <ion-label>{{ 'RiR' | translate }}</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button [value]="ReserveType.RPE">
+                        <ion-label>{{ 'RPE' | translate }}</ion-label>
+                    </ion-segment-button>
+                </ion-segment>
+            </ion-toolbar>
             }
         </ion-header>
 
@@ -294,6 +308,27 @@
                     </ion-picker-column-option>
                     }
                 </ion-picker-column>
+                }
+
+                @if (!workoutMode) {
+                @if (selectedReserveType == ReserveType.RIR) {
+                <ion-picker-column [value]="selectedRIR" (ionChange)="selectedRIR = $event.detail.value">
+                    @for (rir of rirs; track rir) {
+                    <ion-picker-column-option [value]="rir">
+                        {{ rir }}
+                    </ion-picker-column-option>
+                    }
+                </ion-picker-column>
+                }
+                @if (selectedReserveType == ReserveType.RPE) {
+                <ion-picker-column [value]="selectedRPE" (ionChange)="selectedRPE = $event.detail.value">
+                    @for (rpe of rpes; track rpe) {
+                    <ion-picker-column-option [value]="rpe">
+                        {{ rpe }}
+                    </ion-picker-column-option>
+                    }
+                </ion-picker-column>
+                }
                 }
 
         </ion-picker>

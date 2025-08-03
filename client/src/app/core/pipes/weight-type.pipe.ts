@@ -11,8 +11,8 @@ export class WeightTypePipe implements PipeTransform {
     private translationKeys = {
         [WeightType.KG]: 'kg',
         [WeightType.LB]: 'lb',
-        [WeightType.BW]: 'bw',
-        [WeightType.NA]: 'n_a'
+        [WeightType.BW]: 'BW',
+        [WeightType.NA]: 'N/A'
     };
 
     constructor(private translateService: TranslateService) { }

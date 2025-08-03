@@ -7,6 +7,7 @@ export interface WorkoutBM {
     start: Date,
     end: Date,
     state: WorkoutState,
-
+    effort?: number;
+    comment?: string;
     exercises: ExerciseBM[];
 }

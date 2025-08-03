@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { NavController, IonButton, IonToolbar, IonFooter, IonIcon, IonLabel, IonContent, IonHeader, IonTitle, IonButtons, IonBackButton } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
@@ -47,6 +47,8 @@ export class WorkoutComponent implements OnInit {
             id: [''],
             end: [null],
             start: [null],
+            effort: [5],
+            comment: [''],
             state: [WorkoutState.InProgress],
             exercises: this.formBuilder.array<ExerciseFormGroup>([])
         });

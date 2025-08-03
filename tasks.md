@@ -1,3 +1,7 @@
+BUGS -
+     - [] Adding custom excersiz not visible immediatelly in selct excersizes screen
+     - [x] Starting exersize from new workoute causes eror Effort required
+
 Workouts screen - 
     - [x] Add program complete test [ok]
     - [x] Add template complete test [ok]
@@ -11,7 +15,7 @@ Workouts screen -
     - [x] adding description to workout, that will not be propagated to next workout
     - [x] Rest timer does not get copied when copying or duplicating
     - [] When creating program - adding lots of weeks causes 404 in console and lots of requests
-    - [] Super Sets
+    - [ ] Super Sets
     - [] Drop Sets
     - [] RPE
     - [] AMRAP

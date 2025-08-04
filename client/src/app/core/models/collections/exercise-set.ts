@@ -22,6 +22,9 @@ export interface Set extends EntityBase {
 
     previousWeight?: number;
     previousValue?: number;
+
+    rir?: number;
+    rpe?: number;
 }
 
 

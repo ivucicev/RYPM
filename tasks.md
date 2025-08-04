@@ -1,8 +1,9 @@
 BUGS -
-     - [] Adding custom excersiz not visible immediatelly in selct excersizes screen
+     - [ ] Adding custom excersiz not visible immediatelly in selct excersizes screen
      - [x] Starting exersize from new workoute causes eror Effort required
-     - [ ] when in workout selected weight is zero then you have to scroll                  all      the way
+     - [x] when in workout selected weight is zero then you have to scroll !HIGH all the way
      - [ ] No need to select weight when creating program...
+     - [x] When previewing done day - going edit program clicking on day - all values are 0
 
 Workouts screen - 
     - [x] Add program complete test [ok]
@@ -16,42 +17,42 @@ Workouts screen -
     - [X] three dots on new program do not work 
     - [x] adding description to workout, that will not be propagated to next workout
     - [x] Rest timer does not get copied when copying or duplicating
-    - [] When creating program - adding lots of weeks causes 404 in console and lots of requests
+    - [ ] When creating program - adding lots of weeks causes 404 in console and lots of requests
     - [ ] Super Sets
-    - [] Drop Sets
-    - [] RPE
-    - [] AMRAP
+    - [ ] Drop Sets
+    - [x] RPE i RiR
+    - [x] AMRAP
 
-    Activity screen
-        - [x] Volume -> over time
-        - [x] Volume -> over time per workout
-        - [x] Volume -> overtime per workout Max.
-        - [x] Effort -> over time
-        - [] Measurements all custom
+Activity screen -
+    - [x] Volume -> over time
+    - [x] Volume -> over time per workout
+    - [x] Volume -> overtime per workout Max.
+    - [x] Effort -> over time
+    - [ ] Measurements all custom
 
-    Chat
-        - [] AI Trainer
-        - [] Human Trainer
+Chat -
+    - [ ] AI Trainer
+    - [ ] Human Trainer
 
-    Settings
-        - [] profile -> body stats, measurements, pictures...
-        - [] plates -> for increments
-        - [] measurements -> custom -> add whatever custom name
-        - [] Account settings
-        - [] Languages
-        - [] Chat with us, help us improve / contact...
-        - [] Terms & Conditions
+Settings -
+    - [ ] profile -> body stats, measurements, pictures...
+    - [ ] plates -> for increments
+    - [ ] measurements -> custom -> add whatever custom name
+    - [ ] Account settings
+    - [ ] Languages
+    - [ ] Chat with us, help us improve / contact...
+    - [ ] Terms & Conditions
 
-    General
-        - [x] PWA Setup 
-        - [] PWA notifications for Rest timer
-        - [] White labeling
-        - [x] Docker deploy
-        - [x] Name, Domain
-        - [x] Gihub actions
-        - [x] Repo Transfer
+General -
+    - [x] PWA Setup 
+    - [ ] PWA notifications for Rest timer
+    - [ ] White labeling
+    - [x] Docker deploy
+    - [x] Name, Domain
+    - [x] Gihub actions
+    - [x] Repo Transfer
 
-    Admin / Trainer
-        - [] TBD
-        - [] Trainer profile
-        - [] Trainer chat
+Admin / Trainer -
+    - [ ] TBD
+    - [ ] Trainer profile
+    - [ ] Trainer chat

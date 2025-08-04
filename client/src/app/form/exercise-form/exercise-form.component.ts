@@ -59,8 +59,8 @@ export class ExerciseFormComponent implements OnChanges {
     selectedValue: any = 10;
     selectedMinValue: any = 8;
     selectedMaxValue: any = 12;
-    rpes = [1,2,3,4,5,6,7,8,9,10];
-    rirs = [10,9,8,7,6,5,4,3,2,1];
+    rpes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    rirs = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
     selectedRPE;
     selectedRIR;
 
@@ -112,10 +112,11 @@ export class ExerciseFormComponent implements OnChanges {
 
         for (let i = 0; i < sets.length; i++) {
             const set = sets.at(i);
+
             if (set.controls.completed.value) continue;
 
-            set.controls.currentValue.setValue(set.controls.previousValue.value || set.controls.value.value || 0);
-            set.controls.currentWeight.setValue(set.controls.previousWeight.value || set.controls.weight.value || 0);
+            set.controls.currentValue.setValue(set.controls.previousValue.value || set.controls.currentValue.value || set.controls.value.value || 0);
+            set.controls.currentWeight.setValue(set.controls.previousWeight.value || set.controls.currentWeight.value || set.controls.weight.value || 0);
         }
     }
 
@@ -217,9 +218,9 @@ export class ExerciseFormComponent implements OnChanges {
 
         this.numSets = 1;
         this.selectedWeightType = currentSet.weightType;
-        this.selectedWeight = currentSet.currentWeight == currentSet.weight ? currentSet.previousWeight : currentSet.currentWeight || currentSet.weight || 1;
+        this.selectedWeight = currentSet.currentWeight == currentSet.weight ? (currentSet.previousWeight || currentSet.currentWeight || currentSet.weight || 0) : currentSet.currentWeight || currentSet.weight || 1;
         this.selectedRepType = currentSet.type;
-        this.selectedValue = currentSet.currentValue == currentSet.value ? currentSet.previousValue : currentSet.currentValue || currentSet.value || 1;
+        this.selectedValue = currentSet.currentValue == currentSet.value ? (currentSet.previousValue || currentSet.currentValue || currentSet.value || 0) : currentSet.currentValue || currentSet.value || 1;
         this.selectedMinValue = currentSet.minValue || 1;
         this.selectedMaxValue = currentSet.maxValue || 1;
 
@@ -244,10 +245,14 @@ export class ExerciseFormComponent implements OnChanges {
         }
     }
 
-    setRepType(type) {
+    setRepType(type: any | RepType) {
         this.selectedRepType = type;
         if (type == RepType.Duration) {
             this.selectedWeightType = WeightType.NA;
+        }
+        if (type == RepType.Max) {
+            this.selectedRIR = null;
+            this.selectedRPE = null;
         }
     }
 
@@ -279,10 +284,23 @@ export class ExerciseFormComponent implements OnChanges {
             {
                 weightType: this.selectedWeightType,
                 weight: this.selectedWeight,
-                type: this.selectedRepType
+                type: this.selectedRepType,
+                rir: this.selectedRIR,
+                rpe: this.selectedRPE
             }
 
         setControl.patchValue(valuesToPatch);
+
+        // should update next values according to this value
+        this.setsArray.controls.forEach((c, i) => {
+            if (i > this.selectedSetIndex) {
+                c.patchValue({
+                    currentValue: this.selectedValue,
+                    currentWeight: this.selectedWeight
+                });
+            }
+        })
+
 
         if (!this.workoutMode) {
             if (this.selectedRepType === RepType.Reps || this.selectedRepType === RepType.Duration) {
@@ -298,6 +316,12 @@ export class ExerciseFormComponent implements OnChanges {
                     minValue: null,
                     maxValue: null
                 });
+            }
+
+            if (this.selectedRIR > 0) {
+                setControl.patchValue({ rir: this.selectedRIR });
+            } else if (this.selectedRPE > 0) {
+                setControl.patchValue({ rpe: this.selectedRPE });   
             }
 
             if (this.numSets > 1) {

@@ -193,6 +193,18 @@
             }
             }
         </div>
+
+        @if (set.get('rir').value) {
+            <div class="reserve-value">
+                ({{set.get('rir').value}} {{ 'RiR' | translate }})
+            </div>
+        }
+        
+        @if (set.get('rpe').value) {
+            <div class="reserve-value">
+                ({{set.get('rpe').value}} {{ 'RPE' | translate }})
+            </div>
+        }
     </div>
 </ng-template>
 
@@ -230,7 +242,7 @@
                     }
                 </ion-segment>
             </ion-toolbar>
-
+            @if (selectedRepType !== RepType.Max) {
             <ion-toolbar class="type-selector-toolbar">
                 <ion-segment [value]="selectedReserveType" (ionChange)="setReserveType($event.detail.value)">
                     <ion-segment-button [value]="null">
@@ -244,6 +256,7 @@
                     </ion-segment-button>
                 </ion-segment>
             </ion-toolbar>
+            }
             }
         </ion-header>
 
@@ -311,23 +324,25 @@
                 }
 
                 @if (!workoutMode) {
+                @if (selectedRepType !== RepType.Max) {
                 @if (selectedReserveType == ReserveType.RIR) {
-                <ion-picker-column [value]="selectedRIR" (ionChange)="selectedRIR = $event.detail.value">
+                <ion-picker-column [value]="selectedRIR" (ionChange)="selectedRIR = $event.detail.value; selectedRPE = null;">
                     @for (rir of rirs; track rir) {
                     <ion-picker-column-option [value]="rir">
-                        {{ rir }}
+                        {{ rir }} {{ 'RiR' | translate }}
                     </ion-picker-column-option>
                     }
                 </ion-picker-column>
                 }
                 @if (selectedReserveType == ReserveType.RPE) {
-                <ion-picker-column [value]="selectedRPE" (ionChange)="selectedRPE = $event.detail.value">
+                <ion-picker-column [value]="selectedRPE" (ionChange)="selectedRPE = $event.detail.value; selectedRIR = null;">
                     @for (rpe of rpes; track rpe) {
                     <ion-picker-column-option [value]="rpe">
-                        {{ rpe }}
+                        {{ rpe }} {{ 'RPE' | translate }}
                     </ion-picker-column-option>
                     }
                 </ion-picker-column>
+                }
                 }
                 }
 

@@ -20,6 +20,7 @@ import { Template } from "../models/collections/template";
 import { Equipment, Muscle } from "../models/autogen/enums";
 import { ExerciseTemplateSelectorComponent } from "src/app/exercise-template/exercise-template-selector/exercise-template-selector.component";
 import { ExerciseTemplate } from "../models/collections/exercise-templates";
+import { ReserveType } from "../models/enums/reserve-type";
 
 @Injectable()
 export class FormsService implements OnDestroy {
@@ -218,16 +219,18 @@ export class FormsService implements OnDestroy {
             completed: [set?.completed ?? false],
             completedAt: [set?.completedAt ?? null],
             restSkipped: [set?.restSkipped ?? false],
-            previousValue: [set?.previousValue ?? set?.currentValue ?? 0],
-            previousWeight: [set?.previousWeight ?? set?.currentWeight ?? 0],
-            currentValue: [set?.previousValue ?? set?.currentValue ?? 0],
-            currentWeight: [set?.previousWeight ?? set?.currentWeight ?? 0],
+            previousValue: [set?.previousValue || 0],
+            previousWeight: [set?.previousWeight || 0],
+            currentValue: [set?.previousValue || set?.currentValue || 0],
+            currentWeight: [set?.previousWeight || set?.currentWeight || 0],
             weight: [set?.weight ?? 0],
             weightType: [set?.weightType ?? WeightType.KG],
             type: [set?.type ?? RepType.Reps],
             value: [set?.value ?? 0],
             minValue: [set?.minValue ?? 0],
-            maxValue: [set?.maxValue ?? 0]
+            maxValue: [set?.maxValue ?? 0],
+            rpe: [set?.rpe || 0],
+            rir: [set?.rir || 0]
         });
 
         fg.controls.type.valueChanges

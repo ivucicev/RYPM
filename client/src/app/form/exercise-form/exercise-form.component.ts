@@ -64,7 +64,7 @@ export class ExerciseFormComponent implements OnChanges {
     selectedRPE;
     selectedRIR;
 
-    weightOptions = Array.from({ length: 240 }, (_, i) => (i + 1) * 0.5);
+    weightOptions = Array.from({ length: 800 }, (_, i) => (i + 1) * 0.5);
     setsOptions = Array.from({ length: 10 }, (_, i) => i + 1);
     repsOptions = Array.from({ length: 30 }, (_, i) => i + 1);
     repsOptionsMin = this.repsOptions;
@@ -293,7 +293,7 @@ export class ExerciseFormComponent implements OnChanges {
 
         // should update next values according to this value
         this.setsArray.controls.forEach((c, i) => {
-            if (i > this.selectedSetIndex) {
+            if (i > this.selectedSetIndex && c.controls?.completed?.value != true) {
                 c.patchValue({
                     currentValue: this.selectedValue,
                     currentWeight: this.selectedWeight

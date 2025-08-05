@@ -1,6 +1,6 @@
-import { Component, ElementRef, ViewChild, viewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, viewChild, ViewChildren } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ActionSheetController, NavController, IonCardContent, IonChip, IonButton, IonIcon, IonCardHeader, IonCard, IonList, IonTitle, IonRow, IonContent, IonLabel, IonToolbar, IonSegmentButton, IonHeader, IonSegment } from '@ionic/angular/standalone';
+import { ActionSheetController, NavController, IonCardContent, IonChip, IonButton, IonIcon, IonCardHeader, IonCard, IonList, IonTitle, IonRow, IonContent, IonLabel, IonToolbar, IonSegmentButton, IonHeader, IonSegment, ModalController, IonSelect, IonInput, IonItem } from '@ionic/angular/standalone';
 import { lastValueFrom } from 'rxjs';
 import { DateTimePipe } from '../core/pipes/datetime.pipe';
 import { PocketbaseService } from '../core/services/pocketbase.service';
@@ -12,13 +12,15 @@ import { NgSwitch, NgSwitchCase } from '@angular/common';
 import * as chart from 'chart.js';
 import { NoDataComponent } from '../shared/no-data/no-data.component';
 import { FormsModule } from '@angular/forms';
+import { MeasurementCreateModalComponent } from '../measurement-create-modal/measurement-create-modal.component';
+import { MeasurementEntryAddModal } from '../measurement-entry-add-modal/measurement-entry-add-modal.component';
 
 @Component({
     selector: 'app-my-activity',
     templateUrl: 'my-activity.page.html',
     styleUrls: ['./my-activity.page.scss'],
     standalone: true,
-    imports: [IonHeader, IonSegmentButton, IonToolbar, IonLabel, IonContent, IonRow, IonTitle, IonList, IonCard, IonCardHeader, IonIcon, IonButton, IonChip, IonCardContent, NoDataComponent, TranslateModule, FormsModule, IonSegment, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent],
+    imports: [IonHeader, IonSegmentButton, IonToolbar, IonLabel, IonContent, IonRow, IonTitle, IonList, IonCard, IonCardHeader, IonIcon, IonButton, IonChip, IonCardContent, NoDataComponent, TranslateModule, FormsModule, IonSegment, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent, IonItem],
 })
 export class MyActivityPage {
 
@@ -31,17 +33,21 @@ export class MyActivityPage {
     chartInstance: chart.Chart | null = null;
     tab: 'workouts' | 'stats' = 'workouts';
 
+    measurements = [];
+
     @ViewChild('volumeChart') chart: ElementRef<HTMLCanvasElement>;
     @ViewChild('effortChart') effortChart: ElementRef<HTMLCanvasElement>;
     @ViewChild('volumePerWorkout') chartPerWorkout: ElementRef<HTMLCanvasElement>;
     @ViewChild('maxPerWorkout') maxPerWorkout: ElementRef<HTMLCanvasElement>;
     @ViewChild('maxLoadPerWorkout') maxLoadPerWorkout: ElementRef<HTMLCanvasElement>;
+    @ViewChildren('measurementsGraph') measurementCanvas: Array<ElementRef<HTMLCanvasElement>> | any;
 
     constructor(
         private actionSheetCtrl: ActionSheetController,
         private translateService: TranslateService,
         private pocketbaseService: PocketbaseService,
-        private navCtrl: NavController
+        private navCtrl: NavController,
+        private modalCtrl: ModalController
     ) {
 
         this.getSessions();
@@ -268,7 +274,50 @@ export class MyActivityPage {
     }
 
     async onTabChange(tab) {
-        this.initCharts();
+        if (tab == 'stats')
+            this.initCharts();
+        if (tab == 'measurements')
+            await this.getMeasurements();
+    }
+
+    async getMeasurements() {
+        const data = await this.pocketbaseService.measurements.getList(0, 500, {
+            sort: '-created',
+            expand: 'entries',
+        }) as any;
+
+        this.measurements = [...data.items];
+
+        setTimeout(() => {
+            this.measurements.forEach((m, i) => {
+                const ctx = this.measurementCanvas.get(i)?.nativeElement.getContext('2d');
+                if (!ctx) return;
+
+                const loadLabels = m.entries.map(w => new Date(w.date).toLocaleDateString());
+
+                const chartInstance = new chart.Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: loadLabels,
+                        datasets: [{
+                            label: m.name,
+                            data: m?.entries?.map(e => e.value),
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            })
+        });
     }
 
     async getSessions() {
@@ -293,6 +342,55 @@ export class MyActivityPage {
 
     ionViewWillEnter() {
         this.refresh();
+    }
+
+    async createOrEditMeasurement(measurement?) {
+        const modal = await this.modalCtrl.create({
+            component: MeasurementCreateModalComponent,
+            breakpoints: [0, 0.75, 1],
+            initialBreakpoint: 0.75,
+            componentProps: measurement ? measurement : {
+                name: '',
+                unit: 'kg',
+                id: null
+            }
+        });
+
+        await modal.present();
+        const { data } = await modal.onWillDismiss();
+
+        if (data && data.name && data.unit) {
+            data.user = this.pocketbaseService.currentUser?.id || null;
+            await this.pocketbaseService.upsertRecord('measurements', data, true, false);
+            this.getMeasurements();
+        }
+    }
+
+    async addEntry(measurement?) {
+        const modal = await this.modalCtrl.create({
+            component: MeasurementEntryAddModal,
+            breakpoints: [0, 0.75, 1],
+            initialBreakpoint: 0.75,
+            componentProps: {
+                id: null,
+                value: 0,
+                date: null
+            }
+        });
+
+        await modal.present();
+        const { data } = await modal.onWillDismiss();
+
+        if (data && data.value && data.date) {
+            data.user = this.pocketbaseService.currentUser?.id || null;
+            data.measurement = measurement.id;
+            const entry = await this.pocketbaseService.upsertRecord('measurement_entry', data, true, false);
+            if (entry && entry.id) {
+                measurement.entries.push(entry.id);
+                await this.pocketbaseService.measurements.update(measurement.id, measurement)
+            }
+            this.getMeasurements();
+        }
     }
 
     async openSettings(workout) {

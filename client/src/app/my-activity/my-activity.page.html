@@ -25,13 +25,17 @@
                     {{'Statistics' | translate}}
                 </ion-label>
             </ion-segment-button>
+            <ion-segment-button value="measurements">
+                <ion-label>
+                    {{'Measurements' | translate}}
+                </ion-label>
+            </ion-segment-button>
         </ion-segment>
     </ion-row>
 
     <ng-container [ngSwitch]="tab">
         <ng-container *ngSwitchCase="'workouts'">
             <ion-list lines="none">
-
                 <!-- TODO: view -->
                 @for(workout of workouts; track $index) {
                 <ion-card>
@@ -78,7 +82,7 @@
                     </div>
                 </ion-card>
                 } @empty {
-                    <app-no-data [text]="'No activities yet.' | translate"></app-no-data>
+                <app-no-data [text]="'No activities yet.' | translate"></app-no-data>
                 }
             </ion-list>
         </ng-container>
@@ -95,6 +99,25 @@
                 <h3>{{ 'Max. Volume per workout' | translate }}</h3>
                 <canvas #volumePerWorkout></canvas>
             </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'measurements'">
+            <div class="ion-text-center">
+                <ion-button size="'small'" (click)="createOrEditMeasurement()" [strong]="true" fill="clear"
+                    color="primary">
+                    {{ 'Create' | translate }}
+                    <ion-icon name="add-outline" color="primary"></ion-icon>
+                </ion-button>
+            </div>
+            <ion-list lines="none">
+                @for(measurement of measurements; track measurement.name) {
+                <ion-item>
+                    <ion-button size="'small'" (click)="addEntry(measurement)" [strong]="true" fill="clear" color="primary">
+                        {{ 'Add' | translate }}
+                    </ion-button>
+                    <canvas #measurementsGraph></canvas>
+                </ion-item>
+                }
+            </ion-list>
         </ng-container>
     </ng-container>
 

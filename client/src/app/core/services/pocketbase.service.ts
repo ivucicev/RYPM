@@ -38,7 +38,9 @@ export class PocketbaseService {
         'templates': [],
         'sets': [],
         'users': [],
-        'exercise_templates': []
+        'exercise_templates': [],
+        'measurement_entry': [],
+        'measurements': []
     };
 
     private singleRelationMappings: Record<string, string[]> = {
@@ -188,6 +190,14 @@ export class PocketbaseService {
 
     public get workouts() {
         return this.pb.collection<Workout>(COLLECTIONS.workouts);
+    }
+
+    public get measurements() {
+        return this.pb.collection<Workout>(COLLECTIONS.measurements);
+    }
+
+    public get measurementEntries() {
+        return this.pb.collection<Workout>(COLLECTIONS.measurement_entry);
     }
     //#endregion
 

@@ -8,6 +8,8 @@ export const COLLECTIONS = {
     weeks: 'weeks',
     days: 'days',
     users: 'users',
+    measurements: 'measurements',
+    measurement_entry: 'measurement_entry'
 };
 export type Collection = keyof typeof COLLECTIONS
 

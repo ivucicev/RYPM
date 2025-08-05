@@ -60,7 +60,7 @@
                             <div class="next-set-row">
                                 <ion-icon name="checkmark-circle-outline" [color]="'primary'"></ion-icon>
                                 <ion-label>
-                                    {{ 'All excersizes completed' | translate }}
+                                    {{ 'All exercises completed' | translate }}
                                 </ion-label>
                             </div>
                         </div>
@@ -109,7 +109,11 @@
                     <ion-item [button]="true" (click)="presentProgramActionSheet(program)">
                         <ion-label>
                             <div>
-                                <h2>{{ program.name || ('Program' | translate) }}</h2>
+                                <h2>{{ program.name || ('Program' | translate) }}
+                                    @if (activeProgramIds.includes(program.id)) {
+                                    <ion-badge class="active-badge" color="primary">{{ 'Active' |translate
+                                        }}</ion-badge> }
+                                </h2>
                                 <span class="duration">
                                     <ion-icon name="time-outline" size="small"></ion-icon>
                                     {{ program.numberOfWeeks || 'N/A' }} {{ 'Weeks' | translate }}

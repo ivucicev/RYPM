@@ -3,6 +3,8 @@ BUGS -
      - [x] Starting exersize from new workoute causes eror Effort required
      - [x] when in workout selected weight is zero then you have to scroll !HIGH all the way
      - [ ] No need to select weight when creating program...
+     - [x] all exercises complete even if one left (shown on home screen), if on previous scren where actually are all checked
+     - [ ] cannot add new exercize while workout is active
      - [x] When previewing done day - going edit program clicking on day - all values are 0
 
 Workouts screen - 
@@ -51,6 +53,7 @@ General -
     - [x] Name, Domain
     - [x] Gihub actions
     - [x] Repo Transfer
+    - [ ] Marketing website
 
 Admin / Trainer -
     - [ ] TBD

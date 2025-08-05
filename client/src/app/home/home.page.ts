@@ -55,6 +55,7 @@ export class HomePage {
     programs: (ProgramInfo & { tags: string[] })[] = [];
     templates: Template[] = [];
     lastWorkout: Workout;
+    activeProgramIds = [];
 
     continueFooter = viewChild(ContinueFooterComponent);
 
@@ -78,18 +79,20 @@ export class HomePage {
             filter: `state = ${WorkoutState.InProgress}`,
             expand: 'exercises,exercises.sets',
         }).then((workouts) => {
+
             this.workouts = workouts.map(w => {
+
                 const nextExercise = this.getNextIncompleteExercise(w.exercises);
                 const nextSet = this.getNextIncompleteSet(nextExercise?.sets);
 
                 return {
                     ...w,
-                    nextExercise: nextExercise && nextSet
-                        ? { ...nextExercise, nextSet }
-                        : undefined,
+                    nextExercise: { ...nextExercise, nextSet },
                 };
             });
+
             this.lastWorkout = this.workouts[0];
+
         });
 
         this.pocketbaseService.templates.getFullList({
@@ -98,12 +101,31 @@ export class HomePage {
             this.templates = templates;
         });
 
+        this.activeProgramIds.length = 0;
+
         this.pocketbaseService.programs.getFullList({
             sort: '-updated',
             expand: 'weeks,weeks.days,weeks.days.workout'
         }).then((programs) => {
             this.programs = programs.map(p => {
                 const tagsToTake = 3;
+
+                // Check if any workout in any day of any week has state == 1
+                const hasInProgress = p.weeks?.some(week =>
+                    week?.days?.some(day => {
+                        if (day?.workout?.state === WorkoutState.InProgress) {
+                            p['workoutId'] = day.workout.id;
+                            return true;
+                        }
+                        return false;
+                    }
+                    )
+                );
+
+                if (hasInProgress) {
+                    this.activeProgramIds.push(p.id);
+                    p['active'] = true;
+                }
 
                 const tags = [
                     ...new Set(
@@ -127,11 +149,13 @@ export class HomePage {
                     tags: tagsToShow
                 }
             });
+            this.programs = this.programs.sort((a: any, b: any) => (b['active'] === true) as any - ((a['active'] === true) as any));
         });
+
     }
 
     getNextIncompleteExercise(exercises: Exercise[]): Exercise | undefined {
-        return exercises.find(ex => !ex.completed);
+        return exercises.find(ex => !ex.completed && ex.sets?.some(set => !set.completed));
     }
 
     getNextIncompleteSet(sets: Set[] | undefined): Set | undefined {
@@ -165,6 +189,10 @@ export class HomePage {
     }
 
     async presentProgramActionSheet(program: Program) {
+        if (program['active'] == true && program['workoutId']) {
+            this.navCtrl.navigateForward([`./workout-wizard/${program['workoutId']}`]);
+            return;
+        }
         const actionSheet = await this.programService.presentProgramActionSheet(program.id);
         actionSheet.onDidDismiss().then(e => {
             if (e.data?.reload) {

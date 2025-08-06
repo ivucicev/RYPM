@@ -284,7 +284,6 @@ export class ProgramComponent implements OnInit, OnDestroy {
         this.popover.event = e
     }
 
-
     // TODO: Trainer
     // removeAssignedUser(userId: string) {
     //     this.programFormService.removeUser(this.programForm, userId);

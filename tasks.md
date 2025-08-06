@@ -22,8 +22,8 @@ Workouts screen -
     - [x] Rest timer does not get copied when copying or duplicating
     - [x] RPE i RiR
     - [x] AMRAP
-    - [ ] Super Sets
     - [x] Drop Sets
+    - [ ] Super Sets
 
 Activity screen -
     - [x] Volume -> over time

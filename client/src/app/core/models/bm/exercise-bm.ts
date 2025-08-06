@@ -20,4 +20,7 @@ export interface ExerciseBM {
     completedAt?: Date;
 
     sets?: SetBM[];
+
+    superset? : string;
+
 }

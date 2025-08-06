@@ -1,6 +1,6 @@
 import { Component, EventEmitter, input, Input, OnChanges, output, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormArray } from '@angular/forms';
-import { ModalController, IonModal, ItemReorderEventDetail, IonButton, IonIcon, IonList, IonItem, IonLabel, IonToolbar, IonSegmentButton, IonSegment, IonPicker, IonPickerColumn, IonPickerColumnOption, IonButtons, IonHeader, IonTitle, IonReorderGroup, IonItemOptions, IonReorder, IonItemOption, IonCheckbox } from '@ionic/angular/standalone';
+import { ModalController, IonModal, ItemReorderEventDetail, IonButton, IonIcon, IonList, IonItem, IonLabel, IonToolbar, IonSegmentButton, IonSegment, IonPicker, IonPickerColumn, IonPickerColumnOption, IonButtons, IonHeader, IonTitle, IonReorderGroup, IonItemOptions, IonReorder, IonItemOption, IonCheckbox, IonNote, IonBadge } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { RepType } from 'src/app/core/models/enums/rep-type';
 import { WeightType } from 'src/app/core/models/enums/weight-type';
@@ -14,29 +14,30 @@ import { NgTemplateOutlet } from '@angular/common';
 import { IonPopover } from '@ionic/angular/standalone';
 import { ReserveType } from 'src/app/core/models/enums/reserve-type';
 import { PocketbaseService } from 'src/app/core/services/pocketbase.service';
+import { listCircleOutline } from 'ionicons/icons';
 
 @Component({
     selector: 'app-exercise-form',
     templateUrl: 'exercise-form.component.html',
     styleUrls: ['./exercise-form.component.scss'],
     standalone: true,
-    imports: [IonItemOption, IonReorder, IonItemOptions, IonReorderGroup, IonTitle, IonHeader, IonButtons, IonPicker, IonSegment, IonSegmentButton, IonToolbar, IonLabel, IonItem, IonList, IonIcon, IonButton,
-        TranslateModule,
-        ReactiveFormsModule,
-        DurationPipe,
-        WeightTypePipe,
-        RepTypePipe,
-        IonPopover,
-        IonModal,
-        IonPickerColumn,
-        IonCheckbox,
-        IonPickerColumnOption,
-        NgTemplateOutlet
-    ],
+    imports: [IonItemOption, IonNote, IonReorder, IonItemOptions, IonReorderGroup, IonTitle, IonHeader, IonButtons, IonPicker, IonSegment, IonSegmentButton, IonToolbar, IonLabel, IonItem, IonList, IonIcon, IonButton,
+    TranslateModule,
+    ReactiveFormsModule,
+    DurationPipe,
+    WeightTypePipe,
+    RepTypePipe,
+    IonPopover,
+    IonModal,
+    IonPickerColumn,
+    IonCheckbox,
+    IonPickerColumnOption,
+    NgTemplateOutlet, IonBadge],
     providers: [FormsService]
 })
 export class ExerciseFormComponent implements OnChanges {
 
+    listCircleIcon = listCircleOutline;
     durationOptions: { value: number }[] = [
         { value: 0 }
     ];
@@ -62,9 +63,11 @@ export class ExerciseFormComponent implements OnChanges {
     selectedMaxValue: any = 12;
     rpes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     rirs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    supersets = ['A', 'B', 'C', 'D', 'E', 'F'];
     selectedRPE;
     selectedRIR;
     selectedDropset;
+    selectedSuperset;
 
     weightOptions = Array.from({ length: 800 }, (_, i) => (i + 1) * 0.5);
     setsOptions = Array.from({ length: 10 }, (_, i) => i + 1);
@@ -72,7 +75,6 @@ export class ExerciseFormComponent implements OnChanges {
     repsOptionsMin = this.repsOptions;
 
     @Input() workoutMode: boolean = false;
-
     @Input() exercise: ExerciseFormGroup;
 
     onCompletedEvent = output<number>();
@@ -88,6 +90,7 @@ export class ExerciseFormComponent implements OnChanges {
     @ViewChild('setPickerModal') setPickerModal: IonModal;
     @ViewChild('restPickerModal') restPickerModal: IonModal;
     @ViewChild('exercisePopover') exercisePopover: IonPopover;
+    @ViewChild('supersetPickerModal') supersetModal: IonModal;
 
     constructor(
         private modalCtrl: ModalController,
@@ -369,6 +372,23 @@ export class ExerciseFormComponent implements OnChanges {
             this.exercisePopover.event = event;
             this.exercisePopover.present();
         }
+    }
+
+    private currentExercise;
+
+    confirmSuperset() {
+        this.currentExercise.patchValue({ superset: this.selectedSuperset });
+        this.cancelSuperset();
+    }
+
+    cancelSuperset() {
+        this.currentExercise = null;
+        this.supersetModal.dismiss();
+    }
+
+    async openSupersetModal(exercise) {
+        this.currentExercise = exercise;
+        await this.supersetModal.present();
     }
 
     ngOnChanges(changes: SimpleChanges) {

@@ -179,6 +179,7 @@ export class FormsService implements OnDestroy {
             completed: [exercise?.completed ?? false],
             completedAt: [exercise?.completedAt],
             sets: this.formBuilder.array<ExerciseSetFormGroup>([]),
+            superset: [exercise?.superset]
         }) as ExerciseFormGroup;
 
         const setsArray = exerciseGroup.get('sets') as FormArray<ExerciseSetFormGroup>;

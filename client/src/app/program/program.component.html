@@ -191,11 +191,15 @@
                             <ng-container [formGroupName]="exIndex">
 
                                 <ion-item lines="none" class="ion-no-border ion-no-padding">
-                                    <app-exercise-form [style.width]="'100%'" [exercise]="exercise" [canMoveExerciseDown]="$index < getExercisesArray(weekIndex, activeDayIndex).controls.length - 1" [canMoveExerciseUp]="$index > 0" (moveExerciseDownEvent)="moveExerciseDown($index)" (moveExerciseUpEvent)="moveExerciseUp($index)"
+                                    <app-exercise-form [style.width]="'100%'"
+                                        [exercise]="exercise"
+                                        [canMoveExerciseDown]="$index < getExercisesArray(weekIndex, activeDayIndex).controls.length - 1"
+                                        [canMoveExerciseUp]="$index > 0"
+                                        (moveExerciseDownEvent)="moveExerciseDown($index)"
+                                        (moveExerciseUpEvent)="moveExerciseUp($index)"
                                         (onRemoveExerciseEvent)="removeExercise(weekIndex, activeDayIndex, exIndex)">
                                     </app-exercise-form>
                                 </ion-item>
-
                             </ng-container>
                             }
                             @empty {

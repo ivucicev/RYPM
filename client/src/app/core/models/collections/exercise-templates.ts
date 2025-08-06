@@ -11,7 +11,8 @@ export interface ExerciseTemplate extends EntityBase {
     secondaryMuscles: Muscle[];
     instructions: string;
     category: Category;
-    isCommunity?: boolean; 
+    isCommunity?: boolean;
+    superset: string; 
 }
 
 export const exerciseTemplatesArrayFields: Partial<Record<keyof ExerciseTemplate, boolean>> = {

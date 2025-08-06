@@ -10,4 +10,6 @@ export interface Exercise extends EntityBase, ExerciseTemplate {
     completedAt?: Date;
 
     sets?: Set[];
+
+    superset: string;
 }

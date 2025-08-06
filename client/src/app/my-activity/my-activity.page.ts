@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild, viewChild, ViewChildren } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ActionSheetController, NavController, IonCardContent, IonChip, IonButton, IonIcon, IonCardHeader, IonCard, IonList, IonTitle, IonRow, IonContent, IonLabel, IonToolbar, IonSegmentButton, IonHeader, IonSegment, ModalController, IonSelect, IonInput, IonItem } from '@ionic/angular/standalone';
+import { ActionSheetController, NavController, IonCardContent, IonChip, IonButton, IonIcon, IonCardHeader, IonCard, IonList, IonTitle, IonRow, IonContent, IonLabel, IonToolbar, IonSegmentButton, IonHeader, IonSegment, ModalController, IonSelect, IonInput, IonItem, IonFab, IonFabButton, IonFabList, IonPopover } from '@ionic/angular/standalone';
 import { lastValueFrom } from 'rxjs';
 import { DateTimePipe } from '../core/pipes/datetime.pipe';
 import { PocketbaseService } from '../core/services/pocketbase.service';
@@ -20,7 +20,7 @@ import { MeasurementEntryAddModal } from '../measurement-entry-add-modal/measure
     templateUrl: 'my-activity.page.html',
     styleUrls: ['./my-activity.page.scss'],
     standalone: true,
-    imports: [IonHeader, IonSegmentButton, IonToolbar, IonLabel, IonContent, IonRow, IonTitle, IonList, IonCard, IonCardHeader, IonIcon, IonButton, IonChip, IonCardContent, NoDataComponent, TranslateModule, FormsModule, IonSegment, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent, IonItem],
+    imports: [IonHeader, IonFab, IonPopover, IonFabList, IonFabButton, IonSegmentButton, IonToolbar, IonLabel, IonContent, IonRow, IonTitle, IonList, IonCard, IonCardHeader, IonIcon, IonButton, IonChip, IonCardContent, NoDataComponent, TranslateModule, FormsModule, IonSegment, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent, IonItem],
 })
 export class MyActivityPage {
 
@@ -31,9 +31,11 @@ export class MyActivityPage {
     continueFooter = viewChild(ContinueFooterComponent);
 
     chartInstance: chart.Chart | null = null;
-    tab: 'workouts' | 'stats' = 'workouts';
+    tab: 'workouts' | 'stats' | 'measurements' = 'workouts';
 
     measurements = [];
+
+    actionsPopover = false;
 
     @ViewChild('volumeChart') chart: ElementRef<HTMLCanvasElement>;
     @ViewChild('effortChart') effortChart: ElementRef<HTMLCanvasElement>;
@@ -267,6 +269,10 @@ export class MyActivityPage {
 
     }
 
+    public presentPopover(e) {
+        this.actionsPopover = true;
+    }
+
     async initCharts() {
         setTimeout(() => {
             this.draw();
@@ -292,6 +298,8 @@ export class MyActivityPage {
             this.measurements.forEach((m, i) => {
                 const ctx = this.measurementCanvas.get(i)?.nativeElement.getContext('2d');
                 if (!ctx) return;
+
+                m.entries = m.entries.sort((a, b) => new Date(a.date) as any - (new Date(b.date) as any));
 
                 const loadLabels = m.entries.map(w => new Date(w.date).toLocaleDateString());
 
@@ -345,6 +353,7 @@ export class MyActivityPage {
     }
 
     async createOrEditMeasurement(measurement?) {
+        this.actionsPopover = false;
         const modal = await this.modalCtrl.create({
             component: MeasurementCreateModalComponent,
             breakpoints: [0, 0.75, 1],
@@ -367,6 +376,7 @@ export class MyActivityPage {
     }
 
     async addEntry(measurement?) {
+        this.actionsPopover = false;
         const modal = await this.modalCtrl.create({
             component: MeasurementEntryAddModal,
             breakpoints: [0, 0.75, 1],
@@ -386,7 +396,8 @@ export class MyActivityPage {
             data.measurement = measurement.id;
             const entry = await this.pocketbaseService.upsertRecord('measurement_entry', data, true, false);
             if (entry && entry.id) {
-                measurement.entries.push(entry.id);
+                measurement.entries.push(entry);
+                measurement.entries = measurement.entries.map(m => m.id);
                 await this.pocketbaseService.measurements.update(measurement.id, measurement)
             }
             this.getMeasurements();

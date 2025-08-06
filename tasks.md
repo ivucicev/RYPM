@@ -1,11 +1,11 @@
 BUGS -
-     - [ ] Adding custom excersiz not visible immediatelly in selct excersizes screen
      - [x] Starting exersize from new workoute causes eror Effort required
      - [x] when in workout selected weight is zero then you have to scroll !HIGH all the way
-     - [ ] No need to select weight when creating program...
-     - [x] all exercises complete even if one left (shown on home screen), if on previous scren where actually are all checked
-     - [ ] cannot add new exercize while workout is active
      - [x] When previewing done day - going edit program clicking on day - all values are 0
+     - [x] all exercises complete even if one left (shown on home screen), if on previous scren where actually are all checked
+     - [ ] No need to select weight when creating program...
+     - [ ] Adding custom excersiz not visible immediatelly in selct excersizes screen
+     - [ ] cannot add new exercize while workout is active
 
 Workouts screen - 
     - [x] Add program complete test [ok]
@@ -30,7 +30,7 @@ Activity screen -
     - [x] Volume -> over time per workout
     - [x] Volume -> overtime per workout Max.
     - [x] Effort -> over time
-    - [ ] Measurements all custom
+    - [x] Measurements all custom
 
 Chat -
     - [ ] AI Trainer
@@ -39,11 +39,11 @@ Chat -
 Settings -
     - [ ] profile -> body stats, measurements, pictures...
     - [ ] plates -> for increments
-    - [ ] measurements -> custom -> add whatever custom name
+    - [x] measurements -> custom -> add whatever custom name
     - [ ] Account settings
-    - [ ] Languages
-    - [ ] Chat with us, help us improve / contact...
-    - [ ] Terms & Conditions
+    - [ ] Languages & Translations
+    - [x] Chat with us, help us improve / contact...
+    - [x] Terms & Conditions
 
 General -
     - [x] PWA Setup 

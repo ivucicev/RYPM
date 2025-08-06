@@ -101,19 +101,9 @@
             </div>
         </ng-container>
         <ng-container *ngSwitchCase="'measurements'">
-            <div class="ion-text-center">
-                <ion-button size="'small'" (click)="createOrEditMeasurement()" [strong]="true" fill="clear"
-                    color="primary">
-                    {{ 'Create' | translate }}
-                    <ion-icon name="add-outline" color="primary"></ion-icon>
-                </ion-button>
-            </div>
             <ion-list lines="none">
                 @for(measurement of measurements; track measurement.name) {
-                <ion-item>
-                    <ion-button size="'small'" (click)="addEntry(measurement)" [strong]="true" fill="clear" color="primary">
-                        {{ 'Add' | translate }}
-                    </ion-button>
+                <ion-item (click)="createOrEditMeasurement(measurement)">
                     <canvas #measurementsGraph></canvas>
                 </ion-item>
                 }
@@ -122,5 +112,30 @@
     </ng-container>
 
 </ion-content>
+
+@if (tab == 'measurements') {
+<ion-fab slot="fixed" horizontal="end" vertical="bottom" style="bottom: 0">
+    <ion-fab-button>
+        <ion-icon name="add" (click)="presentPopover($event)"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
+}
+
+<ion-popover #popover [isOpen]="actionsPopover" (didDismiss)="actionsPopover = false">
+    <ng-template>
+        <ion-list>
+            @for (measure of measurements; track measure.id) {
+            <ion-item button (click)="addEntry(measure)">
+                <ion-label>{{ measure.name }}</ion-label>
+                <ion-icon name="chevron-forward-outline" color="primary"></ion-icon>
+            </ion-item>
+            }
+            <ion-item button (click)="createOrEditMeasurement()">
+                <ion-label>{{ 'Create' | translate }}</ion-label>
+                <ion-icon name="add-outline" color="primary"></ion-icon>
+            </ion-item>
+        </ion-list>
+    </ng-template>
+</ion-popover>
 
 <app-continue-footer></app-continue-footer>

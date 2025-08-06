@@ -13,11 +13,26 @@
         <ion-input [(ngModel)]="name"></ion-input>
     </ion-item>
     <ion-item lines="none" class="ion-align-items-center">
-		<ion-label position="stacked">{{ 'Unit' | translate }}</ion-label>
-		<ion-select [(ngModel)]="unit" interface="popover">
-			@for(unit of units; track unit) {
-			<ion-select-option [value]="unit">{{ unit }}</ion-select-option>
-			}
-		</ion-select>
+        <ion-label position="stacked">{{ 'Unit' | translate }}</ion-label>
+        <ion-select [(ngModel)]="unit" interface="popover">
+            @for(unit of units; track unit) {
+            <ion-select-option [value]="unit">{{ unit }}</ion-select-option>
+            }
+        </ion-select>
     </ion-item>
+    <ion-list>
+        @for(measurement of measurements; track measurement) {
+        <ion-item-sliding>
+            <ion-item>
+                <ion-label>{{ measurement.value }} {{ unit }}</ion-label>
+                <ion-note slot="end">{{ measurement.date | dateTime }}</ion-note>
+            </ion-item>
+            <ion-item-options slot="end">
+                <ion-item-option color="danger" expandable="true" (click)="removeMeasure(measurement)">
+                    <ion-icon slot="icon-only" name="trash"></ion-icon>
+                </ion-item-option>
+            </ion-item-options>
+        </ion-item-sliding>
+        }
+    </ion-list>
 </ion-content>

@@ -20,7 +20,7 @@ import { MeasurementEntryAddModal } from '../measurement-entry-add-modal/measure
     templateUrl: 'my-activity.page.html',
     styleUrls: ['./my-activity.page.scss'],
     standalone: true,
-    imports: [IonHeader, IonFab, IonPopover, IonFabList, IonFabButton, IonSegmentButton, IonToolbar, IonLabel, IonContent, IonRow, IonTitle, IonList, IonCard, IonCardHeader, IonIcon, IonButton, IonChip, IonCardContent, NoDataComponent, TranslateModule, FormsModule, IonSegment, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent, IonItem],
+    imports: [IonHeader, IonFab, IonPopover, IonFabButton, IonSegmentButton, IonToolbar, IonLabel, IonContent, IonRow, IonTitle, IonList, IonCard, IonCardHeader, IonIcon, IonButton, IonChip, IonCardContent, NoDataComponent, TranslateModule, FormsModule, IonSegment, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent, IonItem],
 })
 export class MyActivityPage {
 

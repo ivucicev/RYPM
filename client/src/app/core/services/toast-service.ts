@@ -17,7 +17,7 @@ export class ToastService {
     async show(
         message: string,
         duration: number = 3000,
-        position: 'top' | 'bottom' | 'middle' = 'bottom',
+        position: 'top' | 'bottom' | 'middle' = 'top',
         type: ToastType = 'info',
         translate: boolean = true
     ): Promise<void> {
@@ -33,6 +33,8 @@ export class ToastService {
             message: displayMessage,
             duration: duration,
             position: position,
+            positionAnchor: 'footer',
+            translucent: true,
             keyboardClose: true,
             buttons: [
                 {

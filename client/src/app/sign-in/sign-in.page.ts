@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { LoginBM } from '../core/models/bm/login-bm';
 import { FormType } from '../core/helpers/form-helpers';
 import { filter, Subject, takeUntil } from 'rxjs';
-import { logoFacebook, logoGoogle } from 'ionicons/icons';
+import { logoApple, logoFacebook, logoGithub, logoGoogle, logoMicrosoft } from 'ionicons/icons';
 
 // @ts-ignore
 import packageJson from '../../../package.json';
@@ -27,7 +27,11 @@ export class SignInPage implements OnInit {
     navigatedTo = false;
     logoFacebook = logoFacebook;
     logoGoogle = logoGoogle;
+    logoApple = logoApple;
+    logoGH = logoGithub;
+    logoMS = logoMicrosoft;
     version = packageJson.version;
+
  
     constructor(
         private router: Router,

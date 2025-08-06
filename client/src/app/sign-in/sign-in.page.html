@@ -27,31 +27,51 @@
                         labelPlacement="stacked" type="password">
                         <ion-input-password-toggle slot="end"></ion-input-password-toggle>
                     </ion-input>
-                </ion-item>     
+                </ion-item>
             </ion-list>
-            <span  class="or_continue_with animate__animated animate__fadeInUp">
+            <span class="or_continue_with animate__animated animate__fadeInUp">
                 <h3 class="ion-text-end" (click)="forgot_password()">{{"Forgot password" | translate}}?</h3>
             </span>
             <ion-button size="large" expand="round" class="btn animate__animated animate__fadeInUp"
-            (click)="signIn()">{{'Sign In' | translate}}</ion-button>
+                (click)="signIn()">{{'Sign In' | translate}}</ion-button>
             <div class="or_continue_with animate__animated animate__fadeInUp">
                 <h3 class="ion-text-center">{{'Or continue with' | translate}}</h3>
                 <ion-row>
-                    <ion-col size="6">
+                    <ion-col>
                         <ion-button size="large" expand="round" fill="outline" class="btn" (click)="signInFacebook()">
                             <ion-icon [src]="logoFacebook"></ion-icon>
-                            {{'Facebook' | translate}}</ion-button>
+                            <!-- {{'Facebook' | translate}} -->
+                        </ion-button>
                     </ion-col>
-                    <ion-col size="6">
+                    <ion-col>
                         <ion-button size="large" expand="round" fill="outline" class="btn" (click)="signInGoogle()">
                             <ion-icon [src]="logoGoogle"></ion-icon>
-                            {{'Google' | translate}}</ion-button>
+                            <!-- {{'Google' | translate}} -->
+                        </ion-button>
+                    </ion-col>
+                    <ion-col>
+                        <ion-button size="large" expand="round" fill="outline" class="btn" (click)="signInGoogle()">
+                            <ion-icon [src]="logoApple"></ion-icon>
+                            <!-- {{'Apple' | translate}} -->
+                        </ion-button>
+                    </ion-col>
+                    <ion-col>
+                        <ion-button size="large" expand="round" fill="outline" class="btn" (click)="signInGoogle()">
+                            <ion-icon [src]="logoGH"></ion-icon>
+                            <!-- {{'Apple' | translate}} -->
+                        </ion-button>
+                    </ion-col>
+                    <ion-col>
+                        <ion-button size="large" expand="round" fill="outline" class="btn" (click)="signInGoogle()">
+                            <ion-icon [src]="logoMS"></ion-icon>
+                            <!-- {{'Apple' | translate}} -->
+                        </ion-button>
                     </ion-col>
                 </ion-row>
             </div>
             <div class="or_continue_with padding-10 animate__animated animate__fadeInUp">
                 <h3 class="ion-text-center d-flex-register">
-                        {{'Dont have an account?' | translate}}
+                    {{'Dont have an account?' | translate}}
                     <ion-button size="small" fill="clear" expand="round" class="animate__animated animate__fadeInUp"
                         (click)="register()">{{'Register' | translate}}
                         <ion-icon name="chevron-forward-outline"></ion-icon>

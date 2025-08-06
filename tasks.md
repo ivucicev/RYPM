@@ -23,7 +23,7 @@ Workouts screen -
     - [x] RPE i RiR
     - [x] AMRAP
     - [x] Drop Sets
-    - [ ] Super Sets
+    - [x] Super Sets
 
 Activity screen -
     - [x] Volume -> over time

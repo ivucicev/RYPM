@@ -44,7 +44,7 @@
         </ion-button>
 
         @if (exercise.get('superset')?.value) {
-            <ion-badge color="primary">{{'Superset' | translate }} {{ exercise.get('superset')?.value }}</ion-badge>
+            <ion-badge (click)="openSupersetModal(exercise)" color="primary">{{'Superset' | translate }} {{ exercise.get('superset')?.value }}</ion-badge>
         }
 
         <ion-modal #restPickerModal [backdropDismiss]="true" class="picker-modal">

@@ -388,6 +388,7 @@ export class ExerciseFormComponent implements OnChanges {
 
     async openSupersetModal(exercise) {
         this.currentExercise = exercise;
+        this.selectedSuperset = exercise.get('superset').value;
         await this.supersetModal.present();
     }
 

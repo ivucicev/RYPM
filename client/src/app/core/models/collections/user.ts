@@ -9,5 +9,6 @@ export interface User extends EntityBase {
     type: UserType;
     isPublic: boolean;
     about: string;
-    defaultWeightType: WeightType.KG | WeightType.LB
+    defaultWeightType: WeightType.KG | WeightType.LB;
+    weightIncrement: any;
 }

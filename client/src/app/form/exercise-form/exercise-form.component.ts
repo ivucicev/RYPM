@@ -13,6 +13,7 @@ import { RepTypePipe } from 'src/app/core/pipes/rep-type.pipe';
 import { NgTemplateOutlet } from '@angular/common';
 import { IonPopover } from '@ionic/angular/standalone';
 import { ReserveType } from 'src/app/core/models/enums/reserve-type';
+import { PocketbaseService } from 'src/app/core/services/pocketbase.service';
 
 @Component({
     selector: 'app-exercise-form',
@@ -60,9 +61,10 @@ export class ExerciseFormComponent implements OnChanges {
     selectedMinValue: any = 8;
     selectedMaxValue: any = 12;
     rpes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    rirs = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+    rirs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     selectedRPE;
     selectedRIR;
+    selectedDropset;
 
     weightOptions = Array.from({ length: 800 }, (_, i) => (i + 1) * 0.5);
     setsOptions = Array.from({ length: 10 }, (_, i) => i + 1);
@@ -90,9 +92,25 @@ export class ExerciseFormComponent implements OnChanges {
     constructor(
         private modalCtrl: ModalController,
         private programFormService: FormsService,
+        private pocketbaseService: PocketbaseService
     ) {
         for (let seconds = 15; seconds <= 600; seconds += 15) {
             this.durationOptions.push({ value: seconds });
+        }
+
+        const weightType = this.pocketbaseService.currentUser.defaultWeightType;
+        const weightIncrement = this.pocketbaseService.currentUser.weightIncrement;
+
+        if (weightType && weightType == WeightType.KG) {
+            this.weightTypes = Object.values(WeightType).filter((value) => typeof value === 'number' && value != WeightType.LB) as WeightType[];
+        } else if (weightType && weightType == WeightType.LB) {
+            this.weightTypes = Object.values(WeightType).filter((value) => typeof value === 'number' && value != WeightType.KG) as WeightType[];
+        }
+
+        if (weightIncrement) {
+            this.weightOptions.length = 0;        
+            for(let i = weightIncrement; i <= 400; i += weightIncrement)
+                this.weightOptions.push(i);
         }
     }
 
@@ -286,7 +304,8 @@ export class ExerciseFormComponent implements OnChanges {
                 weight: this.selectedWeight,
                 type: this.selectedRepType,
                 rir: this.selectedRIR,
-                rpe: this.selectedRPE
+                rpe: this.selectedRPE,
+                dropset: this.selectedDropset
             }
 
         setControl.patchValue(valuesToPatch);
@@ -322,6 +341,8 @@ export class ExerciseFormComponent implements OnChanges {
                 setControl.patchValue({ rir: this.selectedRIR });
             } else if (this.selectedRPE > 0) {
                 setControl.patchValue({ rpe: this.selectedRPE });   
+            } else if (this.selectedDropset > 0) {
+                setControl.patchValue({ dropset: this.selectedDropset });
             }
 
             if (this.numSets > 1) {

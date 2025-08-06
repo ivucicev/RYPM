@@ -2,6 +2,7 @@
     <ion-toolbar>
         <ion-title>{{ 'Measurement' | translate }}</ion-title>
         <ion-buttons slot="end">
+            <ion-button color="danger" (click)="delete()">{{ 'Delete' | translate }}</ion-button>
             <ion-button (click)="dismiss()">{{ 'Cancel' | translate }}</ion-button>
             <ion-button (click)="save()" strong>{{ 'Save' | translate }}</ion-button>
         </ion-buttons>

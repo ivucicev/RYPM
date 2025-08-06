@@ -6,12 +6,6 @@
 
 <ion-content class="bg_color" fullscreen>
 
-    <!-- <div class="buy_this_app end" (click)="buyappalert()">
-        <h2>
-            {{"Buy or donate" | translate}}
-        </h2>
-    </div> -->
-
     <div class="d-flex">
         <div class="profile d-flex" (click)="my_profile()">
             <div class="profile_img center_img">
@@ -31,10 +25,10 @@
         </ion-button>
     </div>
 
-    <div class="get_pro d-flex" (click)="get_pro()">
+    <!-- <div class="get_pro d-flex" (click)="get_pro()">
         <h2>Unlock app full potential!</h2>
         <h3 class="end">{{'BUY' | translate}}</h3>
-    </div>
+    </div> -->
 
     <ion-list lines="none">
         <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="toggleTheme()">
@@ -51,8 +45,8 @@
             <div class="item-inner d-flex">
                 <ion-icon [size]="'medium'" [src]="measurementsIcon" slot="icon-only"></ion-icon>
                 <div class="text_box">
-                    <h2>{{ 'Measurements' | translate}}</h2>
-                    <h3>{{'Select default measurements' | translate}}</h3>
+                    <h2>{{ 'Settings' | translate}}</h2>
+                    <h3>{{'Set up your defaults' | translate}}</h3>
                 </div>
             </div>
         </ion-item>
@@ -61,8 +55,8 @@
             <div class="item-inner d-flex">
                 <ion-icon [size]="'medium'" [src]="accountSettingsIcon" slot="icon-only"></ion-icon>
                 <div class="text_box">
-                    <h2>{{'Account' | translate}}</h2>
-                    <h3>{{'Settings' | translate}}</h3>
+                    <h2>{{'Account & Profile' | translate}}</h2>
+                    <h3>{{'Account and profile settings' | translate}}</h3>
                 </div>
             </div>
         </ion-item>
@@ -77,22 +71,22 @@
             </div>
         </ion-item>
 
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" href="mailto:support@rypm.app?subject=Support Request">
-            <div class="item-inner d-flex">
-                <ion-icon class="ion-text-start" [src]="helpIcon"></ion-icon>
-                <div class="text_box">
-                    <h2>{{'Help us improve' | translate}}</h2>
-                    <h3>{{'Chat with us if you need help or you want to help us improve' | translate}}</h3>
-                </div>
-            </div>
-        </ion-item>
-
         <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="terms_condition()">
             <div class="item-inner d-flex">
                 <ion-icon [src]="termsIcon" class="ion-text-start"></ion-icon>
                 <div class="text_box">
                     <h2>{{'Terms & Conditions' | translate}}</h2>
                     <h3>{{'Click here to check terms and conditions.' | translate}}</h3>
+                </div>
+            </div>
+        </ion-item>
+
+        <ion-item lines="none" class="animate__animated animate__fadeInUp" href="mailto:support@rypm.app?subject=Support Request">
+            <div class="item-inner d-flex">
+                <ion-icon class="ion-text-start" [src]="helpIcon"></ion-icon>
+                <div class="text_box">
+                    <h2>{{'Help us Improve' | translate}}</h2>
+                    <h3>{{'Chat with us if you need help or you want to help us improve' | translate}}</h3>
                 </div>
             </div>
         </ion-item>

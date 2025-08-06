@@ -23,6 +23,7 @@ export interface SetBM {
 
     rpe?: number;
     rir?: number;
+    dropset?: number;
 
 }
 

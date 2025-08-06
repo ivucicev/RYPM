@@ -230,7 +230,8 @@ export class FormsService implements OnDestroy {
             minValue: [set?.minValue ?? 0],
             maxValue: [set?.maxValue ?? 0],
             rpe: [set?.rpe || 0],
-            rir: [set?.rir || 0]
+            rir: [set?.rir || 0],
+            dropset: [set?.dropset || 0]
         });
 
         fg.controls.type.valueChanges

@@ -195,15 +195,21 @@
         </div>
 
         @if (set.get('rir').value) {
-            <div class="reserve-value">
-                ({{set.get('rir').value}} {{ 'RiR' | translate }})
-            </div>
+        <div class="reserve-value">
+            ({{set.get('rir').value}} {{ 'RiR' | translate }})
+        </div>
         }
-        
+
         @if (set.get('rpe').value) {
-            <div class="reserve-value">
-                ({{set.get('rpe').value}} {{ 'RPE' | translate }})
-            </div>
+        <div class="reserve-value">
+            ({{set.get('rpe').value}} {{ 'RPE' | translate }})
+        </div>
+        }
+
+        @if (set.get('dropset').value) {
+        <div class="reserve-value">
+            ({{ 'dropset' | translate }} x{{set.get('dropset').value}})
+        </div>
         }
     </div>
 </ng-template>
@@ -253,6 +259,9 @@
                     </ion-segment-button>
                     <ion-segment-button [value]="ReserveType.RPE">
                         <ion-label>{{ 'RPE' | translate }}</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button [value]="ReserveType.Dropset">
+                        <ion-label>{{ 'dropset' | translate }}</ion-label>
                     </ion-segment-button>
                 </ion-segment>
             </ion-toolbar>
@@ -326,7 +335,8 @@
                 @if (!workoutMode) {
                 @if (selectedRepType !== RepType.Max) {
                 @if (selectedReserveType == ReserveType.RIR) {
-                <ion-picker-column [value]="selectedRIR" (ionChange)="selectedRIR = $event.detail.value; selectedRPE = null;">
+                <ion-picker-column [value]="selectedRIR"
+                    (ionChange)="selectedRIR = $event.detail.value; selectedRPE = null; selectedDropset = null">
                     @for (rir of rirs; track rir) {
                     <ion-picker-column-option [value]="rir">
                         {{ rir }} {{ 'RiR' | translate }}
@@ -335,7 +345,8 @@
                 </ion-picker-column>
                 }
                 @if (selectedReserveType == ReserveType.RPE) {
-                <ion-picker-column [value]="selectedRPE" (ionChange)="selectedRPE = $event.detail.value; selectedRIR = null;">
+                <ion-picker-column [value]="selectedRPE"
+                    (ionChange)="selectedRPE = $event.detail.value; selectedRIR = null; selectedDropset = null">
                     @for (rpe of rpes; track rpe) {
                     <ion-picker-column-option [value]="rpe">
                         {{ rpe }} {{ 'RPE' | translate }}
@@ -344,6 +355,21 @@
                 </ion-picker-column>
                 }
                 }
+                }
+
+                @if (selectedReserveType == ReserveType.Dropset) {
+                <ion-picker-column [value]="selectedDropset"
+                    (ionChange)="selectedDropset = $event.detail.value; selectedRIR = null; selectedRPE = null">
+                    <ion-picker-column-option [value]="1">
+                        {{ 'x1' | translate }}
+                    </ion-picker-column-option>
+                    <ion-picker-column-option [value]="2">
+                        {{ 'x2' | translate }}
+                    </ion-picker-column-option>
+                    <ion-picker-column-option [value]="3">
+                        {{ 'x3' | translate }}
+                    </ion-picker-column-option>
+                </ion-picker-column>
                 }
 
         </ion-picker>

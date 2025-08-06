@@ -4,7 +4,7 @@
             <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
         </ion-buttons>
         <ion-title>
-            {{'Measurements' | translate}}
+            {{'Settings' | translate}}
         </ion-title>
     </ion-toolbar>
 </ion-header>
@@ -18,5 +18,21 @@
         </ion-segment-button>
         }
     </ion-segment>
-    <!-- TODO: km, miles... -->
+    <p class="ion-padding-bottom"> {{ 'Weight increments' | translate }}</p>
+    <ion-segment [scrollable]="true" [value]="selectedIncrement" (ionChange)="setIncrement($event.detail.value)">
+        @if (selectedWeightType == weightType.KG) {
+        @for(increment of weightIncrementsKG; track $index) {
+        <ion-segment-button [value]="increment">
+            <ion-label>{{ increment }}</ion-label>
+        </ion-segment-button>
+        }
+        }
+        @if (selectedWeightType == weightType.LB) {
+        @for(increment of weightIncrementsLB; track $index) {
+        <ion-segment-button [value]="increment">
+            <ion-label>{{ increment }}</ion-label>
+        </ion-segment-button>
+        }
+        }
+    </ion-segment>
 </ion-content>

@@ -26,6 +26,11 @@ export class MeasurementCreateModalComponent implements OnInit {
     constructor(private modalController: ModalController, private pocketbaseService: PocketbaseService) {
     }
 
+    async delete() {
+        await this.pocketbaseService.measurements.delete(this.id);
+        this.dismiss();
+    }
+
     async getMeasurements() {
         const data = await this.pocketbaseService.measurementEntries.getFullList({
             filter: `measurement = "${this.id}"`,

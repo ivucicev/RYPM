@@ -371,8 +371,8 @@ export class MyActivityPage {
         if (data && data.name && data.unit) {
             data.user = this.pocketbaseService.currentUser?.id || null;
             await this.pocketbaseService.upsertRecord('measurements', data, true, false);
-            this.getMeasurements();
-        }
+        } 
+        this.getMeasurements();
     }
 
     async addEntry(measurement?) {
@@ -400,8 +400,8 @@ export class MyActivityPage {
                 measurement.entries = measurement.entries.map(m => m.id);
                 await this.pocketbaseService.measurements.update(measurement.id, measurement)
             }
-            this.getMeasurements();
         }
+        this.getMeasurements();
     }
 
     async openSettings(workout) {

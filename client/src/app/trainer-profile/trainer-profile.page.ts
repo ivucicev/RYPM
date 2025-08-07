@@ -15,7 +15,7 @@ export class TrainerProfilePage implements OnInit {
 
     constructor(private route: Router, private activatedRoute: ActivatedRoute) { 
         activatedRoute.fragment.subscribe(res => {
-            console.log(res)
+            //console.log(res)
         })
     }
 

@@ -29,11 +29,11 @@ import { ExerciseEffortModalComponent } from '../exercise-effort-modal/exercise-
     templateUrl: 'workout-wizard.component.html',
     styleUrls: ['./workout-wizard.component.scss'],
     standalone: true,
-    imports: [IonNote, IonFooter, IonSpinner, IonButtons, 
+    imports: [IonNote, IonFooter, IonSpinner, IonButtons,
         IonBackButton, IonChip, IonContent,
-        IonIcon, IonTitle, IonToolbar, IonLabel, 
-        IonButton, IonHeader, CommonModule, FormsModule, 
-        ExerciseFormComponent, TranslateModule, TimeBadgeComponent, 
+        IonIcon, IonTitle, IonToolbar, IonLabel,
+        IonButton, IonHeader, CommonModule, FormsModule,
+        ExerciseFormComponent, TranslateModule, TimeBadgeComponent,
         NoDataComponent, RestBadgeComponent],
     providers: [FormsService, AutosaveService]
 })
@@ -155,6 +155,19 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         );
     }
 
+    goToNextExerciseSuperSet(superset) {
+        let nextSuperset = null;
+        if (superset != null && superset != "") {
+            this.workout.exercises.forEach((ex, i) => {
+                if (ex.superset == superset && i != this.currentExerciseIndex()) {
+                    nextSuperset = i;
+                }
+            })
+        }
+        if (nextSuperset >= 0)
+            this.transitionToExercise(nextSuperset, this.currentExerciseIndex() > nextSuperset)
+    }
+
     getNextIncompleteExercise(exercises: Exercise[]): Exercise | undefined {
         return exercises?.find(ex => !ex.completed);
     }
@@ -181,7 +194,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
                 .duration(this.animationDuration)
                 .easing('ease-out')
                 .fromTo('opacity', 1, 0)
-                .fromTo('transform', 'translateX(0)', `translateX(${direction * 30}px)`)
+                .fromTo('transform', 'translateX(0)', `translateX(${direction * 60}px)`)
                 .play();
 
             this.selectExercise(index);
@@ -191,7 +204,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
                 .duration(this.animationDuration)
                 .easing('ease-out')
                 .fromTo('opacity', 0, 1)
-                .fromTo('transform', `translateX(${direction * -30}px)`, 'translateX(0)')
+                .fromTo('transform', `translateX(${direction * -60}px)`, 'translateX(0)')
                 .play();
 
         } catch {

@@ -133,6 +133,7 @@ export class TemplateService {
             end: null,
             start: new Date(),
             exercises: template?.exercises,
+            effort: 5,
             state: WorkoutState.InProgress
         };
 

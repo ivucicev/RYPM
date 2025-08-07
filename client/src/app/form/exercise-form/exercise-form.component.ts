@@ -83,6 +83,7 @@ export class ExerciseFormComponent implements OnChanges {
 
     moveExerciseUpEvent = output<void>();
     moveExerciseDownEvent = output<void>();
+    onSupersetCompletedEvent = output<string>();
 
     canMoveExerciseUp = input<boolean>(true);
     canMoveExerciseDown = input<boolean>(true);
@@ -159,11 +160,11 @@ export class ExerciseFormComponent implements OnChanges {
             }
 
             if (allCompleted) {
-                setTimeout(() => {
+                //setTimeout(() => {
                     this.exercise.controls.completed.setValue(true);
                     this.exercise.controls.completedAt.setValue(new Date());
                     this.onAllCompletedEvent.emit();
-                })
+                //})
             } else {
                 this.exercise.controls.completed.setValue(false);
                 this.exercise.controls.completedAt.setValue(null);
@@ -171,6 +172,12 @@ export class ExerciseFormComponent implements OnChanges {
         } else {
             form.controls.completedAt.setValue(null);
         }
+
+        if (form.controls.completed.value == true && this.exercise?.controls?.superset?.value != null && this.exercise?.controls?.superset?.value != "") { 
+            // set completed check if there is superset mark
+            this.onSupersetCompletedEvent.emit(this.exercise?.controls?.superset?.value);
+        }
+
     }
 
     onCompleted(setIndex: number) {
@@ -387,6 +394,7 @@ export class ExerciseFormComponent implements OnChanges {
     }
 
     async openSupersetModal(exercise) {
+        if (this.workoutMode) return;
         this.currentExercise = exercise;
         this.selectedSuperset = exercise.get('superset').value;
         await this.supersetModal.present();

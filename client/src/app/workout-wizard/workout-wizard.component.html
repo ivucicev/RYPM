@@ -47,7 +47,9 @@
         }
         <div class="sets-container">
             <app-exercise-form #exerciseForm [style.width]="'100%'" [exercise]="currentExercise()" [workoutMode]="true"
-                (onCompletedEvent)="startRest($event)" (onAllCompletedEvent)="goToNextExercise()">
+                (onCompletedEvent)="startRest($event)" 
+                (onSupersetCompletedEvent)="goToNextExerciseSuperSet($event)"
+                (onAllCompletedEvent)="goToNextExercise()">
             </app-exercise-form>
         </div>
         } @else if (currentExerciseIndex() == -1) {

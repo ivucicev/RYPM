@@ -111,6 +111,28 @@ export class TemplateComponent implements OnInit, OnDestroy {
         })
     }
 
+    moveExerciseDown(index) {
+        const exercisesArray = this.exercisesArray;
+        if (index < 0 || index >= exercisesArray.length - 1) return;
+
+        const currentExercise = exercisesArray.at(index);
+        const nextExercise = exercisesArray.at(index + 1);
+
+        exercisesArray.setControl(index, nextExercise);
+        exercisesArray.setControl(index + 1, currentExercise);
+    }
+
+    moveExerciseUp(index) {
+        const exercisesArray = this.exercisesArray;
+        if (index <= 0 || index >= exercisesArray.length) return;
+
+        const currentExercise = exercisesArray.at(index);
+        const previousExercise = exercisesArray.at(index - 1);
+
+        exercisesArray.setControl(index, previousExercise);
+        exercisesArray.setControl(index - 1, currentExercise);
+    }
+
     removeExercise(index: number) {
         this.exercisesArray.removeAt(index);
     }

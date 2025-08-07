@@ -3,6 +3,8 @@ BUGS -
      - [x] when in workout selected weight is zero then you have to scroll !HIGH all the way
      - [x] When previewing done day - going edit program clicking on day - all values are 0
      - [x] all exercises complete even if one left (shown on home screen), if on previous scren where actually are all checked
+     - [x] Move exercise up and down doest work on program and exercise
+     - [x] Move up and down blocked if only 2 items
      - [ ] When creating program - adding lots of weeks causes 404 in console and lots of requests
      - [ ] No need to select weight when creating program...
      - [ ] Adding custom excersiz not visible immediatelly in selct excersizes screen
@@ -37,22 +39,22 @@ Chat -
     - [ ] Human Trainer
 
 Settings -
-    - [ ] profile -> public/pictures...
     - [x] plates -> for increments
     - [x] measurements -> custom -> add whatever custom name
-    - [ ] Account settings
-    - [ ] Languages & Translations
     - [x] Chat with us, help us improve / contact...
     - [x] Terms & Conditions
+    - [ ] Account settings
+    - [ ] Languages & Translations
+    - [ ] profile -> public/pictures...
 
 General -
     - [x] PWA Setup 
-    - [ ] PWA notifications for Rest timer
-    - [ ] White labeling
     - [x] Docker deploy
     - [x] Name, Domain
     - [x] Gihub actions
     - [x] Repo Transfer
+    - [ ] PWA notifications for Rest timer
+    - [ ] White labeling
     - [ ] Marketing website
     - [ ] Social Login
     - [ ] FB

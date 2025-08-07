@@ -27,7 +27,7 @@
                     </ion-item>
                     <ion-item button (click)="onRemoveExerciseEvent.emit()" class="delete-item">
                         <ion-icon name="trash-outline" slot="start" color="danger"></ion-icon>
-                        <ion-label color="danger">{{ 'Remove exercise' | translate }}</ion-label>
+                        <ion-label color="danger">{{ 'Remove' | translate }}</ion-label>
                     </ion-item>
                 </ion-list>
             </ng-template>
@@ -223,7 +223,6 @@
     </div>
 </ng-template>
 
-
 <ion-modal #setPickerModal [backdropDismiss]="true" class="picker-modal">
     <ng-template>
         <ion-header>
@@ -399,7 +398,7 @@
                     <ion-button (click)="confirmSuperset()">{{ 'OK' | translate }}</ion-button>
                 </ion-buttons>
             </ion-toolbar>
-            <ion-toolbar class="type-selector-toolbar">
+            <ion-toolbar class="type-selector-toolbar ion-padding-x">
                 <ion-note>
                     <ion-icon name="information-circle-outline"></ion-icon> {{ 'All exercises that should be in the same superset mark with the same letter.' | translate }} </ion-note>
             </ion-toolbar>

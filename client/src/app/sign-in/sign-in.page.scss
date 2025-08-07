@@ -168,3 +168,8 @@ ion-header {
 .padding-10 {
     padding-top: 10px !important;
 }
+
+.rem05.button-large {
+    --padding-start: 0.5em;
+    --padding-end: 0.5em;
+}

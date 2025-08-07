@@ -17,6 +17,10 @@
                     @for (exercise of exercisesArray.controls; track $index; let exIndex = $index) {
                     <ion-item lines="none" [formGroupName]="exIndex" class="ion-no-border">
                         <app-exercise-form [style.width]="'100%'" [exercise]="exercise"
+                            [canMoveExerciseDown]="$index < exercisesArray.controls.length - 1"
+                            [canMoveExerciseUp]="$index > 0" 
+                            (moveExerciseDownEvent)="moveExerciseDown($index)"
+                            (moveExerciseUpEvent)="moveExerciseUp($index)"
                             (onRemoveExerciseEvent)="removeExercise(exIndex)">
                         </app-exercise-form>
                     </ion-item>

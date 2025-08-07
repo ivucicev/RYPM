@@ -119,9 +119,13 @@ export class ChatsPage {
         return await modal.present();
     }
 
-    conversation(chat: ChatItem) {
+    conversation(chat?: ChatItem) {
         // TODO
         this.navCtrl.navigateForward(['/conversation']);
+    }
+
+    aiConversation() {
+        this.navCtrl.navigateForward(['/conversation/ai']);
     }
 
     openSearchUser() {

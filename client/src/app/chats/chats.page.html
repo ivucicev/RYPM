@@ -15,36 +15,20 @@
 <ion-content class="bg_color" fullscreen>
 
     <ion-list lines="none">
-        @if (aiTrainers.RYPEDD == aiTrainer) {
-        <ion-item lines="" class="animate__animated animate__fadeInUp">
+        <ion-item lines="" class="animate__animated animate__fadeInUp" (click)="aiConversation()">
             <div class="item-inner d-flex">
                 <div class="img_box center_img">
+                    @if (aiTrainers.RYPEDD == aiTrainer) {
                     <img [src]="'assets/images/RYPEDD1.png'" class="crop_img">
-                </div>
-                <div class="text_box">
-                    <h2 class="d-flex">
-                        <span class="item-title">Ryp Edd - {{ 'AI Trainer' | translate }}</span>
-                        <small class="end">12.12.2027</small>
-                    </h2>
-                    <h3 [class.system-message]="true">
-                        @if ('system' === 'system') {
-                        <ion-icon name="alert-circle"></ion-icon>
-                        }
-                        {{ 'Last message here' }}
-                    </h3>
-                </div>
-            </div>
-        </ion-item>
-        }
-        @if (aiTrainers.RYPEDDA == aiTrainer) {
-        <ion-item lines="" class="animate__animated animate__fadeInUp">
-            <div class="item-inner d-flex">
-                <div class="img_box center_img">
+                    }
+                    @if (aiTrainers.RYPEDDA == aiTrainer) {
                     <img [src]="'assets/images/RYPEDDA1.png'" class="crop_img">
+                    }
                 </div>
                 <div class="text_box">
                     <h2 class="d-flex">
-                        <span class="item-title">Ryp Eda - {{ 'AI Trainer' | translate }}</span>
+                        <span class="item-title"> @if (aiTrainers.RYPEDD == aiTrainer) { Ed Ryp  } @else { Em Ryp } - {{
+                            'AI Trainer' | translate }}</span>
                         <small class="end">12.12.2027</small>
                     </h2>
                     <h3 [class.system-message]="true">
@@ -56,7 +40,6 @@
                 </div>
             </div>
         </ion-item>
-        }
         @for(chat of chatsList; track chat.id) {
         <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation(chat)">
             <div class="item-inner d-flex">

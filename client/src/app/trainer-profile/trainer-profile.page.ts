@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ScrollDetail } from '@ionic/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { IonButton, IonFooter, IonRow, IonCol, IonContent, IonTitle, IonButtons, IonToolbar, IonHeader, IonBackButton } from "@ionic/angular/standalone";
 
@@ -13,7 +13,11 @@ import { IonButton, IonFooter, IonRow, IonCol, IonContent, IonTitle, IonButtons,
 })
 export class TrainerProfilePage implements OnInit {
 
-    constructor(private route: Router) { }
+    constructor(private route: Router, private activatedRoute: ActivatedRoute) { 
+        activatedRoute.fragment.subscribe(res => {
+            console.log(res)
+        })
+    }
 
     ngOnInit() {
     }

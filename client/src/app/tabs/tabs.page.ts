@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { IonTabs, IonIcon, IonTabBar, IonTabButton, IonLabel } from '@ionic/angular/standalone';
-import { settingsOutline } from 'ionicons/icons';
+import { chatbubblesOutline, settingsOutline } from 'ionicons/icons';
 
 @Component({
     selector: 'app-tabs',
@@ -13,7 +13,8 @@ import { settingsOutline } from 'ionicons/icons';
 export class TabsPage {
     private activeTab?: HTMLElement;
 
-    settingsIcon = settingsOutline
+    settingsIcon = settingsOutline;
+    bubblesIcon = chatbubblesOutline;
 
     constructor() { }
 

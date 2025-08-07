@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content class="bg_color ion-padding-x" fullscreen>
-    <p class="ion-padding-bottom"> {{ 'Weight' | translate }}</p>
+    <p class="ion-padding-top"> {{ 'Weight' | translate }}</p>
     <ion-segment [value]="selectedWeightType" (ionChange)="setWeightType($event.detail.value)">
         @for(weightType of weightTypes; track $index) {
         <ion-segment-button [value]="weightType">
@@ -18,7 +18,7 @@
         </ion-segment-button>
         }
     </ion-segment>
-    <p class="ion-padding-bottom"> {{ 'Weight increments' | translate }}</p>
+    <p class="ion-padding-top"> {{ 'Weight increments' | translate }}</p>
     <ion-segment [scrollable]="true" [value]="selectedIncrement" (ionChange)="setIncrement($event.detail.value)">
         @if (selectedWeightType == weightType.KG) {
         @for(increment of weightIncrementsKG; track $index) {
@@ -35,4 +35,37 @@
         }
         }
     </ion-segment>
+    <p class="ion-padding-top"> {{ 'Default' | translate }} {{ 'AI Trainer' | translate }}</p>
+    <ion-row>
+        <ion-col>
+            <ion-card (click)="selectedTrainer = aiTrainer.RYPEDD; changeTrainer();" [class.grayscale]="selectedTrainer != aiTrainer.RYPEDD">
+                @if (selectedTrainer == aiTrainer.RYPEDD) {
+                    <ion-icon color="success" class="abs-icon" size="large" name="checkmark-circle-outline"></ion-icon>
+                } 
+                @else {
+                    <ion-icon color="medium" class="abs-icon" size="large" name="ellipse-outline"></ion-icon>
+                }
+                <img src="assets/images/RYPEDD1.png" />
+                <ion-card-header>
+                    <ion-card-title>Ryp Edd</ion-card-title>
+                    <ion-card-subtitle>{{ 'AI Trainer' | translate }}</ion-card-subtitle>
+                </ion-card-header>
+            </ion-card>
+        </ion-col>
+        <ion-col>
+            <ion-card (click)="selectedTrainer = aiTrainer.RYPEDDA; changeTrainer();" [class.grayscale]="selectedTrainer != aiTrainer.RYPEDDA">
+                @if (selectedTrainer == aiTrainer.RYPEDDA) {
+                    <ion-icon color="success" class="abs-icon" size="large" name="checkmark-circle-outline"></ion-icon>
+                } 
+                @else {
+                    <ion-icon color="medium" class="abs-icon" size="large" name="ellipse-outline"></ion-icon>
+                }
+                <img src="assets/images/RYPEDDA1.png" />
+                <ion-card-header>
+                    <ion-card-title>Ryp Eda</ion-card-title>
+                    <ion-card-subtitle>{{ 'AI Trainer' | translate }}</ion-card-subtitle>
+                </ion-card-header>
+            </ion-card>
+        </ion-col>
+    </ion-row>
 </ion-content>

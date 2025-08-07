@@ -6,14 +6,15 @@ import { AccountService } from 'src/app/core/services/account.service';
 import { PocketbaseService } from '../core/services/pocketbase.service';
 import { User } from '../core/models/collections/user';
 import { PB } from '../core/constants/pb-constants';
-import { IonHeader, IonToolbar, IonButtons, IonBackButton, IonSegment, IonContent, IonLabel, IonSegmentButton, IonTitle } from "@ionic/angular/standalone";
+import { IonHeader, IonToolbar, IonButtons, IonBackButton, IonSegment, IonContent, IonLabel, IonSegmentButton, IonTitle, IonRow, IonCol, IonAvatar, IonCard, IonCardHeader, IonCardContent, IonCardSubtitle, IonCardTitle, IonIcon } from "@ionic/angular/standalone";
+import { AITrainer } from '../core/models/enums/ai-trainer';
 
 @Component({
     selector: 'app-measurements',
     templateUrl: 'measurements.component.html',
     styleUrls: ['./measurements.component.scss'],
     standalone: true,
-    imports: [IonTitle, IonSegmentButton, IonLabel, IonContent, IonSegment, IonBackButton, IonButtons, IonToolbar, IonHeader, TranslateModule, WeightTypePipe]
+    imports: [IonTitle, IonSegmentButton, IonIcon, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonRow, IonCol, IonLabel, IonContent, IonSegment, IonBackButton, IonButtons, IonToolbar, IonHeader, TranslateModule, WeightTypePipe]
 })
 export class MeasurementsComponent implements OnInit {
 
@@ -24,6 +25,8 @@ export class MeasurementsComponent implements OnInit {
     weightTypes = [WeightType.KG, WeightType.LB]
     weightIncrementsKG = [1.25, 2.5, 5, 10, 15, 20, 25];
     weightIncrementsLB = [1.25, 2.5, 5, 10, 25, 35, 45];
+    aiTrainer = AITrainer;
+    public selectedTrainer = AITrainer.RYPEDD;
 
     constructor(
         private accountService: AccountService,
@@ -43,10 +46,22 @@ export class MeasurementsComponent implements OnInit {
         });
     }
 
+    changeTrainer() {
+        this.accountService.getCurrentUser().then(user => {
+            this.pocketbaseService.users.update(
+                user.id,
+                { aiTrainer: this.selectedTrainer } as User,
+                { headers: PB.HEADER.NO_TOAST }
+            );
+            user.aiTrainer = this.selectedTrainer;
+        });
+    }
+
     ngOnInit() {
         this.accountService.getCurrentUser().then(user => {
             this.selectedWeightType = user.defaultWeightType;
             this.selectedIncrement = user.weightIncrement;
+            this.selectedTrainer = user.aiTrainer || AITrainer.RYPEDD;
         });
     }
 

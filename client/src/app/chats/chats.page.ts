@@ -5,6 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { QrCodeModalComponent } from '../qr-code-modal/qr-code-modal.component';
 import { ModalController, NavController, IonHeader, IonItem, IonContent, IonList, IonIcon, IonToolbar, IonButtons, IonTitle, IonButton } from '@ionic/angular/standalone';
 import { ContinueFooterComponent } from '../shared/continue-footer/continue-footer.component';
+import { PocketbaseService } from '../core/services/pocketbase.service';
+import { AccountService } from '../core/services/account.service';
+import { AITrainer } from '../core/models/enums/ai-trainer';
 
 interface ChatItem {
     id: string;
@@ -25,6 +28,8 @@ interface ChatItem {
 export class ChatsPage {
     showSearchBar = false;
     searchTerm = '';
+    aiTrainer;
+    aiTrainers = AITrainer;
 
     // TODO
     chatsList: ChatItem[] = [
@@ -82,8 +87,14 @@ export class ChatsPage {
 
     constructor(
         private modalCtrl: ModalController,
-        private navCtrl: NavController
-    ) { }
+        private navCtrl: NavController,
+        private pocketbase: PocketbaseService,
+        private accountService: AccountService
+    ) {
+        this.accountService.getCurrentUser().then(user => {
+            this.aiTrainer = user.aiTrainer || AITrainer.RYPEDD;
+        });
+    }
 
     ionViewWillEnter() {
         this.refresh();

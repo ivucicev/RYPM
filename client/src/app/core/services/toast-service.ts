@@ -54,8 +54,8 @@ export class ToastService {
         await this.show(successKey, 3000, 'bottom', 'success');
     }
 
-    async info(infoKey: string): Promise<void> {
-        await this.show(infoKey, 3000, 'bottom', 'info');
+    async info(infoKey: string, pos: any = 'bottom'): Promise<void> {
+        await this.show(infoKey, 3000, pos, 'info');
     }
 
     async error(errorKey: string): Promise<void> {

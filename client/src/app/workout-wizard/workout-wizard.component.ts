@@ -23,6 +23,7 @@ import { NoDataComponent } from "../shared/no-data/no-data.component";
 import { RestBadgeComponent } from "../shared/rest-badge/rest-badge.component";
 import { ExerciseTemplateDetailComponent } from '../exercise-template/exercise-template-detail/exercise-template-detail.component';
 import { ExerciseEffortModalComponent } from '../exercise-effort-modal/exercise-effort-modal.component';
+import { ToastService } from '../core/services/toast-service';
 
 @Component({
     selector: 'app-workout-wizard',
@@ -94,7 +95,8 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         private translateService: TranslateService,
         private autosaveService: AutosaveService,
         private actionSheetCtrl: ActionSheetController,
-        private loadingCtrl: LoadingController
+        private loadingCtrl: LoadingController,
+        private toast: ToastService,
     ) { }
 
     ngOnInit() {
@@ -157,15 +159,19 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
     goToNextExerciseSuperSet(superset) {
         let nextSuperset = null;
+        let nextName = ""
         if (superset != null && superset != "") {
             this.workout.exercises.forEach((ex, i) => {
                 if (ex.superset == superset && i != this.currentExerciseIndex()) {
                     nextSuperset = i;
+                    nextName = ex.name;
                 }
             })
         }
-        if (nextSuperset >= 0)
+        if (nextSuperset >= 0) {
+            this.toast.info(`Superset - ${nextName}`, "top")
             this.transitionToExercise(nextSuperset, this.currentExerciseIndex() > nextSuperset)
+        }
     }
 
     getNextIncompleteExercise(exercises: Exercise[]): Exercise | undefined {

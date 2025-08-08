@@ -74,83 +74,81 @@ export class HomePage {
     async refresh() {
         this.continueFooter()?.refresh();
 
-        this.pocketbaseService.workouts.getFullList({
+        const workouts = await this.pocketbaseService.workouts.getFullList({
             sort: '-start',
             filter: `state = ${WorkoutState.InProgress}`,
             expand: 'exercises,exercises.sets',
-        }).then((workouts) => {
+        })
 
-            this.workouts = workouts.map(w => {
+        this.workouts = workouts.map(w => {
 
-                const nextExercise = this.getNextIncompleteExercise(w.exercises);
-                const nextSet = this.getNextIncompleteSet(nextExercise?.sets);
+            const nextExercise = this.getNextIncompleteExercise(w.exercises);
+            const nextSet = this.getNextIncompleteSet(nextExercise?.sets);
 
-                return {
-                    ...w,
-                    nextExercise: { ...nextExercise, nextSet },
-                };
-            });
-
-            this.lastWorkout = this.workouts[0];
-
+            return {
+                ...w,
+                nextExercise: { ...nextExercise, nextSet },
+            };
         });
 
-        this.pocketbaseService.templates.getFullList({
+        this.lastWorkout = this.workouts[0];
+
+
+        const templates = await this.pocketbaseService.templates.getFullList({
             sort: '-created'
-        }).then((templates) => {
-            this.templates = templates;
         });
+
+        this.templates = templates;
 
         this.activeProgramIds.length = 0;
 
-        this.pocketbaseService.programs.getFullList({
+        const programs = await this.pocketbaseService.programs.getFullList({
             sort: '-updated',
             expand: 'weeks,weeks.days,weeks.days.workout'
-        }).then((programs) => {
-            this.programs = programs.map(p => {
-                const tagsToTake = 3;
+        })
+        this.programs = programs.map(p => {
+            const tagsToTake = 3;
 
-                // Check if any workout in any day of any week has state == 1
-                const hasInProgress = p.weeks?.some(week =>
-                    week?.days?.some(day => {
-                        if (day?.workout?.state === WorkoutState.InProgress) {
-                            p['workoutId'] = day.workout.id;
-                            return true;
-                        }
-                        return false;
+            // Check if any workout in any day of any week has state == 1
+            const hasInProgress = p.weeks?.some(week =>
+                week?.days?.some(day => {
+                    if (day?.workout?.state === WorkoutState.InProgress) {
+                        p['workoutId'] = day.workout.id;
+                        return true;
                     }
-                    )
-                );
-
-                if (hasInProgress) {
-                    this.activeProgramIds.push(p.id);
-                    p['active'] = true;
+                    return false;
                 }
+                )
+            );
 
-                const tags = [
-                    ...new Set(
-                        p.weeks?.flatMap(w => w?.days ?? [])
-                            ?.flatMap(d => d?.exercises ?? [])
-                            ?.flatMap(e => [
-                                ...(e?.primaryMuscles ?? []),
-                                ...(e?.secondaryMuscles ?? [])
-                            ])
-                    )
-                ];
+            if (hasInProgress) {
+                this.activeProgramIds.push(p.id);
+                p['active'] = true;
+            }
 
-                const tagsToShow: string[] = tags.splice(0, tagsToTake);
+            const tags = [
+                ...new Set(
+                    p.weeks?.flatMap(w => w?.days ?? [])
+                        ?.flatMap(d => d?.exercises ?? [])
+                        ?.flatMap(e => [
+                            ...(e?.primaryMuscles ?? []),
+                            ...(e?.secondaryMuscles ?? [])
+                        ])
+                )
+            ];
 
-                if (tags.length > tagsToTake) {
-                    tagsToShow.push(`+${tags.length - 3}`);
-                }
+            const tagsToShow: string[] = tags.splice(0, tagsToTake);
 
-                return {
-                    ...ProgramService.mapProgram(p),
-                    tags: tagsToShow
-                }
-            });
-            this.programs = this.programs.sort((a: any, b: any) => (b['active'] === true) as any - ((a['active'] === true) as any));
+            if (tags.length > tagsToTake) {
+                tagsToShow.push(`+${tags.length - 3}`);
+            }
+
+            return {
+                ...ProgramService.mapProgram(p),
+                tags: tagsToShow
+            }
         });
+        this.programs = this.programs.sort((a: any, b: any) => (b['active'] === true) as any - ((a['active'] === true) as any));
 
     }
 
@@ -172,10 +170,9 @@ export class HomePage {
         this.navCtrl.navigateForward(['./workout-wizard', id]);
     }
 
-    completeWorkout(id: string) {
-        this.pocketbaseService.workouts.update(id, { completed: true }).then((workout) => {
-            this.workouts = this.workouts.filter(w => w.id !== workout.id);
-        });
+    async completeWorkout(id: string) {
+        const workout = await this.pocketbaseService.workouts.update(id, { completed: true });
+        this.workouts = this.workouts.filter(w => w.id !== workout.id);
     }
     //#endregion
 
@@ -194,20 +191,18 @@ export class HomePage {
             return;
         }
         const actionSheet = await this.programService.presentProgramActionSheet(program.id);
-        actionSheet.onDidDismiss().then(e => {
-            if (e.data?.reload) {
-                this.refresh();
-            }
-        })
+        const e = await actionSheet.onDidDismiss();
+        if (e.data?.reload) {
+            this.refresh();
+        }
     }
 
     async presentAssignProgramPopover(program: Program) {
         const actionSheet = await this.programService.presentAssignProgramPopover(program);
-        actionSheet.onDidDismiss().then(e => {
-            if (e.data?.reload) {
-                this.refresh();
-            }
-        })
+        const e = await actionSheet.onDidDismiss();
+        if (e.data?.reload) {
+            this.refresh();
+        }
     }
 
     async deleteProgram(id: string) {
@@ -227,20 +222,18 @@ export class HomePage {
 
     async presentAssignTemplatePopover(template: Template) {
         const actionSheet = await this.templateService.presentTemplateActionSheet(template);
-        actionSheet.onDidDismiss().then(e => {
-            if (e.data?.reload) {
-                this.refresh();
-            }
-        })
+        const e = await actionSheet.onDidDismiss();
+        if (e.data?.reload) {
+            this.refresh();
+        }
     }
 
     async presentTemplateActionSheet(template: Template) {
         const actionSheet = await this.templateService.presentTemplateActionSheet(template);
-        actionSheet.onDidDismiss().then(e => {
-            if (e.data?.reload) {
-                this.refresh();
-            }
-        })
+        const e = await actionSheet.onDidDismiss();
+        if (e.data?.reload) {
+            this.refresh();
+        }
     }
 
     async deleteTemplate(id: string) {

@@ -26,15 +26,14 @@ export class ConversationPage implements OnInit {
             }
         })
 
-        this.accountService.getCurrentUser().then(user => {
-            if (user && user.aiTrainer) {
-                this.aiTrainer = user.aiTrainer;
-            }
-        });
 
     }
 
-    ngOnInit() {
+    async ngOnInit() {
+        const user = await this.accountService.getCurrentUser();
+        if (user && user.aiTrainer) {
+            this.aiTrainer = user.aiTrainer;
+        }
     }
 
     onScroll($event) {

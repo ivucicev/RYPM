@@ -41,14 +41,13 @@ export class AccountComponent implements OnInit {
             email: ['']
         });
 
-        this.accountService.getCurrentUser(reload).then(user => {
-            this.accountForm = this.formBuilder.group({
-                email: [user.email, [Validators.required, Validators.email]],
-            });
-
-            this.accountForm.disable();
-            this.accountForm.markAsPristine();
+        const user = await this.accountService.getCurrentUser(reload)
+        this.accountForm = this.formBuilder.group({
+            email: [user.email, [Validators.required, Validators.email]],
         });
+
+        this.accountForm.disable();
+        this.accountForm.markAsPristine();
         this.accountForm.disable();
 
         this.isEditing = false;
@@ -84,19 +83,18 @@ export class AccountComponent implements OnInit {
         const currentEmail = user.email;
 
         model.email = currentEmail;
-        this.pocketbaseService.users.update(
+        const res = this.pocketbaseService.users.update(
             user.id,
             model, { headers: PB.HEADER.NO_TOAST }
-        ).then(async res => {
-            if (!res) return;
+        )
+        if (!res) return;
 
-            if (newEmail != currentEmail) {
-                this.accountService.requestEmailChange(newEmail);
-            } else {
-                this.toastService.success();
-            }
+        if (newEmail != currentEmail) {
+            this.accountService.requestEmailChange(newEmail);
+        } else {
+            this.toastService.success();
+        }
 
-            this.cancelEditMode();
-        });
+        this.cancelEditMode();
     }
 }

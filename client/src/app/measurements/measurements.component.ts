@@ -29,6 +29,7 @@ export class MeasurementsComponent implements OnInit {
     aiTrainer = AITrainer;
     public selectedTrainer = AITrainer.RYPED;
     aiTrainerToggle = true;
+    currentUser: User;
 
     constructor(
         private accountService: AccountService,
@@ -37,15 +38,12 @@ export class MeasurementsComponent implements OnInit {
 
     setIncrement(increment) {
         this.selectedIncrement = increment;
-        this.accountService.getCurrentUser().then(user => {
-
-            this.pocketbaseService.users.update(
-                user.id,
-                { weightIncrement: this.selectedIncrement } as User,
-                { headers: PB.HEADER.NO_TOAST }
-            );
-            user.weightIncrement = this.selectedIncrement;
-        });
+        this.pocketbaseService.users.update(
+            this.currentUser.id,
+            { weightIncrement: this.selectedIncrement } as User,
+            { headers: PB.HEADER.NO_TOAST }
+        );
+        this.currentUser.weightIncrement = this.selectedIncrement;
     }
 
     changeTrainer(trainer: AITrainer) {
@@ -53,17 +51,15 @@ export class MeasurementsComponent implements OnInit {
             this.selectedTrainer = null;
             this.aiTrainerToggle = false;
         } else {
-            this.selectedTrainer = trainer; 
+            this.selectedTrainer = trainer;
             this.aiTrainerToggle = true;
         }
-        this.accountService.getCurrentUser().then(user => {
-            this.pocketbaseService.users.update(
-                user.id,
-                { aiTrainer: this.selectedTrainer } as User,
-                { headers: PB.HEADER.NO_TOAST }
-            );
-            user.aiTrainer = this.selectedTrainer;
-        });
+        this.pocketbaseService.users.update(
+            this.currentUser.id,
+            { aiTrainer: this.selectedTrainer } as User,
+            { headers: PB.HEADER.NO_TOAST }
+        );
+        this.currentUser.aiTrainer = this.selectedTrainer;
     }
 
     toggle(e) {
@@ -74,26 +70,24 @@ export class MeasurementsComponent implements OnInit {
         }
     }
 
-    ngOnInit() {
-        this.accountService.getCurrentUser().then(user => {
-            this.selectedWeightType = user.defaultWeightType;
-            this.selectedIncrement = user.weightIncrement;
-            this.selectedTrainer = user.aiTrainer || AITrainer.RYPED;
-            if (this.selectedTrainer) {
-                this.aiTrainerToggle = true;
-            } 
-        });
+    async ngOnInit() {
+        const user = await this.accountService.getCurrentUser();
+        this.currentUser = user;
+        this.selectedWeightType = user.defaultWeightType;
+        this.selectedIncrement = user.weightIncrement;
+        this.selectedTrainer = user.aiTrainer || AITrainer.RYPED;
+        if (this.selectedTrainer) {
+            this.aiTrainerToggle = true;
+        }
     }
 
     setWeightType(type) {
         this.selectedWeightType = type;
-        this.accountService.getCurrentUser().then(user => {
-            this.pocketbaseService.users.update(
-                user.id,
-                { defaultWeightType: this.selectedWeightType } as User,
-                { headers: PB.HEADER.NO_TOAST }
-            );
-            user.defaultWeightType = this.selectedWeightType;
-        });
+        this.pocketbaseService.users.update(
+            this.currentUser.id,
+            { defaultWeightType: this.selectedWeightType } as User,
+            { headers: PB.HEADER.NO_TOAST }
+        );
+        this.currentUser.defaultWeightType = this.selectedWeightType;
     }
 }

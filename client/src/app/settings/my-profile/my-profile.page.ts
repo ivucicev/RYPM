@@ -92,13 +92,12 @@ export class MyProfilePage implements OnInit {
         const user = await this.accountService.getCurrentUser();
 
         const model = this.model;
-        this.pocketbaseService.users.update(
+        const res = await this.pocketbaseService.users.update(
             user.id,
             model
-        ).then(async res => {
-            if (!res) return;
-            this.cancelEditMode();
-        });
+        )
+        if (!res) return;
+        this.cancelEditMode();
     }
 
     async onIsPublicToggle() {

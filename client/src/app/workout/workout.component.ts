@@ -96,12 +96,10 @@ export class WorkoutComponent implements OnInit {
 
 
     async saveChanges() {
-        if (this.workoutForm.valid) {
+        if (this.workoutForm.invalid) return;
             const workout = this.workoutForm.value;
             workout.start = new Date();
-            this.pocketbaseService.upsertRecord('workouts', workout, false).then(res => {
-                this.navCtrl.navigateForward([`./workout-wizard/${res.id}`], { replaceUrl: true });
-            });
-        }
+            const res = await this.pocketbaseService.upsertRecord('workouts', workout, false);
+            this.navCtrl.navigateForward([`./workout-wizard/${res.id}`], { replaceUrl: true });
     }
 }

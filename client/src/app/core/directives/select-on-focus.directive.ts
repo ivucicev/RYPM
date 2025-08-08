@@ -10,21 +10,20 @@ export class SelectOnFocusDirective implements AfterViewInit, OnDestroy {
 
     constructor(private el: ElementRef) { }
 
-    ngAfterViewInit() {
+    async ngAfterViewInit() {
         const ionInput = this.el.nativeElement;
 
-        ionInput.getInputElement().then((inputEl: HTMLInputElement) => {
-            this.inputElement = inputEl;
+        const inputEl = ionInput.getInputElement();
+        this.inputElement = inputEl;
 
-            this.focusListener = () => {
-                setTimeout(() => {
-                    if (this.inputElement.disabled || this.inputElement.readOnly) return;
+        this.focusListener = () => {
+            setTimeout(() => {
+                if (this.inputElement.disabled || this.inputElement.readOnly) return;
 
-                    this.inputElement.select();
-                }, 0);
-            };
-            this.inputElement.addEventListener('focus', this.focusListener);
-        });
+                this.inputElement.select();
+            }, 0);
+        };
+        this.inputElement.addEventListener('focus', this.focusListener);
     }
 
     ngOnDestroy() {

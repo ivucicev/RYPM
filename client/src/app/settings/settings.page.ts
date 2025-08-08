@@ -51,10 +51,9 @@ export class SettingsPage {
     ) {
     }
 
-    ionViewWillEnter() {
-        this.accountService.getCurrentUser().then(u => {
-            this.user = u;
-        });
+    async ionViewWillEnter() {
+        const u = await this.accountService.getCurrentUser();
+        this.user = u;
     }
 
     async openAccountSwitchOptions() {
@@ -109,8 +108,9 @@ export class SettingsPage {
     }
 
     // TODO
-    buyappalert() {
-        this.modalController.create({ component: BuyappalertPage }).then((modalElement) => modalElement.present());
+    async buyappalert() {
+        const modalElement = await this.modalController.create({ component: BuyappalertPage })
+        modalElement.present();
     }
 
     async logout() {

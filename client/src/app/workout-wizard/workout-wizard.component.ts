@@ -323,9 +323,8 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
         await this.handleUncompletedSets(); // TF is this??
 
-        this.pocketbaseService.workouts.update(model.id, model).then((_) => {
-            this.navCtrl.navigateBack(['./tabs']);
-        });
+        await this.pocketbaseService.workouts.update(model.id, model);
+        this.navCtrl.navigateBack(['./tabs']);
 
     }
 
@@ -375,10 +374,9 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
                     text: translations.Delete,
                     icon: 'trash-outline',
                     role: 'destructive',
-                    handler: () => {
-                        this.pocketbaseService.workouts.delete(this.workout.id).then(() => {
-                            this.navCtrl.navigateBack(['./tabs']);
-                        })
+                    handler: async() => {
+                        await this.pocketbaseService.workouts.delete(this.workout.id);
+                        this.navCtrl.navigateBack(['./tabs']);
                     }
                 },
                 {

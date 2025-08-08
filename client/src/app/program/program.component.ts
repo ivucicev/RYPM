@@ -320,10 +320,9 @@ export class ProgramComponent implements OnInit, OnDestroy {
             await this.refresh(this.programForm.get('id')?.value || '');
         };
         const actionSheet = await this.programService.presentProgramActionSheet(null, this.program, excludeActions);
-        actionSheet.onDidDismiss().then(e => {
-            if (e.data?.destructive || e.data?.constructive) {
-                this.navCtrl.navigateBack(['./tabs']);
-            }
-        })
+        const e = await actionSheet.onDidDismiss();
+        if (e.data?.destructive || e.data?.constructive) {
+            this.navCtrl.navigateBack(['./tabs']);
+        }
     }
 }

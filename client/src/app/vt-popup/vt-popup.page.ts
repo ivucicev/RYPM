@@ -50,27 +50,26 @@ export class VtPopupPage implements OnInit {
 	}
 
 	presentToast(body: string, position?: string, duration?: number) {
-		this.toastController.create({
+		const toast = this.toastController.create({
 			message: body,
 			duration: (duration && duration > 0) ? duration : 2000,
 			position: (position && (position == "top" || position == "middle")) ? position : 'bottom'
-		}).then(toast => toast.present());
+		})
+		toast => toast.present();
 	}
 
 
 	async presentLoading(body: string) {
 		this.isLoading = true;
-		return await this.loadingController.create({ message: body }).then(overlay => {
-			overlay.present().then(() => {
-				if (!this.isLoading) {
-					try {
-						overlay.dismiss().then(() => console.log('loading aborted'));
-					} catch (error) {
-						console.error(error);
-					}
-				}
-			});
-		});
+		const overlay = await this.loadingController.create({ message: body });
+		await overlay.present();
+		if (!this.isLoading) {
+			try {
+				await overlay.dismiss();
+			} catch (error) {
+				console.error(error);
+			}
+		}
 	}
 
 	async dismissLoading() {

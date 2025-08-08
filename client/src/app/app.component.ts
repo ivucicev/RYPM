@@ -40,7 +40,7 @@ export class AppComponent {
         private router: Router,
         private accountService: AccountService,
         private themeService: ThemeService
-    ) { 
+    ) {
         this.themeService.initializeTheme();
         this.initializeApp();
 
@@ -56,7 +56,7 @@ export class AppComponent {
                     this.canShowInstallButton = false;
                 }
             }
-        }) 
+        })
 
         registerIcons();
     }
@@ -64,31 +64,29 @@ export class AppComponent {
     public component = AppComponent;
 
     async initializeApp() {
-        this.platform.ready().then(async () => {
+        await this.platform.ready()
 
-            // swiper
-            register();
+        // swiper
+        register();
 
-            // TODO: fix splash, styling
-            // StatusBar.styleDefault();
-            // SplashScreen.show();
-            // StatusBar.setOverlaysWebView({ overlay: false });
-            // StatusBar.setBackgroundColor({ color: '#000000' });
-            let defaultLang = window.localStorage.getItem(Constants.KEY_DEFAULT_LANGUAGE);
-            this.globalize(defaultLang);
+        // TODO: fix splash, styling
+        // StatusBar.styleDefault();
+        // SplashScreen.show();
+        // StatusBar.setOverlaysWebView({ overlay: false });
+        // StatusBar.setBackgroundColor({ color: '#000000' });
+        let defaultLang = window.localStorage.getItem(Constants.KEY_DEFAULT_LANGUAGE);
+        this.globalize(defaultLang);
 
-            this.accountService.attemptAutoLogin().then(res => {
-                // TODO: remove, used for testing + add AUTH GUARD
-                // this.navCtrl.navigateRoot(['./tabs']);
-                // return;
-                if (!res) {
-                    this.navCtrl.navigateRoot(['./sign-in']);
-                } else {
-                    this.navCtrl.navigateRoot(['./tabs']);
-                }
-                // SplashScreen.hide();
-            });
-        });
+        const res = await this.accountService.attemptAutoLogin();
+        // TODO: remove, used for testing + add AUTH GUARD
+        // this.navCtrl.navigateRoot(['./tabs']);
+        // return;
+        if (!res) {
+            this.navCtrl.navigateRoot(['./sign-in']);
+        } else {
+            this.navCtrl.navigateRoot(['./tabs']);
+        }
+        // SplashScreen.hide();
 
         if (!this.isInstalled)
             setTimeout(() => {
@@ -122,16 +120,15 @@ export class AppComponent {
         this.deferredPrompt = event;
     }
 
-    triggerInstall() {
+    async triggerInstall() {
         if (this.platform.is('ios')) {
             this.showInstallDialog = true;
             return;
         }
         if (this.deferredPrompt) {
             this.deferredPrompt.prompt();
-            this.deferredPrompt.userChoice.then((choiceResult: any) => {
-                this.deferredPrompt = null;
-            });
+            const choiceResult = await this.deferredPrompt.userChoice;
+            this.deferredPrompt = null;
         }
     }
 }

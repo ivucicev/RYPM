@@ -24,12 +24,6 @@ export class AccountSwitchPopoverComponent {
         private navCtrl: NavController,
         private accountService: AccountService
     ) {
-        this.accountService.getCurrentUser().then(u => {
-            this.user = u;
-        });
-        this.accountService.getAvailableAccounts().then(acc => {
-            this.accounts = acc;
-        })
     }
 
     addNewAccount() {
@@ -44,5 +38,10 @@ export class AccountSwitchPopoverComponent {
     switchAccount(auth: UserMap) {
         this.accountService.switchAccount(auth);
         this.dismiss();
+    }
+
+    async ngOnInit() {
+        this.user = await this.accountService.getCurrentUser();
+        this.accounts = await this.accountService.getAvailableAccounts();
     }
 }

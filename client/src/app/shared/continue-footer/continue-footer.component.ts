@@ -44,44 +44,42 @@ export class ContinueFooterComponent {
         this.navCtrl.navigateForward(['./workout-wizard', this.workout.id]);
     }
 
-    refresh() {
+    async refresh() {
         this.workout = null;
         this.lastCompletedSet = null;
         this.lastCompletedSetExercise = null;
 
-        this.pocketbaseService.workouts.getFirstListItem(
+        const workout = await this.pocketbaseService.workouts.getFirstListItem(
             `state = ${WorkoutState.InProgress}` + (this.workoutId() ? (` && id = "${this.workoutId()}"`) : ''),
             {
                 expand: 'exercises,exercises.sets',
                 sort: '-updated',
             }
-        ).then(workout => {
-            if (!workout) {
-                return;
-            }
+        )
+        if (!workout) {
+            return;
+        }
 
-            this.workout = workout;
+        this.workout = workout;
 
-            const lastCompletedSet = this.workout.exercises.flatMap(e => e.sets)
-                .filter(s => s.completed && s.completedAt)
-                .sort((a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt)?.getTime())[0]
+        const lastCompletedSet = this.workout.exercises.flatMap(e => e.sets)
+            .filter(s => s.completed && s.completedAt)
+            .sort((a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt)?.getTime())[0]
 
-            if (!lastCompletedSet || lastCompletedSet.restSkipped) {
-                return;
-            }
+        if (!lastCompletedSet || lastCompletedSet.restSkipped) {
+            return;
+        }
 
-            const lastCompletedSetExercise = this.workout.exercises.find(e => e.sets.includes(lastCompletedSet));
+        const lastCompletedSetExercise = this.workout.exercises.find(e => e.sets.includes(lastCompletedSet));
 
-            if (this.lastCompletedSet?.restSkipped != lastCompletedSet.restSkipped
-                || this.lastCompletedSet?.completedAt != lastCompletedSet.completedAt
-                || this.lastCompletedSet?.id != lastCompletedSet.id
-            ) {
-                this.lastCompletedSet = lastCompletedSet;
-                this.lastCompletedSetExercise = lastCompletedSetExercise;
-            }
-        }).catch(err => {
-            // ignore
-        })
+        if (this.lastCompletedSet?.restSkipped != lastCompletedSet.restSkipped
+            || this.lastCompletedSet?.completedAt != lastCompletedSet.completedAt
+            || this.lastCompletedSet?.id != lastCompletedSet.id
+        ) {
+            this.lastCompletedSet = lastCompletedSet;
+            this.lastCompletedSetExercise = lastCompletedSetExercise;
+        }
+
     }
 
     timerCompleted() {

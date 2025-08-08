@@ -80,12 +80,11 @@ export class PocketbaseService {
         return null;
     }
 
-    init() {
+    async init() {
         if (this.pb.authStore.isValid) {
             if (!this.pb.authStore.record?.expand) {
-                this.pb.collection('users').getOne<User>(this.pb.authStore.record?.id).then(u => {
-                    this.currentUser = u;
-                });
+                const u = await this.pb.collection('users').getOne<User>(this.pb.authStore.record?.id);
+                this.currentUser = u;
             } else {
                 this.currentUser = this.pb.authStore.record as any;
             }

@@ -141,9 +141,8 @@ export class TemplateService {
     }
 
     async createAndNavToWorkout(workout: Workout) {
-        this.pocketbaseService.upsertRecord('workouts', workout).then((workout) => {
-            this.navCtrl.navigateForward([`./workout-wizard/${workout.id}`]);
-        });
+        const wo = await this.pocketbaseService.upsertRecord('workouts', workout);
+        this.navCtrl.navigateForward([`./workout-wizard/${wo.id}`]);
     }
     //#endregion
 

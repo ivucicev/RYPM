@@ -91,12 +91,11 @@ export class ChatsPage {
         private pocketbase: PocketbaseService,
         private accountService: AccountService
     ) {
-        this.accountService.getCurrentUser().then(user => {
-            this.aiTrainer = user.aiTrainer || AITrainer.RYPED;
-        });
     }
 
-    ionViewWillEnter() {
+    async ionViewWillEnter() {
+        const user = await this.accountService.getCurrentUser();
+        this.aiTrainer = user.aiTrainer || AITrainer.RYPED;
         this.refresh();
     }
 

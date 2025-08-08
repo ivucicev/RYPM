@@ -25,12 +25,11 @@ export class ExerciseNotesModalComponent implements OnInit {
         this.notesText = this.notes;
     }
 
-    ionViewDidEnter() {
-        this.textArea.getInputElement().then(e => {
-            const length = e.value.length;
-            e.focus();
-            e.setSelectionRange(length, length);
-        });
+    async ionViewDidEnter() {
+        const e = await this.textArea.getInputElement()
+        const length = e.value.length;
+        e.focus();
+        e.setSelectionRange(length, length);
     }
 
     save() {

@@ -80,9 +80,8 @@ export class TemplateComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.pocketbaseService.templates.getOne(id).then((res) => {
-            this.init(res);
-        });
+        const res = await this.pocketbaseService.templates.getOne(id);
+        this.init(res);
     }
 
     get exercisesArray() {
@@ -104,11 +103,10 @@ export class TemplateComponent implements OnInit, OnDestroy {
             edit: true
         };
         const actionSheet = await this.templateService.presentTemplateActionSheet(this.template, excludeActions);
-        actionSheet.onDidDismiss().then(e => {
-            if (e.data?.destructive || e.data?.constructive) {
-                this.navCtrl.navigateBack(['./tabs']);
-            }
-        })
+        const e = await actionSheet.onDidDismiss();
+        if (e.data?.destructive || e.data?.constructive) {
+            this.navCtrl.navigateBack(['./tabs']);
+        }
     }
 
     moveExerciseDown(index) {

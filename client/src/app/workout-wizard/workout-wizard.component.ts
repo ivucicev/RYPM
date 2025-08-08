@@ -235,8 +235,13 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
             nextExercise.controls.completed.setValue(false);
         }
 
-        this.pocketbaseService.upsertRecord('exercises', currentExercise.value, false, true);
-        this.pocketbaseService.upsertRecord('exercises', nextExercise.value, false, true);
+        // TODO: UNDEVBUGGABLE -> why do we call here upsertRecord?
+        if (currentExercise.dirty) {
+            this.pocketbaseService.upsertRecord('exercises', currentExercise.value, false, true);
+        }
+        if (nextExercise.dirty) {
+            this.pocketbaseService.upsertRecord('exercises', nextExercise.value, false, true);
+        }
 
         this.currentExerciseIndex.set(index);
     }

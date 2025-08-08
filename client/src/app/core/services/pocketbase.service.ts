@@ -271,6 +271,7 @@ export class PocketbaseService {
      * @param depth - The current depth of nested processing (used for recursion)
      * @returns A promise resolving to the created/updated record
      */
+    // TODO: UNDEBUGGABLE -> this gets callled all over the place, disaster 2
     async upsertRecord<T extends { id?: string }>(
         collectionName: Collection,
         data: any,

@@ -30,73 +30,73 @@ export class FormsService implements OnDestroy {
             weightType: WeightType.KG,
             type: RepType.Reps,
             value: 10,
-            weight: 60
+            weight: 20
         },
 
         [Equipment.Dumbbell]: {
             weightType: WeightType.KG,
             type: RepType.Reps,
             value: 12,
-            weight: 60
+            weight: 10
         },
 
         [Equipment.Cable]: {
             weightType: WeightType.KG,
             type: RepType.Reps,
             value: 12,
-            weight: 60
+            weight: 10
         },
 
         [Equipment.Machine]: {
             weightType: WeightType.KG,
             type: RepType.Reps,
             value: 12,
-            weight: 60
+            weight: 40
         },
 
         [Equipment.Kettlebells]: {
             weightType: WeightType.KG,
             type: RepType.Reps,
             value: 10,
-            weight: 60
+            weight: 10
         },
 
         [Equipment.BodyOnly]: {
             weightType: WeightType.BW,
             type: RepType.Reps,
-            value: 15,
+            value: 10,
         },
 
         [Equipment.Bands]: {
             weightType: WeightType.NA,
             type: RepType.Reps,
-            value: 15,
+            value: 10,
         },
 
         [Equipment.MedicineBall]: {
             weightType: WeightType.KG,
             type: RepType.Reps,
             value: 12,
-            weight: 60
+            weight: 5
         },
 
         [Equipment.ExerciseBall]: {
             weightType: WeightType.NA,
             type: RepType.Duration,
-            value: 30,
+            value: 15,
         },
 
         [Equipment.FoamRoll]: {
             weightType: WeightType.NA,
             type: RepType.Duration,
-            value: 60,
+            value: 15,
         },
 
         [Equipment.EZCurlBar]: {
             weightType: WeightType.KG,
             type: RepType.Reps,
             value: 12,
-            weight: 60
+            weight: 10
         },
 
         [Equipment.Other]: {

@@ -27,6 +27,7 @@ export class AutosaveService {
      * @param debounceMs Debounce time in ms (default {@link Constants.UPDATE_DEBOUNCE_MS})
      * @returns A promise that resolves with the upsert result on each save
      */
+    // TODO: UNDEBUGGABLE -> when navigating workout left and right it saves all the time, this is disaster
     register<T extends { id?: string }>(
         form: AbstractControl,
         collection: Collection,
@@ -45,8 +46,10 @@ export class AutosaveService {
                 .pipe(
                     debounceTime(debounceMs),
                     filter(() => form.valid),
-                    switchMap((model) =>
-                        this.pocketbaseService.upsertRecord<T>(collection, model, showToast, true)
+                    //filter(() => form.dirty), TODO: this is not working as expected, need to investigate
+                    switchMap((model) => {
+                        return this.pocketbaseService.upsertRecord<T>(collection, model, showToast, true)
+                    }
                     ),
                     takeUntil(destroy$)
                 )

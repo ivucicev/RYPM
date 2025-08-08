@@ -64,15 +64,17 @@ export class HomePage {
         private pocketbaseService: PocketbaseService,
         private programService: ProgramService,
         private templateService: TemplateService
-    ) { }
+    ) { 
+    }
 
     //#region Init
-    ionViewWillEnter() {
-        this.refresh();
+    async ionViewWillEnter() {
+        await this.refresh();
     }
 
     async refresh() {
-        this.continueFooter()?.refresh();
+
+        await this.continueFooter()?.refresh();
 
         const workouts = await this.pocketbaseService.workouts.getFullList({
             sort: '-start',
@@ -93,7 +95,6 @@ export class HomePage {
 
         this.lastWorkout = this.workouts[0];
 
-
         const templates = await this.pocketbaseService.templates.getFullList({
             sort: '-created'
         });
@@ -106,6 +107,7 @@ export class HomePage {
             sort: '-updated',
             expand: 'weeks,weeks.days,weeks.days.workout'
         })
+
         this.programs = programs.map(p => {
             const tagsToTake = 3;
 

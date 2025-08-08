@@ -13,6 +13,8 @@ BUGS -
      - [?] No need to select weight when creating program... not sure, maybe this OK
      - [ ] When creating program - adding lots of weeks causes 404 in console and lots of requests
      - [ ] cannot add new exercize while workout is active
+     - [ ] EDITING DONE WORKOUT WORKS LIKE SHIT
+     - [ ] CONFIRM DELETION
 
 Workouts screen - 
     - [x] Add program complete test [ok]

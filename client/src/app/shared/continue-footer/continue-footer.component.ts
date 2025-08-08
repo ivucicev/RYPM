@@ -45,10 +45,12 @@ export class ContinueFooterComponent {
     }
 
     async refresh() {
+
+        if (!this.workoutId()) return;
+
         this.workout = null;
         this.lastCompletedSet = null;
         this.lastCompletedSetExercise = null;
-
         const workout = await this.pocketbaseService.workouts.getFirstListItem(
             `state = ${WorkoutState.InProgress}` + (this.workoutId() ? (` && id = "${this.workoutId()}"`) : ''),
             {

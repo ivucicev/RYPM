@@ -8,8 +8,9 @@ export const routes: Routes = [
 		component: TrainerProfilePage
 	},
 	{
-		path: 'ai',
-		component: TrainerProfilePage
+		path: 'ai/:id',
+		component: TrainerProfilePage,
+		data: { ai: true }
 	}
 ];
 

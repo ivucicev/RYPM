@@ -6,15 +6,16 @@ import { AccountService } from 'src/app/core/services/account.service';
 import { PocketbaseService } from '../core/services/pocketbase.service';
 import { User } from '../core/models/collections/user';
 import { PB } from '../core/constants/pb-constants';
-import { IonHeader, IonToolbar, IonButtons, IonBackButton, IonSegment, IonContent, IonLabel, IonSegmentButton, IonTitle, IonRow, IonCol, IonAvatar, IonCard, IonCardHeader, IonCardContent, IonCardSubtitle, IonCardTitle, IonIcon } from "@ionic/angular/standalone";
+import { IonHeader, IonToolbar, IonButtons, IonBackButton, IonSegment, IonContent, IonLabel, IonSegmentButton, IonTitle, IonRow, IonCol, IonAvatar, IonCard, IonCardHeader, IonCardContent, IonCardSubtitle, IonCardTitle, IonIcon, IonToggle, IonItem, IonSelect, IonSelectOption } from "@ionic/angular/standalone";
 import { AITrainer } from '../core/models/enums/ai-trainer';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-measurements',
     templateUrl: 'measurements.component.html',
     styleUrls: ['./measurements.component.scss'],
     standalone: true,
-    imports: [IonTitle, IonSegmentButton, IonIcon, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonRow, IonCol, IonLabel, IonContent, IonSegment, IonBackButton, IonButtons, IonToolbar, IonHeader, TranslateModule, WeightTypePipe]
+    imports: [IonTitle, IonSegmentButton, FormsModule, IonToggle, IonIcon, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonRow, IonCol, IonLabel, IonContent, IonSegment, IonBackButton, IonButtons, IonToolbar, IonHeader, TranslateModule, WeightTypePipe]
 })
 export class MeasurementsComponent implements OnInit {
 
@@ -26,7 +27,8 @@ export class MeasurementsComponent implements OnInit {
     weightIncrementsKG = [1.25, 2.5, 5, 10, 15, 20, 25];
     weightIncrementsLB = [1.25, 2.5, 5, 10, 25, 35, 45];
     aiTrainer = AITrainer;
-    public selectedTrainer = AITrainer.RYPEDD;
+    public selectedTrainer = AITrainer.RYPED;
+    aiTrainerToggle = true;
 
     constructor(
         private accountService: AccountService,
@@ -46,7 +48,14 @@ export class MeasurementsComponent implements OnInit {
         });
     }
 
-    changeTrainer() {
+    changeTrainer(trainer: AITrainer) {
+        if (this.selectedTrainer == trainer) {
+            this.selectedTrainer = null;
+            this.aiTrainerToggle = false;
+        } else {
+            this.selectedTrainer = trainer; 
+            this.aiTrainerToggle = true;
+        }
         this.accountService.getCurrentUser().then(user => {
             this.pocketbaseService.users.update(
                 user.id,
@@ -57,11 +66,22 @@ export class MeasurementsComponent implements OnInit {
         });
     }
 
+    toggle(e) {
+        if (e.detail.checked) {
+            this.changeTrainer(AITrainer.RYPED);
+        } else {
+            this.changeTrainer(AITrainer.OFF);
+        }
+    }
+
     ngOnInit() {
         this.accountService.getCurrentUser().then(user => {
             this.selectedWeightType = user.defaultWeightType;
             this.selectedIncrement = user.weightIncrement;
-            this.selectedTrainer = user.aiTrainer || AITrainer.RYPEDD;
+            this.selectedTrainer = user.aiTrainer || AITrainer.RYPED;
+            if (this.selectedTrainer) {
+                this.aiTrainerToggle = true;
+            } 
         });
     }
 

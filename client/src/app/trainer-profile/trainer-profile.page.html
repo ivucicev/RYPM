@@ -9,8 +9,38 @@
 </ion-header>
 
 <ion-content class="bg_color" fullscreen [scrollEvents]="true" (ionScroll)="onScroll($event)">
-    <!-- <ion-content class="bg_color" fullscreen> -->
-    <div class="banner " [class.active]="showToolbar">
+    @if (aiTrainer) {
+    <div class="banner" [class.active]="showToolbar">
+        <div class=" center_img">
+            @if (this.aiTrainer == aiTrainers.RYPED) {
+                <img src="assets/images/RYPED.png" class="crop_img">
+            } @else {
+                <img src="assets/images/RYPEM.png" class="crop_img">
+            }
+        </div>
+        <div class="text_box">
+            <div class="profile_info">
+                <h2 class="d-flex"> </h2>
+                <h3 class="d-flex">{{ 'AI Trainer' | translate }}</h3>
+            </div>
+
+            <div class="about">
+                <h2> {{'about' | translate}}</h2>
+                @if (this.aiTrainer == aiTrainers.RYPED) {
+                    <p class="animate__animated animate__fadeInUp">
+                        {{'Ryp Ed blends advanced analytics with adaptive training to optimize every rep, set, and session. Focused, efficient, and always on, engineered to elevate performance through precision and relentless support.' | translate}}
+                    </p>
+                }
+                @else {
+                    <p class="animate__animated animate__fadeInUp">
+                        {{ 'Built for precision and progress, Ryp Em delivers customized training plans, realtime feedback, and data-driven motivation. Designed to guide, adapt, and push every user beyond limits with human like intuition and robotic consistency.' | translate }}
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+    } @else {
+    <div class="banner" [class.active]="showToolbar">
         <div class="img_box center_img">
             <img src="assets/images/gym_trainer_1.png" class="crop_img">
         </div>
@@ -61,9 +91,10 @@
             </div>
         </div>
     </div>
+    }
 </ion-content>
 
-<ion-footer class="ion-no-border animate__animated animate__fadeInUp">
+<!--<ion-footer class="ion-no-border animate__animated animate__fadeInUp">
     <ion-row>
         <ion-col size="6">
             <ion-button size="large" expand="round" fill="outline" class="btn" (click)="conversation()">
@@ -76,4 +107,4 @@
             </ion-button>
         </ion-col>
     </ion-row>
-</ion-footer>
+</ion-footer>-->

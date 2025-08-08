@@ -13,21 +13,21 @@
 </ion-header>
 
 <ion-content class="bg_color" fullscreen>
-
     <ion-list lines="none">
+        @if (aiTrainers.OFF < aiTrainer) {
         <ion-item lines="" class="animate__animated animate__fadeInUp" (click)="aiConversation()">
             <div class="item-inner d-flex">
                 <div class="img_box center_img">
-                    @if (aiTrainers.RYPEDD == aiTrainer) {
-                    <img [src]="'assets/images/RYPEDD1.png'" class="crop_img">
+                    @if (aiTrainers.RYPED == aiTrainer) {
+                    <img [src]="'assets/images/RYPED.png'" class="crop_img">
                     }
-                    @if (aiTrainers.RYPEDDA == aiTrainer) {
-                    <img [src]="'assets/images/RYPEDDA1.png'" class="crop_img">
+                    @if (aiTrainers.RYPEM == aiTrainer) {
+                    <img [src]="'assets/images/RYPEM.png'" class="crop_img">
                     }
                 </div>
                 <div class="text_box">
                     <h2 class="d-flex">
-                        <span class="item-title"> @if (aiTrainers.RYPEDD == aiTrainer) { Ed Ryp  } @else { Em Ryp } - {{
+                        <span class="item-title"> @if (aiTrainers.RYPED == aiTrainer) { Ed Ryp } @else { Em Ryp } - {{
                             'AI Trainer' | translate }}</span>
                         <small class="end">12.12.2027</small>
                     </h2>
@@ -40,6 +40,7 @@
                 </div>
             </div>
         </ion-item>
+        }
         @for(chat of chatsList; track chat.id) {
         <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation(chat)">
             <div class="item-inner d-flex">

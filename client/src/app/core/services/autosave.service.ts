@@ -67,7 +67,6 @@ export class AutosaveService {
 
     save(collection: Collection, model: any) {
         this.pocketbaseService.upsertRecord(collection, model, false, true)
-
     }
 
     unregister(form: AbstractControl) {

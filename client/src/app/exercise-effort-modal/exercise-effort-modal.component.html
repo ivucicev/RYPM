@@ -22,20 +22,30 @@
             placeholder="{{ 'Comment' | translate }}..." rows="10" class="notes-textarea" autoGrow="true"
             expand="block"></ion-textarea>
     </ion-item>
-    <ion-item lines="none">
-        {{ 'Start' | translate}}:&nbsp;<ion-datetime-button datetime="datetimeStart"></ion-datetime-button>
-        <ion-modal [keepContentsMounted]="true">
-            <ng-template>
-                <ion-datetime id="datetimeStart" [(ngModel)]="start" [locale]="locale"></ion-datetime>
-            </ng-template>
-        </ion-modal>
-    </ion-item>
-    <ion-item lines="none">
-        {{ 'End' | translate}}:&nbsp; <ion-datetime-button datetime="datetimeEnd"></ion-datetime-button>
-        <ion-modal [keepContentsMounted]="true">
-            <ng-template>
-                <ion-datetime id="datetimeEnd" [(ngModel)]="end" [locale]="locale"></ion-datetime>
-            </ng-template>
-        </ion-modal>
-    </ion-item>
+    <ion-row>
+        <ion-col>
+            <ion-item lines="none">
+                <ion-label position="stacked">{{ 'Start' | translate}}
+                </ion-label>
+                <ion-datetime-button class="mt5" datetime="datetimeStart"></ion-datetime-button>
+                <ion-modal [keepContentsMounted]="true">
+                    <ng-template>    
+                        <ion-datetime id="datetimeStart" [(ngModel)]="start" [locale]="locale"></ion-datetime>
+                    </ng-template>
+                </ion-modal>
+            </ion-item>
+        </ion-col>
+        <ion-col>
+            <ion-item lines="none">
+                <ion-label position="stacked">{{ 'End' | translate}}
+                </ion-label>
+                <ion-datetime-button class="mt5" datetime="datetimeEnd"></ion-datetime-button>
+                <ion-modal [keepContentsMounted]="true">
+                    <ng-template>
+                        <ion-datetime id="datetimeEnd" [(ngModel)]="end" [locale]="locale"></ion-datetime>
+                    </ng-template>
+                </ion-modal>
+            </ion-item>
+        </ion-col>
+    </ion-row>
 </ion-content>

@@ -9,7 +9,8 @@ export const routes: Routes = [
 	},
 	{
 		path: 'ai',
-		component: ConversationPage
+		component: ConversationPage,
+		data: { aiConversation: true }
 	},
 	{
 		path: ':id',

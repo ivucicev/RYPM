@@ -42,7 +42,7 @@
         @if (currentExercise().controls.notes.value) {
         <div class="notes">
             <ion-icon name="information-circle-outline"></ion-icon>
-            {{ currentExercise().controls.notes.value }}
+            {{ currentExercise().controls?.notes?.value }}
         </div>
         }
         <div class="sets-container">

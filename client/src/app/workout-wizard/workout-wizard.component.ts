@@ -62,6 +62,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
         if (currentExercise) {
             this.autosaveService.register<ExerciseBM>(currentExercise, 'exercises', false)
+                .pipe(takeUntil(this.unsubscribeAll))
                 .subscribe();
         }
 
@@ -271,7 +272,6 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
     }
 
     async openEffortModal() {
-
         const modal = await this.modalCtrl.create({
             component: ExerciseEffortModalComponent,
             breakpoints: [0, 0.75, 1],
@@ -341,12 +341,36 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
     async openSettings() {
         const translations = await lastValueFrom(this.translateService.get([
-            'Delete', 'Cancel'
+            'Add Exercise', 'Delete', 'Cancel'
         ]));
 
         const actionSheet = await this.actionSheetCtrl.create({
             header: translations.workout,
             buttons: [
+                {
+                    text: translations['Add Exercise'],
+                    icon: 'add-circle-outline',
+                    handler: async () => {
+                        const exercises = await this.programFormsService.getExerciseTemplates();
+                        if (!exercises || !exercises.length) return;
+                        const exercisesArray = [];
+                        const exercisesIdsArray = [];
+                        for(const e of exercises as any) {
+                            e.workout = this.workout.id;
+                            const exercisesCreated = await this.pocketbaseService.exercises.create(e, { $autoCancel: false });
+                            const fg = this.programFormsService.createExerciseFormGroup(exercisesCreated)
+                            exercisesArray.push(fg);
+                            exercisesIdsArray.push(exercisesCreated.id);
+                        }
+                        const currentIndex = this.currentExerciseIndex();
+                        const oldEx = this.workout.exercises.map(e => e.id);
+                        oldEx.splice(currentIndex + 1, 0, ...exercisesIdsArray);
+                        const newExercises = oldEx;
+                        const data = await this.pocketbaseService.workouts.update(this.workoutId, { exercises: newExercises })
+                        this.exercises.splice(currentIndex + 1, 0, ...exercisesArray);
+                        this.goToNextExercise();
+                    }
+                },
                 {
                     text: translations.Delete,
                     icon: 'trash-outline',

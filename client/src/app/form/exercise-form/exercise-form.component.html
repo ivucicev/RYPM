@@ -44,7 +44,8 @@
         </ion-button>
 
         @if (exercise.get('superset')?.value) {
-            <ion-badge (click)="openSupersetModal(exercise)" color="primary">{{'Superset' | translate }} {{ exercise.get('superset')?.value }}</ion-badge>
+        <ion-badge (click)="openSupersetModal(exercise)" color="primary">{{'Superset' | translate }} {{
+            exercise.get('superset')?.value }}</ion-badge>
         }
 
         <ion-modal #restPickerModal [backdropDismiss]="true" class="picker-modal">
@@ -229,14 +230,22 @@
             <ion-toolbar>
                 <ion-title slot="start">{{ 'Set' | translate }} {{selectedSetIndex + 1}}</ion-title>
                 <ion-buttons slot="end">
+                    @if (editMode) {
+                    <ion-button color="info" (click)="toggleEdit()">{{ 'Cancel Edit' | translate }}</ion-button>
+                    <ion-button color="info" (click)="saveEditWhileInWorkout()">{{ 'Save Edit' | translate
+                        }}</ion-button>
+                    }
+                    @if (!editMode) {
+                    @if (workoutMode) {
+                    <ion-button (click)="toggleEdit()">{{ 'Edit' | translate }}</ion-button>
+                    }
                     <ion-button (click)="cancelPicker()">{{ 'Cancel' | translate }}</ion-button>
-                </ion-buttons>
-                <ion-buttons slot="end">
                     <ion-button (click)="confirmSetPicker()">{{ 'Confirm' | translate }}</ion-button>
+                    }
                 </ion-buttons>
             </ion-toolbar>
 
-            @if (!workoutMode) {
+            @if (!workoutMode || editMode) {
             <ion-toolbar class="type-selector-toolbar">
                 <ion-segment class="w-100" [value]="selectedWeightType"
                     (ionChange)="setWeightType($event.detail.value)">
@@ -257,30 +266,31 @@
                     }
                 </ion-segment>
             </ion-toolbar>
-            @if (selectedRepType !== RepType.Max) {
+
             <ion-toolbar class="type-selector-toolbar">
                 <ion-segment class="w-100" [value]="selectedReserveType"
                     (ionChange)="setReserveType($event.detail.value)">
-                    <ion-segment-button [value]="null">
+                    <ion-segment-button [value]="null" [disabled]="selectedRepType === RepType.Duration">
                         <ion-label>{{ 'N/A' | translate }}</ion-label>
                     </ion-segment-button>
-                    <ion-segment-button [value]="ReserveType.RIR">
+                    <ion-segment-button [value]="ReserveType.RIR"
+                        [disabled]="selectedRepType === RepType.Max || selectedRepType === RepType.Duration">
                         <ion-label>{{ 'RiR' | translate }}</ion-label>
                     </ion-segment-button>
-                    <ion-segment-button [value]="ReserveType.RPE">
+                    <ion-segment-button [value]="ReserveType.RPE"
+                        [disabled]="selectedRepType === RepType.Max || selectedRepType === RepType.Duration">
                         <ion-label>{{ 'RPE' | translate }}</ion-label>
                     </ion-segment-button>
-                    <ion-segment-button [value]="ReserveType.Dropset">
+                    <ion-segment-button [value]="ReserveType.Dropset" [disabled]="selectedRepType === RepType.Duration">
                         <ion-label>{{ 'dropset' | translate }}</ion-label>
                     </ion-segment-button>
                 </ion-segment>
             </ion-toolbar>
             }
-            }
         </ion-header>
 
         <ion-picker>
-            @if (!workoutMode && setsArray?.length <= 1) { <ion-picker-column [value]="numSets"
+            @if ((!workoutMode || editMode) && setsArray?.length <= 1) { <ion-picker-column [value]="numSets"
                 (ionChange)="numSets = $event.detail.value">
                 @for (option of setsOptions; track option) {
                 <ion-picker-column-option [value]="option">
@@ -300,8 +310,8 @@
                 </ion-picker-column>
                 }
 
-                @if (selectedRepType === RepType.Reps
-                || (workoutMode && (selectedRepType == RepType.Range || selectedRepType == RepType.Max))) {
+                @if (!editMode && (selectedRepType === RepType.Reps
+                || (workoutMode && (selectedRepType == RepType.Range || selectedRepType == RepType.Max)))) {
                 <ion-picker-column [value]="selectedValue" (ionChange)="selectedValue = $event.detail.value">
                     @for (option of repsOptions; track option) {
                     <ion-picker-column-option [value]="option">
@@ -311,7 +321,7 @@
                 </ion-picker-column>
                 }
 
-                @if (!workoutMode) {
+                @if (!workoutMode || editMode) {
                 @if (selectedRepType === RepType.Range) {
                 <ion-picker-column [value]="selectedMinValue" (ionChange)="setMinValue($event.detail.value)">
                     @for (option of repsOptionsMin; track option) {
@@ -342,7 +352,7 @@
                 </ion-picker-column>
                 }
 
-                @if (!workoutMode) {
+                @if (!workoutMode || editMode) {
                 @if (selectedRepType !== RepType.Max) {
                 @if (selectedReserveType == ReserveType.RIR) {
                 <ion-picker-column [value]="selectedRIR"
@@ -400,7 +410,8 @@
             </ion-toolbar>
             <ion-toolbar class="type-selector-toolbar ion-padding-x">
                 <ion-note>
-                    <ion-icon name="information-circle-outline"></ion-icon> {{ 'All exercises that should be in the same superset mark with the same letter.' | translate }} </ion-note>
+                    <ion-icon name="information-circle-outline"></ion-icon> {{ 'All exercises that should be in the same
+                    superset mark with the same letter.' | translate }} </ion-note>
             </ion-toolbar>
         </ion-header>
         <ion-picker>

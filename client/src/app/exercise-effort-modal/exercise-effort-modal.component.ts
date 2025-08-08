@@ -1,17 +1,20 @@
 import { JsonPipe } from '@angular/common';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonTextarea, ModalController, IonHeader, IonButtons, IonToolbar, IonButton, IonItem, IonContent, IonChip, IonTitle, IonModal, IonDatetimeButton, IonRange, IonDatetime } from '@ionic/angular/standalone';
+import { IonTextarea, ModalController, IonHeader, IonButtons, IonToolbar, IonButton, IonItem, IonContent, IonChip, IonTitle, IonModal, IonDatetimeButton, IonRange, IonDatetime, IonLabel, IonRow, IonCol } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
+import { TZDate } from "@date-fns/tz";
 
 @Component({
     selector: 'app-exercise-effort-modal',
     templateUrl: 'exercise-effort-modal.component.html',
     styleUrls: ['./exercise-effort-modal.component.scss'],
-    imports: [IonDatetimeButton, IonModal, IonTextarea, IonRange, IonDatetime, IonTitle, IonChip, IonContent, IonItem, IonButton, IonToolbar, IonButtons, IonHeader, FormsModule, TranslateModule],
+    imports: [IonDatetimeButton, IonModal, IonRow, IonCol, IonTextarea, IonRange, IonDatetime, IonTitle, IonChip, IonContent, IonItem, IonButton, IonToolbar, IonButtons, IonHeader, FormsModule, TranslateModule, IonLabel],
     standalone: true
 })
 export class ExerciseEffortModalComponent implements OnInit {
+
+    timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     @Input() effort: string = '';
     @Input() comment: string = '';
@@ -46,8 +49,8 @@ export class ExerciseEffortModalComponent implements OnInit {
     ngOnInit() {
         this.effort = this.effort;
         this.comment = this.comment;
-        this.start = this.start;
-        this.end = this.end;
+        this.start = new TZDate(this.start, this.timezone).toISOString();
+        this.end = new TZDate(this.end, this.timezone).toISOString();
     }
 
     ionViewDidEnter() {

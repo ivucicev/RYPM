@@ -92,7 +92,7 @@ export class ChatsPage {
         private accountService: AccountService
     ) {
         this.accountService.getCurrentUser().then(user => {
-            this.aiTrainer = user.aiTrainer || AITrainer.RYPEDD;
+            this.aiTrainer = user.aiTrainer || AITrainer.RYPED;
         });
     }
 
@@ -131,5 +131,9 @@ export class ChatsPage {
     openSearchUser() {
         this.navCtrl.navigateForward(['/search-user']);
     }
+
+    myTrainers()  {
+        this.navCtrl.navigateForward(['/my-trainers']);
+    }  
 
 }

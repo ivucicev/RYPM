@@ -3,14 +3,20 @@
         <ion-buttons slot="start">
             <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
         </ion-buttons>
-        <ion-title (click)="trainer_profile()">
+        <ion-title (click)="trainerProfile()">
             <div class="title-inne-wrapper">
                 <div class="title-inner">
                     <h2 class="d-flex">
-                        Amenda Johnson
+                        @if (aiTrainer) {
+                            @if (aiTrainer == aiTrainers.RYPED) {
+                                <span class="ryped-badge">Ryp Ed</span>
+                            } @else {
+                                <span class="ryped-badge">Ryp Em</span>
+                            }
+                        }
                         <ion-icon class="zmdi zmdi-alert-circle-o end ion-text-end"></ion-icon>
                     </h2>
-                    <h3>Fitness Trainer</h3>
+                    <h3>@if (aiTrainer) { {{'AI' | translate }} } {{ 'Trainer' | translate }}</h3>
                 </div>
             </div>
         </ion-title>

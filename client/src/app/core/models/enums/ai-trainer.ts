@@ -1,4 +1,5 @@
 export enum AITrainer {
-    RYPEDD = 10,
-    RYPEDDA = 20
+    OFF = 1,
+    RYPED = 10,
+    RYPEM = 20
 }

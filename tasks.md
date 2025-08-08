@@ -5,9 +5,13 @@ BUGS -
      - [x] all exercises complete even if one left (shown on home screen), if on previous scren where actually are all checked
      - [x] Move exercise up and down doest work on program and exercise
      - [x] Move up and down blocked if only 2 items
+     - [x] no 14 16 18 in increments increments in general messed up
+     - [x] updating weight increments should be immediately available
+     - [x] start and end of workout wrong times -2h, UTC issue
+     - [x] Adding custom excersiz not visible immediatelly in selct excersizes screen
+     - [x] ability to edit workout on the spot if selected wrong on program
+     - [?] No need to select weight when creating program... not sure, maybe this OK
      - [ ] When creating program - adding lots of weeks causes 404 in console and lots of requests
-     - [ ] No need to select weight when creating program...
-     - [ ] Adding custom excersiz not visible immediatelly in selct excersizes screen
      - [ ] cannot add new exercize while workout is active
 
 Workouts screen - 
@@ -37,6 +41,7 @@ Activity screen -
 Chat -
     - [ ] AI Trainer
     - [ ] Human Trainer
+    - [ ] Chat in general
 
 Settings -
     - [x] plates -> for increments
@@ -67,3 +72,4 @@ Admin / Trainer -
     - [ ] TBD
     - [ ] Trainer profile
     - [ ] Trainer chat
+    - [ ] Trainer part in general

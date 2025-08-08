@@ -18,34 +18,33 @@
         </ion-segment-button>
         }
     </ion-segment>
-    <p class="ion-padding-top"> {{ 'Weight increments' | translate }}</p>
-    <ion-segment [scrollable]="true" [value]="selectedIncrement" (ionChange)="setIncrement($event.detail.value)">
-        @if (selectedWeightType == weightType.KG) {
-        @for(increment of weightIncrementsKG; track $index) {
-        <ion-segment-button [value]="increment">
-            <ion-label>{{ increment }}</ion-label>
-        </ion-segment-button>
-        }
-        }
-        @if (selectedWeightType == weightType.LB) {
-        @for(increment of weightIncrementsLB; track $index) {
-        <ion-segment-button [value]="increment">
-            <ion-label>{{ increment }}</ion-label>
-        </ion-segment-button>
-        }
-        }
-    </ion-segment>
-    <p class="ion-padding-top"> {{ 'Default' | translate }} {{ 'AI Trainer' | translate }}</p>
+    <!-- <p class="ion-padding-top"> {{ 'Available plates' | translate }}</p>
+    <ion-item>
+        <ion-select aria-label="Fruit" [placeholder]="'Select available plates' | translate" [multiple]="true">
+            @if (selectedWeightType == weightType.KG) {
+            @for(increment of weightIncrementsKG; track $index) {
+            <ion-select-option [value]="increment">{{ increment }}</ion-select-option>
+            }
+            }
+            @if (selectedWeightType == weightType.LB) {
+            @for(increment of weightIncrementsLB; track $index) {
+            <ion-select-option [value]="increment">{{ increment }}</ion-select-option>
+            }
+            }
+        </ion-select>
+    </ion-item> -->
+    <p class="ion-padding-top"> {{ 'Default' | translate }} {{ 'AI Trainer' | translate }} <ion-toggle
+            [(ngModel)]="aiTrainerToggle" (ionChange)="toggle($event)" class="ion-padding-x"></ion-toggle> </p>
     <ion-row>
         <ion-col>
-            <ion-card (click)="selectedTrainer = aiTrainer.RYPEDD; changeTrainer();" [class.grayscale]="selectedTrainer != aiTrainer.RYPEDD">
-                @if (selectedTrainer == aiTrainer.RYPEDD) {
-                    <ion-icon color="success" class="abs-icon" size="large" name="checkmark-circle-outline"></ion-icon>
-                } 
-                @else {
-                    <ion-icon color="medium" class="abs-icon" size="large" name="ellipse-outline"></ion-icon>
+            <ion-card (click)="changeTrainer(aiTrainer.RYPED);" [class.grayscale]="selectedTrainer != aiTrainer.RYPED">
+                @if (selectedTrainer == aiTrainer.RYPED) {
+                <ion-icon color="success" class="abs-icon" size="large" name="checkmark-circle-outline"></ion-icon>
                 }
-                <img src="assets/images/RYPEDD1.png" />
+                @else {
+                <ion-icon color="medium" class="abs-icon" size="large" name="ellipse-outline"></ion-icon>
+                }
+                <img src="assets/images/RYPED.png" />
                 <ion-card-header>
                     <ion-card-title>Ed Ryp</ion-card-title>
                     <ion-card-subtitle>{{ 'AI Trainer' | translate }}</ion-card-subtitle>
@@ -53,14 +52,14 @@
             </ion-card>
         </ion-col>
         <ion-col>
-            <ion-card (click)="selectedTrainer = aiTrainer.RYPEDDA; changeTrainer();" [class.grayscale]="selectedTrainer != aiTrainer.RYPEDDA">
-                @if (selectedTrainer == aiTrainer.RYPEDDA) {
-                    <ion-icon color="success" class="abs-icon" size="large" name="checkmark-circle-outline"></ion-icon>
-                } 
-                @else {
-                    <ion-icon color="medium" class="abs-icon" size="large" name="ellipse-outline"></ion-icon>
+            <ion-card (click)="changeTrainer(aiTrainer.RYPEM);" [class.grayscale]="selectedTrainer != aiTrainer.RYPEM">
+                @if (selectedTrainer == aiTrainer.RYPEM) {
+                <ion-icon color="success" class="abs-icon" size="large" name="checkmark-circle-outline"></ion-icon>
                 }
-                <img src="assets/images/RYPEDDA1.png" />
+                @else {
+                <ion-icon color="medium" class="abs-icon" size="large" name="ellipse-outline"></ion-icon>
+                }
+                <img src="assets/images/RYPEM.png" />
                 <ion-card-header>
                     <ion-card-title>Em Ryp</ion-card-title>
                     <ion-card-subtitle>{{ 'AI Trainer' | translate }}</ion-card-subtitle>

@@ -15,6 +15,7 @@ import { IonPopover } from '@ionic/angular/standalone';
 import { ReserveType } from 'src/app/core/models/enums/reserve-type';
 import { PocketbaseService } from 'src/app/core/services/pocketbase.service';
 import { listCircleOutline } from 'ionicons/icons';
+import { WEIGHTS } from 'src/app/core/constants/weights';
 
 @Component({
     selector: 'app-exercise-form',
@@ -22,17 +23,17 @@ import { listCircleOutline } from 'ionicons/icons';
     styleUrls: ['./exercise-form.component.scss'],
     standalone: true,
     imports: [IonItemOption, IonNote, IonReorder, IonItemOptions, IonReorderGroup, IonTitle, IonHeader, IonButtons, IonPicker, IonSegment, IonSegmentButton, IonToolbar, IonLabel, IonItem, IonList, IonIcon, IonButton,
-    TranslateModule,
-    ReactiveFormsModule,
-    DurationPipe,
-    WeightTypePipe,
-    RepTypePipe,
-    IonPopover,
-    IonModal,
-    IonPickerColumn,
-    IonCheckbox,
-    IonPickerColumnOption,
-    NgTemplateOutlet, IonBadge],
+        TranslateModule,
+        ReactiveFormsModule,
+        DurationPipe,
+        WeightTypePipe,
+        RepTypePipe,
+        IonPopover,
+        IonModal,
+        IonPickerColumn,
+        IonCheckbox,
+        IonPickerColumnOption,
+        NgTemplateOutlet, IonBadge],
     providers: [FormsService]
 })
 export class ExerciseFormComponent implements OnChanges {
@@ -41,6 +42,8 @@ export class ExerciseFormComponent implements OnChanges {
     durationOptions: { value: number }[] = [
         { value: 0 }
     ];
+
+    public editMode = false;
 
     RepType = RepType;
     WeightType = WeightType;
@@ -69,8 +72,8 @@ export class ExerciseFormComponent implements OnChanges {
     selectedDropset;
     selectedSuperset;
 
-    weightOptions = Array.from({ length: 800 }, (_, i) => (i + 1) * 0.5);
-    setsOptions = Array.from({ length: 10 }, (_, i) => i + 1);
+    weightOptions = WEIGHTS;
+    setsOptions = Array.from({ length: 20 }, (_, i) => i + 1);
     repsOptions = Array.from({ length: 30 }, (_, i) => i + 1);
     repsOptionsMin = this.repsOptions;
 
@@ -111,11 +114,11 @@ export class ExerciseFormComponent implements OnChanges {
             this.weightTypes = Object.values(WeightType).filter((value) => typeof value === 'number' && value != WeightType.KG) as WeightType[];
         }
 
-        if (weightIncrement) {
-            this.weightOptions.length = 0;        
+        /*if (weightIncrement) {
+            this.weightOptions.length = 0;  
             for(let i = weightIncrement; i <= 400; i += weightIncrement)
                 this.weightOptions.push(i);
-        }
+        }*/
     }
 
     get setsArray() {
@@ -161,9 +164,9 @@ export class ExerciseFormComponent implements OnChanges {
 
             if (allCompleted) {
                 //setTimeout(() => {
-                    this.exercise.controls.completed.setValue(true);
-                    this.exercise.controls.completedAt.setValue(new Date());
-                    this.onAllCompletedEvent.emit();
+                this.exercise.controls.completed.setValue(true);
+                this.exercise.controls.completedAt.setValue(new Date());
+                this.onAllCompletedEvent.emit();
                 //})
             } else {
                 this.exercise.controls.completed.setValue(false);
@@ -173,7 +176,7 @@ export class ExerciseFormComponent implements OnChanges {
             form.controls.completedAt.setValue(null);
         }
 
-        if (form.controls.completed.value == true && this.exercise?.controls?.superset?.value != null && this.exercise?.controls?.superset?.value != "") { 
+        if (form.controls.completed.value == true && this.exercise?.controls?.superset?.value != null && this.exercise?.controls?.superset?.value != "") {
             // set completed check if there is superset mark
             this.onSupersetCompletedEvent.emit(this.exercise?.controls?.superset?.value);
         }
@@ -261,15 +264,15 @@ export class ExerciseFormComponent implements OnChanges {
 
     setMinValue(value) {
         this.selectedMinValue = value;
-        if (this.selectedMaxValue < value) {
-            this.selectedMaxValue = value;
+        if (this.selectedMaxValue <= value) {
+            this.selectedMaxValue = value + 1;
         }
     }
 
     setMaxValue(value) {
         this.selectedMaxValue = value;
-        if (this.selectedMinValue > value) {
-            this.selectedMinValue = value;
+        if (this.selectedMinValue >= value && value > 0) {
+            this.selectedMinValue = value - 1;
         }
     }
 
@@ -277,10 +280,13 @@ export class ExerciseFormComponent implements OnChanges {
         this.selectedRepType = type;
         if (type == RepType.Duration) {
             this.selectedWeightType = WeightType.NA;
+            this.selectedReserveType = null;
         }
         if (type == RepType.Max) {
             this.selectedRIR = null;
             this.selectedRPE = null;
+            this.selectedDropset = null;
+            this.selectedReserveType = null;
         }
     }
 
@@ -302,7 +308,7 @@ export class ExerciseFormComponent implements OnChanges {
     confirmSetPicker() {
         const setControl = this.setsArray.at(this.selectedSetIndex) as ExerciseSetFormGroup;
 
-        const valuesToPatch = this.workoutMode ?
+        const valuesToPatch = (this.workoutMode && !this.editMode) ?
             // workout mode: can only update values
             {
                 currentWeight: this.selectedWeight,
@@ -331,7 +337,7 @@ export class ExerciseFormComponent implements OnChanges {
         })
 
 
-        if (!this.workoutMode) {
+        if (!this.workoutMode || this.editMode) {
             if (this.selectedRepType === RepType.Reps || this.selectedRepType === RepType.Duration) {
                 setControl.patchValue({ value: this.selectedValue });
             } else if (this.selectedRepType === RepType.Range) {
@@ -350,7 +356,7 @@ export class ExerciseFormComponent implements OnChanges {
             if (this.selectedRIR > 0) {
                 setControl.patchValue({ rir: this.selectedRIR });
             } else if (this.selectedRPE > 0) {
-                setControl.patchValue({ rpe: this.selectedRPE });   
+                setControl.patchValue({ rpe: this.selectedRPE });
             } else if (this.selectedDropset > 0) {
                 setControl.patchValue({ dropset: this.selectedDropset });
             }
@@ -391,6 +397,15 @@ export class ExerciseFormComponent implements OnChanges {
     cancelSuperset() {
         this.currentExercise = null;
         this.supersetModal.dismiss();
+    }
+
+    toggleEdit() {
+        this.editMode = !this.editMode;
+    }
+
+    saveEditWhileInWorkout() {
+        this.confirmSetPicker();
+        this.toggleEdit();
     }
 
     async openSupersetModal(exercise) {

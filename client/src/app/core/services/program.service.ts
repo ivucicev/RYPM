@@ -150,6 +150,7 @@ export class ProgramService {
                         destructive: true
                     },
                     handler: () => {
+                        
                         return this.deleteProgram(program.id);
                     },
                 } : null,

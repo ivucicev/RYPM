@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PocketbaseService } from './pocketbase.service';
-import { ActionSheetController, ModalController, NavController } from '@ionic/angular/standalone';
+import { ActionSheetController, AlertController, ModalController, NavController } from '@ionic/angular/standalone';
 import { lastValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Template } from '../models/collections/template';
@@ -31,7 +31,8 @@ export class TemplateService {
         private actionSheetCtrl: ActionSheetController,
         private translateService: TranslateService,
         private modalCtrl: ModalController,
-        private navCtrl: NavController
+        private navCtrl: NavController,
+        private alertController: AlertController
     ) {
     }
 
@@ -87,8 +88,25 @@ export class TemplateService {
                         reload: true,
                         destructive: true
                     },
-                    handler: () => {
-                        return this.deleteTemplate(templateId);
+                    handler: async () => {
+                        const alert = await this.alertController.create({
+                            message: 'Are you sure? This action cannot be undone.',
+                            buttons: [
+                                {
+                                    text: 'Yes',
+                                    role: 'destructive',
+                                    handler: async (e) => {
+                                        return await this.deleteTemplate(templateId);
+                                    }
+
+                                },
+                                {
+                                    text: 'No',
+                                    role: 'cancel'
+                                },
+                            ],
+                        });
+                        alert.present();
                     },
                 } : null,
                 {

@@ -16,6 +16,7 @@ BUGS -
      - [ ] When creating program - adding lots of weeks causes 404 in console and lots of requests !HIGH prio -too many requests in general, i think server would crash with 1.5 active users
      - [ ] Navigating exercise left and right calls N requests ever time, even if nothing is changed  !HIGH
      - [ ] EDITING DONE WORKOUT WORKS LIKE DOG SHIT - doesnt work, creates random exercises and deletes old ones very WTF functionallity also updates navigating left and right for no reason
+     - [ ] Calling Continue workout from program calls so many requests that i get 429 error from the API !HIGH
 
 Workouts screen - 
     - [x] Add program complete test [ok]

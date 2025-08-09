@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PocketbaseService } from './pocketbase.service';
-import { ActionSheetController, AlertController, ModalController, NavController } from '@ionic/angular/standalone';
+import { ActionSheetController, AlertController, LoadingController, ModalController, NavController } from '@ionic/angular/standalone';
 import { last, lastValueFrom, of } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Program } from '../models/collections/program';
@@ -48,7 +48,8 @@ export class ProgramService {
         private translateService: TranslateService,
         private navCtrl: NavController,
         private modalCtrl: ModalController,
-        private alertController: AlertController
+        private alertController: AlertController,
+        private loadingController: LoadingController
     ) {
     }
 
@@ -112,8 +113,11 @@ export class ProgramService {
                         ? translations.Continue
                         : translations.Start,
                     icon: 'play-outline',
-                    handler: () => {
-                        return this.startWorkoutFromProgram(program);
+                    handler: async() => {
+                        const load = await this.loadingController.create({})
+                        await load.present();
+                        await this.startWorkoutFromProgram(program);
+                        await load.dismiss();
                     },
                 } : null,
                 !excludeActions[PROGRAM_ACTIONS.edit] ? {

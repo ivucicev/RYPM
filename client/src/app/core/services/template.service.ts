@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PocketbaseService } from './pocketbase.service';
-import { ActionSheetController, AlertController, ModalController, NavController } from '@ionic/angular/standalone';
+import { ActionSheetController, AlertController, LoadingController, ModalController, NavController } from '@ionic/angular/standalone';
 import { lastValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Template } from '../models/collections/template';
@@ -32,7 +32,8 @@ export class TemplateService {
         private translateService: TranslateService,
         private modalCtrl: ModalController,
         private navCtrl: NavController,
-        private alertController: AlertController
+        private alertController: AlertController,
+        private loadingController: LoadingController
     ) {
     }
 
@@ -154,6 +155,7 @@ export class TemplateService {
     }
 
     async startWorkoutFromTemplate(template: Template) {
+        const load = await this.loadingController.create({})
         const workout: Workout = {
             end: null,
             start: new Date(),
@@ -161,13 +163,15 @@ export class TemplateService {
             effort: 5,
             state: WorkoutState.InProgress
         };
+        await load.present();
+        await this.createAndNavToWorkout(workout);
+        await load.dismiss();
 
-        this.createAndNavToWorkout(workout);
     }
 
     async createAndNavToWorkout(workout: Workout) {
         const wo = await this.pocketbaseService.upsertRecord('workouts', workout);
-        this.navCtrl.navigateForward([`./workout-wizard/${wo.id}`]);
+        return await this.navCtrl.navigateForward([`./workout-wizard/${wo.id}`]);
     }
     //#endregion
 

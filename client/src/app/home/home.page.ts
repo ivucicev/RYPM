@@ -1,7 +1,7 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, viewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
-import { IonButton, IonContent, IonSegment, IonSegmentButton, NavController } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonSegment, IonSegmentButton, LoadingController, NavController } from '@ionic/angular/standalone';
 import { Exercise } from '../core/models/collections/exercise';
 import { Program } from '../core/models/collections/program';
 import { Template } from '../core/models/collections/template';
@@ -66,7 +66,7 @@ export class HomePage {
         private templateService: TemplateService
     ) { 
     }
-
+    
     //#region Init
     async ionViewWillEnter() {
         await this.refresh();

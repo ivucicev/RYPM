@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild, viewChild, ViewChildren } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ActionSheetController, NavController, IonCardContent, IonChip, IonButton, IonIcon, IonCardHeader, IonCard, IonList, IonTitle, IonRow, IonContent, IonLabel, IonToolbar, IonSegmentButton, IonHeader, IonSegment, ModalController, IonSelect, IonInput, IonItem, IonFab, IonFabButton, IonFabList, IonPopover } from '@ionic/angular/standalone';
+import { ActionSheetController, NavController, IonCardContent, IonChip, IonButton, IonIcon, IonCardHeader, IonCard, IonList, IonTitle, IonRow, IonContent, IonLabel, IonToolbar, IonSegmentButton, IonHeader, IonSegment, ModalController, IonSelect, IonInput, IonItem, IonFab, IonFabButton, IonFabList, IonPopover, AlertController } from '@ionic/angular/standalone';
 import { lastValueFrom } from 'rxjs';
 import { DateTimePipe } from '../core/pipes/datetime.pipe';
 import { PocketbaseService } from '../core/services/pocketbase.service';
@@ -49,7 +49,8 @@ export class MyActivityPage {
         private translateService: TranslateService,
         private pocketbaseService: PocketbaseService,
         private navCtrl: NavController,
-        private modalCtrl: ModalController
+        private modalCtrl: ModalController,
+        private alertController: AlertController
     ) {
 
         this.getSessions();
@@ -371,7 +372,7 @@ export class MyActivityPage {
         if (data && data.name && data.unit) {
             data.user = this.pocketbaseService.currentUser?.id || null;
             await this.pocketbaseService.upsertRecord('measurements', data, true, false);
-        } 
+        }
         this.getMeasurements();
     }
 
@@ -425,8 +426,31 @@ export class MyActivityPage {
                     role: 'destructive',
                     handler: async () => {
                         // delete workout
-                        await this.pocketbaseService.workouts.delete(workout.id);
-                        this.workouts = this.workouts.filter(w => w.id !== workout.id);
+                        const alert = await this.alertController.create({
+                            message: this.translateService.instant('Are you sure? This action cannot be undone.'),
+                            buttons: [
+                                {
+                                    text: this.translateService.instant('Yes'),
+                                    role: 'destructive',
+                                    handler: async () => {
+                                        return true;
+                                    }
+                                },
+                                {
+                                    text: this.translateService.instant('No'),
+                                    role: 'cancel',
+                                    handler: () => {
+                                        return false;
+                                    }
+                                },
+                            ],
+                        });
+                        await alert.present();
+                        const d = await alert.onDidDismiss();
+                        if (d && d.role === 'destructive') {
+                            await this.pocketbaseService.workouts.delete(workout.id);
+                            this.workouts = this.workouts.filter(w => w.id !== workout.id);
+                        }
                     }
                 }
             ]

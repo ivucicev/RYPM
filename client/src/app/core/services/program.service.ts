@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PocketbaseService } from './pocketbase.service';
-import { ActionSheetController, ModalController, NavController } from '@ionic/angular/standalone';
+import { ActionSheetController, AlertController, ModalController, NavController } from '@ionic/angular/standalone';
 import { last, lastValueFrom, of } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Program } from '../models/collections/program';
@@ -47,7 +47,8 @@ export class ProgramService {
         private actionSheetCtrl: ActionSheetController,
         private translateService: TranslateService,
         private navCtrl: NavController,
-        private modalCtrl: ModalController
+        private modalCtrl: ModalController,
+        private alertController: AlertController
     ) {
     }
 
@@ -150,7 +151,7 @@ export class ProgramService {
                         destructive: true
                     },
                     handler: () => {
-                        
+
                         return this.deleteProgram(program.id);
                     },
                 } : null,
@@ -199,8 +200,32 @@ export class ProgramService {
     }
 
     async deleteProgram(id: string) {
-        await this.pocketbaseService.programs.delete(id);
-        return true;
+        const alert = await this.alertController.create({
+            message: this.translateService.instant('Are you sure? This action cannot be undone.'),
+            buttons: [
+                {
+                    text: this.translateService.instant('Yes'),
+                    role: 'destructive',
+                    handler: async (e) => {
+                        await this.pocketbaseService.programs.delete(id);
+                        return true;
+                    }
+
+                },
+                {
+                    text: this.translateService.instant('No'),
+                    role: 'cancel',
+                    handler: () => {
+                        return false;
+                    }
+                },
+            ],
+        });
+        await alert.present();
+        const d = await alert.onDidDismiss();
+        if (d && d.role === 'destructive')
+            return true;
+        return false;
     }
 
     async startWorkoutFromProgram(program: ProgramInfo) {

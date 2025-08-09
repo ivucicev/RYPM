@@ -89,24 +89,7 @@ export class TemplateService {
                         destructive: true
                     },
                     handler: async () => {
-                        const alert = await this.alertController.create({
-                            message: 'Are you sure? This action cannot be undone.',
-                            buttons: [
-                                {
-                                    text: 'Yes',
-                                    role: 'destructive',
-                                    handler: async (e) => {
-                                        return await this.deleteTemplate(templateId);
-                                    }
-
-                                },
-                                {
-                                    text: 'No',
-                                    role: 'cancel'
-                                },
-                            ],
-                        });
-                        alert.present();
+                        return await this.deleteTemplate(templateId);
                     },
                 } : null,
                 {
@@ -142,8 +125,32 @@ export class TemplateService {
     }
 
     async deleteTemplate(id: string) {
-        await this.pocketbaseService.templates.delete(id);
-        return true;
+        const alert = await this.alertController.create({
+            message: this.translateService.instant('Are you sure? This action cannot be undone.'),
+            buttons: [
+                {
+                    text: this.translateService.instant('Yes'),
+                    role: 'destructive',
+                    handler: async () => {
+                        await this.pocketbaseService.templates.delete(id);
+                        return true;
+                    }
+
+                },
+                {
+                    text: this.translateService.instant('No'),
+                    role: 'cancel',
+                    handler: () => {
+                        return false;
+                    }
+                },
+            ],
+        });
+        await alert.present();
+        const d = await alert.onDidDismiss();
+        if (d && d.role === 'destructive')
+            return true;
+        return false;
     }
 
     async startWorkoutFromTemplate(template: Template) {

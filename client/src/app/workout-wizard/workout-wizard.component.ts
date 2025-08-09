@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, signal, computed, ElementRef } from '@angular/core';
-import { ActionSheetController, AnimationController, LoadingController, ModalController, NavController, IonHeader, IonButton, IonLabel, IonToolbar, IonTitle, IonIcon, IonContent, IonChip, IonBackButton, IonButtons, IonSpinner, IonFooter, IonNote, IonCheckbox } from '@ionic/angular/standalone';
+import { ActionSheetController, AnimationController, LoadingController, ModalController, NavController, IonHeader, IonButton, IonLabel, IonToolbar, IonTitle, IonIcon, IonContent, IonChip, IonBackButton, IonButtons, IonSpinner, IonFooter, IonNote, IonCheckbox, AlertController } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormsModule } from '@angular/forms';
 import { Exercise } from 'src/app/core/models/collections/exercise';
@@ -98,6 +98,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         private actionSheetCtrl: ActionSheetController,
         private loadingCtrl: LoadingController,
         private toast: ToastService,
+        private alertController: AlertController
     ) { }
 
     ngOnInit() {
@@ -359,7 +360,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
                         if (!exercises || !exercises.length) return;
                         const exercisesArray = [];
                         const exercisesIdsArray = [];
-                        for(const e of exercises as any) {
+                        for (const e of exercises as any) {
                             e.workout = this.workout.id;
                             const exercisesCreated = await this.pocketbaseService.exercises.create(e, { $autoCancel: false });
                             const fg = this.programFormsService.createExerciseFormGroup(exercisesCreated)
@@ -379,9 +380,32 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
                     text: translations.Delete,
                     icon: 'trash-outline',
                     role: 'destructive',
-                    handler: async() => {
-                        await this.pocketbaseService.workouts.delete(this.workout.id);
-                        this.navCtrl.navigateBack(['./tabs']);
+                    handler: async () => {
+                        const alert = await this.alertController.create({
+                            message: this.translateService.instant('Are you sure? This action cannot be undone.'),
+                            buttons: [
+                                {
+                                    text: this.translateService.instant('Yes'),
+                                    role: 'destructive',
+                                    handler: async () => {
+                                        return true;
+                                    }
+                                },
+                                {
+                                    text: this.translateService.instant('No'),
+                                    role: 'cancel',
+                                    handler: () => {
+                                        return false;
+                                    }
+                                },
+                            ],
+                        });
+                        await alert.present();
+                        const d = await alert.onDidDismiss();
+                        if (d && d.role === 'destructive') {
+                            await this.pocketbaseService.workouts.delete(this.workout.id);
+                            this.navCtrl.navigateBack(['./tabs']);
+                        }
                     }
                 },
                 {

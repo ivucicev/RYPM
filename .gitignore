@@ -4,3 +4,4 @@ server/.DS_Store
 */pb_data
 server/pb_data
 server/pb_import/exercise-templates.json
+node_modules

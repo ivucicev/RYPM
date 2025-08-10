@@ -1,5 +1,5 @@
-import { Component, viewChild } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { Component, viewChild, ɵgenerateStandaloneInDeclarationsError } from '@angular/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { QrCodeModalComponent } from '../qr-code-modal/qr-code-modal.component';
@@ -8,6 +8,9 @@ import { ContinueFooterComponent } from '../shared/continue-footer/continue-foot
 import { PocketbaseService } from '../core/services/pocketbase.service';
 import { AccountService } from '../core/services/account.service';
 import { AITrainer } from '../core/models/enums/ai-trainer';
+import { DateTimePipe } from '../core/pipes/datetime.pipe';
+import { PB } from '../core/constants/pb-constants';
+import { MESSAGEROLE } from '../core/models/enums/message-role';
 
 interface ChatItem {
     id: string;
@@ -23,7 +26,7 @@ interface ChatItem {
     templateUrl: 'chats.page.html',
     styleUrls: ['chats.page.scss'],
     standalone: true,
-    imports: [IonButton, IonTitle, IonButtons, IonToolbar, IonIcon, IonList, IonContent, IonItem, IonHeader, TranslateModule, CommonModule, FormsModule, ContinueFooterComponent],
+    imports: [IonButton, DateTimePipe, IonTitle, IonButtons, IonToolbar, IonIcon, IonList, IonContent, IonItem, IonHeader, TranslateModule, CommonModule, FormsModule, ContinueFooterComponent],
 })
 export class ChatsPage {
     showSearchBar = false;
@@ -31,76 +34,69 @@ export class ChatsPage {
     aiTrainer;
     aiTrainers = AITrainer;
 
-    // TODO
-    chatsList: ChatItem[] = [
-        {
-            id: '1',
-            name: 'Amenda Johnson',
-            avatar: '',
-            time: '11:40 am',
-            lastMessage: 'Yes, You can repeat same exercise today.',
-            messageType: 'user'
-        },
-        {
-            id: '2',
-            name: 'Russeil Taylor',
-            avatar: '',
-            time: '11:40 am',
-            lastMessage: 'No Worries. Believe in yourself.',
-            messageType: 'user'
-        },
-        {
-            id: '3',
-            name: 'Lliana George',
-            avatar: 'assets/images/gym_trainer_3.png',
-            time: '11:40 am',
-            lastMessage: 'Yes, You can repeat same exercise today.',
-            messageType: 'user'
-        },
-        {
-            id: '4',
-            name: 'Suzein Smith',
-            avatar: 'assets/images/gym_trainer_4.png',
-            time: '11:40 am',
-            lastMessage: 'Wants to connect',
-            messageType: 'system'
-        },
-        {
-            id: '5',
-            name: 'Peter Johnson',
-            avatar: 'assets/images/gym_trainer_5.png',
-            time: '11:40 am',
-            lastMessage: 'It will help you in anyway. Trust me.',
-            messageType: 'user'
-        },
-        {
-            id: '6',
-            name: 'Olivier Haydon',
-            avatar: 'assets/images/gym_trainer_6.png',
-            time: '10:42 pm', // Current time from the date provided
-            lastMessage: 'Wants to connect.',
-            messageType: 'system'
-        }
-    ];
+    conversations: any[] = [];
+    user;
 
     continueFooter = viewChild(ContinueFooterComponent);
 
     constructor(
         private modalCtrl: ModalController,
         private navCtrl: NavController,
-        private pocketbase: PocketbaseService,
-        private accountService: AccountService
+        private pb: PocketbaseService,
+        private accountService: AccountService,
+        private translate: TranslateService
     ) {
     }
 
     async ionViewWillEnter() {
-        const user = await this.accountService.getCurrentUser();
-        this.aiTrainer = user.aiTrainer || AITrainer.RYPED;
+        this.user = await this.accountService.getCurrentUser();
+        this.aiTrainer = this.user.aiTrainer || AITrainer.RYPED;
+        this.init();
         this.refresh();
     }
 
     async refresh() {
         this.continueFooter()?.refresh();
+    }
+
+    async init() {
+        const conversations = await this.pb.conversations.getFullList({
+            sort: '-updated',
+            expand: 'participants',
+        });
+
+        this.conversations = [...conversations];
+
+        if (conversations.length === 0) {
+            await this.initAIConversations();
+        }
+
+    }
+
+    async initAIConversations() {
+        const conversation = {
+            participants: [this.user.id],
+            isAI: true,
+            lastMessage: this.aiTrainer == this.aiTrainers.RYPED ? this.translate.instant('Hi, I’m Ryp Ed - your AI strength coach. Let’s lock in your goals, fine-tune your training, and make every rep count. Ready to start?')
+                : this.translate.instant('Hey, I’m Ryp Em - your AI performance coach. I’m here to guide, adapt, and push you toward your goals with precision. Shall we begin?'),
+            lastMessageDate: new Date(),
+        }
+
+        const initialConversation = await this.pb.conversations.create(conversation,
+            { headers: PB.HEADER.NO_TOAST });
+
+        const message = {
+            conversation: initialConversation.id,
+            message: initialConversation.lastMessage,
+            from: null,
+            to: this.user.id,
+            role: MESSAGEROLE.Assistant,
+        };
+
+        await this.pb.messages.create(message,
+            { headers: PB.HEADER.NO_TOAST });
+
+        this.conversations.push(initialConversation);
     }
 
     toggleSearch() {
@@ -118,21 +114,21 @@ export class ChatsPage {
         return await modal.present();
     }
 
-    conversation(chat?: ChatItem) {
+    conversation(chatId) {
         // TODO
-        this.navCtrl.navigateForward(['/conversation']);
+        this.navCtrl.navigateForward(['/conversation/' + chatId]);
     }
 
-    aiConversation() {
-        this.navCtrl.navigateForward(['/conversation/ai']);
+    aiConversation(chatId) {
+        this.navCtrl.navigateForward(['/conversation/ai/' + chatId]);
     }
 
     openSearchUser() {
         this.navCtrl.navigateForward(['/search-user']);
     }
 
-    myTrainers()  {
+    myTrainers() {
         this.navCtrl.navigateForward(['/my-trainers']);
-    }  
+    }
 
 }

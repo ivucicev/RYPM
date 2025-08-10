@@ -8,7 +8,7 @@ export const routes: Routes = [
 		component: ConversationPage
 	},
 	{
-		path: 'ai',
+		path: 'ai/:id',
 		component: ConversationPage,
 		data: { aiConversation: true }
 	},

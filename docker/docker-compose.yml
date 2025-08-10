@@ -18,6 +18,7 @@ services:
         environment:
             POCKETBASE_ADMIN_EMAIL: ${POCKETBASE_ADMIN_EMAIL}
             POCKETBASE_ADMIN_PASS: ${POCKETBASE_ADMIN_PASS}
+            OPENAI_API_KEY: ${OPENAI_API_KEY}
         restart: unless-stopped
 
     # rypm-updater:

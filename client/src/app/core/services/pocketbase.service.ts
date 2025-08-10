@@ -15,6 +15,10 @@ import { PB } from '../constants/pb-constants';
 import { Collection, COLLECTIONS } from '../constants/collections';
 import { LoadingController } from '@ionic/angular/standalone';
 import { ExerciseTemplate } from '../models/collections/exercise-templates';
+import { Measurement } from '../models/collections/measurement';
+import { MeasurementEntry } from '../models/collections/measurement-entry';
+import { Conversation } from '../models/collections/conversations';
+import { Message } from '../models/collections/message';
 
 @Injectable({
     providedIn: 'root'
@@ -40,7 +44,9 @@ export class PocketbaseService {
         'users': [],
         'exercise_templates': [],
         'measurement_entry': [],
-        'measurements': []
+        'measurements': [],
+        'conversations': [],
+        'messages': []
     };
 
     private singleRelationMappings: Record<string, string[]> = {
@@ -200,11 +206,19 @@ export class PocketbaseService {
     }
 
     public get measurements() {
-        return this.pb.collection<Workout>(COLLECTIONS.measurements);
+        return this.pb.collection<Measurement>(COLLECTIONS.measurements);
     }
 
     public get measurementEntries() {
-        return this.pb.collection<Workout>(COLLECTIONS.measurement_entry);
+        return this.pb.collection<MeasurementEntry>(COLLECTIONS.measurement_entry);
+    }
+
+    public get conversations() {
+        return this.pb.collection<Conversation>(COLLECTIONS.conversations);
+    }
+
+    public get messages() {
+        return this.pb.collection<Message>(COLLECTIONS.messages);
     }
     //#endregion
 

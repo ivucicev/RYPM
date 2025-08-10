@@ -9,7 +9,9 @@ export const COLLECTIONS = {
     days: 'days',
     users: 'users',
     measurements: 'measurements',
-    measurement_entry: 'measurement_entry'
+    measurement_entry: 'measurement_entry',
+    conversations: 'conversations',
+    messages: 'messages',
 };
 export type Collection = keyof typeof COLLECTIONS
 

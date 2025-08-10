@@ -25,7 +25,15 @@
 
 <ion-content #content class="bg_color" fullscreen [scrollEvents]="true" (ionScroll)="onScroll($event)">
     <div class="chat_container d-flex">
-        <div class="chat_box d-flex send">
+        @for(message of messages; track message.id) {
+            <div class="chat_box d-flex {{ message.from == user.id ? 'send' : 'received' }}">
+                <div class="chat">
+                    <h2>{{ message.message }}</h2>
+                    <p>{{ message.created | dateTime }}</p>
+                </div>
+            </div>
+        }
+       <!-- <div class="chat_box d-flex send">
             <div class="chat">
                 <h2>Hey Amenda.</h2>
                 <p>11:40 am</p>
@@ -36,43 +44,7 @@
                 <h2>Hello Samantha, <br>How may I help you?</h2>
                 <p>11:40 am</p>
             </div>
-        </div>
-        <div class="chat_box d-flex send">
-            <div class="chat">
-                <h2>Do I have to repeat <br>same exercise?</h2>
-                <p>11:40 am</p>
-            </div>
-        </div>
-        <div class="chat_box d-flex  received">
-            <div class="chat">
-                <h2>Yes, You can repeat same exrcise today</h2>
-                <p>11:40 am</p>
-            </div>
-        </div>
-        <div class="chat_box d-flex  received">
-            <div class="chat">
-                <h2>Yes, You can repeat same exrcise today</h2>
-                <p>11:40 am</p>
-            </div>
-        </div>
-        <div class="chat_box d-flex  received">
-            <div class="chat">
-                <h2>Yes, You can repeat same exrcise today</h2>
-                <p>11:40 am</p>
-            </div>
-        </div>
-        <div class="chat_box d-flex  received">
-            <div class="chat">
-                <h2>Yes, You can repeat same exrcise today</h2>
-                <p>11:40 am</p>
-            </div>
-        </div>
-        <div class="chat_box d-flex  received">
-            <div class="chat">
-                <h2>Yes, You can repeat same exrcise today</h2>
-                <p>11:40 am</p>
-            </div>
-        </div>
+        </div>-->
     </div>
 </ion-content>
 
@@ -80,10 +52,10 @@
     <div class="form">
         <ion-list lines="none d-flex">
             <ion-item lines="none">
-                <ion-input type="text" placeholder="{{'Write message' | translate}}"></ion-input>
+                <ion-input [(ngModel)]="newMessage" type="text" placeholder="{{'Write message' | translate}}"></ion-input>
             </ion-item>
-            <div class="send_btn end">
-                <ion-icon class="zmdi zmdi-mail-send"></ion-icon>
+            <div class="send_btn end" (click)="sendMessage()">
+                <ion-icon [src]="sendIcon"></ion-icon>
             </div>
         </ion-list>
     </div>

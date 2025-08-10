@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Keyboard } from '@capacitor/keyboard';
-import { IonFooter, IonList, IonInput, IonIcon, IonItem, IonContent, IonTitle, IonButtons, IonToolbar, IonHeader, IonBackButton } from "@ionic/angular/standalone";
+import { IonFooter, IonList, IonInput, IonIcon, IonItem, IonContent, IonTitle, IonButtons, IonToolbar, IonHeader, IonBackButton, IonButton } from "@ionic/angular/standalone";
 import { AccountService } from '../core/services/account.service';
 import { AITrainer } from '../core/models/enums/ai-trainer';
 import { PocketbaseService } from '../core/services/pocketbase.service';
@@ -17,7 +17,7 @@ import { PB } from '../core/constants/pb-constants';
     templateUrl: 'conversation.page.html',
     styleUrls: ['./conversation.page.scss'],
     standalone: true,
-    imports: [IonBackButton, FormsModule, IonHeader, IonToolbar, IonButtons, IonTitle, IonContent, IonItem, IonIcon, IonInput, IonList, IonFooter, TranslateModule, DateTimePipe],
+    imports: [IonBackButton, FormsModule, IonHeader, IonToolbar, IonButtons, IonTitle, IonContent, IonItem, IonIcon, IonInput, IonList, IonFooter, TranslateModule, DateTimePipe, IonButton],
 })
 export class ConversationPage implements OnInit {
     showToolbar = false;
@@ -85,6 +85,7 @@ export class ConversationPage implements OnInit {
         };
 
         this.messages.push(message);
+        this.newMessage = '';
         this.scrollToBottom();
         const msg = await this.pb.messages.create(message,
             { headers: PB.HEADER.NO_TOAST });

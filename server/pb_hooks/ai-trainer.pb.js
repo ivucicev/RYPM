@@ -37,7 +37,8 @@ My first request is: “I need help designing a complete fitness, nutrition, and
     const conversationId = e.record.get("conversation");
 
     if (to != null) e.next();
-
+    if (to == null && from == null) e.next();
+    
     const conversation = $app.findRecordById(
         "conversations", conversationId
     );
@@ -77,6 +78,7 @@ My first request is: “I need help designing a complete fitness, nutrition, and
     });
 
     if (res.statusCode === 200) {
+        
         const reply = res.json.choices[0]?.message?.content || "";
         $app.db().insert('messages', {
             to: userId,

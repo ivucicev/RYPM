@@ -50,13 +50,15 @@
 
 <ion-footer class="ion-no-border animate__animated animate__fadeInUp bg_transparent">
     <div class="form">
-        <ion-list lines="none d-flex">
-            <ion-item lines="none">
-                <ion-input [(ngModel)]="newMessage" type="text" placeholder="{{'Write message' | translate}}"></ion-input>
-            </ion-item>
-            <div class="send_btn end" (click)="sendMessage()">
-                <ion-icon [src]="sendIcon"></ion-icon>
-            </div>
-        </ion-list>
+        <form (submit)="sendMessage()">
+            <ion-list lines="none d-flex">
+                <ion-item lines="none">
+                    <ion-input [(ngModel)]="newMessage" type="text" placeholder="{{'Write message' | translate}}"></ion-input>
+                    <ion-button slot="end" color="primary" class="ion-padding-x" (click)="sendMessage()">
+                        <ion-icon [src]="sendIcon"></ion-icon>
+                    </ion-button>
+                </ion-item>
+            </ion-list>
+        </form>
     </div>
 </ion-footer>

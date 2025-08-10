@@ -3,7 +3,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { QrCodeModalComponent } from '../qr-code-modal/qr-code-modal.component';
-import { ModalController, NavController, IonHeader, IonItem, IonContent, IonList, IonIcon, IonToolbar, IonButtons, IonTitle, IonButton } from '@ionic/angular/standalone';
+import { ModalController, NavController, IonHeader, IonItem, IonContent, IonList, IonIcon, IonToolbar, IonButtons, IonTitle, IonButton, IonItemSliding, IonItemOption, IonItemOptions, IonRefresher, IonRefresherContent } from '@ionic/angular/standalone';
 import { ContinueFooterComponent } from '../shared/continue-footer/continue-footer.component';
 import { PocketbaseService } from '../core/services/pocketbase.service';
 import { AccountService } from '../core/services/account.service';
@@ -11,6 +11,7 @@ import { AITrainer } from '../core/models/enums/ai-trainer';
 import { DateTimePipe } from '../core/pipes/datetime.pipe';
 import { PB } from '../core/constants/pb-constants';
 import { MESSAGEROLE } from '../core/models/enums/message-role';
+import { NoDataComponent } from '../shared/no-data/no-data.component';
 
 interface ChatItem {
     id: string;
@@ -26,7 +27,7 @@ interface ChatItem {
     templateUrl: 'chats.page.html',
     styleUrls: ['chats.page.scss'],
     standalone: true,
-    imports: [IonButton, DateTimePipe, IonTitle, IonButtons, IonToolbar, IonIcon, IonList, IonContent, IonItem, IonHeader, TranslateModule, CommonModule, FormsModule, ContinueFooterComponent],
+    imports: [IonButton, NoDataComponent, IonItemSliding, IonRefresher, IonRefresherContent, IonItemOptions, IonItemOption, DateTimePipe, IonTitle, IonButtons, IonToolbar, IonIcon, IonList, IonContent, IonItem, IonHeader, TranslateModule, CommonModule, FormsModule, ContinueFooterComponent],
 })
 export class ChatsPage {
     showSearchBar = false;
@@ -57,6 +58,14 @@ export class ChatsPage {
 
     async refresh() {
         this.continueFooter()?.refresh();
+    }
+
+    pullToRefresh(event) {
+        setTimeout(() => {
+            console.log('ERE')
+            this.init();
+            event.target.complete();
+        }, 500);
     }
 
     async init() {
@@ -125,6 +134,11 @@ export class ChatsPage {
 
     openSearchUser() {
         this.navCtrl.navigateForward(['/search-user']);
+    }
+
+    async deleteConversation(id: string) {
+        await this.pb.conversations.delete(id);
+        this.conversations = this.conversations.filter(c => c.id != id);
     }
 
     myTrainers() {

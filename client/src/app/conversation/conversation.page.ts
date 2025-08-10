@@ -85,9 +85,7 @@ export class ConversationPage implements OnInit {
         };
 
         this.messages.push(message);
-
         this.scrollToBottom();
-
         const msg = await this.pb.messages.create(message,
             { headers: PB.HEADER.NO_TOAST });
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, signal, computed, ElementRef } from '@angular/core';
-import { ActionSheetController, AnimationController, LoadingController, ModalController, NavController, IonHeader, IonButton, IonLabel, IonToolbar, IonTitle, IonIcon, IonContent, IonChip, IonBackButton, IonButtons, IonSpinner, IonFooter, IonNote, IonCheckbox, AlertController } from '@ionic/angular/standalone';
+import { ActionSheetController, AnimationController, ModalController, NavController, IonHeader, IonButton, IonLabel, IonToolbar, IonTitle, IonIcon, IonContent, IonChip, IonBackButton, IonButtons, IonSpinner, IonFooter, IonNote, IonCheckbox, AlertController } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormsModule } from '@angular/forms';
 import { Exercise } from 'src/app/core/models/collections/exercise';
@@ -83,7 +83,6 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
     animationDuration = Constants.ANIMATION_DURATION_MS;
 
     @ViewChild('exerciseForm') exerciseFormComponent: ExerciseFormComponent;
-
     @ViewChild('exerciseContent', { read: ElementRef }) exerciseContent: ElementRef;
 
     constructor(
@@ -96,7 +95,6 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         private translateService: TranslateService,
         private autosaveService: AutosaveService,
         private actionSheetCtrl: ActionSheetController,
-        private loadingCtrl: LoadingController,
         private toast: ToastService,
         private alertController: AlertController
     ) { }

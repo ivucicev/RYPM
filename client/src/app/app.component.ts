@@ -72,7 +72,9 @@ export class AppComponent {
             register();
             // TODO: fix splash, styling
             // StatusBar.styleDefault();
-            // SplashScreen.show();
+            
+            SplashScreen.show();
+
             // StatusBar.setOverlaysWebView({ overlay: false });
             // StatusBar.setBackgroundColor({ color: '#000000' });
             let defaultLang = window.localStorage.getItem(Constants.KEY_DEFAULT_LANGUAGE);
@@ -87,7 +89,8 @@ export class AppComponent {
                 } else {
                     this.navCtrl.navigateRoot(['./tabs']);
                 }
-                // SplashScreen.hide();
+
+                SplashScreen.hide();
     
                 if (!this.isInstalled)
                     setTimeout(() => {

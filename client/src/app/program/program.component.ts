@@ -85,7 +85,6 @@ export class ProgramComponent implements OnInit, OnDestroy {
 
     init(program?: ProgramInfo) {
         this.program = program;
-
         this.programForm = this.programFormService.createProgramFormGroup(program);
         this.autosaveService.register<ProgramBM>(this.programForm, 'programs', false).subscribe(); // TODO: autosave, get/map new changes or take all info from form?
     }

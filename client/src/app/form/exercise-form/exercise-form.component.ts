@@ -313,7 +313,7 @@ export class ExerciseFormComponent implements OnChanges {
             {
                 currentWeight: this.selectedWeight,
                 currentValue: this.selectedValue,
-            } :
+            } as any :
             // edit mode: can change type/target values
             {
                 weightType: this.selectedWeightType,
@@ -322,43 +322,52 @@ export class ExerciseFormComponent implements OnChanges {
                 rir: this.selectedRIR,
                 rpe: this.selectedRPE,
                 dropset: this.selectedDropset
-            }
-
-        setControl.patchValue(valuesToPatch);
+            } as any
 
         // should update next values according to this value
         this.setsArray.controls.forEach((c, i) => {
             if (i > this.selectedSetIndex && c.controls?.completed?.value != true) {
-                c.patchValue({
+                valuesToPatch.currentValue = this.selectedValue;
+                valuesToPatch.currentWeight = this.selectedWeight;
+                /*c.patchValue({
                     currentValue: this.selectedValue,
                     currentWeight: this.selectedWeight
-                });
+                });*/
             }
         })
 
 
         if (!this.workoutMode || this.editMode) {
             if (this.selectedRepType === RepType.Reps || this.selectedRepType === RepType.Duration) {
-                setControl.patchValue({ value: this.selectedValue });
+                valuesToPatch.value = this.selectedValue;
+                //setControl.patchValue({ value: this.selectedValue });
             } else if (this.selectedRepType === RepType.Range) {
-                setControl.patchValue({
+                valuesToPatch.minValue = this.selectedMinValue;
+                valuesToPatch.maxValue = this.selectedMaxValue;
+                /*setControl.patchValue({
                     minValue: this.selectedMinValue,
                     maxValue: this.selectedMaxValue
-                });
+                });*/
             } else {
-                setControl.patchValue({
+                valuesToPatch.value = null;
+                valuesToPatch.minValue = null;
+                valuesToPatch.maxValue = null;
+                /*setControl.patchValue({
                     value: null,
                     minValue: null,
                     maxValue: null
-                });
+                });*/
             }
 
             if (this.selectedRIR > 0) {
-                setControl.patchValue({ rir: this.selectedRIR });
+                //setControl.patchValue({ rir: this.selectedRIR });
+                valuesToPatch.rir = this.selectedRIR;
             } else if (this.selectedRPE > 0) {
-                setControl.patchValue({ rpe: this.selectedRPE });
+                //setControl.patchValue({ rpe: this.selectedRPE });
+                valuesToPatch.rpe = this.selectedRPE;
             } else if (this.selectedDropset > 0) {
-                setControl.patchValue({ dropset: this.selectedDropset });
+                //setControl.patchValue({ dropset: this.selectedDropset });
+                valuesToPatch.dropset = this.selectedDropset;
             }
 
             if (this.numSets > 1) {
@@ -374,6 +383,8 @@ export class ExerciseFormComponent implements OnChanges {
                 this.updateCompletion(this.selectedSetIndex);
             }
         }
+
+        setControl.patchValue(valuesToPatch);
 
         this.cancelPicker();
     }

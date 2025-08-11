@@ -1,14 +1,6 @@
 <ion-header>
     <ion-toolbar>
         <ion-title>{{'Activity' | translate}}</ion-title>
-        <!--<ion-buttons slot="end">
-            <ion-button>
-                <ion-icon name="calendar-clear-outline"></ion-icon>
-            </ion-button>
-            <ion-button>
-                <ion-icon name="analytics-outline"></ion-icon>
-            </ion-button>
-        </ion-buttons>-->
     </ion-toolbar>
 </ion-header>
 
@@ -36,7 +28,6 @@
     <ng-container [ngSwitch]="tab">
         <ng-container *ngSwitchCase="'workouts'">
             <ion-list lines="none">
-                <!-- TODO: view -->
                 @for(workout of workouts; track $index) {
                 <ion-card>
                     <div class="inner-card">
@@ -106,6 +97,8 @@
                 <ion-item (click)="createOrEditMeasurement(measurement)">
                     <canvas #measurementsGraph></canvas>
                 </ion-item>
+                } @empty {
+                <app-no-data [text]="'No measurements yet.' | translate"></app-no-data>
                 }
             </ion-list>
         </ng-container>

@@ -9,9 +9,9 @@
                     <h2 class="d-flex">
                         @if (aiTrainer) {
                             @if (aiTrainer == aiTrainers.RYPED) {
-                                <span class="ryped-badge">Ryp Ed</span>
+                                <span class="ryped-badge">Ed Ryp</span>
                             } @else {
-                                <span class="ryped-badge">Ryp Em</span>
+                                <span class="ryped-badge">Em Ryp</span>
                             }
                         }
                         <ion-icon class="zmdi zmdi-alert-circle-o end ion-text-end"></ion-icon>
@@ -54,8 +54,8 @@
             <ion-list lines="none d-flex">
                 <ion-item lines="none">
                     <ion-input [(ngModel)]="newMessage" type="text" placeholder="{{'Write message' | translate}}"></ion-input>
-                    <ion-button slot="end" color="primary" class="ion-padding-x" (click)="sendMessage()">
-                        <ion-icon [src]="sendIcon"></ion-icon>
+                    <ion-button [disabled]="!newMessage || !newMessage.length" shape="round" slot="end" color="primary" class="ion-padding-x" (click)="sendMessage()">
+                        <ion-icon slot="icon-only" [src]="sendIcon"></ion-icon>
                     </ion-button>
                 </ion-item>
             </ion-list>

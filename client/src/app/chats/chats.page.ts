@@ -62,7 +62,6 @@ export class ChatsPage {
 
     pullToRefresh(event) {
         setTimeout(() => {
-            console.log('ERE')
             this.init();
             event.target.complete();
         }, 500);
@@ -86,8 +85,8 @@ export class ChatsPage {
         const conversation = {
             participants: [this.user.id],
             isAI: true,
-            lastMessage: this.aiTrainer == this.aiTrainers.RYPED ? this.translate.instant('Hi, I’m Ryp Ed - your AI strength coach. Let’s lock in your goals, fine-tune your training, and make every rep count. Ready to start?')
-                : this.translate.instant('Hey, I’m Ryp Em - your AI performance coach. I’m here to guide, adapt, and push you toward your goals with precision. Shall we begin?'),
+            lastMessage: this.aiTrainer == this.aiTrainers.RYPED ? this.translate.instant('Hi, I’m Ed Ryp - your AI strength coach. Let’s lock in your goals, fine-tune your training, and make every rep count. Ready to start?')
+                : this.translate.instant('Hey, I’m Em Ryp - your AI performance coach. I’m here to guide, adapt, and push you toward your goals with precision. Shall we begin?'),
             lastMessageDate: new Date(),
         }
 

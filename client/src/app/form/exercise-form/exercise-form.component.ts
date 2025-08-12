@@ -140,8 +140,8 @@ export class ExerciseFormComponent implements OnChanges {
 
             if (set.controls.completed.value) continue;
 
-            set.controls.currentValue.setValue(set.controls.previousValue.value || set.controls.currentValue.value || set.controls.value.value || 0);
-            set.controls.currentWeight.setValue(set.controls.previousWeight.value || set.controls.currentWeight.value || set.controls.weight.value || 0);
+            set.controls.currentValue.setValue(set.controls.currentValue.value || set.controls.previousValue.value || set.controls.value.value || 0);
+            set.controls.currentWeight.setValue(set.controls.currentWeight.value || set.controls.previousWeight.value || set.controls.currentWeight.value || set.controls.weight.value || 0);
         }
     }
 
@@ -249,9 +249,9 @@ export class ExerciseFormComponent implements OnChanges {
 
         this.numSets = 1;
         this.selectedWeightType = currentSet.weightType;
-        this.selectedWeight = currentSet.currentWeight == currentSet.weight ? (currentSet.previousWeight || currentSet.currentWeight || currentSet.weight || 0) : currentSet.currentWeight || currentSet.weight || 1;
+        this.selectedWeight = currentSet.currentWeight || currentSet.previousWeight || currentSet.weight || 0;
         this.selectedRepType = currentSet.type;
-        this.selectedValue = currentSet.currentValue == currentSet.value ? (currentSet.previousValue || currentSet.currentValue || currentSet.value || 0) : currentSet.currentValue || currentSet.value || 1;
+        this.selectedValue = currentSet.currentValue || currentSet.previousValue || currentSet.value || 0;
         this.selectedMinValue = currentSet.minValue || 1;
         this.selectedMaxValue = currentSet.maxValue || 1;
 
@@ -327,12 +327,12 @@ export class ExerciseFormComponent implements OnChanges {
         // should update next values according to this value
         this.setsArray.controls.forEach((c, i) => {
             if (i > this.selectedSetIndex && c.controls?.completed?.value != true) {
-                valuesToPatch.currentValue = this.selectedValue;
-                valuesToPatch.currentWeight = this.selectedWeight;
-                /*c.patchValue({
+                //valuesToPatch.currentValue = this.selectedValue;
+                //valuesToPatch.currentWeight = this.selectedWeight;
+                c.patchValue({
                     currentValue: this.selectedValue,
                     currentWeight: this.selectedWeight
-                });*/
+                });
             }
         })
 

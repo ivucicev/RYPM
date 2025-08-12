@@ -97,6 +97,8 @@ export class ExerciseTemplateSelectorComponent implements OnInit {
                 sort: 'name'
             });
 
+            // const res = await this.pb.exercise_templates.getFullList();
+
             // Collect all unique values for each property into separate arrays
             // const allMuscles: string[] = [];
             // const allForce: string[] = [];

@@ -3,7 +3,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { QrCodeModalComponent } from '../qr-code-modal/qr-code-modal.component';
-import { ModalController, NavController, IonHeader, IonItem, IonContent, IonList, IonIcon, IonToolbar, IonButtons, IonTitle, IonButton, IonItemSliding, IonItemOption, IonItemOptions, IonRefresher, IonRefresherContent } from '@ionic/angular/standalone';
+import { ModalController, NavController, IonHeader, IonItem, IonContent, IonList, IonIcon, IonToolbar, IonButtons, IonTitle, IonButton, IonItemSliding, IonItemOption, IonItemOptions, IonRefresher, IonRefresherContent, AlertController } from '@ionic/angular/standalone';
 import { ContinueFooterComponent } from '../shared/continue-footer/continue-footer.component';
 import { PocketbaseService } from '../core/services/pocketbase.service';
 import { AccountService } from '../core/services/account.service';
@@ -45,7 +45,8 @@ export class ChatsPage {
         private navCtrl: NavController,
         private pb: PocketbaseService,
         private accountService: AccountService,
-        private translate: TranslateService
+        private translate: TranslateService,
+        private alertController: AlertController
     ) {
     }
 
@@ -136,8 +137,27 @@ export class ChatsPage {
     }
 
     async deleteConversation(id: string) {
-        await this.pb.conversations.delete(id);
-        this.conversations = this.conversations.filter(c => c.id != id);
+        const alert = await this.alertController.create({
+            message: this.translate.instant('Are you sure? This action cannot be undone.'),
+            buttons: [
+                {
+                    text: this.translate.instant('Yes'),
+                    role: 'destructive',
+                    handler: async () => {
+                        await this.pb.conversations.delete(id);
+                        this.conversations = this.conversations.filter(c => c.id != id);
+                    }
+                },
+                {
+                    text: this.translate.instant('No'),
+                    role: 'cancel',
+                    handler: () => {
+                        return false;
+                    }
+                },
+            ],
+        });
+        await alert.present();
     }
 
     myTrainers() {

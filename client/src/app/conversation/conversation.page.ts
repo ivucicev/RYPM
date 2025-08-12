@@ -7,7 +7,7 @@ import { AccountService } from '../core/services/account.service';
 import { AITrainer } from '../core/models/enums/ai-trainer';
 import { PocketbaseService } from '../core/services/pocketbase.service';
 import { DateTimePipe } from "../core/pipes/datetime.pipe";
-import { create, sendOutline } from 'ionicons/icons';
+import { create, readerOutline, sendOutline } from 'ionicons/icons';
 import { FormsModule } from '@angular/forms';
 import { MESSAGEROLE } from '../core/models/enums/message-role';
 import { PB } from '../core/constants/pb-constants';
@@ -29,6 +29,7 @@ export class ConversationPage implements OnInit {
     conversationId;
     sendIcon = sendOutline;
     newMessage = '';
+    readerIcon = readerOutline;
 
     @ViewChild(IonContent) content!: IonContent;
 

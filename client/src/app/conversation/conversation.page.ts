@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Keyboard } from '@capacitor/keyboard';
@@ -7,17 +7,25 @@ import { AccountService } from '../core/services/account.service';
 import { AITrainer } from '../core/models/enums/ai-trainer';
 import { PocketbaseService } from '../core/services/pocketbase.service';
 import { DateTimePipe } from "../core/pipes/datetime.pipe";
-import { create, readerOutline, sendOutline } from 'ionicons/icons';
+import { alertOutline, readerOutline, sendOutline } from 'ionicons/icons';
 import { FormsModule } from '@angular/forms';
 import { MESSAGEROLE } from '../core/models/enums/message-role';
 import { PB } from '../core/constants/pb-constants';
+import { marked } from 'marked';
+
+@Pipe({ name: 'markdown' })
+export class MarkdownPipe implements PipeTransform {
+    transform(value: string): string {
+        return marked(value || '') as string;
+    }
+}
 
 @Component({
     selector: 'app-conversation',
     templateUrl: 'conversation.page.html',
     styleUrls: ['./conversation.page.scss'],
     standalone: true,
-    imports: [IonBackButton, FormsModule, IonHeader, IonToolbar, IonButtons, IonTitle, IonContent, IonItem, IonIcon, IonInput, IonList, IonFooter, TranslateModule, DateTimePipe, IonButton],
+    imports: [IonBackButton, FormsModule, IonHeader, IonToolbar, IonButtons, IonTitle, IonContent, IonItem, IonIcon, IonInput, IonList, IonFooter, TranslateModule, DateTimePipe, IonButton, MarkdownPipe],
 })
 export class ConversationPage implements OnInit {
     showToolbar = false;
@@ -30,6 +38,7 @@ export class ConversationPage implements OnInit {
     sendIcon = sendOutline;
     newMessage = '';
     readerIcon = readerOutline;
+    alertOutline = alertOutline
 
     @ViewChild(IonContent) content!: IonContent;
 

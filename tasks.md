@@ -13,15 +13,15 @@ BUGS -
      - [?] No need to select weight when creating program... not sure, maybe this OK
      - [x] cannot add new exercize while workout is active
      - [x] CONFIRM DELETION of template, program, exercise
+     - [x] Lgout opens logub in modal
+     - [x] Logout opens modal instead of navigating
+     - [x] Swipe Back Issue double animations 
+     - [x] Verify Account Url
      - [ ] When creating program - adding lots of weeks causes 404 in console and lots of requests !HIGH prio -too many requests in general, i think server would crash with 1.5 active users
      - [ ] Navigating exercise left and right calls N requests ever time, even if nothing is changed  !HIGH
      - [ ] EDITING DONE WORKOUT WORKS LIKE DOG SHIT - doesnt work, creates random exercises and deletes old ones very WTF functionallity also updates navigating left and right for no reason
      - [ ] Calling Continue workout from program calls so many requests that i get 429 error from the API !HIGH
-     - [x] Verify Account Url
-     - [ ] Logout opens modal instead of navigating
-     - [ ] Swipe Back Issue double animations 
      - [ ] On openning app first login showed
-     - [ ] Lgout opens login in modal
 
 Workouts screen - 
     - [x] Add program complete test [ok]

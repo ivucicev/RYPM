@@ -834,3 +834,43 @@ ion-app[dir="rtl"] {
         --animate-duration: .5s;
     }
 }
+
+.markd {
+    line-height: 1.25;
+}
+
+.markd h1,
+.markd h2,
+.markd h3,
+.markd h4,
+.markd h5,
+.markd h6 {
+    margin: .3rem 0 .2rem;
+}
+
+.markd p {
+    margin: 0 0 .2rem;
+}
+
+.markd ul,
+.markd ol {
+    margin: .2rem 0 .2rem 1rem;
+    padding-left: 1rem;
+}
+
+.markd li {
+    margin: .2rem 0;
+}
+
+.markd li>p {
+    margin: 0;
+}
+
+/* kill extra gap inside list items */
+.markd *:first-child {
+    margin-top: 0;
+}
+
+.markd *:last-child {
+    margin-bottom: 0;
+}

@@ -14,7 +14,6 @@
                         <span class="ryped-badge">Em Ryp</span>
                         }
                         }
-                        <ion-icon class="zmdi zmdi-alert-circle-o end ion-text-end"></ion-icon>
                     </h2>
                     <h3>@if (aiTrainer) { {{'AI' | translate }} } {{ 'Trainer' | translate }}</h3>
                 </div>
@@ -28,7 +27,7 @@
         @for(message of messages; track message.id) {
         <div class="chat_box d-flex {{ message.from == user.id ? 'send' : 'received' }}">
             <div class="chat">
-                <h2 class="message-with-format">{{ message.message }}</h2>
+                <div class="message-with-format markd" [innerHTML]="message.message | markdown"></div>
                 <p>{{ message.created | dateTime }}</p>
                 @if (!message.from && message.plan) {
                     <div class="ion-text-center">
@@ -43,7 +42,7 @@
     </div>
 </ion-content>
 
-<ion-footer class="ion-no-border animate__animated animate__fadeInUp bg_transparent">
+<ion-footer class="ion-no-border animate__animated animate__fadeInUp bg_transparent mb10">
     <div class="form">
         <form (submit)="sendMessage()">
             <ion-list lines="none d-flex">

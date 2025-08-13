@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { NavController, IonButton, IonCol, IonRow, IonIcon, IonList, IonContent, IonToolbar, IonHeader, IonButtons, IonBackButton, IonItem, IonInput, IonInputPasswordToggle } from '@ionic/angular/standalone';
+import { NavController, IonButton, IonCol, IonRow, IonIcon, IonList, IonContent, IonToolbar, IonHeader, IonButtons, IonBackButton, IonItem, IonInput, IonInputPasswordToggle, IonInputOtp } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { AccountService } from '../core/services/account.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -17,7 +17,7 @@ import packageJson from '../../../package.json';
     templateUrl: 'sign-in.page.html',
     styleUrls: ['./sign-in.page.scss'],
     standalone: true,
-    imports: [IonItem, IonBackButton, IonButtons, IonHeader, IonToolbar, IonContent, IonList, IonIcon, IonRow, IonCol, IonButton, TranslateModule, ReactiveFormsModule, IonInput, IonInputPasswordToggle],
+    imports: [IonItem, IonInputOtp, IonBackButton, IonButtons, IonHeader, IonToolbar, IonContent, IonList, IonIcon, IonRow, IonCol, IonButton, TranslateModule, ReactiveFormsModule, IonInput, IonInputPasswordToggle],
 })
 export class SignInPage implements OnInit {
 
@@ -31,6 +31,8 @@ export class SignInPage implements OnInit {
     logoGH = logoGithub;
     logoMS = logoMicrosoft;
     version = packageJson.version;
+    otpActive = false;
+    otpId;
 
  
     constructor(
@@ -80,11 +82,24 @@ export class SignInPage implements OnInit {
         }
 
         const model = this.loginForm.getRawValue();
-        await this.accountService.login(model);
+        const data = await this.accountService.login(model);
+        if (data.mfa) {
+            this.otpActive = true;
+            this.otpId = data.otpId;
+        }
     }
 
     async signInFacebook() {
         await this.accountService.loginWithFacebook();
+    }
+
+    async resendOTP() {
+        this.accountService.resendOTP(this.loginForm.controls.email.value);
+    }
+
+    async completeOTPLogin(e) {
+        const val = e.detail.value;
+        await this.accountService.verifyOTP(val, this.otpId, this.loginForm.controls.email.value)
     }
 
     async signInGoogle() {

@@ -30,27 +30,42 @@
                 <div class="message-with-format markd" [innerHTML]="message.message | markdown"></div>
                 <p>{{ message.created | dateTime }}</p>
                 @if (!message.from && message.plan) {
-                    <div class="ion-text-center">
-                        <ion-button size="small"> {{ 'Use this plan' | translate }}
-                            <ion-icon class="ms-5"  [src]="readerIcon" name="reader-outline"></ion-icon>
-                        </ion-button>
-                    </div>
+                <div class="ion-text-center">
+                    <ion-button size="small" (click)="createPlanFromMessage(message.plan)"> {{ 'Use this plan' |
+                        translate }}
+                        <ion-icon class="ms-5" [src]="readerIcon" name="reader-outline"></ion-icon>
+                    </ion-button>
+                </div>
+                }
+                @if (!message.from && message.url) {
+                <div class="ion-text-center">
+                    <ion-button size="small" (click)="navigate(message.url)"> {{ 'Visit' |
+                        translate }}
+                        <ion-icon class="ms-5" [src]="chevronIcon"></ion-icon>
+                    </ion-button>
+                </div>
                 }
             </div>
         </div>
         }
     </div>
+    @if(isTyping) {
+    <div class="thinking" style="float: left;">
+        <span class="label">{{ 'Thinking' | translate }}</span>
+        <span class="dots"><i></i><i></i><i></i></span>
+    </div>
+    }
 </ion-content>
 
-<ion-footer class="ion-no-border animate__animated animate__fadeInUp bg_transparent mb10">
+<ion-footer class="ion-no-border animate__animated animate__fadeInUp bg_transparent mb-10">
     <div class="form">
         <form (submit)="sendMessage()">
             <ion-list lines="none d-flex">
                 <ion-item lines="none">
                     <ion-input [(ngModel)]="newMessage" type="text"
                         placeholder="{{'Write message' | translate}}"></ion-input>
-                    <ion-button [disabled]="!newMessage || !newMessage.length" shape="round" slot="end" color="primary"
-                        class="ion-padding-x" (click)="sendMessage()">
+                    <ion-button [disabled]="!newMessage || !newMessage.length || isTyping" shape="round" slot="end"
+                        color="primary" class="ion-padding-x" (click)="sendMessage()">
                         <ion-icon slot="icon-only" [src]="sendIcon"></ion-icon>
                     </ion-button>
                 </ion-item>

@@ -10,14 +10,18 @@
 </ion-header>
 
 <ion-content class="bg_color ion-padding-x" fullscreen>
-    <p class="ion-padding-top"> {{ 'Weight' | translate }}</p>
-    <ion-segment [value]="selectedWeightType" (ionChange)="setWeightType($event.detail.value)">
-        @for(weightType of weightTypes; track $index) {
-        <ion-segment-button [value]="weightType">
-            <ion-label>{{ weightType | weightType }}</ion-label>
-        </ion-segment-button>
-        }
-    </ion-segment>
+    <ion-item>
+        <ion-label>
+            {{ 'Weight' | translate }}
+        </ion-label>
+        <ion-segment class="w-80" [value]="selectedWeightType" (ionChange)="setWeightType($event.detail.value)">
+            @for(weightType of weightTypes; track $index) {
+            <ion-segment-button [value]="weightType">
+                <ion-label>{{ weightType | weightType }}</ion-label>
+            </ion-segment-button>
+            }
+        </ion-segment>
+    </ion-item>
     <!-- <p class="ion-padding-top"> {{ 'Available plates' | translate }}</p>
     <ion-item>
         <ion-select aria-label="Fruit" [placeholder]="'Select available plates' | translate" [multiple]="true">
@@ -33,8 +37,13 @@
             }
         </ion-select>
     </ion-item> -->
-    <p class="ion-padding-top"> {{ 'Default' | translate }} {{ 'AI Trainer' | translate }} <ion-toggle
-            [(ngModel)]="aiTrainerToggle" (ionChange)="toggle($event)" class="ion-padding-x"></ion-toggle> </p>
+    <ion-item>
+        <ion-label>
+            {{ 'Default' | translate }} {{ 'AI Trainer' | translate }}
+        </ion-label>
+        <ion-toggle slot="end" [(ngModel)]="aiTrainerToggle" (ionChange)="toggle($event)"
+            class="ion-padding-x"></ion-toggle>
+    </ion-item>
     <ion-row>
         <ion-col>
             <ion-card (click)="changeTrainer(aiTrainer.RYPED);" [class.grayscale]="selectedTrainer != aiTrainer.RYPED">

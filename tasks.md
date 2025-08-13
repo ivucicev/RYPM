@@ -48,7 +48,7 @@ Activity screen -
     - [x] Measurements all custom
 
 Chat -
-    - [ ] AI Trainer
+    - [x] AI Trainer
     - [ ] Human Trainer
     - [ ] Chat in general
 
@@ -57,7 +57,8 @@ Settings -
     - [x] measurements -> custom -> add whatever custom name
     - [x] Chat with us, help us improve / contact...
     - [x] Terms & Conditions
-    - [ ] Account settings
+    - [x] Account settings
+    - [x] Mfa Login
     - [ ] Languages & Translations
     - [ ] profile -> public/pictures...
 

@@ -113,6 +113,9 @@
                                     @if (activeProgramIds.includes(program.id)) {
                                     <ion-badge class="active-badge" color="primary">{{ 'Active' |translate
                                         }}</ion-badge> }
+                                    @if (program.aiProgram) {
+                                    <ion-badge class="active-badge" color="tertiary">{{ 'AI Program' |translate
+                                        }}</ion-badge> }
                                 </h2>
                                 <span class="duration">
                                     <ion-icon name="time-outline" size="small"></ion-icon>

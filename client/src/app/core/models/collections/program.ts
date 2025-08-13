@@ -5,6 +5,6 @@ export interface Program extends EntityBase {
     name: string;
     description: string;
     numberOfWeeks: number;
-
+    aiProgram: boolean;
     weeks: Week[];
 }

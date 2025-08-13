@@ -24,7 +24,23 @@
 
 <ion-footer>
     <ion-toolbar>
-        <div class="button-group ion-padding">
+        <div class="button-group ion-padding-x">
+            <ion-button color="primary" class="m-center btn" [disabled]="resetingPWD" (click)="requestPWDReset()"> {{ 'Request password
+                reset' | translate }} </ion-button>
+        </div>
+    </ion-toolbar>
+    <ion-toolbar>
+        <div class="button-group ion-padding-x">
+            @if (MFAActive) {
+            <ion-button color="danger" (click)="disableMFA()" class="m-center btn"> {{ 'Disable MFA' | translate }}
+            </ion-button>
+            } @else {
+            <ion-button (click)="activateMFA()" class="m-center"> {{ 'Actvate MFA' | translate }} </ion-button>
+            }
+        </div>
+    </ion-toolbar>
+    <ion-toolbar>
+        <div class="button-group ion-padding-x">
             @if (isEditing) {
             <ion-button expand="round" color="light" (click)="cancelEditMode()" class="btn">
                 {{ 'Cancel' | translate }}
@@ -33,7 +49,7 @@
                 {{ 'Save' | translate}}
             </ion-button>
             } @else {
-            <ion-button expand="round" color="primary" class="btn" (click)="enterEditMode()">
+            <ion-button color="primary" expand="round" class="btn" (click)="enterEditMode()">
                 {{ 'Edit' | translate }}
             </ion-button>
             }

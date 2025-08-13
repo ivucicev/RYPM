@@ -15,7 +15,7 @@ import { FormsModule } from '@angular/forms';
     templateUrl: 'measurements.component.html',
     styleUrls: ['./measurements.component.scss'],
     standalone: true,
-    imports: [IonTitle, IonSegmentButton, FormsModule, IonToggle, IonIcon, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonRow, IonCol, IonLabel, IonContent, IonSegment, IonBackButton, IonButtons, IonToolbar, IonHeader, TranslateModule, WeightTypePipe]
+    imports: [IonTitle, IonSegmentButton, IonItem, FormsModule, IonToggle, IonIcon, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonRow, IonCol, IonLabel, IonContent, IonSegment, IonBackButton, IonButtons, IonToolbar, IonHeader, TranslateModule, WeightTypePipe]
 })
 export class MeasurementsComponent implements OnInit {
 

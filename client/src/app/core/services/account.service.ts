@@ -13,6 +13,8 @@ import { User } from '../models/collections/user';
 import { environment } from 'src/environments/environment';
 import { COLLECTIONS } from '../constants/collections';
 import { skipLocationChange } from '../helpers/platform-helpers';
+import { AITrainer } from '../models/enums/ai-trainer';
+import { WeightType } from '../models/enums/weight-type';
 
 @Injectable({
     providedIn: 'root'
@@ -58,11 +60,18 @@ export class AccountService {
         );
     }
 
+    async resendOTP(email: string) {
+        return await this.pocketbaseService.users.requestOTP(email);
+    }
+
     async register(model: RegisterBM): Promise<any> {
         const data = {
             email: model.email,
             password: model.password,
             passwordConfirm: model.password,
+            aiTrainer: AITrainer.RYPEM,
+            mfaActive: false,
+            defaultWeightType: WeightType.KG,
             ...model
         };
 
@@ -81,29 +90,47 @@ export class AccountService {
         return record;
     }
 
+    async loginSuccess(authData) {
+        await this.saveAuthToStorage(authData);
+        await this.getCurrentUser(true);
+        this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
+        this.toastService.success('Welcome back!');
+    }
+
+    async loginError(error, email) {
+        if (error instanceof ClientResponseError && error.status === 403) {
+            this.pocketbase.collection('users').requestVerification(email);
+            this.toastService.info('Please verify your account.');
+            this.verificationStateService.clearCredentials();
+        } else {
+            this.toastService.error('Invalid credentials, please try again.');
+        }
+    }
+
+    async verifyOTP(otp: string, otpId: string, email: string) {
+        try {
+            const authData: any = await this.pocketbaseService.users.authWithOTP(otpId, otp);
+            this.loginSuccess(authData);
+            return authData;
+        } catch (error) {
+            this.loginError(error, email);
+            throw error;
+        }
+    }
+
     async login(model: LoginBM) {
         try {
-            const authData = await this.pocketbase.collection('users').authWithPassword(model.email, model.password, { headers: PB.HEADER.NO_TOAST });
-            await this.saveAuthToStorage(authData);
+            const authData: any = await this.pocketbase.collection('users').authWithPassword(model.email, model.password, { headers: PB.HEADER.NO_TOAST });
 
-            await this.getCurrentUser(true);
-
-            this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
-            this.toastService.success('Welcome back!');
+            if (authData.record.mfaActive) {
+                const data = await this.pocketbaseService.users.requestOTP(model.email);
+                return { mfa: true, otpId: data.otpId };
+            }
+            this.loginSuccess(authData);
 
             return authData;
         } catch (error) {
-            if (error instanceof ClientResponseError && error.status === 403) {
-                this.verificationStateService.setCredentials(model.email, model.password);
-
-                // await this.navCtrl.navigateForward(['/verification']);
-                this.pocketbase.collection('users').requestVerification(model.email);
-                this.toastService.info('Please verify your account.');
-
-                this.verificationStateService.clearCredentials();
-            } else {
-                this.toastService.error('Invalid credentials, please try again.');
-            }
+            this.loginError(error, model.email);
             throw error;
         }
     }

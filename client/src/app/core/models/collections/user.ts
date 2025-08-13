@@ -4,6 +4,7 @@ import { UserType } from "../enums/user-type";
 import { WeightType } from "../enums/weight-type";
 
 export interface User extends EntityBase {
+    mfaActive: boolean;
     name: string;
     email: string;
     avatar: string;

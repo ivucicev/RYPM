@@ -15,6 +15,7 @@
             <img src="assets/logo-light.png" style="margin: 0 auto; width: 300px;">
         </div>
     </div>
+    @if (!otpActive) {
     <form [formGroup]="loginForm" (ngSubmit)="signIn()">
         <div class="form">
             <ion-list>
@@ -38,31 +39,36 @@
                 <h3 class="ion-text-center">{{'Or continue with' | translate}}</h3>
                 <ion-row>
                     <ion-col>
-                        <ion-button size="large" expand="round" fill="outline" class="btn rem05" (click)="signInFacebook()">
+                        <ion-button size="large" expand="round" fill="outline" class="btn rem05"
+                            (click)="signInFacebook()">
                             <ion-icon [src]="logoFacebook"></ion-icon>
                             <!-- {{'Facebook' | translate}} -->
                         </ion-button>
                     </ion-col>
                     <ion-col>
-                        <ion-button size="large" expand="round" fill="outline" class="btn rem05" (click)="signInGoogle()">
+                        <ion-button size="large" expand="round" fill="outline" class="btn rem05"
+                            (click)="signInGoogle()">
                             <ion-icon [src]="logoGoogle"></ion-icon>
                             <!-- {{'Google' | translate}} -->
                         </ion-button>
                     </ion-col>
                     <ion-col>
-                        <ion-button size="large" expand="round" fill="outline" class="btn rem05" (click)="signInGoogle()">
+                        <ion-button size="large" expand="round" fill="outline" class="btn rem05"
+                            (click)="signInGoogle()">
                             <ion-icon [src]="logoApple"></ion-icon>
                             <!-- {{'Apple' | translate}} -->
                         </ion-button>
                     </ion-col>
                     <ion-col>
-                        <ion-button size="large" expand="round" fill="outline" class="btn rem05" (click)="signInGoogle()">
+                        <ion-button size="large" expand="round" fill="outline" class="btn rem05"
+                            (click)="signInGoogle()">
                             <ion-icon [src]="logoGH"></ion-icon>
                             <!-- {{'Apple' | translate}} -->
                         </ion-button>
                     </ion-col>
                     <ion-col>
-                        <ion-button size="large" expand="round" fill="outline" class="btn rem05" (click)="signInGoogle()">
+                        <ion-button size="large" expand="round" fill="outline" class="btn rem05"
+                            (click)="signInGoogle()">
                             <ion-icon [src]="logoMS"></ion-icon>
                             <!-- {{'Apple' | translate}} -->
                         </ion-button>
@@ -83,4 +89,17 @@
             </div>
         </div>
     </form>
+    } @else {
+    <form>
+        <div class="form">
+            <ion-list>
+                <ion-item>
+                    <ion-input-otp (ionComplete)="completeOTPLogin($event)" class="margin-auto" length="6"> {{ 'Didn\'t get a code?' | translate }} <a (click)="resendOTP()">{{'Resend the code' | translate}}</a> </ion-input-otp>
+                </ion-item>
+            </ion-list>
+            
+        </div>
+    </form>
+    }
+
 </ion-content>

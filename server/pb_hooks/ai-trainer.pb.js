@@ -408,8 +408,6 @@ onRecordCreate((e) => {
                 e.next();
             }
 
-            //const date = row.created.substring(0, 10);
-
             // Group rows by date and exercise
             let logsByDate = {};
             rows.forEach(row => {
@@ -477,5 +475,3 @@ onRecordCreate((e) => {
     e.next();
 
 }, "messages");
-
-

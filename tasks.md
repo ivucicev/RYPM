@@ -20,6 +20,8 @@ BUGS -
      - [x] Verify Account Url
      - [ ] Logout opens modal instead of navigating
      - [ ] Swipe Back Issue double animations 
+     - [ ] On openning app first login showed
+     - [ ] Lgout opens login in modal
 
 Workouts screen - 
     - [x] Add program complete test [ok]

@@ -40,12 +40,7 @@ export class AppComponent {
         private accountService: AccountService,
         private themeService: ThemeService
     ) {
-        this.accountService.attemptAutoLogin().then(res => {
-            if (!res)
-                this.navCtrl.navigateRoot(['./sign-in']);
-            else
-                this.navCtrl.navigateRoot(['./tabs']);
-        });
+        this.accountService.attemptAutoLogin().then(res => res ? this.navCtrl.navigateRoot(['./tabs']) : this.navCtrl.navigateRoot(['./sign-in']));
 
         this.initializeApp();
         this.themeService.initializeTheme();

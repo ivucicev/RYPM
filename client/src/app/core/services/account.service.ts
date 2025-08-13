@@ -4,7 +4,7 @@ import { StorageService } from './storage.service';
 import { ClientResponseError, OAuth2AuthConfig, RecordAuthResponse, RecordModel } from 'pocketbase';
 import { RegisterBM } from '../models/bm/register-bm';
 import { LoginBM } from '../models/bm/login-bm';
-import { NavController } from '@ionic/angular/standalone';
+import { NavController, Platform } from '@ionic/angular/standalone';
 import { VerificationStateService } from './verification-state-service';
 import { ToastService } from './toast-service';
 import { StorageKeys } from '../constants/storage-keys';
@@ -12,6 +12,7 @@ import { PB } from '../constants/pb-constants';
 import { User } from '../models/collections/user';
 import { environment } from 'src/environments/environment';
 import { COLLECTIONS } from '../constants/collections';
+import { skipLocationChange } from '../helpers/platform-helpers';
 
 @Injectable({
     providedIn: 'root'
@@ -35,6 +36,7 @@ export class AccountService {
         private pocketbaseService: PocketbaseService,
         private storageService: StorageService,
         private navCtrl: NavController,
+        private platform: Platform,
         private verificationStateService: VerificationStateService,
         private toastService: ToastService
     ) {
@@ -86,7 +88,7 @@ export class AccountService {
 
             await this.getCurrentUser(true);
 
-            this.navCtrl.navigateRoot(['./tabs']);
+            this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
             this.toastService.success('Welcome back!');
 
             return authData;
@@ -117,7 +119,7 @@ export class AccountService {
 
         await this.saveAuthToStorage(authData);
 
-        this.navCtrl.navigateRoot(['./tabs']);
+        this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
 
         return authData;
     }
@@ -128,7 +130,7 @@ export class AccountService {
 
         await this.saveAuthToStorage(authData);
 
-        this.navCtrl.navigateRoot(['./tabs']);
+        this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
 
         return authData;
     }
@@ -144,7 +146,7 @@ export class AccountService {
 
         this.verificationStateService.clearCredentials();
 
-        this.navCtrl.navigateRoot(['./tabs']);
+        this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
     }
 
     async requestPasswordReset(email: string): Promise<void> {
@@ -198,7 +200,7 @@ export class AccountService {
 
         await this.attemptAutoLogin();
 
-        this.navCtrl.navigateRoot(['./tabs']);
+        this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
     }
 
     async updateAccountMap(user: User) {

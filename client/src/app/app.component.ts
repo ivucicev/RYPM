@@ -1,18 +1,17 @@
-import { Component, HostListener, Inject } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Platform, NavController, ModalController, IonApp, IonRouterOutlet, IonButton, IonIcon } from '@ionic/angular/standalone';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { VtPopupPage } from './vt-popup/vt-popup.page';
-import { StatusBar } from '@capacitor/status-bar';
 import { SplashScreen } from '@capacitor/splash-screen';
-import { addIcons } from 'ionicons';
 import { MyEvent } from './core/services/myevent.services';
 import { AccountService } from './core/services/account.service';
 import { Constants } from './core/constants/constants';
 import { ThemeService } from './core/services/theme.service';
 import { registerIcons } from './core/constants/icons';
 import { register } from 'swiper/element/bundle';
-import { chevronBackCircleOutline, chevronBackOutline, chevronForwardCircleOutline, chevronForwardOutline, downloadOutline, shareOutline } from 'ionicons/icons';
-import { ActivatedRoute, NavigationStart, Route, Router } from '@angular/router';
+import { chevronBackOutline, chevronForwardOutline, downloadOutline, shareOutline } from 'ionicons/icons';
+import { NavigationExtras, NavigationStart, Router } from '@angular/router';
+import { skipLocationChange } from './core/helpers/platform-helpers';
 
 @Component({
     selector: 'app-root',
@@ -67,12 +66,16 @@ export class AppComponent {
     }
 
     initializeApp() {
+        if (skipLocationChange(this.platform)) {
+            this.fixPWARouting();
+        }
+
         this.platform.ready().then(() => {
             // swiper
             register();
             // TODO: fix splash, styling
             // StatusBar.styleDefault();
-            
+
             SplashScreen.show();
 
             // StatusBar.setOverlaysWebView({ overlay: false });
@@ -91,14 +94,42 @@ export class AppComponent {
                 }
 
                 SplashScreen.hide();
-    
+
                 if (!this.isInstalled)
                     setTimeout(() => {
                         this.showInstallButton = true;
                     }, 1500)
             });
         })
+    }
 
+    /**
+     * Overrides `navigateByUrl` and `navigate` routing to skip internal browser location change in order to fix PWA (mainly iOS) (touch) navigation gestures.
+     *
+     * More info:
+     * - {@link https://github.com/vercel/next.js/issues/10465#issuecomment-2368843165}
+     * - {@link https://github.com/ionic-team/ionic-framework/issues/22299}
+     * - {@link https://github.com/ionic-team/ionic-framework/issues/29733}
+     * - {@link https://forum.ionicframework.com/t/swipe-back-nav-flicker-ios-pwa/214388}
+     */
+    private fixPWARouting() {
+        const originalNavigate = this.router.navigate.bind(this.router);
+        this.router.navigate = (commands: any[], extras?: NavigationExtras) => {
+            const enhancedExtras = {
+                ...extras,
+                skipLocationChange: true
+            };
+            return originalNavigate(commands, enhancedExtras);
+        };
+
+        const originalNavigateByUrl = this.router.navigateByUrl.bind(this.router);
+        this.router.navigateByUrl = (url: string, extras?: NavigationExtras) => {
+            const enhancedExtras = {
+                ...extras,
+                skipLocationChange: true
+            };
+            return originalNavigateByUrl(url, enhancedExtras);
+        };
     }
 
     globalize(languagePriority: any) {

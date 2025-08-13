@@ -1,6 +1,6 @@
 import { Component, Inject, Signal } from '@angular/core';
 import { BuyappalertPage } from '../buyappalert/buyappalert.page';
-import { ModalController, IonFooter, IonItem, IonIcon, IonBadge, IonButton, IonContent, IonList, IonHeader, IonToolbar, IonTitle } from '@ionic/angular/standalone';
+import { ModalController, IonFooter, IonItem, IonIcon, IonBadge, IonButton, IonContent, IonList, IonHeader, IonToolbar, IonTitle, NavController, Platform } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgIf } from '@angular/common';
 import { PopoverController } from '@ionic/angular/standalone';
@@ -13,6 +13,7 @@ import { PocketbaseService } from '../core/services/pocketbase.service';
 import { accessibilityOutline, bookOutline, globeOutline, helpCircleOutline, logOutOutline, moonOutline, personCircleOutline, personOutline, sunnyOutline } from 'ionicons/icons';
 // @ts-ignore
 import packageJson from '../../../package.json';
+import { skipLocationChange } from '../core/helpers/platform-helpers';
 
 @Component({
     selector: 'app-settings',
@@ -44,10 +45,12 @@ export class SettingsPage {
     constructor(
         private popoverCtrl: PopoverController,
         private route: Router,
+        private navCtrl: NavController,
         private modalController: ModalController,
         private accountService: AccountService,
         private themeService: ThemeService,
-        private pocketbaseService: PocketbaseService
+        private pocketbaseService: PocketbaseService,
+        private platform: Platform
     ) {
     }
 
@@ -115,6 +118,6 @@ export class SettingsPage {
 
     async logout() {
         this.accountService.logout();
-        this.route.navigate(['./sign-in']);
+        this.navCtrl.navigateRoot(['/sign-in'], { skipLocationChange: skipLocationChange(this.platform) });
     }
 }

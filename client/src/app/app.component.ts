@@ -40,6 +40,13 @@ export class AppComponent {
         private accountService: AccountService,
         private themeService: ThemeService
     ) {
+        this.accountService.attemptAutoLogin().then(res => {
+            if (!res)
+                this.navCtrl.navigateRoot(['./sign-in']);
+            else
+                this.navCtrl.navigateRoot(['./tabs']);
+        });
+
         this.initializeApp();
         this.themeService.initializeTheme();
 
@@ -83,23 +90,12 @@ export class AppComponent {
             let defaultLang = window.localStorage.getItem(Constants.KEY_DEFAULT_LANGUAGE);
             this.globalize(defaultLang);
 
-            this.accountService.attemptAutoLogin().then(res => {
-                // TODO: remove, used for testing + add AUTH GUARD
-                // this.navCtrl.navigateRoot(['./tabs']);
-                // return;
-                if (!res) {
-                    this.navCtrl.navigateRoot(['./sign-in']);
-                } else {
-                    this.navCtrl.navigateRoot(['./tabs']);
-                }
+            SplashScreen.hide();
 
-                SplashScreen.hide();
-
-                if (!this.isInstalled)
-                    setTimeout(() => {
-                        this.showInstallButton = true;
-                    }, 1500)
-            });
+            if (!this.isInstalled)
+                setTimeout(() => {
+                    this.showInstallButton = true;
+                }, 1500)
         })
     }
 

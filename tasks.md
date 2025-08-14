@@ -28,6 +28,7 @@ BUGS -
      - [ ] Safari ios white theme - installation screen not visible
      - [ ] first time navigating to safari ios not showing installation button
      - [ ] fix program creation from AI program
+     
 
 
 Workouts screen - 

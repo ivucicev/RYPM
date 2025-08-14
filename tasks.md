@@ -17,6 +17,9 @@ BUGS -
      - [x] Logout opens modal instead of navigating
      - [x] Swipe Back Issue double animations 
      - [x] Verify Account Url
+     - [x] stats - better for exercises filter by exercise
+     - [x] keep display on
+     - [x] Progress pictures in measurements
      - [ ] When creating program - adding lots of weeks causes 404 in console and lots of requests !HIGH prio -too many requests in general, i think server would crash with 1.5 active users
      - [ ] Navigating exercise left and right calls N requests ever time, even if nothing is changed  !HIGH
      - [ ] EDITING DONE WORKOUT WORKS LIKE DOG SHIT - doesnt work, creates random exercises and deletes old ones very WTF functionallity also updates navigating left and right for no reason
@@ -24,10 +27,7 @@ BUGS -
      - [ ] On openning app first login showed
      - [ ] Safari ios white theme - installation screen not visible
      - [ ] first time navigating to safari ios not showing installation button
-     - [ ] stats - better for exercises filter by exercise
-     - [x] keep display on
      - [ ] fix program creation from AI program
-     - [ ] Progress pictures in measurements
 
 
 Workouts screen - 

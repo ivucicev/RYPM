@@ -17,6 +17,7 @@ export interface Workout extends EntityBase {
 
     exercises: Exercise[];
     tags?: string[];
+    tagsToShow?: string[];
     load?: number;
     user?: User
 }

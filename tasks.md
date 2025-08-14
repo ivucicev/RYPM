@@ -22,6 +22,13 @@ BUGS -
      - [ ] EDITING DONE WORKOUT WORKS LIKE DOG SHIT - doesnt work, creates random exercises and deletes old ones very WTF functionallity also updates navigating left and right for no reason
      - [ ] Calling Continue workout from program calls so many requests that i get 429 error from the API !HIGH
      - [ ] On openning app first login showed
+     - [ ] Safari ios white theme - installation screen not visible
+     - [ ] first time navigating to safari ios not showing installation button
+     - [ ] stats - better for exercises filter by exercise
+     - [x] keep display on
+     - [ ] fix program creation from AI program
+     - [ ] Progress pictures in measurements
+
 
 Workouts screen - 
     - [x] Add program complete test [ok]

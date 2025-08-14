@@ -50,21 +50,29 @@
                             </div>
                         </ion-card-header>
                         <ion-card-content>
+                            <ion-note color="medium">
+                                @if (workout.load) {
+                                <span>
+                                    {{ 'Training load' | translate }}: {{ workout.load || 0 }} kg
+                                </span>
+                                }
+                                @if (workout.effort) {
+                                <span>
+                                    {{ 'Effort' | translate }}: {{ workout.effort }}/10
+                                </span>
+                                }
+                            </ion-note>
                             <div class="exercises-list">
                                 @for(exercise of workout.exercises; track $index) {
                                 <span class="exercise-item">
                                     {{ exercise.name }} ({{ exercise.sets?.length }} sets)
                                 </span>
                                 @if ($index < workout.exercises.length - 1){,&nbsp;} } <br>
-                                    @if (workout.load) {
-                                    <span>
-                                        {{ 'Training load' | translate }}: {{ workout.load || 0 }} kg
-                                    </span>
-                                    }
+
                             </div>
-                            @if (workout.tags?.length > 0) {
+                            @if (workout.tagsToShow?.length > 0) {
                             <div class="tag-container">
-                                @for (tag of workout.tags; track $index) {
+                                @for (tag of workout.tagsToShow; track $index) {
                                 <ion-chip color="primary" size="small">{{ tag }}</ion-chip>
                                 }
                             </div>
@@ -79,15 +87,36 @@
         </ng-container>
         <ng-container *ngSwitchCase="'stats'">
             <div class="ion-padding-x">
-                <h3>{{ 'Total volume' | translate }}</h3>
+                <h6>{{ 'Total volume' | translate }}</h6>
                 <canvas #volumeChart></canvas>
-                <h3>{{ 'Effort' | translate }}</h3>
+                <h6>{{ 'Effort' | translate }}</h6>
                 <canvas #effortChart></canvas>
-                <h3>{{ 'Max. Per workout' | translate }}</h3>
+                <h6>
+                    <ion-select (ionChange)="maxPerWorkoutExerciseChange($event)" [(ngModel)]="maxPerWorkoutExercise"
+                        label="{{ 'Max. Load' | translate }}">
+                        @for (item of allExercises; track $index) {
+                        <ion-select-option [value]="item">{{ item }}</ion-select-option>
+                        }
+                    </ion-select>
+                </h6>
                 <canvas #maxPerWorkout></canvas>
-                <h3>{{ 'Max. per workout' | translate }}</h3>
+                <h6>
+                    <ion-select (ionChange)="maxLoadPerWorkoutExerciseChange($event)" [(ngModel)]="maxLoadPerWorkoutExercise"
+                        label="{{ 'Max. Volume' | translate }}">
+                        @for (item of allExercises; track $index) {
+                        <ion-select-option [value]="item">{{ item }}</ion-select-option>
+                        }
+                    </ion-select>
+                </h6>
                 <canvas #maxLoadPerWorkout></canvas>
-                <h3>{{ 'Max. Volume per workout' | translate }}</h3>
+                <h6>
+                    <ion-select (ionChange)="maxVolumePerWorkoutExerciseChange($event)" [(ngModel)]="maxVolumePerWorkoutExercise"
+                        label="{{ 'Total Volume' | translate }}">
+                        @for (item of allExercises; track $index) {
+                        <ion-select-option [value]="item">{{ item }}</ion-select-option>
+                        }
+                    </ion-select>
+                </h6>
                 <canvas #volumePerWorkout></canvas>
             </div>
         </ng-container>

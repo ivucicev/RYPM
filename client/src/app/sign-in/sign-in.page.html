@@ -92,12 +92,21 @@
     } @else {
     <form>
         <div class="form">
-            <ion-list>
+            <ion-list lines="none">
                 <ion-item>
-                    <ion-input-otp (ionComplete)="completeOTPLogin($event)" class="margin-auto" length="6"> {{ 'Didn\'t get a code?' | translate }} <a (click)="resendOTP()">{{'Resend the code' | translate}}</a> </ion-input-otp>
+                    <ion-input-otp size="small" fill="solid" (ionComplete)="completeOTPLogin($event)"
+                        class="margin-auto" length="6"> {{ 'Didn\'t get a code?' | translate }} <a
+                            (click)="resendOTP()">{{'Resend the code' | translate}}</a> </ion-input-otp>
+                </ion-item>
+                <ion-item>
+                    <ion-button slot="start" fill="clear" size="small" expand="round"
+                        class="animate__animated animate__fadeInUp" (click)="otpActive = false">
+                        <ion-icon name="chevron-back-outline"></ion-icon>
+                        {{'Back to log in' | translate}}
+                    </ion-button>
                 </ion-item>
             </ion-list>
-            
+
         </div>
     </form>
     }

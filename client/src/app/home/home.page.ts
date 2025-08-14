@@ -19,6 +19,7 @@ import { ContinueFooterComponent } from '../shared/continue-footer/continue-foot
 import { ProgramInfo, ProgramService } from '../core/services/program.service';
 import { TemplateService } from '../core/services/template.service';
 import { FormsModule } from '@angular/forms';
+import { WakeLockService } from '../core/services/WakeLockService';
 
 type WorkoutInfo = (Workout & { nextExercise?: (Exercise & { nextSet?: Set }) });
 
@@ -63,7 +64,8 @@ export class HomePage {
         private navCtrl: NavController,
         private pocketbaseService: PocketbaseService,
         private programService: ProgramService,
-        private templateService: TemplateService
+        private templateService: TemplateService,
+        private wake: WakeLockService
     ) { 
     }
     
@@ -126,6 +128,7 @@ export class HomePage {
             if (hasInProgress) {
                 this.activeProgramIds.push(p.id);
                 p['active'] = true;
+                this.wake.enable();
             }
 
             const tags = [

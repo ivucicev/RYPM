@@ -24,6 +24,7 @@ import { RestBadgeComponent } from "../shared/rest-badge/rest-badge.component";
 import { ExerciseTemplateDetailComponent } from '../exercise-template/exercise-template-detail/exercise-template-detail.component';
 import { ExerciseEffortModalComponent } from '../exercise-effort-modal/exercise-effort-modal.component';
 import { ToastService } from '../core/services/toast-service';
+import { WakeLockService } from '../core/services/WakeLockService';
 
 @Component({
     selector: 'app-workout-wizard',
@@ -96,7 +97,8 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         private autosaveService: AutosaveService,
         private actionSheetCtrl: ActionSheetController,
         private toast: ToastService,
-        private alertController: AlertController
+        private alertController: AlertController,
+        private wake: WakeLockService
     ) { }
 
     ngOnInit() {
@@ -309,8 +311,11 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
             this.workout.end = new Date(data.end);
         }
 
-        if (data)
+        if (data) {
             await this.completeWorkout();
+            this.wake.disable();
+        }
+        
 
     }
 
@@ -341,6 +346,8 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
         await modal.present();
     }
+
+
 
     async openSettings() {
         const translations = await lastValueFrom(this.translateService.get([

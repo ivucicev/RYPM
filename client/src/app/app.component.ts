@@ -9,7 +9,7 @@ import { Constants } from './core/constants/constants';
 import { ThemeService } from './core/services/theme.service';
 import { registerIcons } from './core/constants/icons';
 import { register } from 'swiper/element/bundle';
-import { chevronBackOutline, chevronForwardOutline, downloadOutline, shareOutline } from 'ionicons/icons';
+import { alertCircle, chevronBackOutline, chevronForwardOutline, downloadOutline, shareOutline } from 'ionicons/icons';
 import { NavigationExtras, NavigationStart, Router } from '@angular/router';
 import { skipLocationChange } from './core/helpers/platform-helpers';
 
@@ -90,7 +90,7 @@ export class AppComponent {
             if (!this.isInstalled)
                 setTimeout(() => {
                     this.showInstallButton = true;
-                }, 1500)
+                }, 2000)
         })
     }
 
@@ -150,7 +150,9 @@ export class AppComponent {
     }
 
     async triggerInstall() {
-        if (this.platform.is('ios')) {
+        const ua = navigator.userAgent;
+        const isSafari = /^((?!chrome|android).)*safari/i.test(ua);
+        if (this.platform.is('ios') || this.platform.is('ipad') || this.platform.is('iphone') || isSafari) {
             this.showInstallDialog = true;
             return;
         }

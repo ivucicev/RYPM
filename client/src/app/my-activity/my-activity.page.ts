@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, viewChild, ViewChildren } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, ViewChild, viewChild, ViewChildren } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ActionSheetController, NavController, IonCardContent, IonChip, IonButton, IonIcon, IonCardHeader, IonCard, IonList, IonTitle, IonRow, IonContent, IonLabel, IonToolbar, IonSegmentButton, IonHeader, IonSegment, ModalController, IonSelect, IonInput, IonItem, IonFab, IonFabButton, IonFabList, IonPopover, AlertController, IonNote, IonSelectOption } from '@ionic/angular/standalone';
 import { lastValueFrom } from 'rxjs';
@@ -14,12 +14,24 @@ import { NoDataComponent } from '../shared/no-data/no-data.component';
 import { FormsModule } from '@angular/forms';
 import { MeasurementCreateModalComponent } from '../measurement-create-modal/measurement-create-modal.component';
 import { MeasurementEntryAddModal } from '../measurement-entry-add-modal/measurement-entry-add-modal.component';
+import { cameraOutline, phonePortrait } from 'ionicons/icons';
+import { register } from 'swiper/element/bundle';
+
+import 'swiper/css/pagination';
+import 'swiper/css/zoom';
+
+import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Preferences } from '@capacitor/preferences';
+import { AccountService } from '../core/services/account.service';
+import { PB } from '../core/constants/pb-constants';
 
 @Component({
     selector: 'app-my-activity',
     templateUrl: 'my-activity.page.html',
     styleUrls: ['./my-activity.page.scss'],
     standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [IonHeader, IonSelect, IonSelectOption, IonNote, IonFab, IonPopover, IonFabButton, IonSegmentButton, IonToolbar, IonLabel, IonContent, IonRow, IonTitle, IonList, IonCard, IonCardHeader, IonIcon, IonButton, IonChip, IonCardContent, NoDataComponent, TranslateModule, FormsModule, IonSegment, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent, IonItem],
 })
 export class MyActivityPage {
@@ -27,6 +39,7 @@ export class MyActivityPage {
     workouts: Workout[] = [];
 
     WorkoutState = WorkoutState;
+    currentUser;
 
     continueFooter = viewChild(ContinueFooterComponent);
 
@@ -41,6 +54,7 @@ export class MyActivityPage {
     maxPerWorkoutExercise = ''
     maxLoadPerWorkoutExercise = ''
     maxVolumePerWorkoutExercise = ''
+    cameraIcon = cameraOutline;
 
     @ViewChild('volumeChart') chart: ElementRef<HTMLCanvasElement>;
     @ViewChild('effortChart') effortChart: ElementRef<HTMLCanvasElement>;
@@ -53,11 +67,12 @@ export class MyActivityPage {
         private actionSheetCtrl: ActionSheetController,
         private translateService: TranslateService,
         private pocketbaseService: PocketbaseService,
+        private accountService: AccountService,
         private navCtrl: NavController,
         private modalCtrl: ModalController,
         private alertController: AlertController
     ) {
-
+        register();
         this.getSessions();
     }
 
@@ -218,7 +233,7 @@ export class MyActivityPage {
                     .filter((ex: any) => ex.name === name)
                     .reduce((sum: number, ex: any) => {
                         return sum + (ex.sets?.reduce((s: number, set: any) => s + (set.currentValue * set.currentWeight || 0), 0) || 0)
-                        }, 0)
+                    }, 0)
             ).map(v => v > 0 ? v : null);
 
             return {
@@ -343,7 +358,61 @@ export class MyActivityPage {
             await this.getMeasurements();
     }
 
+    async progressPhoto() {
+        const capturedPhoto = await Camera.getPhoto({
+            resultType: CameraResultType.DataUrl,
+            source: CameraSource.Camera,
+            quality: 100
+        });
+
+        const arr = capturedPhoto.dataUrl.split(',');
+        const mime = arr[0].match(/:(.*?);/)[1];;
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        const file = new File([u8arr], 'progress_photo', { type: mime });
+
+        const user = await this.accountService.getCurrentUser();
+
+        const progressPhoto = {
+            user: user.id
+
+        }
+        const formData = new FormData();
+        formData.append('photo', file);
+
+        const progressCreated = await this.pocketbaseService.progressPhotos.create(progressPhoto);
+        const uptdAvatar: any = await this.pocketbaseService.progressPhotos.update(progressCreated.id, formData);
+
+        this.actionsPopover = false;
+
+    }
+
+    progressPhotos = [];
+
+    async getProgressPhotos() {
+        const photos = await this.pocketbaseService.progressPhotos.getFullList({ sort: '-created' });
+
+        if (photos && photos.length) {
+            for (let i = 0; i < photos.length; i++) {
+                const token = await this.pocketbaseService.pb.files.getToken({ headers: PB.HEADER.NO_TOAST });
+                const file = this.pocketbaseService.pb.files.getURL(photos[i], photos[i].photo, { token })
+                this.progressPhotos.push({
+                    id: photos[i].id,
+                    photo: file,
+                    date: photos[i].created
+                })
+            }
+        }
+    }
+
     async getMeasurements() {
+
+        await this.getProgressPhotos();
+
         const data = await this.pocketbaseService.measurements.getList(0, 500, {
             sort: '-created',
             expand: 'entries',
@@ -518,6 +587,27 @@ export class MyActivityPage {
                             await this.pocketbaseService.workouts.delete(workout.id);
                             this.workouts = this.workouts.filter(w => w.id !== workout.id);
                         }
+                    }
+                }
+            ]
+        });
+
+        await actionSheet.present();
+    }
+
+    async openPhotoSettings(photo) {
+        const translations = await lastValueFrom(this.translateService.get(['Delete']));
+
+        const actionSheet = await this.actionSheetCtrl.create({
+            header: this.translateService.instant('Progress photo'),
+            buttons: [
+                {
+                    text: translations.Delete,
+                    icon: 'trash-outline',
+                    role: 'destructive',
+                    handler: async () => {                        
+                        await this.pocketbaseService.progressPhotos.delete(photo.id);
+                        this.progressPhotos = this.progressPhotos.filter(w => w.id !== photo.id);
                     }
                 }
             ]

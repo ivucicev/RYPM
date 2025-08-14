@@ -101,8 +101,8 @@
                 </h6>
                 <canvas #maxPerWorkout></canvas>
                 <h6>
-                    <ion-select (ionChange)="maxLoadPerWorkoutExerciseChange($event)" [(ngModel)]="maxLoadPerWorkoutExercise"
-                        label="{{ 'Max. Volume' | translate }}">
+                    <ion-select (ionChange)="maxLoadPerWorkoutExerciseChange($event)"
+                        [(ngModel)]="maxLoadPerWorkoutExercise" label="{{ 'Max. Volume' | translate }}">
                         @for (item of allExercises; track $index) {
                         <ion-select-option [value]="item">{{ item }}</ion-select-option>
                         }
@@ -110,8 +110,8 @@
                 </h6>
                 <canvas #maxLoadPerWorkout></canvas>
                 <h6>
-                    <ion-select (ionChange)="maxVolumePerWorkoutExerciseChange($event)" [(ngModel)]="maxVolumePerWorkoutExercise"
-                        label="{{ 'Total Volume' | translate }}">
+                    <ion-select (ionChange)="maxVolumePerWorkoutExerciseChange($event)"
+                        [(ngModel)]="maxVolumePerWorkoutExercise" label="{{ 'Total Volume' | translate }}">
                         @for (item of allExercises; track $index) {
                         <ion-select-option [value]="item">{{ item }}</ion-select-option>
                         }
@@ -121,6 +121,28 @@
             </div>
         </ng-container>
         <ng-container *ngSwitchCase="'measurements'">
+            <swiper-container [centeredSlides]="true" [slidesPerView]="1" [loop]="false" [pagination]="true"
+                [zoom]="true">
+                @for(photo of progressPhotos; track photo) {
+                <swiper-slide>
+                    <ion-card class="ion-text-center">
+                        <ion-card-header>
+                            <div class="card-header-container">
+                                <div class="action-area">
+                                    <ion-button (click)="openPhotoSettings(photo)" color="dark" fill="clear" size="small">
+                                        <ion-icon name="ellipsis-vertical"></ion-icon>
+                                    </ion-button>
+                                </div>
+                            </div>
+                        </ion-card-header>
+                        <img height="250px" [src]="photo.photo" />
+                        <ion-card-header>
+                            <ion-card-subtitle>{{ photo.date | dateTime }}</ion-card-subtitle>
+                        </ion-card-header>
+                    </ion-card>
+                </swiper-slide>
+                }
+            </swiper-container>
             <ion-list lines="none">
                 @for(measurement of measurements; track measurement.name) {
                 <ion-item (click)="createOrEditMeasurement(measurement)">
@@ -146,6 +168,10 @@
 <ion-popover #popover [isOpen]="actionsPopover" (didDismiss)="actionsPopover = false">
     <ng-template>
         <ion-list>
+            <ion-item button (click)="progressPhoto()">
+                <ion-label>{{ 'Progress photo' | translate }}</ion-label>
+                <ion-icon [src]="cameraIcon" color="primary"></ion-icon>
+            </ion-item>
             @for (measure of measurements; track measure.id) {
             <ion-item button (click)="addEntry(measure)">
                 <ion-label>{{ measure.name }}</ion-label>

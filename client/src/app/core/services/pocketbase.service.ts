@@ -46,7 +46,8 @@ export class PocketbaseService {
         'measurement_entry': [],
         'measurements': [],
         'conversations': [],
-        'messages': []
+        'messages': [],
+        'progress_photos': []
     };
 
     private singleRelationMappings: Record<string, string[]> = {
@@ -91,13 +92,13 @@ export class PocketbaseService {
 
             if (!this.pb.authStore.record?.expand) {
 
-            try {
-                const u = this.pb.collection('users').getOne<User>(this.pb.authStore.record?.id).then(u => {
-                    this.currentUser = u;
-                } );
-                
-            } catch (error) {
-            }
+                try {
+                    const u = this.pb.collection('users').getOne<User>(this.pb.authStore.record?.id).then(u => {
+                        this.currentUser = u;
+                    });
+
+                } catch (error) {
+                }
 
             } else {
                 this.currentUser = this.pb.authStore.record as any;
@@ -219,6 +220,10 @@ export class PocketbaseService {
 
     public get messages() {
         return this.pb.collection<Message>(COLLECTIONS.messages);
+    }
+
+    public get progressPhotos() {
+        return this.pb.collection<any>(COLLECTIONS.progress_photos);
     }
     //#endregion
 

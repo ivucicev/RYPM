@@ -386,8 +386,9 @@ export class MyActivityPage {
 
         const progressCreated = await this.pocketbaseService.progressPhotos.create(progressPhoto);
         const uptdAvatar: any = await this.pocketbaseService.progressPhotos.update(progressCreated.id, formData);
-
+        
         this.actionsPopover = false;
+        await this.getProgressPhotos();
 
     }
 

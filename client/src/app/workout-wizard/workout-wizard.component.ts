@@ -99,9 +99,11 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         private toast: ToastService,
         private alertController: AlertController,
         private wake: WakeLockService
-    ) { }
+    ) { 
+    }
 
-    ngOnInit() {
+    async ngOnInit() {
+        this.wake.enable();
         this.activatedRoute.params
             .pipe(takeUntil(this.unsubscribeAll))
             .subscribe(params => {

@@ -1,7 +1,7 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, viewChild } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, viewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
-import { IonButton, IonContent, IonSegment, IonSegmentButton, LoadingController, NavController } from '@ionic/angular/standalone';
+import { Animation, AnimationController, IonButton, IonContent, IonSegment, IonSegmentButton, LoadingController, NavController } from '@ionic/angular/standalone';
 import { Exercise } from '../core/models/collections/exercise';
 import { Program } from '../core/models/collections/program';
 import { Template } from '../core/models/collections/template';
@@ -65,10 +65,12 @@ export class HomePage {
         private pocketbaseService: PocketbaseService,
         private programService: ProgramService,
         private templateService: TemplateService,
-        private wake: WakeLockService
-    ) { 
+        private wake: WakeLockService,
+        private animationCtrl: AnimationController
+
+    ) {
     }
-    
+
     //#region Init
     async ionViewWillEnter() {
         await this.refresh();
@@ -129,6 +131,7 @@ export class HomePage {
                 this.activeProgramIds.push(p.id);
                 p['active'] = true;
                 this.wake.enable();
+                this.animate()
             }
 
             const tags = [
@@ -246,4 +249,19 @@ export class HomePage {
         this.refresh();
     }
     //#endregion
+
+    private animation!: Animation;
+
+    private animate() {
+        setTimeout(() => {
+            this.animation = this.animationCtrl
+                .create()
+                .addElement(document.getElementById('active-animation'))
+                .duration(1000)
+                .iterations(Infinity)
+                .fromTo('transform', 'scale(1)', 'scale(1.04)')
+                .fromTo('opacity', '1', '0.8');
+            this.animation.play()
+        }, 500)
+    }
 }

@@ -110,8 +110,11 @@
                         <ion-label>
                             <div>
                                 <h2>{{ program.name || ('Program' | translate) }}
+                                    @if (program.completed) {
+                                    <ion-badge class="active-badge" color="success">{{ 'Completed' |translate
+                                        }}</ion-badge> }
                                     @if (activeProgramIds.includes(program.id)) {
-                                    <ion-badge class="active-badge" color="primary">{{ 'Active' |translate
+                                    <ion-badge id="active-animation" class="active-badge" color="primary">{{ 'Active' |translate
                                         }}</ion-badge> }
                                     @if (program.aiProgram) {
                                     <ion-badge class="active-badge" color="tertiary">{{ 'AI Program' |translate

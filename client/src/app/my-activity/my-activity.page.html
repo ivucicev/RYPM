@@ -19,7 +19,7 @@
             </ion-segment-button>
             <ion-segment-button value="measurements">
                 <ion-label>
-                    {{'Measurements' | translate}}
+                    {{'Body' | translate}}
                 </ion-label>
             </ion-segment-button>
         </ion-segment>
@@ -137,7 +137,7 @@
                         </ion-card-header>
                         <img height="250px" [src]="photo.photo" />
                         <ion-card-header>
-                            <ion-card-subtitle>{{ photo.date | dateTime }}</ion-card-subtitle>
+                            <ion-card-subtitle style="padding-bottom: 15px;">{{ photo.date | dateTime }}</ion-card-subtitle>
                         </ion-card-header>
                     </ion-card>
                 </swiper-slide>

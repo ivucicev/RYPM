@@ -98,7 +98,7 @@ export class SignInPage implements OnInit {
     }
 
     async completeOTPLogin(e) {
-        const val = e.detaihomel.value;
+        const val = e.detail.value;
         await this.accountService.verifyOTP(val, this.otpId, this.loginForm.controls.email.value)
     }
 

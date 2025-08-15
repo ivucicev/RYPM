@@ -396,8 +396,9 @@ export class MyActivityPage {
 
     async getProgressPhotos() {
         const photos = await this.pocketbaseService.progressPhotos.getFullList({ sort: '-created' });
-
+        this.progressPhotos.length = 0;
         if (photos && photos.length) {
+        
             for (let i = 0; i < photos.length; i++) {
                 const token = await this.pocketbaseService.pb.files.getToken({ headers: PB.HEADER.NO_TOAST });
                 const file = this.pocketbaseService.pb.files.getURL(photos[i], photos[i].photo, { token })

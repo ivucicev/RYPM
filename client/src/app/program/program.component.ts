@@ -43,7 +43,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
     WorkoutState = WorkoutState;
     public dayActionsPopoverOpen = false;
 
-    weeks = Array.from({ length: 12 }, (_, i) => i + 1);
+    weeks = Array.from({ length: 36 }, (_, i) => i + 1);
 
     // TODO: Trainer
     // assignedUsers =

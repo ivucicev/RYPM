@@ -31,8 +31,12 @@ BUGS -
      - [ ] Safari ios white theme - installation screen not visible
      - [ ] first time navigating to safari ios not showing installation button
      - [ ] fix program creation from AI program
-
-
+     - [ ] load per miscle group
+     - [ ] period select
+     - [ ] share workout
+     - [x] no of weeks
+     - [x] better summary after complete
+     - [x] better preview of completed exercise not edit
 
 Workouts screen - 
     - [x] Add program complete test [ok]

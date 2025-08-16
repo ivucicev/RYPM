@@ -1,8 +1,8 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, ViewChild, viewChild, ViewChildren } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ActionSheetController, NavController, IonCardContent, IonChip, IonButton, IonIcon, IonCardHeader, IonCard, IonList, IonTitle, IonRow, IonContent, IonLabel, IonToolbar, IonSegmentButton, IonHeader, IonSegment, ModalController, IonSelect, IonInput, IonItem, IonFab, IonFabButton, IonFabList, IonPopover, AlertController, IonNote, IonSelectOption, IonCardSubtitle } from '@ionic/angular/standalone';
+import { ActionSheetController, NavController, IonCardContent, IonChip, IonButton, IonIcon, IonCardHeader, IonCard, IonList, IonTitle, IonRow, IonContent, IonLabel, IonToolbar, IonSegmentButton, IonHeader, IonSegment, ModalController, IonSelect, IonInput, IonItem, IonFab, IonFabButton, IonFabList, IonPopover, AlertController, IonNote, IonSelectOption, IonCardSubtitle, IonModal } from '@ionic/angular/standalone';
 import { lastValueFrom } from 'rxjs';
-import { DateTimePipe } from '../core/pipes/datetime.pipe';
+import { DateTimePipe, DurationPipe } from '../core/pipes/datetime.pipe';
 import { PocketbaseService } from '../core/services/pocketbase.service';
 import { Workout } from '../core/models/collections/workout';
 import { WorkoutState } from '../core/models/enums/workout-state';
@@ -14,7 +14,7 @@ import { NoDataComponent } from '../shared/no-data/no-data.component';
 import { FormsModule } from '@angular/forms';
 import { MeasurementCreateModalComponent } from '../measurement-create-modal/measurement-create-modal.component';
 import { MeasurementEntryAddModal } from '../measurement-entry-add-modal/measurement-entry-add-modal.component';
-import { cameraOutline, phonePortrait } from 'ionicons/icons';
+import { cameraOutline, eyeOutline, phonePortrait, trendingDownOutline, trendingUpOutline } from 'ionicons/icons';
 import { register } from 'swiper/element/bundle';
 
 import 'swiper/css/pagination';
@@ -25,6 +25,7 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Preferences } from '@capacitor/preferences';
 import { AccountService } from '../core/services/account.service';
 import { PB } from '../core/constants/pb-constants';
+import { WeightType } from '../core/models/enums/weight-type';
 
 @Component({
     selector: 'app-my-activity',
@@ -32,11 +33,12 @@ import { PB } from '../core/constants/pb-constants';
     styleUrls: ['./my-activity.page.scss'],
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [IonHeader, IonSelect, IonSelectOption, IonNote, IonFab, IonPopover, IonFabButton, IonSegmentButton, IonToolbar, IonLabel, IonContent, IonRow, IonTitle, IonList, IonCard, IonCardHeader, IonIcon, IonButton, IonChip, IonCardContent, NoDataComponent, TranslateModule, FormsModule, IonSegment, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent, IonItem, IonCardSubtitle],
+    imports: [IonHeader, IonModal, IonSelect, IonSelectOption, IonNote, IonFab, IonPopover, IonFabButton, IonSegmentButton, IonToolbar, IonLabel, IonContent, IonRow, IonTitle, IonList, IonCard, IonCardHeader, IonIcon, IonButton, IonChip, IonCardContent, NoDataComponent, TranslateModule, FormsModule, IonSegment, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent, IonItem, IonCardSubtitle, DurationPipe],
 })
 export class MyActivityPage {
 
     workouts: Workout[] = [];
+    currentWorkout = null;
 
     WorkoutState = WorkoutState;
     currentUser;
@@ -48,6 +50,7 @@ export class MyActivityPage {
 
     measurements = [];
     allExercises = [];
+    showDetailsModal = false;
 
     actionsPopover = false;
 
@@ -55,6 +58,9 @@ export class MyActivityPage {
     maxLoadPerWorkoutExercise = ''
     maxVolumePerWorkoutExercise = ''
     cameraIcon = cameraOutline;
+    eyeIcon = eyeOutline;
+    upIcon = trendingUpOutline;
+    downIcon = trendingDownOutline;
 
     @ViewChild('volumeChart') chart: ElementRef<HTMLCanvasElement>;
     @ViewChild('effortChart') effortChart: ElementRef<HTMLCanvasElement>;
@@ -386,7 +392,7 @@ export class MyActivityPage {
 
         const progressCreated = await this.pocketbaseService.progressPhotos.create(progressPhoto);
         const uptdAvatar: any = await this.pocketbaseService.progressPhotos.update(progressCreated.id, formData);
-        
+
         this.actionsPopover = false;
         await this.getProgressPhotos();
 
@@ -398,7 +404,7 @@ export class MyActivityPage {
         const photos = await this.pocketbaseService.progressPhotos.getFullList({ sort: '-created' });
         this.progressPhotos.length = 0;
         if (photos && photos.length) {
-        
+
             for (let i = 0; i < photos.length; i++) {
                 const token = await this.pocketbaseService.pb.files.getToken({ headers: PB.HEADER.NO_TOAST });
                 const file = this.pocketbaseService.pb.files.getURL(photos[i], photos[i].photo, { token })
@@ -483,8 +489,23 @@ export class MyActivityPage {
                 return total + (exercise.sets?.reduce((sum, set) => sum + (set.weight || 0), 0) || 0);
             }, 0);
 
-        })
+            workout.exercises.forEach(e => {
+                const summary = e.sets.map(s => {
+                    let val = `${s.currentValue}`;
+                    if (s.weightType == WeightType.LB) {
+                        val += `@${s.currentWeight}lb`
+                    } else if (s.weightType == WeightType.KG) {
+                        val += `@${s.currentWeight}kg`
+                    } else if (s.weightType == WeightType.BW) {
+                        val += `@bw`
+                    }
+                    return val;
+                })
 
+                e.summary = summary?.join(', ') ?? '';
+            })
+
+        })
     }
 
     ionViewWillEnter() {
@@ -545,12 +566,31 @@ export class MyActivityPage {
 
     async openSettings(workout) {
         const translations = await lastValueFrom(this.translateService.get([
-            'Edit', 'Delete'
+            'Details', 'Edit', 'Delete',
         ]));
 
         const actionSheet = await this.actionSheetCtrl.create({
             header: translations.workout,
             buttons: [
+                {
+                    text: translations.Details,
+                    icon: this.eyeIcon,
+                    handler: () => {
+                        this.currentWorkout = workout;
+                        // check trends
+
+                        this.currentWorkout.exercises.forEach(e => {
+                            e.currentLoad = e.sets.reduce((sum, s) => sum + ((s.currentWeight || 0) * (s.currentValue || 0)), 0);
+                            e.previousLoad = e.sets.reduce((sum, s) => sum + ((s.previousWeight || 0) * (s.previousValue || 0)), 0);
+                            e.isTrendingUp = e.currentLoad > e.previousLoad;
+                            e.trendPercent = e.previousLoad === 0
+                                ? (e.currentLoad > 0 ? 100 : 0)
+                                : ((e.currentLoad - e.previousLoad) / Math.abs(e.previousLoad)) * 100;
+                        })
+
+                        this.showDetailsModal = true;
+                    }
+                },
                 {
                     text: translations.Edit,
                     icon: 'create-outline',
@@ -607,7 +647,7 @@ export class MyActivityPage {
                     text: translations.Delete,
                     icon: 'trash-outline',
                     role: 'destructive',
-                    handler: async () => {                        
+                    handler: async () => {
                         await this.pocketbaseService.progressPhotos.delete(photo.id);
                         this.progressPhotos = this.progressPhotos.filter(w => w.id !== photo.id);
                     }

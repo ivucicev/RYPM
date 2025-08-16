@@ -13,6 +13,7 @@ export interface ExerciseTemplate extends EntityBase {
     category: Category;
     isCommunity?: boolean;
     superset: string; 
+    summary: string;
 }
 
 export const exerciseTemplatesArrayFields: Partial<Record<keyof ExerciseTemplate, boolean>> = {

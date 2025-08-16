@@ -65,7 +65,7 @@
                             <div class="exercises-list">
                                 @for(exercise of workout.exercises; track $index) {
                                 <span class="exercise-item">
-                                    {{ exercise.name }} ({{ exercise.sets?.length }} sets)
+                                    {{ exercise.name }} ({{ exercise.sets?.length }} {{'sets' | translate}})
                                 </span>
                                 @if ($index < workout.exercises.length - 1){,&nbsp;} } <br>
 
@@ -129,7 +129,8 @@
                         <ion-card-header>
                             <div class="card-header-container">
                                 <div class="action-area">
-                                    <ion-button (click)="openPhotoSettings(photo)" color="dark" fill="clear" size="small">
+                                    <ion-button (click)="openPhotoSettings(photo)" color="dark" fill="clear"
+                                        size="small">
                                         <ion-icon name="ellipsis-vertical"></ion-icon>
                                     </ion-button>
                                 </div>
@@ -137,7 +138,8 @@
                         </ion-card-header>
                         <img height="250px" [src]="photo.photo" />
                         <ion-card-header>
-                            <ion-card-subtitle style="padding-bottom: 15px;">{{ photo.date | dateTime }}</ion-card-subtitle>
+                            <ion-card-subtitle style="padding-bottom: 15px;">{{ photo.date | dateTime
+                                }}</ion-card-subtitle>
                         </ion-card-header>
                     </ion-card>
                 </swiper-slide>
@@ -184,5 +186,72 @@
         </ion-list>
     </ng-template>
 </ion-popover>
+
+<ion-modal [isOpen]="showDetailsModal">
+    <ng-template>
+        <ion-header>
+            <ion-toolbar>
+                <ion-title>{{ 'Workout details' | translate }}</ion-title>
+                <ion-buttons slot="end">
+                    <ion-button (click)="showDetailsModal=false;" [strong]="true">OK</ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+            <div class="exercises-list">
+                <ion-list>
+                    <ion-item>
+                        <ion-label>{{ 'Date' | translate }}</ion-label>
+                        <ion-note slot="end"> {{ currentWorkout.start | dateTime}}</ion-note>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>{{ 'Duration' | translate }}</ion-label>
+                        <ion-note slot="end"> {{ currentWorkout.start | duration:currentWorkout.end }} </ion-note>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>{{ 'Training load' | translate }}</ion-label>
+                        <ion-note slot="end"> {{ currentWorkout.load || 0 }}</ion-note>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>{{ 'Effort' | translate }}</ion-label>
+                        <ion-note slot="end">{{ currentWorkout.effort }}/10</ion-note>
+                    </ion-item>
+                    @for(exercise of currentWorkout.exercises; track $index) {
+                    <ion-item>
+                        <ion-label>{{ exercise.name }}
+                            @if (exercise.trendPercent > 0) {
+                            @if (exercise.isTrendingUp) {
+                            <ion-icon [src]="upIcon" color="success"></ion-icon>
+                            <small>
+                                {{exercise.trendPercent.toFixed(1)}}%
+                            </small>
+                            } @else {
+                            <ion-icon [src]="downIcon" color="danger"></ion-icon>
+                            <small>
+                                {{exercise.trendPercent.toFixed(1)}}%
+                            </small>
+                            }
+                            }
+                        </ion-label>
+                        <ion-note slot="end"> {{ exercise.summary }}</ion-note>
+                    </ion-item>
+                    }
+                </ion-list>
+            </div>
+            @if (currentWorkout.tags?.length > 0) {
+            <div class="tag-container">
+                @for (tag of currentWorkout.tags; track $index) {
+                <ion-chip color="primary" size="small">{{ tag }}</ion-chip>
+                }
+            </div>
+            }
+            @if (currentWorkout.comment) {
+            <div class="notes"><ion-icon name="information-circle-outline"></ion-icon>
+                {{ currentWorkout.comment }}
+            </div>
+            }
+        </ion-content>
+    </ng-template>
+</ion-modal>
 
 <app-continue-footer></app-continue-footer>

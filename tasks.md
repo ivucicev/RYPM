@@ -20,6 +20,9 @@ BUGS -
      - [x] stats - better for exercises filter by exercise
      - [x] keep display on
      - [x] Progress pictures in measurements
+     - [x] wake lock not working
+     - [x] add photo doesnt reload images
+     - [x] 'Progress photo' breaksin the new row
      - [ ] When creating program - adding lots of weeks causes 404 in console and lots of requests !HIGH prio -too many requests in general, i think server would crash with 1.5 active users
      - [ ] Navigating exercise left and right calls N requests ever time, even if nothing is changed  !HIGH
      - [ ] EDITING DONE WORKOUT WORKS LIKE DOG SHIT - doesnt work, creates random exercises and deletes old ones very WTF functionallity also updates navigating left and right for no reason
@@ -28,9 +31,6 @@ BUGS -
      - [ ] Safari ios white theme - installation screen not visible
      - [ ] first time navigating to safari ios not showing installation button
      - [ ] fix program creation from AI program
-     - [x] wake lock not working
-     - [x] add photo doesnt reload images
-     - [x] 'Progress photo' breaksin the new row
 
 
 

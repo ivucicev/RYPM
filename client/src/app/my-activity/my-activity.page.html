@@ -221,25 +221,27 @@
                         <ion-label>{{ exercise.name }}
                             @if (exercise.trendPercent > 0) {
                             @if (exercise.isTrendingUp) {
-                            <ion-icon [src]="upIcon" color="success"></ion-icon>
-                            <small>
+                            <small class="ion-float-right">
                                 {{exercise.trendPercent.toFixed(1)}}%
                             </small>
+                            <ion-icon class="ion-float-right" [src]="upIcon" color="success"></ion-icon>
                             } @else {
-                            <ion-icon [src]="downIcon" color="danger"></ion-icon>
-                            <small>
+                            <small class="ion-float-right">
                                 {{exercise.trendPercent.toFixed(1)}}%
                             </small>
+                            <ion-icon class="ion-float-right" [src]="downIcon" color="danger"></ion-icon>
                             }
                             }
+                            <p class="ion-text-right">
+                                <ion-note> {{ exercise.summary }}</ion-note>
+                            </p>
                         </ion-label>
-                        <ion-note slot="end"> {{ exercise.summary }}</ion-note>
                     </ion-item>
                     }
                 </ion-list>
             </div>
             @if (currentWorkout.tags?.length > 0) {
-            <div class="tag-container">
+            <div>
                 @for (tag of currentWorkout.tags; track $index) {
                 <ion-chip color="primary" size="small">{{ tag }}</ion-chip>
                 }

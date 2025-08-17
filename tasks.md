@@ -23,6 +23,10 @@ BUGS -
      - [x] wake lock not working
      - [x] add photo doesnt reload images
      - [x] 'Progress photo' breaksin the new row
+     - [x] share workout
+     - [x] better summary after complete
+     - [x] better preview of completed exercise not edit
+     - [x] no of weeks
      - [ ] When creating program - adding lots of weeks causes 404 in console and lots of requests !HIGH prio -too many requests in general, i think server would crash with 1.5 active users
      - [ ] Navigating exercise left and right calls N requests ever time, even if nothing is changed  !HIGH
      - [ ] EDITING DONE WORKOUT WORKS LIKE DOG SHIT - doesnt work, creates random exercises and deletes old ones very WTF functionallity also updates navigating left and right for no reason
@@ -33,10 +37,6 @@ BUGS -
      - [ ] fix program creation from AI program
      - [ ] load per miscle group
      - [ ] period select
-     - [ ] share workout
-     - [x] no of weeks
-     - [x] better summary after complete
-     - [x] better preview of completed exercise not edit
 
 Workouts screen - 
     - [x] Add program complete test [ok]

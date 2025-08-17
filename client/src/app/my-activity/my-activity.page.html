@@ -87,12 +87,22 @@
         </ng-container>
         <ng-container *ngSwitchCase="'stats'">
             <div class="ion-padding-x">
+                <h6>
+                    <ion-select (ionChange)="onPeriodChange($event)" toggleIcon="filter-outline" [(ngModel)]="selectedPeriod" interface="popover"
+                        label="{{ '' | translate }}">
+                        @for (item of periods; track $index) {
+                        <ion-select-option [value]="item.id">{{ item.name }}</ion-select-option>
+                        }
+                    </ion-select>
+                </h6>
+            </div>
+            <div class="ion-padding-x">
                 <h6>{{ 'Total volume' | translate }}</h6>
                 <canvas #volumeChart></canvas>
                 <h6>{{ 'Effort' | translate }}</h6>
                 <canvas #effortChart></canvas>
                 <h6>
-                    <ion-select (ionChange)="maxPerWorkoutExerciseChange($event)" [(ngModel)]="maxPerWorkoutExercise"
+                    <ion-select interface="modal" (ionChange)="maxPerWorkoutExerciseChange($event)" [(ngModel)]="maxPerWorkoutExercise"
                         label="{{ 'Max. Load' | translate }}">
                         @for (item of allExercises; track $index) {
                         <ion-select-option [value]="item">{{ item }}</ion-select-option>
@@ -101,7 +111,7 @@
                 </h6>
                 <canvas #maxPerWorkout></canvas>
                 <h6>
-                    <ion-select (ionChange)="maxLoadPerWorkoutExerciseChange($event)"
+                    <ion-select interface="modal" (ionChange)="maxLoadPerWorkoutExerciseChange($event)"
                         [(ngModel)]="maxLoadPerWorkoutExercise" label="{{ 'Max. Volume' | translate }}">
                         @for (item of allExercises; track $index) {
                         <ion-select-option [value]="item">{{ item }}</ion-select-option>
@@ -110,7 +120,7 @@
                 </h6>
                 <canvas #maxLoadPerWorkout></canvas>
                 <h6>
-                    <ion-select (ionChange)="maxVolumePerWorkoutExerciseChange($event)"
+                    <ion-select interface="modal" (ionChange)="maxVolumePerWorkoutExerciseChange($event)"
                         [(ngModel)]="maxVolumePerWorkoutExercise" label="{{ 'Total Volume' | translate }}">
                         @for (item of allExercises; track $index) {
                         <ion-select-option [value]="item">{{ item }}</ion-select-option>
@@ -198,60 +208,72 @@
             </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding">
-            <div class="exercises-list">
-                <ion-list>
-                    <ion-item>
-                        <ion-label>{{ 'Date' | translate }}</ion-label>
-                        <ion-note slot="end"> {{ currentWorkout.start | dateTime}}</ion-note>
-                    </ion-item>
-                    <ion-item>
-                        <ion-label>{{ 'Duration' | translate }}</ion-label>
-                        <ion-note slot="end"> {{ currentWorkout.start | duration:currentWorkout.end }} </ion-note>
-                    </ion-item>
-                    <ion-item>
-                        <ion-label>{{ 'Training load' | translate }}</ion-label>
-                        <ion-note slot="end"> {{ currentWorkout.load || 0 }}</ion-note>
-                    </ion-item>
-                    <ion-item>
-                        <ion-label>{{ 'Effort' | translate }}</ion-label>
-                        <ion-note slot="end">{{ currentWorkout.effort }}/10</ion-note>
-                    </ion-item>
-                    @for(exercise of currentWorkout.exercises; track $index) {
-                    <ion-item>
-                        <ion-label>{{ exercise.name }}
-                            @if (exercise.trendPercent > 0) {
-                            @if (exercise.isTrendingUp) {
-                            <small class="ion-float-right">
-                                {{exercise.trendPercent.toFixed(1)}}%
-                            </small>
-                            <ion-icon class="ion-float-right" [src]="upIcon" color="success"></ion-icon>
-                            } @else {
-                            <small class="ion-float-right">
-                                {{exercise.trendPercent.toFixed(1)}}%
-                            </small>
-                            <ion-icon class="ion-float-right" [src]="downIcon" color="danger"></ion-icon>
-                            }
-                            }
-                            <p class="ion-text-right">
-                                <ion-note> {{ exercise.summary }}</ion-note>
-                            </p>
-                        </ion-label>
-                    </ion-item>
+            <div id="details">
+                @if (theme.isDark()) {
+                <img src="/assets/logo-light.png" />
+                } @else {
+                <img src="/assets/logo-dark.png" />
+                }
+                <div class="exercises-list">
+                    <ion-list>
+                        <ion-item>
+                            <ion-label>{{ 'Date' | translate }}</ion-label>
+                            <ion-note slot="end"> {{ currentWorkout.start | dateTime}}</ion-note>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label>{{ 'Duration' | translate }}</ion-label>
+                            <ion-note slot="end"> {{ currentWorkout.start | duration:currentWorkout.end }} </ion-note>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label>{{ 'Training load' | translate }}</ion-label>
+                            <ion-note slot="end"> {{ currentWorkout.load || 0 }}</ion-note>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label>{{ 'Effort' | translate }}</ion-label>
+                            <ion-note slot="end">{{ currentWorkout.effort }}/10</ion-note>
+                        </ion-item>
+                        @for(exercise of currentWorkout.exercises; track $index) {
+                        <ion-item>
+                            <ion-label>{{ exercise.name }}
+                                @if (exercise.trendPercent != 0) {
+                                @if (exercise.isTrendingUp) {
+                                <small class="ion-float-right">
+                                    {{exercise.trendPercent.toFixed(1)}}%
+                                </small>
+                                <ion-icon class="ion-float-right mr5" [src]="upIcon" color="success"></ion-icon>
+                                } @else {
+                                <small class="ion-float-right">
+                                    {{exercise.trendPercent.toFixed(1)}}%
+                                </small>
+                                <ion-icon class="ion-float-right  mr5" [src]="downIcon" color="danger"></ion-icon>
+                                }
+                                }
+                                <p class="ion-text-right">
+                                    <ion-note> {{ exercise.summary }}</ion-note>
+                                </p>
+                            </ion-label>
+                        </ion-item>
+                        }
+                    </ion-list>
+                </div>
+                @if (currentWorkout.tags?.length > 0) {
+                <div>
+                    @for (tag of currentWorkout.tags; track $index) {
+                    <ion-chip color="primary" size="small">{{ tag }}</ion-chip>
                     }
-                </ion-list>
-            </div>
-            @if (currentWorkout.tags?.length > 0) {
-            <div>
-                @for (tag of currentWorkout.tags; track $index) {
-                <ion-chip color="primary" size="small">{{ tag }}</ion-chip>
+                </div>
+                }
+                @if (currentWorkout.comment) {
+                <div class="notes"><ion-icon name="information-circle-outline"></ion-icon>
+                    {{ currentWorkout.comment }}
+                </div>
                 }
             </div>
-            }
-            @if (currentWorkout.comment) {
-            <div class="notes"><ion-icon name="information-circle-outline"></ion-icon>
-                {{ currentWorkout.comment }}
-            </div>
-            }
+            <ion-footer class="ion-text-center">
+                <ion-button (click)="share()">
+                    {{'Share' | translate }} <ion-icon class="ion-margin-start" [src]="shareIcon"></ion-icon>
+                </ion-button>
+            </ion-footer>
         </ion-content>
     </ng-template>
 </ion-modal>

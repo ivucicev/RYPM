@@ -39,6 +39,7 @@
         "animate.css": "^4.1.1",
         "chart.js": "^2.9.4",
         "date-fns": "^4.1.0",
+        "html2canvas": "^1.4.1",
         "ionicons": "^8.0.13",
         "marked": "^16.1.2",
         "ng-circle-progress": "^1.7.1",

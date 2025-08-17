@@ -1,6 +1,6 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, ViewChild, viewChild, ViewChildren } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, signal, ViewChild, viewChild, ViewChildren } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ActionSheetController, NavController, IonCardContent, IonChip, IonButton, IonIcon, IonCardHeader, IonCard, IonList, IonTitle, IonRow, IonContent, IonLabel, IonToolbar, IonSegmentButton, IonHeader, IonSegment, ModalController, IonSelect, IonInput, IonItem, IonFab, IonFabButton, IonFabList, IonPopover, AlertController, IonNote, IonSelectOption, IonCardSubtitle, IonModal } from '@ionic/angular/standalone';
+import { ActionSheetController, NavController, IonCardContent, IonChip, IonButton, IonIcon, IonCardHeader, IonCard, IonList, IonTitle, IonRow, IonContent, IonLabel, IonToolbar, IonSegmentButton, IonHeader, IonSegment, ModalController, IonSelect, IonInput, IonItem, IonFab, IonFabButton, IonFabList, IonPopover, AlertController, IonNote, IonSelectOption, IonCardSubtitle, IonModal, IonFooter, SelectChangeEventDetail } from '@ionic/angular/standalone';
 import { lastValueFrom } from 'rxjs';
 import { DateTimePipe, DurationPipe } from '../core/pipes/datetime.pipe';
 import { PocketbaseService } from '../core/services/pocketbase.service';
@@ -14,7 +14,7 @@ import { NoDataComponent } from '../shared/no-data/no-data.component';
 import { FormsModule } from '@angular/forms';
 import { MeasurementCreateModalComponent } from '../measurement-create-modal/measurement-create-modal.component';
 import { MeasurementEntryAddModal } from '../measurement-entry-add-modal/measurement-entry-add-modal.component';
-import { cameraOutline, eyeOutline, phonePortrait, trendingDownOutline, trendingUpOutline } from 'ionicons/icons';
+import { cameraOutline, eyeOutline, phonePortrait, shareSocialOutline, trendingDownOutline, trendingUpOutline } from 'ionicons/icons';
 import { register } from 'swiper/element/bundle';
 
 import 'swiper/css/pagination';
@@ -26,6 +26,9 @@ import { Preferences } from '@capacitor/preferences';
 import { AccountService } from '../core/services/account.service';
 import { PB } from '../core/constants/pb-constants';
 import { WeightType } from '../core/models/enums/weight-type';
+import html2canvas from 'html2canvas';
+import { ThemeService } from '../core/services/theme.service';
+import { IonSelectCustomEvent } from '@ionic/core';
 
 @Component({
     selector: 'app-my-activity',
@@ -33,7 +36,7 @@ import { WeightType } from '../core/models/enums/weight-type';
     styleUrls: ['./my-activity.page.scss'],
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [IonHeader, IonModal, IonSelect, IonSelectOption, IonNote, IonFab, IonPopover, IonFabButton, IonSegmentButton, IonToolbar, IonLabel, IonContent, IonRow, IonTitle, IonList, IonCard, IonCardHeader, IonIcon, IonButton, IonChip, IonCardContent, NoDataComponent, TranslateModule, FormsModule, IonSegment, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent, IonItem, IonCardSubtitle, DurationPipe],
+    imports: [IonHeader, IonModal, IonSelect, IonSelectOption, IonNote, IonFab, IonPopover, IonFabButton, IonSegmentButton, IonToolbar, IonLabel, IonContent, IonRow, IonTitle, IonList, IonCard, IonCardHeader, IonIcon, IonButton, IonChip, IonCardContent, NoDataComponent, TranslateModule, FormsModule, IonSegment, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent, IonItem, IonCardSubtitle, DurationPipe, IonFooter],
 })
 export class MyActivityPage {
 
@@ -47,6 +50,65 @@ export class MyActivityPage {
 
     chartInstance: chart.Chart | null = null;
     tab: 'workouts' | 'stats' | 'measurements' = 'workouts';
+    periods = [
+        {
+            id: 1,
+            name: this.translateService.instant('Last month'),
+            value: (() => {
+                const date = new Date();
+                date.setMonth(date.getMonth() - 1);
+                return date;
+            })()
+        },
+        {
+            id: 2,
+            name: this.translateService.instant('Last 2 months'),
+            value: (() => {
+                const date = new Date();
+                date.setMonth(date.getMonth() - 2);
+                return date;
+            })()
+        },
+        {
+            id: 3,
+            name: this.translateService.instant('Last 3 months'),
+            value: (() => {
+                const date = new Date();
+                date.setMonth(date.getMonth() - 3);
+                return date;
+            })()
+        },
+        {
+            id: 6,
+            name: this.translateService.instant('Last 6 months'),
+            value: (() => {
+                const date = new Date();
+                date.setMonth(date.getMonth() - 6);
+                return date;
+            })()
+        },
+        {
+            id: 12,
+            name: this.translateService.instant('Last year'),
+            value: (() => {
+                const date = new Date();
+                date.setFullYear(date.getFullYear() - 1);
+                return date;
+            })()
+        },
+        {
+            id: 24,
+            name: this.translateService.instant('Last 2 years'),
+            value: (() => {
+                const date = new Date();
+                date.setFullYear(date.getFullYear() - 2);
+                return date;
+            })()
+        }
+    ];
+
+    selectedPeriod: any = 3;
+    selectedPeriodValue;
 
     measurements = [];
     allExercises = [];
@@ -61,6 +123,8 @@ export class MyActivityPage {
     eyeIcon = eyeOutline;
     upIcon = trendingUpOutline;
     downIcon = trendingDownOutline;
+    shareIcon = shareSocialOutline;
+    isSharing = false;
 
     @ViewChild('volumeChart') chart: ElementRef<HTMLCanvasElement>;
     @ViewChild('effortChart') effortChart: ElementRef<HTMLCanvasElement>;
@@ -76,14 +140,22 @@ export class MyActivityPage {
         private accountService: AccountService,
         private navCtrl: NavController,
         private modalCtrl: ModalController,
-        private alertController: AlertController
+        private alertController: AlertController,
+        public theme: ThemeService
     ) {
+        this.selectedPeriodValue = this.periods.find(f => f.id == this.selectedPeriod)?.value;
         register();
         this.getSessions();
+        theme.isDark();
     }
 
     async refresh() {
         this.continueFooter().refresh();
+    }
+
+    onPeriodChange($event: IonSelectCustomEvent<SelectChangeEventDetail<any>>) {
+        this.selectedPeriodValue = this.periods.find(f => f.id == this.selectedPeriod)?.value;
+        this.getSessions()
     }
 
     maxPerWorkoutExerciseChange(e) {
@@ -464,13 +536,15 @@ export class MyActivityPage {
 
     async getSessions() {
         // get previous sessions
-        const workouts = await this.pocketbaseService.workouts.getList(0, 500, {
-            filter: `state = "${WorkoutState.Completed}"`,
+        const workouts = await this.pocketbaseService.workouts.getFullList({
+            filter: `state = "${WorkoutState.Completed}" && start >= "${this.selectedPeriodValue.toISOString()}"`,
             sort: '-created',
             expand: 'trainer,exercises,exercises.sets,day,user',
         }) as any;
 
-        this.workouts = workouts.items.map(workout => workout);
+        if (!workouts) return;
+
+        this.workouts = workouts.map(workout => workout);
 
         this.workouts.forEach(workout => {
             const tags = workout.exercises.map(exercise => exercise.primaryMuscles);
@@ -564,30 +638,46 @@ export class MyActivityPage {
         this.getMeasurements();
     }
 
+    private calculateTrends() {
+        this.currentWorkout.exercises.forEach(e => {
+            e.currentLoad = e.sets.reduce((sum, s) => sum + ((s.currentWeight || 0) * (s.currentValue || 0)), 0);
+            e.previousLoad = e.sets.reduce((sum, s) => sum + ((s.previousWeight || 0) * (s.previousValue || 0)), 0);
+            e.isTrendingUp = e.currentLoad > e.previousLoad;
+            e.trendPercent = e.previousLoad === 0
+                ? (e.currentLoad > 0 ? 100 : 0)
+                : ((e.currentLoad - e.previousLoad) / Math.abs(e.previousLoad)) * 100;
+        })
+    }
+
     async openSettings(workout) {
         const translations = await lastValueFrom(this.translateService.get([
-            'Details', 'Edit', 'Delete',
+            'Share', 'Details', 'Edit', 'Delete',
         ]));
 
         const actionSheet = await this.actionSheetCtrl.create({
             header: translations.workout,
             buttons: [
                 {
+                    text: translations.Share,
+                    icon: this.shareIcon,
+                    handler: async () => {
+                        this.currentWorkout = workout;
+                        this.calculateTrends();
+
+                        this.showDetailsModal = true;
+
+                        setTimeout(async () => {
+                            await this.share()
+                            this.showDetailsModal = false;
+                        }, 1000)
+                    }
+                },
+                {
                     text: translations.Details,
                     icon: this.eyeIcon,
                     handler: () => {
                         this.currentWorkout = workout;
-                        // check trends
-
-                        this.currentWorkout.exercises.forEach(e => {
-                            e.currentLoad = e.sets.reduce((sum, s) => sum + ((s.currentWeight || 0) * (s.currentValue || 0)), 0);
-                            e.previousLoad = e.sets.reduce((sum, s) => sum + ((s.previousWeight || 0) * (s.previousValue || 0)), 0);
-                            e.isTrendingUp = e.currentLoad > e.previousLoad;
-                            e.trendPercent = e.previousLoad === 0
-                                ? (e.currentLoad > 0 ? 100 : 0)
-                                : ((e.currentLoad - e.previousLoad) / Math.abs(e.previousLoad)) * 100;
-                        })
-
+                        this.calculateTrends()
                         this.showDetailsModal = true;
                     }
                 },
@@ -656,5 +746,34 @@ export class MyActivityPage {
         });
 
         await actionSheet.present();
+    }
+
+    async shareDirect() {
+
+    }
+
+    async share() {
+        const el = document.getElementById('details');
+        if (!el) return
+        const canvas = await html2canvas(el, {
+            backgroundColor: this.theme.isDark() ? '#1b1b20' : '#ebebeb',
+        });
+        canvas.toBlob(async blob => {
+            if (!blob) return;
+            this.isSharing = false;
+            const date = this.currentWorkout?.created
+                ? new Date(this.currentWorkout.created)
+                : new Date();
+            const pad = (n: number) => n.toString().padStart(2, '0');
+            const fileName = `Workout_${pad(date.getDate())}${pad(date.getMonth() + 1)}${date.getFullYear()}.png`;
+            const file = new File([blob], fileName, { type: 'image/png' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                await navigator.share({
+                    files: [file],
+                    title: `RYPM. ${await this.translateService.instant('Workout')} ${await this.translateService.instant('from')} ${date.toLocaleDateString()}`,
+                    text: `${await this.translateService.instant('Take a look at my progress.')}`
+                });
+            }
+        });
     }
 }

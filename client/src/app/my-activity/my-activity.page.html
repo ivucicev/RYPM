@@ -65,10 +65,9 @@
                             <div class="exercises-list">
                                 @for(exercise of workout.exercises; track $index) {
                                 <span class="exercise-item">
-                                    {{ exercise.name }} ({{ exercise.sets?.length }} {{'sets' | translate}})
-                                </span>
-                                @if ($index < workout.exercises.length - 1){,&nbsp;} } <br>
-
+                                    {{ exercise.name }} ({{ exercise.sets?.length }} {{'sets' | translate}})@if ($index
+                                    < workout.exercises.length - 1){,&nbsp;} </span>
+                                        }
                             </div>
                             @if (workout.tagsToShow?.length > 0) {
                             <div class="tag-container">
@@ -87,23 +86,25 @@
         </ng-container>
         <ng-container *ngSwitchCase="'stats'">
             <div class="ion-padding-x">
-                <h6>
-                    <ion-select (ionChange)="onPeriodChange($event)" toggleIcon="filter-outline" [(ngModel)]="selectedPeriod" interface="popover"
-                        label="{{ '' | translate }}">
+            </div>
+            <div class="ion-padding-x">
+                <h6 class="ion-display-flex flex">
+                    <div class="ion-flex-1 flex50 ion-padding-y">
+                        {{ 'Total volume' | translate }}
+                    </div>
+                    <ion-select class="ion-flex-1 flex50" style="padding-top: 3px" (ionChange)="onPeriodChange($event)" toggleIcon="filter-outline"
+                        [(ngModel)]="selectedPeriod" interface="popover" label="{{ '' | translate }}">
                         @for (item of periods; track $index) {
                         <ion-select-option [value]="item.id">{{ item.name }}</ion-select-option>
                         }
                     </ion-select>
                 </h6>
-            </div>
-            <div class="ion-padding-x">
-                <h6>{{ 'Total volume' | translate }}</h6>
                 <canvas #volumeChart></canvas>
                 <h6>{{ 'Effort' | translate }}</h6>
                 <canvas #effortChart></canvas>
                 <h6>
-                    <ion-select interface="modal" (ionChange)="maxPerWorkoutExerciseChange($event)" [(ngModel)]="maxPerWorkoutExercise"
-                        label="{{ 'Max. Load' | translate }}">
+                    <ion-select interface="modal" (ionChange)="maxPerWorkoutExerciseChange($event)"
+                        [(ngModel)]="maxPerWorkoutExercise" label="{{ 'Max. Load' | translate }}">
                         @for (item of allExercises; track $index) {
                         <ion-select-option [value]="item">{{ item }}</ion-select-option>
                         }

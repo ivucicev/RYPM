@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import PocketBase, { RecordModel } from 'pocketbase';
+import PocketBase, { BatchService, RecordModel } from 'pocketbase';
 import { environment } from 'src/environments/environment';
 import { ToastService } from './toast-service';
 import { User } from '../models/collections/user';
@@ -280,6 +280,8 @@ export class PocketbaseService {
         return result as ExpandedResult<T>;
     }
 
+    public batch: BatchService;
+
     /**
      * Creates or updates a record in the specified collection, handling nested collections.
      *
@@ -333,13 +335,22 @@ export class PocketbaseService {
             depth
         );
 
+        //this.batch = this.pb.createBatch();
+        //const batch = this.pb.createBatch();
+
         if (Object.keys(backReferences).length > 0) {
+            //console.log(collectionName, 1,backReferences)
+            //await batch.collection(collectionName).update(result.id, backReferences, requestOptions);
             await this.pb.collection(collectionName).update(result.id, backReferences, requestOptions);
         }
 
         if (Object.keys(relationReferences).length > 0) {
+            //console.log(collectionName, 2, relationReferences)
+            //batch.collection(collectionName).update(result.id, relationReferences, requestOptions);
             await this.pb.collection(collectionName).update(result.id, relationReferences, requestOptions);
         }
+
+        //await batch.send()
 
         if (depth === 0 && showToast) {
             this.toastService.success();

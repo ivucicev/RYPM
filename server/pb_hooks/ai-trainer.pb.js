@@ -41,7 +41,7 @@ onRecordCreate((e) => {
             properties: {
                 mode: { type: "string", enum: ["last_session", "progress_1m"] },
                 window_days: { type: "integer", minimum: 7, maximum: 90, default: 30 },
-                logs: { type: "string", description: "Raw lines: 'YYYY-MM-DD | Exercise | reps@weight, ... | [BW=kg]'" },
+                //logs: { type: "string", description: "Raw lines: 'YYYY-MM-DD | Exercise | reps@weight, ... | [BW=kg]'" },
                 exercises: { type: "array", items: { type: "string" }, description: "Optional filter (e.g., ['Back Squat','Bench Press'])." }
             },
             required: ["mode"],
@@ -97,7 +97,7 @@ onRecordCreate((e) => {
                 "Authorization": "Bearer " + process.env.OPENAI_API_KEY
             },
             body: JSON.stringify({
-                model: "gpt-4o-mini",
+                model: "gpt-5-nano",
                 previous_response_id: previous_response_id,
                 tool_choice: "none",
                 input: [
@@ -113,7 +113,8 @@ onRecordCreate((e) => {
     }
 
     const createWorkoutProgram = (message, unit) => {
-        try {            
+        try {
+            $app.logger().warn('Calling workout creation ***', message, unit);
             return $http.send({
                 url: "https://api.openai.com/v1/responses",
                 method: "POST",
@@ -136,7 +137,7 @@ onRecordCreate((e) => {
                             schema: {
                                 type: "object",
                                 properties: {
-                                    durationInWeeks: { type: "string" },
+                                    numberOfWeeks: { type: "string" },
                                     name: { type: "string" },
                                     description: { type: "string" },
                                     days: {
@@ -177,7 +178,7 @@ onRecordCreate((e) => {
                                         }
                                     }
                                 },
-                                required: ["days", "durationInWeeks", "name", "description"],
+                                required: ["days", "numberOfWeeks", "name", "description"],
                                 additionalProperties: false
                             }
                         }
@@ -191,7 +192,7 @@ onRecordCreate((e) => {
         }
     }
 
-    const createMealPlan = (message) => {
+    const createMealPlan = (message, unit) => {
         return $http.send({
             url: "https://api.openai.com/v1/responses",
             method: "POST",
@@ -200,9 +201,10 @@ onRecordCreate((e) => {
                 "Authorization": "Bearer " + process.env.OPENAI_API_KEY
             },
             body: JSON.stringify({
-                model: "gpt-4o-mini",
+                model: "gpt-5-nano",
                 instructions:
-                    "Create a meal plan based on this message: " + message +
+                    "Unit is: " + unit +
+                    ". Create a meal plan based on this message: " + message +
                     ". Return the plan as plain text, human-readable. No JSON, no schema.",
                 text: {
                     format: { type: "text" }
@@ -221,7 +223,7 @@ onRecordCreate((e) => {
                 "Authorization": "Bearer " + process.env.OPENAI_API_KEY
             },
             body: JSON.stringify({
-                model: "gpt-4o-mini",
+                model: "gpt-5-nano",
                 instructions:
                     "Analyze progress and workout based on this data: " + message +
                     ". Return the analyzed data as plain text, human-readable. No JSON, no schema.",
@@ -242,13 +244,25 @@ onRecordCreate((e) => {
                 "Authorization": "Bearer " + process.env.OPENAI_API_KEY
             },
             body: JSON.stringify({
-                model: "gpt-4o-mini",
-                instructions: "You are an AI personal trainer. Ask short questions to fill required fields for create_workout_program. When ready, call the tool. If user asks about meal plan, ask to fill some fields and call create_meal_plan. If user asks for workout progress analyze call analyze_progress.",
+                model: "gpt-5-nano",
+                instructions: `You are an AI personal trainer. Ask short questions to fill required fields for create_workout_program. When ready, call the tool. If user asks about meal plan, ask to fill some fields and call create_meal_plan. If user asks for workout progress analyze call analyze_progress.`,
                 tools: [CREATE_WORKOUT_PROGRAM_SCHEMA, ANALYZE_PROGRESS_SCHEMA, CREATE_MEAL_PLAN_SCHEMA],
                 tool_choice: "auto",
                 input: [...msgs]
             })
         });
+    }
+
+    const getKgsOrLbs = () => {
+        const weightType = new DynamicModel({
+            defaultWeightType: -0,
+        });
+
+        $app.db()
+            .newQuery(`SELECT defaultWeightType FROM users`)
+            .bind({ "user": e.record.id }).one(weightType);
+
+        return weightType.defaultWeightType == 2 ? 'kg' : 'lb';
     }
 
     let BASE = ``;
@@ -336,7 +350,7 @@ onRecordCreate((e) => {
         if (!calls.length) {
             calls = (data.output || [])
                 .flatMap(o => o.content || [])
-                .filter(c => c.type === "tool_call")
+                .filter(c => c.type === "function_call")
                 .map(c => ({
                     name: c.tool_call?.name,
                     args: JSON.parse(c.tool_call?.arguments || "{}"),
@@ -348,25 +362,13 @@ onRecordCreate((e) => {
 
         if (call && call.name === "create_workout_program") {
 
-            const weightType = new DynamicModel({
-                defaultWeightType: -0,
-            });
 
-            $app.db()
-                .newQuery(`SELECT defaultWeightType
-                               FROM users`)
-                .bind({
-                    "user": e.record.id
-                })
-                .one(weightType);
+            const kgsOrLbs = getKgsOrLbs();
 
-            const kgsOrLbs = weightType.defaultWeightType == 2 ? 'kg' : 'lb';
-
-            const wo = createWorkoutProgram(textChunks, kgsOrLbs);
+            const wo = createWorkoutProgram(JSON.stringify(call.args || call.arguments), kgsOrLbs);
 
             if (wo.statusCode != 200) {
                 $app.logger().error(wo.raw)
-
             }
 
             if (!wo) {
@@ -394,7 +396,11 @@ onRecordCreate((e) => {
 
         if (call && call.name === "create_meal_plan") {
 
-            const mp = createMealPlan(textChunks);
+            $app.logger().warn("Calling create meal", JSON.stringify(call.args || call.arguments))
+
+            const kgsOrLbs = getKgsOrLbs();
+
+            const mp = createMealPlan(JSON.stringify(call.args || call.arguments), kgsOrLbs);
 
             let mpChunks = mp.json.output
                 ?.flatMap(o => o.content || [])

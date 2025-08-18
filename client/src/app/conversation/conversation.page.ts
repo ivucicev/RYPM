@@ -15,6 +15,9 @@ import { marked } from 'marked';
 import { ProgramService } from '../core/services/program.service';
 import { FormsService } from '../core/services/forms.service';
 import { AutosaveService } from '../core/services/autosave.service';
+import { WeightType } from '../core/models/enums/weight-type';
+import { ReserveType } from '../core/models/enums/reserve-type';
+import { RepType } from '../core/models/enums/rep-type';
 
 @Pipe({ name: 'markdown' })
 export class MarkdownPipe implements PipeTransform {
@@ -162,16 +165,17 @@ export class ConversationPage implements OnInit {
                 const sets = ex.sets.map((set, setIndex) => ({
                     id: ``,
                     index: setIndex + 1,
-                    type: 0,
-                    weightType: "KG" as unknown as any,
-                    weight: set.weight,
-                    value: set.reps,
+                    type: RepType.Reps,
+                    weightType: this.user.weightType == WeightType.LB ? WeightType.LB : WeightType.KG,
+                    weight: set.weight == 0 ? 20 : set.weight,
+                    value: set.reps == 0 ? 12 : set.reps,
                     rir: set.rir,
                     rpe: set.rpe,
                 }));
 
                 if (template) {
-                    template.sets = sets
+                    template.id = ``,
+                    template.sets = sets;
                     template.restDuration = ex.restDuration;
                 } else {
                     template = {
@@ -192,7 +196,7 @@ export class ConversationPage implements OnInit {
             },
         }));
 
-        const numberOfWeeks = Number(input.durationInWeeks);
+        const numberOfWeeks = Number(input.numberOfWeeks);
 
         const weeks = Array.from({ length: numberOfWeeks }, (_, w) => {
             const weekNum = w + 1;

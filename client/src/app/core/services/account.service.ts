@@ -146,8 +146,8 @@ export class AccountService {
 
         await this.saveAuthToStorage(authData);
 
-        this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
-
+        await this.loginSuccess(authData)
+        //this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
         return authData;
     }
 
@@ -157,7 +157,9 @@ export class AccountService {
 
         await this.saveAuthToStorage(authData);
 
-        this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
+        await this.loginSuccess(authData)
+
+        //this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
 
         return authData;
     }
@@ -168,7 +170,9 @@ export class AccountService {
 
         await this.saveAuthToStorage(authData);
 
-        this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
+        await this.loginSuccess(authData)
+
+        //this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
 
         return authData;
     }
@@ -179,7 +183,9 @@ export class AccountService {
 
         await this.saveAuthToStorage(authData);
 
-        this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
+        await this.loginSuccess(authData)
+
+        //this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
 
         return authData;
     }

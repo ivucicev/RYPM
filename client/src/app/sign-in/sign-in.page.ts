@@ -93,6 +93,14 @@ export class SignInPage implements OnInit {
         await this.accountService.loginWithFacebook();
     }
 
+    async signInGithub() {
+        await this.accountService.loginWithGithub()
+    }
+
+    async signInMS() {
+        await this.accountService.loginWithMS()
+    }
+
     async resendOTP() {
         this.accountService.resendOTP(this.loginForm.controls.email.value);
     }

@@ -38,39 +38,33 @@
             <div class="or_continue_with animate__animated animate__fadeInUp">
                 <h3 class="ion-text-center">{{'Or continue with' | translate}}</h3>
                 <ion-row>
-                    <ion-col>
+                    <!--<ion-col>
                         <ion-button size="large" expand="round" fill="outline" class="btn rem05"
                             (click)="signInFacebook()">
                             <ion-icon [src]="logoFacebook"></ion-icon>
-                            <!-- {{'Facebook' | translate}} -->
                         </ion-button>
-                    </ion-col>
+                    </ion-col>-->
                     <ion-col>
                         <ion-button size="large" expand="round" fill="outline" class="btn rem05"
                             (click)="signInGoogle()">
                             <ion-icon [src]="logoGoogle"></ion-icon>
-                            <!-- {{'Google' | translate}} -->
                         </ion-button>
                     </ion-col>
-                    <ion-col>
+                    <!--<ion-col>
                         <ion-button size="large" expand="round" fill="outline" class="btn rem05"
                             (click)="signInGoogle()">
                             <ion-icon [src]="logoApple"></ion-icon>
-                            <!-- {{'Apple' | translate}} -->
                         </ion-button>
-                    </ion-col>
+                    </ion-col>-->
                     <ion-col>
-                        <ion-button size="large" expand="round" fill="outline" class="btn rem05"
-                            (click)="signInGoogle()">
-                            <ion-icon [src]="logoGH"></ion-icon>
-                            <!-- {{'Apple' | translate}} -->
-                        </ion-button>
-                    </ion-col>
-                    <ion-col>
-                        <ion-button size="large" expand="round" fill="outline" class="btn rem05"
-                            (click)="signInGoogle()">
+                        <ion-button size="large" expand="round" fill="outline" class="btn rem05" (click)="signInMS()">
                             <ion-icon [src]="logoMS"></ion-icon>
-                            <!-- {{'Apple' | translate}} -->
+                        </ion-button>
+                    </ion-col>
+                    <ion-col>
+                        <ion-button size="large" expand="round" fill="outline" class="btn rem05"
+                            (click)="signInGithub()">
+                            <ion-icon [src]="logoGH"></ion-icon>
                         </ion-button>
                     </ion-col>
                 </ion-row>

@@ -162,6 +162,28 @@ export class AccountService {
         return authData;
     }
 
+    async loginWithGithub() {
+        const authData = await this.pocketbase.collection('users').authWithOAuth2({ ...this.oauthParams, provider: 'github' });
+        if (!authData) return new Promise((resolve, _) => resolve(null));
+
+        await this.saveAuthToStorage(authData);
+
+        this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
+
+        return authData;
+    }
+
+    async loginWithMS() {
+        const authData = await this.pocketbase.collection('users').authWithOAuth2({ ...this.oauthParams, provider: 'microsoft' });
+        if (!authData) return new Promise((resolve, _) => resolve(null));
+
+        await this.saveAuthToStorage(authData);
+
+        this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
+
+        return authData;
+    }
+
     async confirmEmail(code: string, model: LoginBM): Promise<void> {
         const res = await this.pocketbase.collection('users').confirmVerification(code);
         if (!res) return;
@@ -247,7 +269,7 @@ export class AccountService {
 
                 const user = await this.getCurrentUser(true);
 
-                await this,this.pocketbase.collection('users').update(user.id, { lastLoginAt: new Date() }, { headers: PB.HEADER.NO_TOAST })
+                await this, this.pocketbase.collection('users').update(user.id, { lastLoginAt: new Date() }, { headers: PB.HEADER.NO_TOAST })
 
                 return true;
             } catch (error) {

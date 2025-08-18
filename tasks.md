@@ -29,6 +29,7 @@ BUGS -
      - [x] no of weeks
      - [x] period select
      - [x] load per miscle group
+     - [x] fix program creation from AI program
      - [ ] When creating program - adding lots of weeks causes 404 in console and lots of requests !HIGH prio -too many requests in general, i think server would crash with 1.5 active users
      - [ ] Navigating exercise left and right calls N requests ever time, even if nothing is changed  !HIGH
      - [ ] EDITING DONE WORKOUT WORKS LIKE DOG SHIT - doesnt work, creates random exercises and deletes old ones very WTF functionallity also updates navigating left and right for no reason
@@ -36,12 +37,11 @@ BUGS -
      - [ ] On openning app first login showed
      - [ ] Safari ios white theme - installation screen not visible
      - [ ] first time navigating to safari ios not showing installation button
-     - [ ] fix program creation from AI program
 
 AI BUGS
-    - [ ] Suggested program doesnt match generated program, example i said 1 day per week -> generates 4 days a week
-    - [ ] Analyze progress also doesnt work correctly, it doesnt use the function as it should
-    - [ ] Test create meal plan
+    - [x] Suggested program doesnt match generated program, example i said 1 day per week -> generates 4 days a week
+    - [x] Analyze progress also doesnt work correctly, it doesnt use the function as it should
+    - [x] Test create meal plan
 
 Workouts screen - 
     - [x] Add program complete test [ok]
@@ -56,7 +56,7 @@ Workouts screen -
     - [x] adding description to workout, that will not be propagated to next workout
     - [x] Rest timer does not get copied when copying or duplicating
     - [x] RPE i RiR
-    - [x] AMRAP
+    - [x] AMRAP (== max.)
     - [x] Drop Sets
     - [x] Super Sets
 
@@ -88,18 +88,23 @@ General -
     - [x] Name, Domain
     - [x] Gihub actions
     - [x] Repo Transfer
+    - [x] Social Login
+    - [x] Google
+    - [x] Github
+    - [x] Microsoft
+    - [?] FB [POSTPONED]
+    - [?] Apple [POSTPONED]
     - [ ] PWA notifications for Rest timer
     - [ ] White labeling
     - [ ] Marketing website
-    - [ ] Social Login
-    - [ ] FB
-    - [ ] Google
-    - [ ] Github
-    - [ ] Microsoft
-    - [ ] Apple
 
 Admin / Trainer -
     - [ ] TBD
     - [ ] Trainer profile
     - [ ] Trainer chat
     - [ ] Trainer part in general
+
+Features & Ideas
+    - [ ] Meal planner weekly, monthly with grocery store list... based on your dietary restrictions and weight and goal to go with supporting workout plan recovery
+    - [ ] Meal planner with tickboxes like Breeakfast [x] Eggs 4x & Tuna 50g & Rice 18g
+    - [ ] Meal planner shopping list based on monthly meal plan

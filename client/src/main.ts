@@ -42,7 +42,7 @@ bootstrapApplication(AppComponent, {
             NgCircleProgressModule.forRoot({}),
         ),
         provideRouter(routes
-            , withPreloading(PreloadAllModules)), provideServiceWorker('ngsw-worker.js', {
+            , withPreloading(PreloadAllModules)), provideServiceWorker('/app/ngsw-worker.js', {
             enabled: !isDevMode(),
             registrationStrategy: 'registerWhenStable:30000'
           })

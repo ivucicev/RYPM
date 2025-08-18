@@ -12,8 +12,6 @@ FROM nginx:alpine
 
 COPY --from=angular-builder /app/www/browser /usr/share/nginx/html/app
 
-#COPY --from=angular-builder /app/.well-known /usr/share/nginx/html/.well-known
-
 COPY ../docker/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80

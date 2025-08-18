@@ -152,7 +152,7 @@ export class AccountService {
     }
 
     async loginWithGoogle() {
-        const authData = await this.pocketbase.collection('users').authWithOAuth2({ ...this.oauthParams, provider: 'google' });
+        const authData = await this.pocketbase.collection('users').authWithOAuth2({ provider: 'google' });
         if (!authData) return new Promise((resolve, _) => resolve(null));
 
         await this.saveAuthToStorage(authData);
@@ -163,7 +163,7 @@ export class AccountService {
     }
 
     async loginWithGithub() {
-        const authData = await this.pocketbase.collection('users').authWithOAuth2({ ...this.oauthParams, provider: 'github' });
+        const authData = await this.pocketbase.collection('users').authWithOAuth2({ provider: 'github' });
         if (!authData) return new Promise((resolve, _) => resolve(null));
 
         await this.saveAuthToStorage(authData);
@@ -174,7 +174,7 @@ export class AccountService {
     }
 
     async loginWithMS() {
-        const authData = await this.pocketbase.collection('users').authWithOAuth2({ ...this.oauthParams, provider: 'microsoft' });
+        const authData = await this.pocketbase.collection('users').authWithOAuth2({ provider: 'microsoft' });
         if (!authData) return new Promise((resolve, _) => resolve(null));
 
         await this.saveAuthToStorage(authData);

@@ -45,8 +45,6 @@
                     },
                     "configurations": {
                         "production": {
-                            "baseHref": "/app/", 
-                            "deployUrl": "/app/",
                             "optimization": true,
                             "budgets": [
                                 {

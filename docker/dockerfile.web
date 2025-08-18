@@ -10,7 +10,7 @@ RUN ng build --configuration production
 
 FROM nginx:alpine
 
-COPY --from=angular-builder /app/www/browser /usr/share/nginx/html/app
+COPY --from=angular-builder /app/www/browser /usr/share/nginx/html
 
 #COPY --from=angular-builder /app/.well-known /usr/share/nginx/html/.well-known
 

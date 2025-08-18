@@ -2,12 +2,12 @@
 
 set -e
 
-mkdir -p /usr/share/nginx/html/app/assets/environment
+mkdir -p /usr/share/nginx/html/assets/environment
 
 API_URL="${API_URL:-http://localhost:8080}"
 
 
-ENV_FILE="/usr/share/nginx/html/app/assets/environment/env.js"
+ENV_FILE="/usr/share/nginx/html/assets/environment/env.js"
 
 printf "window.env = {\n" > "$ENV_FILE"
 printf "  api: \"%s\",\n" "$API_URL" >> "$ENV_FILE"

@@ -90,21 +90,36 @@
             <div class="ion-padding-x">
                 <h6 class="ion-display-flex flex">
                     <div class="ion-flex-1 flex50 ion-padding-y">
-                        {{ 'Total volume' | translate }}
+                        {{ 'Effort' | translate }}
                     </div>
-                    <ion-select class="ion-flex-1 flex50" style="padding-top: 3px" (ionChange)="onPeriodChange($event)" toggleIcon="filter-outline"
-                        [(ngModel)]="selectedPeriod" interface="popover" label="{{ '' | translate }}">
+                    <ion-select class="ion-flex-1 flex50" style="padding-top: 3px" (ionChange)="onPeriodChange($event)"
+                        toggleIcon="filter-outline" [(ngModel)]="selectedPeriod" interface="popover"
+                        label="{{ '' | translate }}">
                         @for (item of periods; track $index) {
                         <ion-select-option [value]="item.id">{{ item.name }}</ion-select-option>
                         }
                     </ion-select>
                 </h6>
-                <canvas #volumeChart></canvas>
-                <h6>{{ 'Effort' | translate }}</h6>
                 <canvas #effortChart></canvas>
                 <h6>
-                    <ion-select interface="modal" (ionChange)="maxPerWorkoutExerciseChange($event)"
-                        [(ngModel)]="maxPerWorkoutExercise" label="{{ 'Max. Load' | translate }}">
+                    {{ 'Total volume' | translate }}
+                </h6>
+                <canvas #volumeChart></canvas>
+                <h6>
+                    <ion-select interface="modal" toggleIcon="filter-outline"
+                        (ionChange)="volumePerMuscleGroupChange($event)" [(ngModel)]="volumePerMuscleGroup"
+                        label="{{ 'Volume per muscle group' | translate }}">
+                        @for (item of allMuscles; track $index) {
+                        <ion-select-option [value]="item">{{ item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()
+                            | translate }}</ion-select-option>
+                        }
+                    </ion-select>
+                </h6>
+                <canvas #maxPerMuscleGroup></canvas>
+                <h6>
+                    <ion-select interface="modal" toggleIcon="filter-outline"
+                        (ionChange)="maxPerWorkoutExerciseChange($event)" [(ngModel)]="maxPerWorkoutExercise"
+                        label="{{ 'Max. Load' | translate }}">
                         @for (item of allExercises; track $index) {
                         <ion-select-option [value]="item">{{ item }}</ion-select-option>
                         }
@@ -112,8 +127,9 @@
                 </h6>
                 <canvas #maxPerWorkout></canvas>
                 <h6>
-                    <ion-select interface="modal" (ionChange)="maxLoadPerWorkoutExerciseChange($event)"
-                        [(ngModel)]="maxLoadPerWorkoutExercise" label="{{ 'Max. Volume' | translate }}">
+                    <ion-select interface="modal" toggleIcon="filter-outline"
+                        (ionChange)="maxLoadPerWorkoutExerciseChange($event)" [(ngModel)]="maxLoadPerWorkoutExercise"
+                        label="{{ 'Max. Volume' | translate }}">
                         @for (item of allExercises; track $index) {
                         <ion-select-option [value]="item">{{ item }}</ion-select-option>
                         }
@@ -121,7 +137,8 @@
                 </h6>
                 <canvas #maxLoadPerWorkout></canvas>
                 <h6>
-                    <ion-select interface="modal" (ionChange)="maxVolumePerWorkoutExerciseChange($event)"
+                    <ion-select interface="modal" toggleIcon="filter-outline"
+                        (ionChange)="maxVolumePerWorkoutExerciseChange($event)"
                         [(ngModel)]="maxVolumePerWorkoutExercise" label="{{ 'Total Volume' | translate }}">
                         @for (item of allExercises; track $index) {
                         <ion-select-option [value]="item">{{ item }}</ion-select-option>
@@ -271,7 +288,7 @@
                 }
             </div>
             <ion-footer class="ion-text-center">
-                <ion-button (click)="share()">
+                <ion-button (click)="share()" class="ion-margin">
                     {{'Share' | translate }} <ion-icon class="ion-margin-start" [src]="shareIcon"></ion-icon>
                 </ion-button>
             </ion-footer>

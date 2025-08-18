@@ -2,7 +2,7 @@
     "name": "rypm-app",
     "version": "0.9.26",
     "author": "ivucicev@gmail.com",
-    "homepage": "https://rypm.app/f",
+    "homepage": "https://rypm.app/",
     "scripts": {
         "ng": "ng",
         "start": "ng serve",

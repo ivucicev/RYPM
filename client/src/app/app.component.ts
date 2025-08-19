@@ -71,17 +71,33 @@ export class AppComponent {
     }
 
     async ngOnInit() {
-        if (!('Notification' in window)) throw new Error('Notifications unsupported');
+        alert('init')
+        if (!('Notification' in window)) {
+            alert('Exists')
+            throw new Error('Notifications unsupported')
+        }
+        alert('permit')
 
         // 1) Ask permission (must be from a user gesture on Safari)
         const perm = await Notification.requestPermission();
-        if (perm !== 'granted') throw new Error('User denied');
-        
+        if (perm !== 'granted') { 
+            alert('Denied')
+
+            throw new Error('User denied');
+        }
+
+        alert('grented')
+
+
         const sub = await (
             "pushManager" in window
                 ? (window as any).pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: this.b64urlToU8("BEaY_oTCzI5fYJqxhZX27r63lv7Q0kF_oZiQ24c-vPu9zL4867WOEEKvkdTTKciEFJjIpcc0SPuJmtRSmocklzU") })
                 : (await navigator.serviceWorker.register("/sw.js")).pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: this.b64urlToU8("BEaY_oTCzI5fYJqxhZX27r63lv7Q0kF_oZiQ24c-vPu9zL4867WOEEKvkdTTKciEFJjIpcc0SPuJmtRSmocklzU") })
         );
+
+            alert('Sub')
+            alert(JSON.stringify(sub))
+
 
         setTimeout(async () => {
             // after subscribing to push (sub is the PushSubscription JSON)

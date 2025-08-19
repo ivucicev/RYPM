@@ -1,4 +1,4 @@
-import { Component, input, Input, OnChanges, output, Output, signal, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, input, Input, OnChanges, output, signal, SimpleChanges, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormArray } from '@angular/forms';
 import { ModalController, IonModal, ItemReorderEventDetail, IonButton, IonIcon, IonList, IonItem, IonLabel, IonToolbar, IonSegmentButton, IonSegment, IonPicker, IonPickerColumn, IonPickerColumnOption, IonButtons, IonHeader, IonTitle, IonReorderGroup, IonItemOptions, IonReorder, IonItemOption, IonCheckbox, IonNote, IonBadge } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
@@ -16,6 +16,8 @@ import { ReserveType } from 'src/app/core/models/enums/reserve-type';
 import { PocketbaseService } from 'src/app/core/services/pocketbase.service';
 import { listCircleOutline } from 'ionicons/icons';
 import { WEIGHTS } from 'src/app/core/constants/weights';
+import { Workout } from 'src/app/core/models/collections/workout';
+import { WorkoutState } from 'src/app/core/models/enums/workout-state';
 
 @Component({
     selector: 'app-exercise-form',
@@ -83,6 +85,7 @@ export class ExerciseFormComponent implements OnChanges {
 
     @Input() workoutMode: boolean = false;
     @Input() exercise: ExerciseFormGroup;
+    @Input() workout: Workout;
 
     onCompletedEvent = output<number>();
     onAllCompletedEvent = output<void>();
@@ -135,7 +138,7 @@ export class ExerciseFormComponent implements OnChanges {
      * Automatically fills the current values and weights of each set based on the expected values.
      */
     autoFillDefaults() {
-        if (!this.workoutMode || this.exercise.controls.completed.value) {
+        if (!this.workoutMode || this.workout?.state == WorkoutState.Completed) {
             return;
         }
 
@@ -159,25 +162,6 @@ export class ExerciseFormComponent implements OnChanges {
             form.controls.restSkipped.setValue(false);
 
             this.onCompleted(setIndex);
-
-            var allCompleted = true;
-            for (let i = 0; i < this.setsArray.length; i++) {
-                const formTmp = this.setsArray.at(i);
-                if (!formTmp.controls.completed.value && i != setIndex) {
-                    allCompleted = false;
-                }
-            }
-
-            if (allCompleted) {
-                //setTimeout(() => {
-                this.exercise.controls.completed.setValue(true);
-                this.exercise.controls.completedAt.setValue(new Date());
-                this.onAllCompletedEvent.emit();
-                //})
-            } else {
-                this.exercise.controls.completed.setValue(false);
-                this.exercise.controls.completedAt.setValue(null);
-            }
         } else {
             form.controls.completedAt.setValue(null);
         }
@@ -187,6 +171,7 @@ export class ExerciseFormComponent implements OnChanges {
             this.onSupersetCompletedEvent.emit(this.exercise?.controls?.superset?.value);
         }
 
+        this.exercise.markAsPristine({ onlySelf: true }); // prevent set dirty from propagating to main form (triggers update)
         form.markAsDirty({ onlySelf: true });
     }
 

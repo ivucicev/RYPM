@@ -179,7 +179,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
     }
 
     getNextIncompleteExercise(exercises: Exercise[]): Exercise | undefined {
-        return exercises?.find(ex => !ex.completed);
+        return exercises.find(ex => ex.sets?.some(set => !set.completed));
     }
 
     goToNextExercise() {
@@ -224,28 +224,6 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
     selectExercise(index: number) {
         if (!this.exercises[index]) return;
-
-        const currentExerciseIndex = this.currentExerciseIndex();
-
-        const currentExercise = this.exercises[currentExerciseIndex];
-        const nextExercise = this.exercises[index];
-
-        if (index > currentExerciseIndex) {
-            currentExercise.controls.completed.setValue(true);
-            nextExercise.controls.completed.setValue(false);
-        } else if (nextExercise.controls.completed.value) {
-            currentExercise.controls.completed.setValue(false);
-            nextExercise.controls.completed.setValue(false);
-        }
-
-        // TODO: UNDEVBUGGABLE -> why do we call here upsertRecord?
-        if (currentExercise.dirty) {
-            this.pocketbaseService.upsertRecord('exercises', currentExercise.value, false, true);
-        }
-        if (nextExercise.dirty) {
-            this.pocketbaseService.upsertRecord('exercises', nextExercise.value, false, true);
-        }
-
         this.currentExerciseIndex.set(index);
     }
 

@@ -190,8 +190,6 @@ export class FormsService implements OnDestroy {
             category: [exercise?.category],
             notes: [exercise?.notes ?? ''],
             restDuration: [exercise?.restDuration ?? 0],
-            completed: [exercise?.completed ?? false],
-            completedAt: [exercise?.completedAt],
             superset: [exercise?.superset],
             sets: this.formBuilder.array<ExerciseSetFormGroup>([]),
             workout: [exercise?.workout ?? null]

@@ -47,7 +47,7 @@
         }
         <div class="sets-container">
             <app-exercise-form #exerciseForm [style.width]="'100%'" [exercise]="currentExercise()" [workoutMode]="true"
-                (onCompletedEvent)="startRest($event)" 
+                (onCompletedEvent)="startRest($event)" [workout]="workout"
                 (onSupersetCompletedEvent)="goToNextExerciseSuperSet($event)"
                 (onAllCompletedEvent)="goToNextExercise()">
             </app-exercise-form>

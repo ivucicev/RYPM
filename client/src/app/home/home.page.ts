@@ -164,7 +164,7 @@ export class HomePage {
     }
 
     getNextIncompleteExercise(exercises: Exercise[]): Exercise | undefined {
-        return exercises.find(ex => !ex.completed && ex.sets?.some(set => !set.completed));
+        return exercises.find(ex => ex.sets?.some(set => !set.completed));
     }
 
     getNextIncompleteSet(sets: Set[] | undefined): Set | undefined {

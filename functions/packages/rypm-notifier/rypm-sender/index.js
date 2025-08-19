@@ -26,7 +26,7 @@ WebPush.setVapidDetails(
 export async function main(context) {
 
 	const body = context;
-	const { token, title = "Hi", body: msgBody = "From DO Functions", navigate = "https://your.app/" } = body || {};
+	const { token, title = "Hi", body: msgBody = "From DO Functions", navigate = "https://app.rypm.app/" } = body || {};
 	if (!token) return { statusCode: 400, body: "token missing" };
 
 	const key = b64uToBuf(process.env.PST_SECRET || "");

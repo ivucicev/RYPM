@@ -121,7 +121,7 @@ export class AppComponent {
                     token,
                     title: "Ping",
                     body: "Only this device",
-                    navigate: "https://your.app/inbox"
+                    navigate: "https://app.rypm.app/"
                 })
             });
         }, 20000)

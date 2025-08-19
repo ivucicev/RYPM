@@ -158,7 +158,23 @@ export class PocketbaseService {
 
         this.pb.beforeSend = async (url, options) => {
             if (this.currentUser) {
-                if (options.body) {
+                if (options.body instanceof FormData) {
+                    let batchRequest: string | null = null;
+                    const batchKey = '@jsonPayload';
+
+                    options.body.forEach((value, key) => {
+                        if (key == batchKey) {
+                            var batchRequestTmp = JSON.parse(value as string);
+                            batchRequestTmp.requests.forEach((req: any) => {
+                                req.body.user = this.currentUser.id;
+                            })
+                            batchRequest = JSON.stringify(batchRequestTmp);
+                        }
+                    })
+                    options.body.set(batchKey, batchRequest);
+                }
+
+                if (options.body && typeof options.body === 'object') {
                     options.body.user = this.currentUser.id;
                 }
             }

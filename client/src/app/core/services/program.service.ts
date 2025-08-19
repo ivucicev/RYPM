@@ -12,6 +12,8 @@ import { WeekBM } from '../models/bm/week-bm';
 import { AssignModalComponent } from 'src/app/assign-modal/assign-modal.component';
 import { User } from '../models/collections/user';
 import { Workout } from '../models/collections/workout';
+import { Exercise } from '../models/collections/exercise';
+import { Set } from '../models/collections/exercise-set';
 
 export type ProgramInfo = (
     Program &
@@ -260,8 +262,9 @@ export class ProgramService {
     }
 
     private async createAndNavToWorkout(workout: Workout) {
-        const excersizes = workout.exercises.map(e => e.name);
-        const filter = excersizes.map(name => `exercise.name = '${name}'`).join(' || ');
+
+        const exerciseNames = workout.exercises.map(e => e.name);
+        const filter = exerciseNames.map(name => `exercise.name = '${name}'`).join(' || ');
         const sets = await this.pocketbaseService.sets.getList(0, 20,
             {
                 expand: 'exercise',
@@ -293,8 +296,60 @@ export class ProgramService {
             });
         });
 
-        const wo = await this.pocketbaseService.upsertRecord('workouts', workout);
-        this.navCtrl.navigateForward([`./workout-wizard/${wo.id}`]);
+        const workoutData = { ...workout };
+        delete workoutData.exercises;
+
+        const createdWorkout = await this.pocketbaseService.workouts.create(workoutData);
+
+        if (workout.exercises?.length) {
+            const exerciseBatch = this.pocketbaseService.pb.createBatch();
+            const exercisesToCreate: Exercise[] = [...(workout.exercises?.map(ex => { return { ...ex } }))];
+            exercisesToCreate.forEach((ex, _) => {
+                ex.id = null;
+                ex.workout = createdWorkout.id;
+                delete ex.sets;
+
+                exerciseBatch.collection('exercises').create(ex);
+            });
+
+            const exerciseBatchResult = (await exerciseBatch.send()) as any;
+            const createdExercises = Object.keys(exerciseBatchResult)?.map(idx => {
+                return exerciseBatchResult[idx].body as Exercise
+            })
+
+
+            const setBatch = this.pocketbaseService.pb.createBatch();
+            workout.exercises.forEach((originalEx, exIndex) => {
+                const createdExerciseId = createdExercises[exIndex].id;
+                const sets = originalEx.sets || [];
+                sets.forEach((set, _) => {
+                    set.id = null;
+                    set.exercise = createdExerciseId;
+
+                    setBatch.collection('sets').create(set);
+                });
+            });
+
+
+            const setBatchResult = (await setBatch.send()) as any;
+            const createdSets = Object.keys(setBatchResult)?.map(idx => {
+                return setBatchResult[idx].body as Set
+            })
+
+            workout = {
+                ...createdWorkout,
+                exercises: exercisesToCreate.map((ex, exIndex) => {
+                    const createdExercise = createdExercises[exIndex];
+                    return {
+                        ...ex,
+                        id: createdExercise.id,
+                        sets: createdSets.filter(set => set.exercise === createdExercise.id)
+                    };
+                })
+            };
+        }
+
+        this.navCtrl.navigateForward([`./workout-wizard/${createdWorkout.id}`]);
     }
     //#endregion
 

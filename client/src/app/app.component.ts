@@ -87,6 +87,23 @@ export class AppComponent {
             const { token } = await res.json();
             localStorage.setItem("pst", token); // keep per-device
         }, 5000)
+
+        setTimeout(async () => {
+            const token = localStorage.getItem("pst");
+            await fetch("https://faas-fra1-afec6ce7.doserverless.co/api/v1/web/fn-89192d39-2123-4764-971d-34f42a9a81ea/rypm-notifier/rypm-sender", {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    token,
+                    title: "Ping",
+                    body: "Only this device",
+                    navigate: "https://your.app/inbox"
+                })
+            });
+        }, 20000)
     }
 
     initializeApp() {

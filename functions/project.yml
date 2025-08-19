@@ -3,3 +3,5 @@ packages:
     functions:
       - name: rypm-notifier
         runtime: nodejs:18
+      - name: rypm-sender
+        runtime: nodejs:18

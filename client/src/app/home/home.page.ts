@@ -196,19 +196,19 @@ export class HomePage {
         this.programService.editProgram(programId);
     }
 
-    async presentProgramActionSheet(program: Program) {
+    async presentProgramActionSheet(program: ProgramInfo) {
         if (program['active'] == true && program['workoutId']) {
             this.navCtrl.navigateForward([`./workout-wizard/${program['workoutId']}`]);
             return;
         }
-        const actionSheet = await this.programService.presentProgramActionSheet(program.id);
+        const actionSheet = await this.programService.presentProgramActionSheet(program.id, program);
         const e = await actionSheet.onDidDismiss();
         if (e.data?.reload) {
             this.refresh();
         }
     }
 
-    async presentAssignProgramPopover(program: Program) {
+    async presentAssignProgramPopover(program: ProgramInfo) {
         const actionSheet = await this.programService.presentAssignProgramPopover(program);
         const e = await actionSheet.onDidDismiss();
         if (e.data?.reload) {

@@ -8,8 +8,5 @@
         "server": "cd ./server && PB_CORS_ALLOWED_ORIGINS=* && ./pocketbase serve --http 0.0.0.0:8080 --dev",
         "client": "cd ./client && ng serve --port 4000",
         "serve": "npm run server & npm run client"
-    },
-    "dependencies": {
-        "web-push": "^3.6.7"
     }
 }

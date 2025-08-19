@@ -71,6 +71,12 @@ export class AppComponent {
     }
 
     async ngOnInit() {
+        if (!('Notification' in window)) throw new Error('Notifications unsupported');
+
+        // 1) Ask permission (must be from a user gesture on Safari)
+        const perm = await Notification.requestPermission();
+        if (perm !== 'granted') throw new Error('User denied');
+        
         const sub = await (
             "pushManager" in window
                 ? (window as any).pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: this.b64urlToU8("BEaY_oTCzI5fYJqxhZX27r63lv7Q0kF_oZiQ24c-vPu9zL4867WOEEKvkdTTKciEFJjIpcc0SPuJmtRSmocklzU") })

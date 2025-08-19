@@ -119,8 +119,8 @@ export class AppComponent {
                 },
                 body: JSON.stringify({
                     token,
-                    title: "Ping",
-                    body: "Only this device",
+                    title: "Timer Expired",
+                    body: "Next workout: Dumbbell Press",
                     navigate: "https://app.rypm.app/"
                 })
             });

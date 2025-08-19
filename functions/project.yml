@@ -1,0 +1,5 @@
+packages:
+  - name: rypm-notifier
+    functions:
+      - name: rypm-notifier
+        runtime: nodejs:18

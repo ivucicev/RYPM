@@ -1,8 +1,8 @@
 @if (workout) {
 <ion-footer class="bg_transparent" class="ion-padding-x">
-    
-    <app-rest-badge [initialTime]="lastCompletedSet?.completedAt" #restBadge (onRestSkippedEvent)="onRestSkipped()"
-        [duration]="lastCompletedSetExercise?.restDuration" (onTimerCompletedEvent)="timerCompleted()"></app-rest-badge>
+
+    <app-rest-badge #restBadge [initialTime]="lastCompletedSet?.completedAt" (onRestSkippedEvent)="onRestSkipped()"
+        [duration]="lastCompletedSetExercise?.restDuration"></app-rest-badge>
 
     @if (!restBadge.isResting && !timerOnly()) {
     <ion-button size="large" expand="round" shape="round" color="primary" (click)="navToActiveWorkout()">

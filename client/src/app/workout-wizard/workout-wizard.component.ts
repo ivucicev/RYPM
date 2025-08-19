@@ -25,6 +25,8 @@ import { ExerciseTemplateDetailComponent } from '../exercise-template/exercise-t
 import { ExerciseEffortModalComponent } from '../exercise-effort-modal/exercise-effort-modal.component';
 import { ToastService } from '../core/services/toast-service';
 import { WakeLockService } from '../core/services/WakeLockService';
+import { StorageService } from '../core/services/storage.service';
+import { StorageKeys } from '../core/constants/storage-keys';
 
 @Component({
     selector: 'app-workout-wizard',
@@ -64,7 +66,12 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         if (currentExercise) {
             this.autosaveService.register<ExerciseBM>(currentExercise, 'exercises', false)
                 .pipe(takeUntil(this.unsubscribeAll))
-                .subscribe();
+                .subscribe(() => {
+                    this.storageService.setItem(StorageKeys.WIZARD_LAST_WORKOUT, {
+                        ...this.workout,
+                        exercises: this.exercises.map(ex => ex.getRawValue()) // update changes
+                    })
+                });
         }
 
         return currentExercise;
@@ -98,7 +105,8 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         private actionSheetCtrl: ActionSheetController,
         private toast: ToastService,
         private alertController: AlertController,
-        private wake: WakeLockService
+        private wake: WakeLockService,
+        private storageService: StorageService
     ) {
     }
 
@@ -159,6 +167,8 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
             ? res.exercises.findIndex(ex => ex.id === nextIncompleteExercise.id)
             : lastExerciseIndex
         );
+
+        this.storageService.setItem(StorageKeys.WIZARD_LAST_WORKOUT, this.workout)
     }
 
     goToNextExerciseSuperSet(superset) {
@@ -232,11 +242,14 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         const setForm = setForms.at(setIndex);
 
         this.lastCompletedSet = setForm;
-        this.lastCompletedSetExercise = this.exercises.find(e => e.controls.sets.controls.find(s => s.controls.id.value == setForm.controls.id.value) != null)
+        this.lastCompletedSetExercise = this.exercises.find(e => e.controls.sets.controls.find(s => s.controls.id.value == setForm.controls.id.value) != null);
+
+        setForm.markAsDirty({ onlySelf: true });
     }
 
     onRestSkipped() {
         this.lastCompletedSet.controls.restSkipped.setValue(true);
+        this.lastCompletedSet.markAsDirty({ onlySelf: true });
     }
 
     async handleUncompletedSets() {

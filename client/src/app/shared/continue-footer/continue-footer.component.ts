@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, viewChild } from '@angular/core';
 import { NavController, IonIcon, IonButton, IonFooter } from '@ionic/angular/standalone';
 import { RestBadgeComponent } from '../rest-badge/rest-badge.component';
 import { PocketbaseService } from 'src/app/core/services/pocketbase.service';
@@ -9,6 +9,8 @@ import { WorkoutState } from 'src/app/core/models/enums/workout-state';
 import { Set } from 'src/app/core/models/collections/exercise-set';
 import { SetBM } from 'src/app/core/models/bm/exercise-set-bm';
 import { PB } from 'src/app/core/constants/pb-constants';
+import { StorageService } from 'src/app/core/services/storage.service';
+import { StorageKeys } from 'src/app/core/constants/storage-keys';
 
 @Component({
     selector: 'app-continue-footer',
@@ -24,11 +26,13 @@ export class ContinueFooterComponent {
     lastCompletedSet: Set = null;
 
     timerOnly = input<boolean>();
-    workoutId = input<string>();
+
+    restBadge = viewChild(RestBadgeComponent);
 
     constructor(
         private pocketbaseService: PocketbaseService,
-        private navCtrl: NavController
+        private navCtrl: NavController,
+        private storageService: StorageService
     ) {
         /* if ('Notification' in window && Notification.permission !== 'granted') {
              Notification.requestPermission();
@@ -45,23 +49,49 @@ export class ContinueFooterComponent {
     }
 
     async refresh() {
+        this.restBadge()?.stopRest();
 
-        if (!this.workoutId()) return;
-
-        this.workout = null;
         this.lastCompletedSet = null;
         this.lastCompletedSetExercise = null;
-        const workout = await this.pocketbaseService.workouts.getFirstListItem(
-            `state = ${WorkoutState.InProgress}` + (this.workoutId() ? (` && id = "${this.workoutId()}"`) : ''),
-            {
-                expand: 'exercises_via_workout,exercises_via_workout.sets_via_exercise',
-                sort: '-updated',
-            }
-        )
-        if (!workout) {
+        this.workout = null;
+
+
+        let workout = await this.storageService.getItem<Workout>(StorageKeys.WIZARD_LAST_WORKOUT)
+        let workoutCheck = null;
+        try {
+            workoutCheck = await this.pocketbaseService.workouts.getFirstListItem(
+                `state = ${WorkoutState.InProgress}`,
+                {
+                    fields: 'id,state'
+                }
+            );
+        } catch {
+            // not found
+            this.storageService.removeItem(StorageKeys.WIZARD_LAST_WORKOUT);
             return;
         }
 
+        // fetch only if the workout is outdated
+        if (!workout || workout.state != WorkoutState.InProgress || workoutCheck.id != workout.id || true) {
+            this.storageService.removeItem(StorageKeys.WIZARD_LAST_WORKOUT);
+
+            this.workout = null;
+            this.lastCompletedSet = null;
+            this.lastCompletedSetExercise = null;
+
+            workout = await this.pocketbaseService.workouts.getFirstListItem(
+                `state = ${WorkoutState.InProgress}`,
+                {
+                    expand: 'exercises_via_workout,exercises_via_workout.sets_via_exercise',
+                    sort: '-updated',
+                }
+            )
+            if (!workout) {
+                return;
+            }
+
+            this.storageService.setItem(StorageKeys.WIZARD_LAST_WORKOUT, workout);
+        }
         this.workout = workout;
 
         const lastCompletedSet = this.workout.exercises.flatMap(e => e.sets)
@@ -73,7 +103,6 @@ export class ContinueFooterComponent {
         }
 
         const lastCompletedSetExercise = this.workout.exercises.find(e => e.sets.includes(lastCompletedSet));
-
         if (this.lastCompletedSet?.restSkipped != lastCompletedSet.restSkipped
             || this.lastCompletedSet?.completedAt != lastCompletedSet.completedAt
             || this.lastCompletedSet?.id != lastCompletedSet.id
@@ -81,10 +110,6 @@ export class ContinueFooterComponent {
             this.lastCompletedSet = lastCompletedSet;
             this.lastCompletedSetExercise = lastCompletedSetExercise;
         }
-
-    }
-
-    timerCompleted() {
 
     }
 

@@ -41,9 +41,10 @@ BUGS -
      - [ ] setting completed false on whole exercise  when it is already false
      - [ ] continue footer missing
      - [ ] start workout batch creating sets
-     - [ ] home scree opening popover fetches programs again?
+     - [ ] home screen opening popover fetches programs again?
      - [ ] starting workout calls collection/sets and returns empty
-
+     - [ ] (?) put continue footer in tabs page so there are less frequent requests
+     - [ ] (?) active workout (from wizard) service? used in multiple places, handle locally for less freq. requests
 
 UI/UX BUGS
      - [x] On openning app first login showed

@@ -88,11 +88,11 @@
         <div class="form">
             <ion-list lines="none">
                 <ion-item>
-                    <ion-input-otp size="small" fill="solid" (ionComplete)="completeOTPLogin($event)"
-                        class="margin-auto" length="6"> {{ 'Didn\'t get a code?' | translate }} <a
+                    <ion-input-otp fill="solid" (ionComplete)="completeOTPLogin($event)"
+                        class="margin-auto" length="4"> {{ 'Didn\'t get a code?' | translate }} <a
                             (click)="resendOTP()">{{'Resend the code' | translate}}</a> </ion-input-otp>
                 </ion-item>
-                <ion-item>
+                <ion-item class="ion-padding ion-text-center">
                     <ion-button slot="start" fill="clear" size="small" expand="round"
                         class="animate__animated animate__fadeInUp" (click)="otpActive = false">
                         <ion-icon name="chevron-back-outline"></ion-icon>

@@ -4,10 +4,10 @@ import { ActionSheetController, AlertController, LoadingController, ModalControl
 import { lastValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Template } from '../models/collections/template';
-import { Workout } from '../models/workout';
 import { WorkoutState } from '../models/enums/workout-state';
 import { User } from '../models/collections/user';
 import { AssignModalComponent } from 'src/app/assign-modal/assign-modal.component';
+import { Workout } from '../models/collections/workout';
 
 export type TemplateActionKey = { [key in keyof typeof TEMPLATE_ACTIONS]?: boolean };
 

@@ -1,5 +1,4 @@
 import { RepType } from "../enums/rep-type";
-import { ReserveType } from "../enums/reserve-type";
 import { WeightType } from "../enums/weight-type";
 
 export interface SetBM {
@@ -25,6 +24,8 @@ export interface SetBM {
     rir?: number;
     dropset?: number;
 
+    // parent refs
+    exercise: string;
 }
 
 

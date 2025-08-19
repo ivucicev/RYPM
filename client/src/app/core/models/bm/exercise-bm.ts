@@ -21,6 +21,8 @@ export interface ExerciseBM {
 
     sets?: SetBM[];
 
-    superset? : string;
+    superset?: string;
 
+    // parent refs
+    workout: string;
 }

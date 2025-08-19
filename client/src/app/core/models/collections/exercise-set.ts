@@ -26,6 +26,9 @@ export interface Set extends EntityBase {
     rir?: number;
     rpe?: number;
     dropset?: number;
+
+    // parent refs
+    exercise: string;
 }
 
 

@@ -54,7 +54,7 @@ export class ContinueFooterComponent {
         const workout = await this.pocketbaseService.workouts.getFirstListItem(
             `state = ${WorkoutState.InProgress}` + (this.workoutId() ? (` && id = "${this.workoutId()}"`) : ''),
             {
-                expand: 'exercises,exercises.sets',
+                expand: 'exercises_via_workout,exercises_via_workout.sets_via_exercise',
                 sort: '-updated',
             }
         )

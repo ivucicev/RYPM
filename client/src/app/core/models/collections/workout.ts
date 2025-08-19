@@ -11,7 +11,6 @@ export interface Workout extends EntityBase {
 
     completedAt?: Date;
 
-    day?: Day;
     effort?: number; // total effort in seconds
     comment?: string;
 
@@ -20,4 +19,7 @@ export interface Workout extends EntityBase {
     tagsToShow?: string[];
     load?: number;
     user?: User
+
+    // parent refs
+    day?: string;
 }

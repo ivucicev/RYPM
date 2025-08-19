@@ -83,7 +83,7 @@ export class HomePage {
         const workouts = await this.pocketbaseService.workouts.getFullList({
             sort: '-start',
             filter: `state = ${WorkoutState.InProgress}`,
-            expand: 'exercises,exercises.sets',
+            expand: 'exercises_via_workout,exercises_via_workout.sets_via_exercise',
         })
 
         this.workouts = workouts.map(w => {
@@ -109,22 +109,22 @@ export class HomePage {
 
         const programs = await this.pocketbaseService.programs.getFullList({
             sort: '-updated',
-            expand: 'weeks,weeks.days,weeks.days.workout'
+            expand: 'weeks_via_program,weeks_via_program.days_via_week.workouts_via_day'
         })
 
         this.programs = programs.map(p => {
             const tagsToTake = 3;
-
             // Check if any workout in any day of any week has state == 1
             const hasInProgress = p.weeks?.some(week =>
                 week?.days?.some(day => {
+                    // TODO: map better
+                    day.workout = day.workouts?.length ? day.workouts[0] : null;
                     if (day?.workout?.state === WorkoutState.InProgress) {
                         p['workoutId'] = day.workout.id;
                         return true;
                     }
                     return false;
-                }
-                )
+                })
             );
 
             if (hasInProgress) {
@@ -151,10 +151,13 @@ export class HomePage {
                 tagsToShow.push(`+${tags.length - 3}`);
             }
 
-            return {
+            const mapped =
+            {
                 ...ProgramService.mapProgram(p),
                 tags: tagsToShow
             }
+
+            return mapped;
         });
         this.programs = this.programs.sort((a: any, b: any) => (b['active'] === true) as any - ((a['active'] === true) as any));
 

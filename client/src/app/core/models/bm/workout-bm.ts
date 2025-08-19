@@ -10,4 +10,7 @@ export interface WorkoutBM {
     effort?: number;
     comment?: string;
     exercises: ExerciseBM[];
+
+    // parent refs
+    day?: string;
 }

@@ -1,5 +1,5 @@
-import { Component, EventEmitter, input, Input, OnChanges, output, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { ReactiveFormsModule, FormsModule, FormArray } from '@angular/forms';
+import { Component, input, Input, OnChanges, output, Output, signal, SimpleChanges, ViewChild } from '@angular/core';
+import { ReactiveFormsModule, FormArray } from '@angular/forms';
 import { ModalController, IonModal, ItemReorderEventDetail, IonButton, IonIcon, IonList, IonItem, IonLabel, IonToolbar, IonSegmentButton, IonSegment, IonPicker, IonPickerColumn, IonPickerColumnOption, IonButtons, IonHeader, IonTitle, IonReorderGroup, IonItemOptions, IonReorder, IonItemOption, IonCheckbox, IonNote, IonBadge } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { RepType } from 'src/app/core/models/enums/rep-type';
@@ -38,6 +38,8 @@ import { WEIGHTS } from 'src/app/core/constants/weights';
 })
 export class ExerciseFormComponent implements OnChanges {
 
+    private supersetExercise;
+
     listCircleIcon = listCircleOutline;
     durationOptions: { value: number }[] = [
         { value: 0 }
@@ -54,6 +56,8 @@ export class ExerciseFormComponent implements OnChanges {
     repTypes = Object.values(RepType).filter((value) => typeof value === 'number') as RepType[];
 
     selectedSetIndex: number = 0;
+
+    setReorderActive = signal<boolean>(false);
 
     selectedRestValue: any = 0;
     selectedReserveType: any = null;
@@ -91,6 +95,8 @@ export class ExerciseFormComponent implements OnChanges {
     canMoveExerciseUp = input<boolean>(true);
     canMoveExerciseDown = input<boolean>(true);
 
+    onDirtyEvent = output<void>();
+
     @ViewChild('setPickerModal') setPickerModal: IonModal;
     @ViewChild('restPickerModal') restPickerModal: IonModal;
     @ViewChild('exercisePopover') exercisePopover: IonPopover;
@@ -115,7 +121,7 @@ export class ExerciseFormComponent implements OnChanges {
         }
 
         /*if (weightIncrement) {
-            this.weightOptions.length = 0;  
+            this.weightOptions.length = 0;
             for(let i = weightIncrement; i <= 400; i += weightIncrement)
                 this.weightOptions.push(i);
         }*/
@@ -181,6 +187,7 @@ export class ExerciseFormComponent implements OnChanges {
             this.onSupersetCompletedEvent.emit(this.exercise?.controls?.superset?.value);
         }
 
+        form.markAsDirty({ onlySelf: true });
     }
 
     onCompleted(setIndex: number) {
@@ -195,27 +202,44 @@ export class ExerciseFormComponent implements OnChanges {
 
         const sfg = this.programFormService.createSetFormGroup(lastSet);
         sets.push(sfg);
+
+        sets.markAsDirty({ onlySelf: true });
+        this.onDirtyEvent.emit();
     }
 
     removeSet() {
         const setsArray = this.setsArray;
         if (setsArray.length > 1) {
             setsArray.removeAt(setsArray.length - 1);
+
+            this.setsArray.markAsDirty({ onlySelf: true });
+            this.onDirtyEvent.emit();
         }
     }
 
     reorderSets(event: CustomEvent<ItemReorderEventDetail>) {
+        this.setReorderActive.set(true);
+
         const items = this.setsArray.controls.map((item) => item.value);
         const itemsOrdered: Set[] = event.detail.complete(items);
 
         this.setsArray.clear();
         itemsOrdered.map((item) => this.setsArray.push(this.programFormService.createSetFormGroup(item)));
+
+        this.onDirtyEvent.emit();
+
+        requestAnimationFrame(() => {
+            this.setReorderActive.set(false);
+        })
     }
 
     removeSetAt(index: number) {
         const setsArray = this.setsArray;
         if (this.setsArray.length > 1) {
             setsArray.removeAt(index);
+
+            setsArray.markAsDirty({ onlySelf: true });
+            this.onDirtyEvent.emit();
         }
     }
 
@@ -235,6 +259,9 @@ export class ExerciseFormComponent implements OnChanges {
 
         if (data && data.notes !== undefined) {
             this.exercise.get('notes').setValue(data.notes);
+
+            this.exercise.markAsDirty({ onlySelf: true });
+            this.onDirtyEvent.emit();
         }
     }
 
@@ -301,6 +328,9 @@ export class ExerciseFormComponent implements OnChanges {
 
     confirmRestPicker() {
         this.exercise.controls.restDuration.setValue(this.selectedRestValue);
+
+        this.exercise.markAsDirty({ onlySelf: true });
+        this.onDirtyEvent.emit();
 
         this.cancelPicker();
     }
@@ -385,6 +415,9 @@ export class ExerciseFormComponent implements OnChanges {
         }
 
         setControl.patchValue(valuesToPatch);
+        setControl.markAsDirty({ onlySelf: true });
+
+        this.onDirtyEvent.emit();
 
         this.cancelPicker();
     }
@@ -398,15 +431,16 @@ export class ExerciseFormComponent implements OnChanges {
         }
     }
 
-    private currentExercise;
-
     confirmSuperset() {
-        this.currentExercise.patchValue({ superset: this.selectedSuperset });
+        this.supersetExercise.patchValue({ superset: this.selectedSuperset });
         this.cancelSuperset();
+
+        this.supersetExercise.markAsDirty({ onlySelf: true });
+        this.onDirtyEvent.emit();
     }
 
     cancelSuperset() {
-        this.currentExercise = null;
+        this.supersetExercise = null;
         this.supersetModal.dismiss();
     }
 
@@ -421,7 +455,7 @@ export class ExerciseFormComponent implements OnChanges {
 
     async openSupersetModal(exercise) {
         if (this.workoutMode) return;
-        this.currentExercise = exercise;
+        this.supersetExercise = exercise;
         this.selectedSuperset = exercise.get('superset').value;
         await this.supersetModal.present();
     }

@@ -14,6 +14,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { AutosaveService } from '../core/services/autosave.service';
 import { Template } from '../core/models/collections/template';
 import { TemplateActionKey, TemplateService } from '../core/services/template.service';
+import { Exercise } from '../core/models/collections/exercise';
 
 @Component({
     selector: 'app-template',
@@ -93,7 +94,11 @@ export class TemplateComponent implements OnInit, OnDestroy {
         if (!exercises || !exercises.length) return;
 
         exercises.map(e => {
-            const fg = this.programFormService.createExerciseFormGroup(e);
+            const exercise: Exercise = {
+                ...e,
+                workout: null
+            }
+            const fg = this.programFormService.createExerciseFormGroup(exercise);
             this.exercisesArray.push(fg);
         })
     }

@@ -20,89 +20,101 @@ import { Template } from "../models/collections/template";
 import { Equipment, Muscle } from "../models/autogen/enums";
 import { ExerciseTemplateSelectorComponent } from "src/app/exercise-template/exercise-template-selector/exercise-template-selector.component";
 import { ExerciseTemplate } from "../models/collections/exercise-templates";
-import { ReserveType } from "../models/enums/reserve-type";
 
 @Injectable()
 export class FormsService implements OnDestroy {
 
+    /** Used in exercise templates, ok to keep `null` exercise id */
     private EQUIPMENT_SET_MAP: Record<Equipment, Set> = {
         [Equipment.Barbell]: {
             weightType: WeightType.KG,
             type: RepType.Reps,
             value: 10,
-            weight: 20
+            weight: 20,
+            exercise: null
         },
 
         [Equipment.Dumbbell]: {
             weightType: WeightType.KG,
             type: RepType.Reps,
             value: 12,
-            weight: 10
+            weight: 10,
+            exercise: null
         },
 
         [Equipment.Cable]: {
             weightType: WeightType.KG,
             type: RepType.Reps,
             value: 12,
-            weight: 10
+            weight: 10,
+            exercise: null
         },
 
         [Equipment.Machine]: {
             weightType: WeightType.KG,
             type: RepType.Reps,
             value: 12,
-            weight: 40
+            weight: 40,
+            exercise: null
         },
 
         [Equipment.Kettlebells]: {
             weightType: WeightType.KG,
             type: RepType.Reps,
             value: 10,
-            weight: 10
+            weight: 10,
+            exercise: null
         },
 
         [Equipment.BodyOnly]: {
             weightType: WeightType.BW,
             type: RepType.Reps,
             value: 10,
+            exercise: null
         },
 
         [Equipment.Bands]: {
             weightType: WeightType.NA,
             type: RepType.Reps,
             value: 10,
+            exercise: null
         },
 
         [Equipment.MedicineBall]: {
             weightType: WeightType.KG,
             type: RepType.Reps,
             value: 12,
-            weight: 5
+            weight: 5,
+            exercise: null
         },
 
         [Equipment.ExerciseBall]: {
             weightType: WeightType.NA,
             type: RepType.Duration,
             value: 15,
+            exercise: null
         },
 
         [Equipment.FoamRoll]: {
             weightType: WeightType.NA,
             type: RepType.Duration,
             value: 15,
+            exercise: null
         },
 
         [Equipment.EZCurlBar]: {
             weightType: WeightType.KG,
             type: RepType.Reps,
             value: 12,
-            weight: 10
+            weight: 10,
+            exercise: null
         },
 
         [Equipment.Other]: {
             weightType: WeightType.NA,
             type: RepType.Reps,
             value: 10,
+            exercise: null
         },
     };
 
@@ -147,7 +159,9 @@ export class FormsService implements OnDestroy {
                 }
                 else if (durationWeeks > weeksArray.length) {
                     for (let i = weeksArray.length; i < durationWeeks; i++) {
-                        const weekForm = this.createWeekFormGroup();
+                        const weekForm = this.createWeekFormGroup({
+                            program: programForm.value.id,
+                        } as Week);
                         weeksArray.push(weekForm);
                         this.addDay(programForm, i);
                     }
@@ -178,18 +192,21 @@ export class FormsService implements OnDestroy {
             restDuration: [exercise?.restDuration ?? 0],
             completed: [exercise?.completed ?? false],
             completedAt: [exercise?.completedAt],
+            superset: [exercise?.superset],
             sets: this.formBuilder.array<ExerciseSetFormGroup>([]),
-            superset: [exercise?.superset]
+            workout: [exercise?.workout ?? null]
         }) as ExerciseFormGroup;
 
         const setsArray = exerciseGroup.get('sets') as FormArray<ExerciseSetFormGroup>;
 
         if (exercise?.sets?.length > 0) {
             exercise.sets.forEach(set => {
+                set.exercise = exercise?.id;
                 setsArray.push(this.createSetFormGroup(set, isNew));
             });
         } else {
             const set = this.getSetFromExerciseTemplate(exercise) as Set;
+            set.exercise = exercise?.id;
             setsArray.push(this.createSetFormGroup(set, isNew));
         }
 
@@ -232,7 +249,8 @@ export class FormsService implements OnDestroy {
             maxValue: [set?.maxValue ?? 0],
             rpe: [set?.rpe || 0],
             rir: [set?.rir || 0],
-            dropset: [set?.dropset || 0]
+            dropset: [set?.dropset || 0],
+            exercise: [set?.exercise ?? null]
         });
 
         fg.controls.type.valueChanges
@@ -257,7 +275,9 @@ export class FormsService implements OnDestroy {
     createWeekFormGroup(week?: Week): WeekFormGroup {
         const fg: WeekFormGroup = this.formBuilder.group({
             id: [week?.id],
-            days: this.formBuilder.array<DayFormGroup>([])
+            index: [week?.index],
+            days: this.formBuilder.array<DayFormGroup>([]),
+            program: [week?.program ?? null]
         });
 
         const daysArray = fg.controls.days as FormArray<DayFormGroup>;
@@ -273,7 +293,9 @@ export class FormsService implements OnDestroy {
     createDayFormGroup(day?: Day, isNew: boolean = false): DayFormGroup {
         const fg = this.formBuilder.group({
             id: isNew ? [null] : [day?.id],
-            exercises: this.formBuilder.array<ExerciseFormGroup>([])
+            index: [day?.index],
+            exercises: this.formBuilder.array<ExerciseFormGroup>([]),
+            week: [day?.week ?? null]
         });
 
         const exercisesArray = fg.controls.exercises as FormArray<ExerciseFormGroup>;
@@ -338,20 +360,36 @@ export class FormsService implements OnDestroy {
     //     }
     // }
 
-    addDay(programForm: ProgramFormGroup, weekIndex: number) {
+    addDay(programForm: ProgramFormGroup, weekIndex: number, index: number = 0) {
         const daysArray = this.getDaysArray(programForm, weekIndex);
-        daysArray.push(this.createDayFormGroup());
+        const weeksArray = this.getWeeksArray(programForm).at(weekIndex);
+
+        const dayForm = this.createDayFormGroup(
+            {
+                week: weeksArray.value.id,
+                index: index
+            } as Day,
+            true
+        );
+        daysArray.push(dayForm);
+
+        daysArray.markAsDirty({ onlySelf: true });
     }
 
     removeDay(programForm: ProgramFormGroup, weekIndex: number, dayIndex: number) {
         const daysArray = this.getDaysArray(programForm, weekIndex);
         daysArray.removeAt(dayIndex);
-    }
 
+        daysArray.markAsDirty({ onlySelf: true });
+    }
 
     removeExercise(programForm: ProgramFormGroup, weekIndex: number, dayIndex: number, exerciseIndex: number) {
         const exercisesArray = this.getExercisesArray(programForm, weekIndex, dayIndex);
+        const dayForm = this.getDaysArray(programForm, weekIndex).at(dayIndex);
+
         exercisesArray.removeAt(exerciseIndex);
+
+        dayForm.markAsDirty({ onlySelf: true });
     }
 
     async addExercisesToDay(programForm: ProgramFormGroup, weekIndex: number, dayIndex: number) {
@@ -359,10 +397,19 @@ export class FormsService implements OnDestroy {
         if (!exercisesTemplates || !exercisesTemplates.length) return;
 
         const exercisesArray = this.getExercisesArray(programForm, weekIndex, dayIndex);
+        const dayForm = this.getDaysArray(programForm, weekIndex).at(dayIndex);
+
+        // Day contains only JSON/template data, ok to keep workout id as `null`
         exercisesTemplates.map(e => {
-            const fg = this.createExerciseFormGroup(e);
+            const exercise: Exercise = {
+                ...e,
+                workout: null
+            }
+            const fg = this.createExerciseFormGroup(exercise);
             exercisesArray.push(fg);
         })
+
+        dayForm.markAsDirty({ onlySelf: true });
     }
 
     async getExerciseTemplates(): Promise<ExerciseTemplate[]> {
@@ -390,10 +437,13 @@ export class FormsService implements OnDestroy {
 
     removeSet(programForm: ProgramFormGroup, weekIndex: number, dayIndex: number, exerciseIndex: number) {
         const setsArray = this.getSetsArray(programForm, weekIndex, dayIndex, exerciseIndex);
+        const dayForm = this.getDaysArray(programForm, weekIndex).at(dayIndex);
 
         if (setsArray.length > 1) {
             setsArray.removeAt(setsArray.length - 1);
         }
+
+        dayForm.markAsDirty({ onlySelf: true });
     }
     //#endregion
 
@@ -406,14 +456,27 @@ export class FormsService implements OnDestroy {
         } else if (direction === 'down' && dayIndex < daysArray.length - 1) {
             this.swapFormArrayItems(daysArray, dayIndex, dayIndex + 1);
         }
+
+        daysArray.markAsDirty({ onlySelf: true });
     }
 
     private swapFormArrayItems(formArray: FormArray, index1: number, index2: number) {
         const control1 = formArray.at(index1);
         const control2 = formArray.at(index2);
 
+        // TODO: sort everthing by index, currently not implemented so values are swapped
+        const control1Value = control1.getRawValue();
+        const control2Value = control2.getRawValue();
+        control2.patchValue(control1Value);
+        control1.patchValue(control2Value);
+        // control1.get('index').setValue(index2);
+        // control2.get('index').setValue(index1);
+
         formArray.setControl(index1, control2);
         formArray.setControl(index2, control1);
+
+        control1.markAsDirty({ onlySelf: true });
+        control2.markAsDirty({ onlySelf: true });
     }
 
     private getSetFromExerciseTemplate(

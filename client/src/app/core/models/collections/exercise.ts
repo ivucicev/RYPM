@@ -13,4 +13,7 @@ export interface Exercise extends EntityBase, ExerciseTemplate {
     sets?: Set[];
 
     superset: string;
+
+    // parent refs
+    workout: string;
 }

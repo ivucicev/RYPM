@@ -10,6 +10,7 @@ import { ExerciseFormComponent } from '../form/exercise-form/exercise-form.compo
 import { PocketbaseService } from '../core/services/pocketbase.service';
 import { WorkoutBM } from '../core/models/bm/workout-bm';
 import { WorkoutState } from '../core/models/enums/workout-state';
+import { Exercise } from '../core/models/collections/exercise';
 
 @Component({
     selector: 'app-workout',
@@ -50,7 +51,8 @@ export class WorkoutComponent implements OnInit {
             effort: [5],
             comment: [''],
             state: [WorkoutState.InProgress],
-            exercises: this.formBuilder.array<ExerciseFormGroup>([])
+            exercises: this.formBuilder.array<ExerciseFormGroup>([]),
+            day: [null]
         });
     }
 
@@ -63,7 +65,11 @@ export class WorkoutComponent implements OnInit {
         if (!exercises || !exercises.length) return;
 
         exercises.map(e => {
-            const fg = this.programFormService.createExerciseFormGroup(e);
+            const exercise: Exercise = {
+                ...e,
+                workout: null
+            }
+            const fg = this.programFormService.createExerciseFormGroup(exercise);
             this.exercisesArray.push(fg);
         })
     }

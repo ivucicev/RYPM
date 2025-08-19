@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ErrorMessageDirective } from '../core/directives/error-message.directive';
-import { NavController, PopoverController, IonLabel, IonItem, IonButton, IonIcon, IonPopover, IonList, IonChip, IonContent, IonSegmentButton, IonRow, IonHeader, IonToolbar, IonTitle, IonBackButton, IonInput, IonButtons, IonTextarea, IonSelect, IonSelectOption, IonSegment } from '@ionic/angular/standalone';
+import { NavController, PopoverController, IonLabel, IonItem, IonButton, IonIcon, IonPopover, IonList, IonChip, IonContent, IonSegmentButton, IonRow, IonHeader, IonToolbar, IonTitle, IonBackButton, IonInput, IonButtons, IonTextarea, IonSelect, IonSelectOption, IonSegment, TabsCustomEvent, SegmentCustomEvent } from '@ionic/angular/standalone';
 import { RepType } from '../core/models/enums/rep-type';
 import { WeightType } from '../core/models/enums/weight-type';
 import { ExerciseFormComponent } from '../form/exercise-form/exercise-form.component';
@@ -43,7 +43,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
     WorkoutState = WorkoutState;
     public dayActionsPopoverOpen = false;
 
-    weeks = Array.from({ length: 36 }, (_, i) => i + 1);
+    weeks = Array.from({ length: 12 }, (_, i) => i + 1);
 
     // TODO: Trainer
     // assignedUsers =
@@ -86,7 +86,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
     init(program?: ProgramInfo) {
         this.program = program;
         this.programForm = this.programFormService.createProgramFormGroup(program);
-        this.autosaveService.register<ProgramBM>(this.programForm, 'programs', false).subscribe(); // TODO: autosave, get/map new changes or take all info from form?
+        this.autosaveService.register<ProgramBM>(this.programForm, 'programs', false).subscribe();
     }
 
     async refresh(id: string) {
@@ -95,14 +95,16 @@ export class ProgramComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const res = await this.programService.getProgramInfoById(id)
+        const res = await this.programService.getProgramInfoById(id);
         this.init(res);
     }
 
-    tabChange() {
+    tabChange(event: SegmentCustomEvent) {
         if (this.activeTab.includes('week')) {
             this.activeDayIndex = 0;
         }
+
+        this.selectedWeekIndex = Number((event.detail.value as string).split('-').at(-1));
     }
 
     navigateToWorkout(day: Day) {
@@ -153,7 +155,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
         const daysArray = this.getDaysArray(weekIndex);
         if (daysArray.length >= 7) return;
 
-        this.programFormService.addDay(this.programForm, weekIndex);
+        this.programFormService.addDay(this.programForm, weekIndex, daysArray.length);
         const newDayIndex = daysArray.length - 1;
         this.activeDayIndex = newDayIndex;
     }
@@ -167,6 +169,9 @@ export class ProgramComponent implements OnInit, OnDestroy {
 
         exercisesArray.setControl(index, nextExercise);
         exercisesArray.setControl(index + 1, currentExercise);
+
+        const currentDay = this.getDaysArray(this.selectedWeekIndex).at(this.activeDayIndex);
+        currentDay.markAsDirty({ onlySelf: true });
     }
 
     moveExerciseUp(index) {
@@ -178,6 +183,9 @@ export class ProgramComponent implements OnInit, OnDestroy {
 
         exercisesArray.setControl(index, previousExercise);
         exercisesArray.setControl(index - 1, currentExercise);
+
+        const currentDay = this.getDaysArray(this.selectedWeekIndex).at(this.activeDayIndex);
+        currentDay.markAsDirty({ onlySelf: true });
     }
 
     async addExerciseToDay(weekIndex: number, dayIndex: number) {
@@ -203,28 +211,33 @@ export class ProgramComponent implements OnInit, OnDestroy {
     }
 
     public copyToNextWeek = (weekIndex: number) => {
-        const current = this.getDaysArray(weekIndex);
+        const currentDayArray = this.getDaysArray(weekIndex);
+        const newWeekIndex = weekIndex + 1
 
-        if (current.length === 0) return;
+        if (currentDayArray.length === 0) return;
 
-        const currentDay = current.controls[this.activeDayIndex];
+        const currentDay = currentDayArray.controls[this.activeDayIndex];
 
         if (!currentDay) return;
 
         const currentDayValue = currentDay.getRawValue();
 
-        const daysArray = this.getDaysArray(weekIndex + 1);
+        const nextDayArray = this.getDaysArray(newWeekIndex);
 
         const newDay = this.programFormService.createDayFormGroup(currentDayValue as any, true);
-        daysArray.push(newDay);
 
-        for (let i = 0; i <= daysArray.length; i++)
-            if (!daysArray.controls[i]?.value?.exercises?.length)
-                this.removeDay(weekIndex + 1, i); // Remove empty days
+        newDay.get('index').setValue(nextDayArray.length);
+        newDay.get('week').setValue(this.programForm.get('weeks').value[newWeekIndex].id);
+        nextDayArray.push(newDay);
+
+        nextDayArray.markAsDirty({ onlySelf: true });
+
+        for (let i = 0; i <= nextDayArray.length; i++)
+            if (!nextDayArray.controls[i]?.value?.exercises?.length)
+                this.removeDay(newWeekIndex, i); // Remove empty days
 
         this.toastService.success();
         this.dayActionsPopoverOpen = false;
-
     }
 
     public copyToAllWeeks = () => {
@@ -244,7 +257,12 @@ export class ProgramComponent implements OnInit, OnDestroy {
             const daysArray = this.getDaysArray(weekIndex);
 
             const newDay = this.programFormService.createDayFormGroup(currentDayValue as any, true);
+
+            newDay.get('index').setValue(daysArray.length);
+            newDay.get('week').setValue(this.programForm.get('weeks').value[weekIndex].id);
             daysArray.push(newDay);
+
+            daysArray.markAsDirty({ onlySelf: true });
 
             // Remove empty days
             for (let i = daysArray.length - 1; i >= 0; i--) {
@@ -272,7 +290,11 @@ export class ProgramComponent implements OnInit, OnDestroy {
         const daysArray = this.getDaysArray(this.selectedWeekIndex);
 
         const newDay = this.programFormService.createDayFormGroup(currentDayValue as any, true);
+
+        newDay.get('index').setValue(daysArray.length);
         daysArray.push(newDay);
+
+        daysArray.markAsDirty({ onlySelf: true });
 
         this.toastService.success();
         this.dayActionsPopoverOpen = false;
@@ -307,8 +329,14 @@ export class ProgramComponent implements OnInit, OnDestroy {
     //     });
     // }
 
-    ionViewWillLeave() {
-        //this.autosaveService.save('programs', this.programForm.getRawValue())
+    public onExerciseDirtyEvent() {
+        const currentDayArray = this.getDaysArray(this.selectedWeekIndex);
+        if (currentDayArray.length === 0) return;
+
+        const currentDay = currentDayArray.controls[this.activeDayIndex];
+        if (!currentDay) return;
+
+        currentDay.markAsDirty({ onlySelf: true });
     }
 
     async openSettings() {

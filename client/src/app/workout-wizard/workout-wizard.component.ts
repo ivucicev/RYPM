@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, signal, computed, ElementRef } from '@angular/core';
-import { ActionSheetController, AnimationController, ModalController, NavController, IonHeader, IonButton, IonLabel, IonToolbar, IonTitle, IonIcon, IonContent, IonChip, IonBackButton, IonButtons, IonSpinner, IonFooter, IonNote, IonCheckbox, AlertController } from '@ionic/angular/standalone';
+import { ActionSheetController, AnimationController, ModalController, NavController, IonHeader, IonButton, IonLabel, IonToolbar, IonTitle, IonIcon, IonContent, IonChip, IonBackButton, IonButtons, IonSpinner, IonFooter, IonNote, AlertController } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormsModule } from '@angular/forms';
 import { Exercise } from 'src/app/core/models/collections/exercise';
@@ -99,7 +99,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         private toast: ToastService,
         private alertController: AlertController,
         private wake: WakeLockService
-    ) { 
+    ) {
     }
 
     async ngOnInit() {
@@ -126,7 +126,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
         this.workoutId = id;
 
-        const res = await this.pocketbaseService.workouts.getOne(id, { expand: 'exercises,exercises.sets' });
+        const res = await this.pocketbaseService.workouts.getOne(id, { expand: 'exercises_via_workout,exercises_via_workout.sets_via_exercise' });
         this.workout = res;
 
         // get oprevious weights and values
@@ -317,7 +317,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
             await this.completeWorkout();
             this.wake.disable();
         }
-        
+
 
     }
 
@@ -348,8 +348,6 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
         await modal.present();
     }
-
-
 
     async openSettings() {
         const translations = await lastValueFrom(this.translateService.get([

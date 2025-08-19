@@ -81,10 +81,11 @@
     </div>
 
     <div formArrayName="sets" class="form-container">
-        <ion-reorder-group [disabled]="false" (ionItemReorder)="reorderSets($event)">
+        <ion-reorder-group [disabled]="false" (ionItemReorder)="reorderSets($event)" #reorderGroup>
             @for (set of setsArray.controls; track $index; let setIndex = $index) {
             <ion-item-sliding #setSliding [formGroupName]="setIndex">
-                <ion-item lines="none" class="rep-row" lines="none" (click)="openSetPickerModal(setIndex)">
+                <ion-item lines="none" class="rep-row" lines="none"
+                    (click)="!setReorderActive() ? openSetPickerModal(setIndex) : null">
                     <div class="rep-row-container">
                         <div class="set-history small">
                             @if (set.get('previousWeight')?.value || set.get('previousValue')?.value) {
@@ -410,8 +411,9 @@
             </ion-toolbar>
             <ion-toolbar class="type-selector-toolbar ion-padding-x">
                 <ion-note>
-                    <ion-icon name="information-circle-outline"></ion-icon> {{ 'All exercises that should be in the same
-                    superset mark with the same letter.' | translate }} </ion-note>
+                    <ion-icon name="information-circle-outline"></ion-icon>
+                    {{ 'All exercises that should be in the same superset mark with the same letter.' | translate }}
+                </ion-note>
             </ion-toolbar>
         </ion-header>
         <ion-picker>

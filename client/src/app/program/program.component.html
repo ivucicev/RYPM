@@ -16,7 +16,8 @@
     </ion-toolbar>
 
     <ion-row class="ion-padding-x flex ion-justify-content-center">
-        <ion-segment scrollable [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" (ionChange)="tabChange()">
+        <ion-segment scrollable [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}"
+            (ionChange)="tabChange($event)">
             <ion-segment-button value="info">
                 <ion-label>{{ 'Info' | translate }}</ion-label>
             </ion-segment-button>
@@ -191,7 +192,7 @@
                             <ng-container [formGroupName]="exIndex">
 
                                 <ion-item lines="none" class="ion-no-border ion-no-padding">
-                                    <app-exercise-form [style.width]="'100%'"
+                                    <app-exercise-form [style.width]="'100%'" (onDirtyEvent)="onExerciseDirtyEvent()"
                                         [exercise]="exercise"
                                         [canMoveExerciseDown]="$index < getExercisesArray(weekIndex, activeDayIndex).controls.length - 1"
                                         [canMoveExerciseUp]="$index > 0"

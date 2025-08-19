@@ -127,6 +127,7 @@ export class MyActivityPage {
     downIcon = trendingDownOutline;
     shareIcon = shareSocialOutline;
     isSharing = false;
+    isDark = false;
 
     volumePerMuscleGroup = Muscle.Chest;
 
@@ -148,10 +149,10 @@ export class MyActivityPage {
         private alertController: AlertController,
         public theme: ThemeService
     ) {
+        this.isDark = theme.isDark();
         this.selectedPeriodValue = this.periods.find(f => f.id == this.selectedPeriod)?.value;
         register();
         this.getSessions();
-        theme.isDark();
     }
 
     async refresh() {

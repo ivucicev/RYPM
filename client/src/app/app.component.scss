@@ -332,8 +332,8 @@
  }
 
  .slide-in-button {
-	width: 300px;
-    margin: 60px auto;
+ 	width: 300px;
+ 	margin: 60px auto;
  	transform: translateY(-150%);
  	opacity: 0;
  	animation: slideInTop 0.8s ease-out forwards;
@@ -347,5 +347,18 @@
  	to {
  		transform: translateY(0);
  		opacity: 1;
+ 	}
+ }
+
+ @media (min-width: 1024px) {
+ 	ion-app.ion-app-container {
+ 		max-width: 900px;
+ 		/* tune 960–1280 */
+ 		margin-left: auto;
+ 		margin-right: auto;
+ 		--padding-start: 24px;
+ 		--padding-end: 24px;
+ 		--padding-top: 24px;
+ 		--padding-bottom: 24px;
  	}
  }

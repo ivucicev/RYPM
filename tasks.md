@@ -30,11 +30,11 @@ BUGS -
      - [x] period select
      - [x] load per miscle group
      - [x] fix program creation from AI program
+     - [x] Fix NGINX config collision with SW
      - [ ] When creating program - adding lots of weeks causes 404 in console and lots of requests !HIGH prio -too many requests in general, i think server would crash with 1.5 active users
      - [ ] Navigating exercise left and right calls N requests ever time, even if nothing is changed  !HIGH
      - [ ] EDITING DONE WORKOUT WORKS LIKE DOG SHIT - doesnt work, creates random exercises and deletes old ones very WTF functionallity also updates navigating left and right for no reason
      - [ ] Calling Continue workout from program calls so many requests that i get 429 error from the API !HIGH
-     - [ ] Fix NGINX config collision with SW
      - [ ] bandwidth -> saving sends whole object insead of patched fields
      - [ ] editing workout program -> setting values wrong value in picker [confusing]
      - [ ] going to next page calls 6 requests
@@ -46,7 +46,7 @@ BUGS -
 
 
 UI/UX BUGS
-     - [ ] On openning app first login showed
+     - [x] On openning app first login showed
      - [ ] Safari ios white theme - installation screen not visible
      - [ ] first time navigating to safari ios not showing installation button
     

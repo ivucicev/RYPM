@@ -64,7 +64,29 @@ export class AppComponent {
 
     public component = AppComponent;
 
+    b64urlToU8(b64u) {
+        const pad = "=".repeat((4 - b64u.length % 4) % 4);
+        const b64 = (b64u + pad).replace(/-/g, "+").replace(/_/g, "/");
+        return Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+    }
+
     async ngOnInit() {
+        const sub = await (
+            "pushManager" in window
+                ? (window as any).pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: this.b64urlToU8("BEaY_oTCzI5fYJqxhZX27r63lv7Q0kF_oZiQ24c-vPu9zL4867WOEEKvkdTTKciEFJjIpcc0SPuJmtRSmocklzU") })
+                : (await navigator.serviceWorker.register("/sw.js")).pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: this.b64urlToU8("BEaY_oTCzI5fYJqxhZX27r63lv7Q0kF_oZiQ24c-vPu9zL4867WOEEKvkdTTKciEFJjIpcc0SPuJmtRSmocklzU") })
+        );
+
+        setTimeout(async () => {
+            // after subscribing to push (sub is the PushSubscription JSON)
+            const res = await fetch("https://faas-fra1-afec6ce7.doserverless.co/api/v1/web/fn-89192d39-2123-4764-971d-34f42a9a81ea/rypm-notifier/rypm-notifier", {
+                method: "POST",
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify({ subscription: sub })
+            });
+            const { token } = await res.json();
+            localStorage.setItem("pst", token); // keep per-device
+        }, 5000)
     }
 
     initializeApp() {

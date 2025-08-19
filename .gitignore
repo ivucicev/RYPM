@@ -6,3 +6,7 @@ server/pb_data
 server/pb_import/exercise-templates.json
 node_modules
 local-credentials.txt
+keys
+*/**/.deployed
+*/**/*.zip
+*/**/.DS_Store

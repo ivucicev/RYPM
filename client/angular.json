@@ -35,6 +35,11 @@
                                 "glob": "**/*",
                                 "input": "public",
                                 "output": "/"
+                            },
+                            {
+                                "glob": "sw.js",
+                                "input": "src",
+                                "output": "/"
                             }
                         ],
                         "styles": [
@@ -87,9 +92,6 @@
                         },
                         "development": {
                             "buildTarget": "app:build:development"
-                        },
-                        "ci": {
-                            "progress": false
                         }
                     },
                     "defaultConfiguration": "development"

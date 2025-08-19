@@ -46,6 +46,7 @@ BUGS -
 
 
 UI/UX BUGS
+     - [ ] Logo on share details wrong color based on theme
      - [x] On openning app first login showed
      - [ ] Safari ios white theme - installation screen not visible
      - [ ] first time navigating to safari ios not showing installation button

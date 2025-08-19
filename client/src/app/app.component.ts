@@ -70,24 +70,23 @@ export class AppComponent {
         return Uint8Array.from(atob(b64), c => c.charCodeAt(0));
     }
 
-    async ngOnInit() {
-        alert('init')
+    async push() {
+        console.log('init')
         if (!('Notification' in window)) {
-            alert('Exists')
+            console.log('Exists')
             throw new Error('Notifications unsupported')
         }
-        alert('permit')
+        console.log('permit')
 
         // 1) Ask permission (must be from a user gesture on Safari)
         const perm = await Notification.requestPermission();
         if (perm !== 'granted') { 
-            alert('Denied')
+            console.log('Denied')
 
             throw new Error('User denied');
         }
 
-        alert('grented')
-
+        console.log('grented')
 
         const sub = await (
             "pushManager" in window
@@ -95,8 +94,8 @@ export class AppComponent {
                 : (await navigator.serviceWorker.register("/sw.js")).pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: this.b64urlToU8("BEaY_oTCzI5fYJqxhZX27r63lv7Q0kF_oZiQ24c-vPu9zL4867WOEEKvkdTTKciEFJjIpcc0SPuJmtRSmocklzU") })
         );
 
-            alert('Sub')
-            alert(JSON.stringify(sub))
+            console.log('Sub')
+            console.log(JSON.stringify(sub))
 
 
         setTimeout(async () => {
@@ -126,6 +125,10 @@ export class AppComponent {
                 })
             });
         }, 20000)
+    }
+
+    async ngOnInit() {
+        
     }
 
     initializeApp() {

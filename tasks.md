@@ -34,6 +34,7 @@ BUGS -
      - [ ] Navigating exercise left and right calls N requests ever time, even if nothing is changed  !HIGH
      - [ ] EDITING DONE WORKOUT WORKS LIKE DOG SHIT - doesnt work, creates random exercises and deletes old ones very WTF functionallity also updates navigating left and right for no reason
      - [ ] Calling Continue workout from program calls so many requests that i get 429 error from the API !HIGH
+     - [ ] Fix NGINX config collision with SW
 
 UI/UX BUGS
      - [ ] On openning app first login showed
@@ -44,6 +45,7 @@ AI BUGS
     - [x] Suggested program doesnt match generated program, example i said 1 day per week -> generates 4 days a week
     - [x] Analyze progress also doesnt work correctly, it doesnt use the function as it should
     - [x] Test create meal plan
+    - [ ] Plan creation failed on prod - check my data again
 
 Workouts screen - 
     - [x] Add program complete test [ok]

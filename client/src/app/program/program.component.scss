@@ -21,7 +21,7 @@ ion-segment[scrollable] {
         text-transform: uppercase;
     }
 
-    ion-button:last-child {
+    ion-button:last-of-type {
         --padding-end: 0px
     }
 

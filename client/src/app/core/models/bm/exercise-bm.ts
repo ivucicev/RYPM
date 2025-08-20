@@ -16,11 +16,10 @@ export interface ExerciseBM {
     notes?: string;
     restDuration?: number;
 
-    completed?: boolean;
-    completedAt?: Date;
-
     sets?: SetBM[];
 
-    superset? : string;
+    superset?: string;
 
+    // parent refs
+    workout: string;
 }

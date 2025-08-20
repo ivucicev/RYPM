@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PocketbaseService } from './pocketbase.service';
 import { ActionSheetController, AlertController, LoadingController, ModalController, NavController } from '@ionic/angular/standalone';
-import { last, lastValueFrom, of } from 'rxjs';
+import { lastValueFrom, of } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Program } from '../models/collections/program';
 import { Day } from '../models/collections/day';
@@ -9,9 +9,11 @@ import { WorkoutState } from '../models/enums/workout-state';
 import { DayBM } from '../models/bm/day-bm';
 import { ProgramBM } from '../models/bm/program-bm';
 import { WeekBM } from '../models/bm/week-bm';
-import { Workout } from '../models/workout';
 import { AssignModalComponent } from 'src/app/assign-modal/assign-modal.component';
 import { User } from '../models/collections/user';
+import { Workout } from '../models/collections/workout';
+import { Exercise } from '../models/collections/exercise';
+import { Set } from '../models/collections/exercise-set';
 
 export type ProgramInfo = (
     Program &
@@ -60,6 +62,17 @@ export class ProgramService {
      * @returns
      */
     static mapProgram(program: Program): ProgramInfo {
+        program.weeks = program.weeks.flatMap(w => {
+            return {
+                ...w,
+                days: w.days.map(d => {
+                    return {
+                        ...d,
+                        workout: d.workouts?.length ? d.workouts[0] : null // TODO: map better
+                    } as Day
+                })
+            }
+        })
         const days = program.weeks.flatMap(w => w.days);
 
         const nextDay = days.find(d => !d.workout);
@@ -79,13 +92,13 @@ export class ProgramService {
 
     /**
      * Returns complete program info.
-     * (included `weeks`, `weeks.days`, `week.days.workout`)
+     * (included weeks, weeks days, week days workout)
      */
     async getProgramInfoById(programId: string) {
         const program = await this.pocketbaseService.programs.getOne(
             programId,
             {
-                expand: 'weeks,weeks.days,weeks.days.workout'
+                expand: 'weeks_via_program,weeks_via_program.days_via_week,weeks_via_program.days_via_week.workouts_via_day',
             }
         );
 
@@ -113,7 +126,7 @@ export class ProgramService {
                         ? translations.Continue
                         : translations.Start,
                     icon: 'play-outline',
-                    handler: async() => {
+                    handler: async () => {
                         const load = await this.loadingController.create({})
                         await load.present();
                         await this.startWorkoutFromProgram(program);
@@ -183,7 +196,9 @@ export class ProgramService {
                 return {
                     days: w.days.map(d => {
                         return {
-                            exercises: d.exercises
+                            index: d.index,
+                            exercises: d.exercises,
+                            week: null,
                         } as DayBM
                     })
                 } as WeekBM
@@ -236,7 +251,7 @@ export class ProgramService {
         const workout: Workout = {
             end: null,
             start: new Date(),
-            day: program.nextDay,
+            day: program.nextDay.id,
             exercises: program.nextDay.exercises,
             effort: 5,
             comment: '',
@@ -247,8 +262,9 @@ export class ProgramService {
     }
 
     private async createAndNavToWorkout(workout: Workout) {
-        const excersizes = workout.exercises.map(e => e.name);
-        const filter = excersizes.map(name => `exercise.name = '${name}'`).join(' || ');
+
+        const exerciseNames = workout.exercises.map(e => e.name);
+        const filter = exerciseNames.map(name => `exercise.name = '${name}'`).join(' || ');
         const sets = await this.pocketbaseService.sets.getList(0, 20,
             {
                 expand: 'exercise',
@@ -280,8 +296,60 @@ export class ProgramService {
             });
         });
 
-        const wo = await this.pocketbaseService.upsertRecord('workouts', workout);
-        this.navCtrl.navigateForward([`./workout-wizard/${wo.id}`]);
+        const workoutData = { ...workout };
+        delete workoutData.exercises;
+
+        const createdWorkout = await this.pocketbaseService.workouts.create(workoutData);
+
+        if (workout.exercises?.length) {
+            const exerciseBatch = this.pocketbaseService.pb.createBatch();
+            const exercisesToCreate: Exercise[] = [...(workout.exercises?.map(ex => { return { ...ex } }))];
+            exercisesToCreate.forEach((ex, _) => {
+                ex.id = null;
+                ex.workout = createdWorkout.id;
+                delete ex.sets;
+
+                exerciseBatch.collection('exercises').create(ex);
+            });
+
+            const exerciseBatchResult = (await exerciseBatch.send()) as any;
+            const createdExercises = Object.keys(exerciseBatchResult)?.map(idx => {
+                return exerciseBatchResult[idx].body as Exercise
+            })
+
+
+            const setBatch = this.pocketbaseService.pb.createBatch();
+            workout.exercises.forEach((originalEx, exIndex) => {
+                const createdExerciseId = createdExercises[exIndex].id;
+                const sets = originalEx.sets || [];
+                sets.forEach((set, _) => {
+                    set.id = null;
+                    set.exercise = createdExerciseId;
+
+                    setBatch.collection('sets').create(set);
+                });
+            });
+
+
+            const setBatchResult = (await setBatch.send()) as any;
+            const createdSets = Object.keys(setBatchResult)?.map(idx => {
+                return setBatchResult[idx].body as Set
+            })
+
+            workout = {
+                ...createdWorkout,
+                exercises: exercisesToCreate.map((ex, exIndex) => {
+                    const createdExercise = createdExercises[exIndex];
+                    return {
+                        ...ex,
+                        id: createdExercise.id,
+                        sets: createdSets.filter(set => set.exercise === createdExercise.id)
+                    };
+                })
+            };
+        }
+
+        this.navCtrl.navigateForward([`./workout-wizard/${createdWorkout.id}`]);
     }
     //#endregion
 

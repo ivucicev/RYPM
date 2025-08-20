@@ -1,5 +1,5 @@
 import { EntityBase } from "../entity-base";
-import { Week } from "../week";
+import { Week } from "./week";
 
 export interface Program extends EntityBase {
     name: string;

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import PocketBase, { BatchService, RecordModel } from 'pocketbase';
+import PocketBase, { RecordModel } from 'pocketbase';
 import { environment } from 'src/environments/environment';
 import { ToastService } from './toast-service';
 import { User } from '../models/collections/user';
@@ -28,14 +28,21 @@ export class PocketbaseService {
     private readonly updateNestedOptions = { headers: PB.HEADER.NO_TOAST };
 
     /**
-     * Mapping of collection relationships.
-     * Defines which arrays should be treated as references to collections vs JSON/primitive fields
+     * Mapping of single relationships (one to one).
      */
-    private collectionMappings: Record<Collection, Collection[]> = {
-        'workouts': ['exercises'],
-        'exercises': ['sets'],
-        'programs': ['weeks'],
-        'weeks': ['days'],
+    public singleRelationMappings: Record<string, string[]> = {
+        'days': ['workout'],
+    };
+
+    /**
+     * Mapping of collection relationships (many to one).
+     * Defines which arrays should be treated as references to collections vs JSON/primitive fields.
+     */
+    public collectionMappings: Record<Collection, Collection[]> = {
+        'workouts': ['exercises'], // exercise.workout
+        'exercises': ['sets'], // set.exercise
+        'programs': ['weeks'], // week.program
+        'weeks': ['days'], // day.week
 
         // no collection, all json or primitive
         'days': [],
@@ -50,10 +57,7 @@ export class PocketbaseService {
         'progress_photos': []
     };
 
-    private singleRelationMappings: Record<string, string[]> = {
-        'workouts': ['day'],
-        'days': ['workout'],
-    };
+    public static readonly systemFields = ['user', 'created', 'updated', 'collectionId', 'collectionName'];
 
     pb: PocketBase = new PocketBase(environment.api);
     currentUser: User;
@@ -145,6 +149,7 @@ export class PocketbaseService {
 
             if (response.status == 200) {
                 const mapped = this.mapRecordModel(data);
+                // console.info("[pocketbaseService] Response received and mapped", data, "->", mapped);
                 return mapped;
             }
 
@@ -153,7 +158,23 @@ export class PocketbaseService {
 
         this.pb.beforeSend = async (url, options) => {
             if (this.currentUser) {
-                if (options.body) {
+                if (options.body instanceof FormData) {
+                    let batchRequest: string | null = null;
+                    const batchKey = '@jsonPayload';
+
+                    options.body.forEach((value, key) => {
+                        if (key == batchKey) {
+                            var batchRequestTmp = JSON.parse(value as string);
+                            batchRequestTmp.requests.forEach((req: any) => {
+                                req.body.user = this.currentUser.id;
+                            })
+                            batchRequest = JSON.stringify(batchRequestTmp);
+                        }
+                    })
+                    options.body.set(batchKey, batchRequest);
+                }
+
+                if (options.body && typeof options.body === 'object') {
                     options.body.user = this.currentUser.id;
                 }
             }
@@ -228,18 +249,22 @@ export class PocketbaseService {
     //#endregion
 
     /**
-     * Maps returned {@link RecordModel} object to a more usable type format.
-     *
-     * E.g. object
-     *
-     * `{ id: '1', exercises: [1], expand: exercises: [{ id: '1', name: 'Bench Press' }] }`
-     *
-     * becomes
-     *
-     * `{ id: '1', exercises: [{ id: '1', name: 'Bench Press' }] }`
-     * @param obj
-     * @returns
-     */
+    * Maps returned {@link RecordModel} object to a more usable type format.
+    *
+    * E.g. object
+    *
+    * `{ id: '1', exercises: [1], expand: exercises: [{ id: '1', name: 'Bench Press' }] }`
+    *
+    * becomes
+    *
+    * `{ id: '1', exercises: [{ id: '1', name: 'Bench Press' }] }`
+    *
+    * Also handles _via_ relations:
+    * `{ weeks: [], expand: { weeks_via_program: [...] } }` becomes `{ weeks: [...] }`
+    *
+    * @param obj
+    * @returns
+    */
     mapRecordModel<T extends { expand?: Record<string, unknown> }>(obj: T): ExpandedResult<T> {
         if (typeof obj !== 'object' || obj === null) {
             return obj as ExpandedResult<T>;
@@ -247,21 +272,28 @@ export class PocketbaseService {
 
         const result = { ...obj } as any;
 
-        // process `expand` property
         if (result.expand && typeof result.expand === 'object') {
             const expand = result.expand as Record<string, unknown>;
 
-            Object.keys(expand).forEach((key) => {
-                if (key in result) {
-                    const expandedValue = expand[key];
-                    result[key] = expandedValue;
+            Object.keys(expand).forEach((expandKey) => {
+                const expandedValue = expand[expandKey];
+
+                // Handle direct mapping (e.g., expand.exercises -> exercises)
+                if (expandKey in result) {
+                    result[expandKey] = expandedValue;
+                }
+                // Handle _via_ mapping (e.g., expand.weeks_via_program -> weeks)
+                else if (expandKey.includes('_via_')) {
+                    const targetKey = expandKey.split('_via_')[0];
+                    // if (targetKey in result) {
+                    result[targetKey] = expandedValue;
+                    // }
                 }
             });
 
             delete result.expand;
         }
 
-        // recursive process
         Object.keys(result).forEach((key) => {
             const value = result[key];
             if (typeof value === 'object' && value !== null) {
@@ -280,10 +312,13 @@ export class PocketbaseService {
         return result as ExpandedResult<T>;
     }
 
-    public batch: BatchService;
-
     /**
      * Creates or updates a record in the specified collection, handling nested collections.
+     *
+     * If the record has an `id`, it will be updated; otherwise, a new record will be created.
+     *
+     * If the record contains nested collections, they will take parent id as back reference:
+     * E.g. `week` has `days` array, each day will be mapped `day.week = week.id`
      *
      * @param collectionName - The name of the collection to create/update the record in
      * @param data - The record data to be created or updated
@@ -292,7 +327,6 @@ export class PocketbaseService {
      * @param depth - The current depth of nested processing (used for recursion)
      * @returns A promise resolving to the created/updated record
      */
-    // TODO: UNDEBUGGABLE -> this gets callled all over the place, disaster 2
     async upsertRecord<T extends { id?: string }>(
         collectionName: Collection,
         data: any,
@@ -300,6 +334,7 @@ export class PocketbaseService {
         disableAutoCancel: boolean = false,
         depth: number = 0
     ): Promise<T> {
+
         const recordData = JSON.parse(JSON.stringify(data));
         const recordId = recordData.id && recordData.id !== "" ? recordData.id : null;
         delete recordData.id;
@@ -318,7 +353,7 @@ export class PocketbaseService {
             ? await this.pb.collection(collectionName).update<T>(recordId, obj, requestOptions)
             : await this.pb.collection(collectionName).create<T>(obj, requestOptions);
 
-        const relationReferences = await this.processSingleRelations(
+        const relationReferences = await this.processSingleRecords(
             collectionName,
             result.id,
             singleRelations,
@@ -326,7 +361,7 @@ export class PocketbaseService {
             depth
         );
 
-        const { backReferences, processedCollections } = await this.processNestedCollections(
+        const { backReferences, processedCollections } = await this.processChildRecords(
             collectionName,
             result.id,
             collections,
@@ -335,38 +370,25 @@ export class PocketbaseService {
             depth
         );
 
-        //this.batch = this.pb.createBatch();
-        //const batch = this.pb.createBatch();
-
-        if (Object.keys(backReferences).length > 0) {
-            //console.log(collectionName, 1,backReferences)
-            //await batch.collection(collectionName).update(result.id, backReferences, requestOptions);
-            await this.pb.collection(collectionName).update(result.id, backReferences, requestOptions);
-        }
-
-        if (Object.keys(relationReferences).length > 0) {
-            //console.log(collectionName, 2, relationReferences)
-            //batch.collection(collectionName).update(result.id, relationReferences, requestOptions);
-            await this.pb.collection(collectionName).update(result.id, relationReferences, requestOptions);
-        }
-
-        //await batch.send()
-
         if (depth === 0 && showToast) {
             this.toastService.success();
         }
 
-        // TODO: merge back returned result?
-        // const completeResult = {
-        //     ...result,
-        //     ...processedCollections,
-        //     ...singleRelations
-        // };
+        const completeResult = {
+            ...result,
+            ...processedCollections,
+            ...singleRelations
+        };
 
-        return result;
+        return completeResult;
     }
 
-    private async processSingleRelations(
+    /**
+     * Upserts single items given in main data/parent object (one to one).
+     *
+     * E.g. If `day` is the parent collection `{ index: 0, workout: {...} }`, workout is one of the items that will be created/updated.
+    */
+    private async processSingleRecords(
         parentCollection: Collection,
         parentId: string,
         singleRelations: Record<string, any>,
@@ -400,14 +422,21 @@ export class PocketbaseService {
                 relationReferences[`${relationName}`] = result.id;
                 singleRelations[relationName] = result;
             } catch (error) {
-                console.error(`Error processing single relation ${relationName}:`, error);
+                console.error(`[processSingleRecords] Error for ${relationName}, ${relationData}:`, error);
             }
         }
 
         return relationReferences;
     }
 
-    private async processNestedCollections(
+    /**
+     * Upserts collections given in main data/parent object (many to one).
+     * Each nested collection will have its parent reference set to the provided parent id.
+     *
+     * E.g. If `week` is the parent collection `{ index: 0, days: [...] }`, days are the collections that will be created/updated
+     * + linked `day[parentCollection] = parentId`, ergo `day.week = week.id`
+     */
+    private async processChildRecords(
         parentCollection: Collection,
         parentId: string,
         collections: Record<string, any[]>,
@@ -425,24 +454,23 @@ export class PocketbaseService {
         const processedCollections: Record<string, any[]> = {};
 
         for (const collectionName of nestedCollectionNames) {
+
             if (!collections[collectionName]) continue;
 
             const items = collections[collectionName];
             const processedIds: string[] = [];
             const processedObjects: any[] = [];
 
-            const existingItems = await this.pb.collection(collectionName).getFullList({
-                filter: `${parentRef}="${parentId}"`,
-                ...requestOptions
-            });
-
-            const existingMap = new Map(existingItems.map(item => [item.id, item]));
             const processedIdsSet = new Set<string>();
+
             let idx = 0;
             for (const item of items) {
+
                 item[parentRef] = parentId;
+
                 item['index'] = idx;
                 idx++;
+
                 try {
                     const result = await this.upsertRecord(
                         collectionName as Collection,
@@ -459,21 +487,13 @@ export class PocketbaseService {
                         processedIdsSet.add(item.id);
                     }
                 } catch (error) {
-                    console.error(`Error processing nested collection ${collectionName}:`, error);
-                }
-            }
-
-            for (const [id] of existingMap.entries()) {
-                if (!processedIdsSet.has(id)) {
-                    await this.pb.collection(collectionName).delete(id, requestOptions);
+                    console.error(`[processChildRecords] Error for ${collectionName}, ${item}:`, error);
                 }
             }
 
             if (processedIds.length > 0) {
-                if (collectionName) {
-                    backReferences[collectionName] = processedIds;
-                    processedCollections[collectionName] = processedObjects;
-                }
+                backReferences[collectionName] = processedIds;
+                processedCollections[collectionName] = processedObjects;
             }
         }
 

@@ -83,7 +83,7 @@ export class HomePage {
         const workouts = await this.pocketbaseService.workouts.getFullList({
             sort: '-start',
             filter: `state = ${WorkoutState.InProgress}`,
-            expand: 'exercises,exercises.sets',
+            expand: 'exercises_via_workout,exercises_via_workout.sets_via_exercise',
         })
 
         this.workouts = workouts.map(w => {
@@ -109,22 +109,22 @@ export class HomePage {
 
         const programs = await this.pocketbaseService.programs.getFullList({
             sort: '-updated',
-            expand: 'weeks,weeks.days,weeks.days.workout'
+            expand: 'weeks_via_program,weeks_via_program.days_via_week.workouts_via_day'
         })
 
         this.programs = programs.map(p => {
             const tagsToTake = 3;
-
             // Check if any workout in any day of any week has state == 1
             const hasInProgress = p.weeks?.some(week =>
                 week?.days?.some(day => {
+                    // TODO: map better
+                    day.workout = day.workouts?.length ? day.workouts[0] : null;
                     if (day?.workout?.state === WorkoutState.InProgress) {
                         p['workoutId'] = day.workout.id;
                         return true;
                     }
                     return false;
-                }
-                )
+                })
             );
 
             if (hasInProgress) {
@@ -151,17 +151,20 @@ export class HomePage {
                 tagsToShow.push(`+${tags.length - 3}`);
             }
 
-            return {
+            const mapped =
+            {
                 ...ProgramService.mapProgram(p),
                 tags: tagsToShow
             }
+
+            return mapped;
         });
         this.programs = this.programs.sort((a: any, b: any) => (b['active'] === true) as any - ((a['active'] === true) as any));
 
     }
 
     getNextIncompleteExercise(exercises: Exercise[]): Exercise | undefined {
-        return exercises.find(ex => !ex.completed && ex.sets?.some(set => !set.completed));
+        return exercises.find(ex => ex.sets?.some(set => !set.completed));
     }
 
     getNextIncompleteSet(sets: Set[] | undefined): Set | undefined {
@@ -193,19 +196,19 @@ export class HomePage {
         this.programService.editProgram(programId);
     }
 
-    async presentProgramActionSheet(program: Program) {
+    async presentProgramActionSheet(program: ProgramInfo) {
         if (program['active'] == true && program['workoutId']) {
             this.navCtrl.navigateForward([`./workout-wizard/${program['workoutId']}`]);
             return;
         }
-        const actionSheet = await this.programService.presentProgramActionSheet(program.id);
+        const actionSheet = await this.programService.presentProgramActionSheet(program.id, program);
         const e = await actionSheet.onDidDismiss();
         if (e.data?.reload) {
             this.refresh();
         }
     }
 
-    async presentAssignProgramPopover(program: Program) {
+    async presentAssignProgramPopover(program: ProgramInfo) {
         const actionSheet = await this.programService.presentAssignProgramPopover(program);
         const e = await actionSheet.onDidDismiss();
         if (e.data?.reload) {

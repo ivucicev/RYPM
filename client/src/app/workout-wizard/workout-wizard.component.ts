@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, signal, computed, ElementRef } from '@angular/core';
-import { ActionSheetController, AnimationController, ModalController, NavController, IonHeader, IonButton, IonLabel, IonToolbar, IonTitle, IonIcon, IonContent, IonChip, IonBackButton, IonButtons, IonSpinner, IonFooter, IonNote, IonCheckbox, AlertController } from '@ionic/angular/standalone';
+import { ActionSheetController, AnimationController, ModalController, NavController, IonHeader, IonButton, IonLabel, IonToolbar, IonTitle, IonIcon, IonContent, IonChip, IonBackButton, IonButtons, IonSpinner, IonFooter, IonNote, AlertController } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormsModule } from '@angular/forms';
 import { Exercise } from 'src/app/core/models/collections/exercise';
@@ -25,6 +25,8 @@ import { ExerciseTemplateDetailComponent } from '../exercise-template/exercise-t
 import { ExerciseEffortModalComponent } from '../exercise-effort-modal/exercise-effort-modal.component';
 import { ToastService } from '../core/services/toast-service';
 import { WakeLockService } from '../core/services/WakeLockService';
+import { StorageService } from '../core/services/storage.service';
+import { StorageKeys } from '../core/constants/storage-keys';
 
 @Component({
     selector: 'app-workout-wizard',
@@ -64,7 +66,12 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         if (currentExercise) {
             this.autosaveService.register<ExerciseBM>(currentExercise, 'exercises', false)
                 .pipe(takeUntil(this.unsubscribeAll))
-                .subscribe();
+                .subscribe(() => {
+                    this.storageService.setItem(StorageKeys.WIZARD_LAST_WORKOUT, {
+                        ...this.workout,
+                        exercises: this.exercises.map(ex => ex.getRawValue()) // update changes
+                    })
+                });
         }
 
         return currentExercise;
@@ -98,8 +105,9 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         private actionSheetCtrl: ActionSheetController,
         private toast: ToastService,
         private alertController: AlertController,
-        private wake: WakeLockService
-    ) { 
+        private wake: WakeLockService,
+        private storageService: StorageService
+    ) {
     }
 
     async ngOnInit() {
@@ -126,7 +134,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
         this.workoutId = id;
 
-        const res = await this.pocketbaseService.workouts.getOne(id, { expand: 'exercises,exercises.sets' });
+        const res = await this.pocketbaseService.workouts.getOne(id, { expand: 'exercises_via_workout,exercises_via_workout.sets_via_exercise' });
         this.workout = res;
 
         // get oprevious weights and values
@@ -159,6 +167,8 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
             ? res.exercises.findIndex(ex => ex.id === nextIncompleteExercise.id)
             : lastExerciseIndex
         );
+
+        this.storageService.setItem(StorageKeys.WIZARD_LAST_WORKOUT, this.workout)
     }
 
     goToNextExerciseSuperSet(superset) {
@@ -179,7 +189,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
     }
 
     getNextIncompleteExercise(exercises: Exercise[]): Exercise | undefined {
-        return exercises?.find(ex => !ex.completed);
+        return exercises.find(ex => ex.sets?.some(set => !set.completed));
     }
 
     goToNextExercise() {
@@ -224,28 +234,6 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
     selectExercise(index: number) {
         if (!this.exercises[index]) return;
-
-        const currentExerciseIndex = this.currentExerciseIndex();
-
-        const currentExercise = this.exercises[currentExerciseIndex];
-        const nextExercise = this.exercises[index];
-
-        if (index > currentExerciseIndex) {
-            currentExercise.controls.completed.setValue(true);
-            nextExercise.controls.completed.setValue(false);
-        } else if (nextExercise.controls.completed.value) {
-            currentExercise.controls.completed.setValue(false);
-            nextExercise.controls.completed.setValue(false);
-        }
-
-        // TODO: UNDEVBUGGABLE -> why do we call here upsertRecord?
-        if (currentExercise.dirty) {
-            this.pocketbaseService.upsertRecord('exercises', currentExercise.value, false, true);
-        }
-        if (nextExercise.dirty) {
-            this.pocketbaseService.upsertRecord('exercises', nextExercise.value, false, true);
-        }
-
         this.currentExerciseIndex.set(index);
     }
 
@@ -254,11 +242,14 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         const setForm = setForms.at(setIndex);
 
         this.lastCompletedSet = setForm;
-        this.lastCompletedSetExercise = this.exercises.find(e => e.controls.sets.controls.find(s => s.controls.id.value == setForm.controls.id.value) != null)
+        this.lastCompletedSetExercise = this.exercises.find(e => e.controls.sets.controls.find(s => s.controls.id.value == setForm.controls.id.value) != null);
+
+        setForm.markAsDirty({ onlySelf: true });
     }
 
     onRestSkipped() {
         this.lastCompletedSet.controls.restSkipped.setValue(true);
+        this.lastCompletedSet.markAsDirty({ onlySelf: true });
     }
 
     async handleUncompletedSets() {
@@ -317,7 +308,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
             await this.completeWorkout();
             this.wake.disable();
         }
-        
+
 
     }
 
@@ -348,8 +339,6 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
         await modal.present();
     }
-
-
 
     async openSettings() {
         const translations = await lastValueFrom(this.translateService.get([

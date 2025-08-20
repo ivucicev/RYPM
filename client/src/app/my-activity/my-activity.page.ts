@@ -597,7 +597,7 @@ export class MyActivityPage {
         const workouts = await this.pocketbaseService.workouts.getFullList({
             filter: `state = "${WorkoutState.Completed}" && start >= "${this.selectedPeriodValue.toISOString()}"`,
             sort: '-created',
-            expand: 'trainer,exercises,exercises.sets,day,user',
+            expand: 'trainer,exercises_via_workout.sets_via_exercise,user',
         }) as any;
 
         if (!workouts) return;

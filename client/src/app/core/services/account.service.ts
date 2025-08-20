@@ -275,7 +275,7 @@ export class AccountService {
 
                 const user = await this.getCurrentUser(true);
 
-                await this, this.pocketbase.collection('users').update(user.id, { lastLoginAt: new Date() }, { headers: PB.HEADER.NO_TOAST })
+                await this.pocketbase.collection('users').update(user.id, { lastLoginAt: new Date() }, { headers: PB.HEADER.NO_TOAST })
 
                 return true;
             } catch (error) {

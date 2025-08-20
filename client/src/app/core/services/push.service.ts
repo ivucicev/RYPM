@@ -41,10 +41,12 @@ export class PushService {
 
             await this.pocketbase.users.update(user.id, { notificationsEnabled: true, notificationsToken: token });
         }
+        return token;
     }
 
     async push(title, body, duration) {
         let token = await this.storage.getItem<string>(StorageKeys.PORTABLE_SUBSCRIPTION_TOKEN);
+        if (!token) token = await this.requestNotifications();
         await fetch(environment.api + `api/push-send?token=${token}&duration=${duration}`, {
             method: "POST",
             headers: {

@@ -71,64 +71,56 @@ export class AppComponent {
     }
 
     async push() {
-        console.log('init')
-        if (!('Notification' in window)) {
-            console.log('Exists')
-            throw new Error('Notifications unsupported')
+
+
+        let token = localStorage.getItem("pst");
+
+        if (!token) {
+            if (!('Notification' in window)) {
+                throw new Error('Notifications unsupported')
+            }
+
+            const perm = await Notification.requestPermission();
+            if (perm !== 'granted') {
+                throw new Error('User denied');
+            }
+
+            const sub = await (
+                "pushManager" in window
+                    ? (window as any).pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: this.b64urlToU8("BEaY_oTCzI5fYJqxhZX27r63lv7Q0kF_oZiQ24c-vPu9zL4867WOEEKvkdTTKciEFJjIpcc0SPuJmtRSmocklzU") })
+                    : (await navigator.serviceWorker.register("/sw.js")).pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: this.b64urlToU8("BEaY_oTCzI5fYJqxhZX27r63lv7Q0kF_oZiQ24c-vPu9zL4867WOEEKvkdTTKciEFJjIpcc0SPuJmtRSmocklzU") })
+            );
+            token = await this.getToken(sub);
         }
-        console.log('permit')
 
-        // 1) Ask permission (must be from a user gesture on Safari)
-        const perm = await Notification.requestPermission();
-        if (perm !== 'granted') { 
-            console.log('Denied')
+        await fetch("https://faas-fra1-afec6ce7.doserverless.co/api/v1/web/fn-89192d39-2123-4764-971d-34f42a9a81ea/rypm-notifier/rypm-sender", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+                "authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                token,
+                title: "Timer Expired",
+                body: "Next workout: Dumbbell Press",
+                navigate: "https://app.rypm.app/"
+            })
+        });
+    }
 
-            throw new Error('User denied');
-        }
-
-        console.log('grented')
-
-        const sub = await (
-            "pushManager" in window
-                ? (window as any).pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: this.b64urlToU8("BEaY_oTCzI5fYJqxhZX27r63lv7Q0kF_oZiQ24c-vPu9zL4867WOEEKvkdTTKciEFJjIpcc0SPuJmtRSmocklzU") })
-                : (await navigator.serviceWorker.register("/sw.js")).pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: this.b64urlToU8("BEaY_oTCzI5fYJqxhZX27r63lv7Q0kF_oZiQ24c-vPu9zL4867WOEEKvkdTTKciEFJjIpcc0SPuJmtRSmocklzU") })
-        );
-
-            console.log('Sub')
-            console.log(JSON.stringify(sub))
-
-
-        setTimeout(async () => {
-            // after subscribing to push (sub is the PushSubscription JSON)
-            const res = await fetch("https://faas-fra1-afec6ce7.doserverless.co/api/v1/web/fn-89192d39-2123-4764-971d-34f42a9a81ea/rypm-notifier/rypm-notifier", {
-                method: "POST",
-                headers: { "content-type": "application/json" },
-                body: JSON.stringify({ subscription: sub })
-            });
-            const { token } = await res.json();
-            localStorage.setItem("pst", token); // keep per-device
-        }, 5000)
-
-        setTimeout(async () => {
-            const token = localStorage.getItem("pst");
-            await fetch("https://faas-fra1-afec6ce7.doserverless.co/api/v1/web/fn-89192d39-2123-4764-971d-34f42a9a81ea/rypm-notifier/rypm-sender", {
-                method: "POST",
-                headers: {
-                    "content-type": "application/json",
-                    "authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    token,
-                    title: "Timer Expired",
-                    body: "Next workout: Dumbbell Press",
-                    navigate: "https://app.rypm.app/"
-                })
-            });
-        }, 20000)
+    async getToken(sub) {
+        const res = await fetch("https://faas-fra1-afec6ce7.doserverless.co/api/v1/web/fn-89192d39-2123-4764-971d-34f42a9a81ea/rypm-notifier/rypm-notifier", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ subscription: sub })
+        });
+        const { token } = await res.json();
+        localStorage.setItem("pst", token);
+        return token;
     }
 
     async ngOnInit() {
-        
+
     }
 
     initializeApp() {

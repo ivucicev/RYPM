@@ -23,7 +23,10 @@ export class AutosaveService {
         showToast = true,
         debounceMs = Constants.UPDATE_DEBOUNCE_MS
     ): Subject<Promise<any>> {
-        this.destroyAll();
+
+        if (this.subscriptions.has(form)) {
+            this.destroy(form);
+        }
 
         const saveResult$ = new Subject<Promise<any>>();
 
@@ -338,6 +341,28 @@ export class AutosaveService {
         if (subscription) {
             subscription.unsubscribe();
             this.subscriptions.delete(form);
+        }
+
+        this.destroyNestedControls(form);
+    }
+
+    private destroyNestedControls(form: AbstractControl): void {
+        if (form instanceof FormGroup) {
+            Object.values(form.controls).forEach(control => {
+                this.destroyControl(control);
+            });
+        } else if (form instanceof FormArray) {
+            form.controls.forEach(control => {
+                this.destroyControl(control);
+            });
+        }
+    }
+
+    private destroyControl(control: AbstractControl): void {
+        if (this.subscriptions.has(control) || this.destroySubjects.has(control)) {
+            this.destroy(control);
+        } else {
+            this.destroyNestedControls(control);
         }
     }
 

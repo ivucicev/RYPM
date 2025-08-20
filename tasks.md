@@ -2,7 +2,7 @@ BUGS -
      - [ ] (?) put continue footer in tabs page so there are less frequent requests
      - [ ] (?) active workout (from wizard) service? used in multiple places, handle locally for less freq. requests
      - [ ] bandwidth -> saving sends whole object insead of patched fields
-     - [ ] active page local storage
+     - [x] active exercise page local storage 
      - [ ] program detail edit, extending weeks does not change week display on info tab (need to move back first and reenter edit)
      - [ ] picker on set does not show correct values
      - [ ] measurements fix (has Many relationship instead of singular, naming is not consistent)

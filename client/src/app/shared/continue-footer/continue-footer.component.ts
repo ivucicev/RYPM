@@ -55,7 +55,7 @@ export class ContinueFooterComponent {
         this.lastCompletedSetExercise = null;
         this.workout = null;
 
-        let workout = await this.storageService.getItem<Workout>(StorageKeys.WIZARD_LAST_WORKOUT)
+        let workout = await this.storageService.getItem<Workout>(StorageKeys.WORKOUT_WIZARD_LAST_WORKOUT)
         let workoutCheck = null;
         try {
             workoutCheck = await this.pocketbaseService.workouts.getFirstListItem(
@@ -66,13 +66,13 @@ export class ContinueFooterComponent {
             );
         } catch {
             // not found
-            this.storageService.removeItem(StorageKeys.WIZARD_LAST_WORKOUT);
+            this.storageService.removeItem(StorageKeys.WORKOUT_WIZARD_LAST_WORKOUT);
             return;
         }
 
         // fetch only if the workout is outdated
         if (!workout || workout.state != WorkoutState.InProgress || workoutCheck.id != workout.id || true) {
-            this.storageService.removeItem(StorageKeys.WIZARD_LAST_WORKOUT);
+            this.storageService.removeItem(StorageKeys.WORKOUT_WIZARD_LAST_WORKOUT);
 
             this.workout = null;
             this.lastCompletedSet = null;
@@ -89,7 +89,7 @@ export class ContinueFooterComponent {
                 return;
             }
 
-            this.storageService.setItem(StorageKeys.WIZARD_LAST_WORKOUT, workout);
+            this.storageService.setItem(StorageKeys.WORKOUT_WIZARD_LAST_WORKOUT, workout);
         }
         this.workout = workout;
 

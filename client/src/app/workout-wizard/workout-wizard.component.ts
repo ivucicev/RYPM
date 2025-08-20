@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, signal, computed, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, signal, computed, ElementRef, effect } from '@angular/core';
 import { ActionSheetController, AnimationController, ModalController, NavController, IonHeader, IonButton, IonLabel, IonToolbar, IonTitle, IonIcon, IonContent, IonChip, IonBackButton, IonButtons, IonSpinner, IonFooter, IonNote, AlertController } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormsModule } from '@angular/forms';
@@ -69,7 +69,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
             this.autosaveService.register<ExerciseBM>(currentExercise, 'exercises', false)
                 .pipe(takeUntil(this.unsubscribeAll))
                 .subscribe(() => {
-                    this.storageService.setItem(StorageKeys.WIZARD_LAST_WORKOUT, {
+                    this.storageService.setItem(StorageKeys.WORKOUT_WIZARD_LAST_WORKOUT, {
                         ...this.workout,
                         exercises: this.exercises.map(ex => ex.getRawValue()) // update changes
                     })
@@ -111,6 +111,12 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         private storageService: StorageService,
         private push: PushService
     ) {
+        effect(() => {
+            const currentExercise = this.currentExercise()?.getRawValue();
+            if (this.workout != null) {
+                this.storageService.setItem(StorageKeys.WORKOUT_WIZARD_LAST_VISITED_EXERCISE, currentExercise)
+            }
+        })
     }
 
     async ngOnInit() {
@@ -137,15 +143,15 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
         this.workoutId = id;
 
-        const res = await this.pocketbaseService.workouts.getOne(id, { expand: 'exercises_via_workout,exercises_via_workout.sets_via_exercise' });
-        this.workout = res;
+        const workout = await this.pocketbaseService.workouts.getOne(id, { expand: 'exercises_via_workout,exercises_via_workout.sets_via_exercise' });
+        this.workout = workout;
 
         // get oprevious weights and values
         await this.getPreviousOfWorkoutType();
 
         this.isDayCompleted = this.workout.state === WorkoutState.Completed;
 
-        this.exercises = res.exercises.map(exercise =>
+        this.exercises = workout.exercises.map(exercise =>
             this.programFormsService.createExerciseFormGroup(exercise)
         );
 
@@ -163,15 +169,30 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
             this.lastCompletedSetExercise = null;
         }
 
-        const nextIncompleteExercise = this.getNextIncompleteExercise(res.exercises);
+        const nextIncompleteExercise = this.getNextIncompleteExercise(workout.exercises);
         const lastExerciseIndex = (this.exercises?.length ?? 0) - 1;
 
-        this.currentExerciseIndex.set(nextIncompleteExercise
-            ? res.exercises.findIndex(ex => ex.id === nextIncompleteExercise.id)
-            : lastExerciseIndex
-        );
+        let currentExerciseIndex = -1
 
-        this.storageService.setItem(StorageKeys.WIZARD_LAST_WORKOUT, this.workout)
+        const lastVisitedExercise = await this.storageService.getItem<Exercise>(StorageKeys.WORKOUT_WIZARD_LAST_VISITED_EXERCISE);
+        if (lastVisitedExercise && lastVisitedExercise.workout == workout.id && workout.exercises?.length) {
+            const lastVisitedExerciseIndex = workout.exercises.findIndex(e => e.id == lastVisitedExercise.id);
+            if (lastVisitedExerciseIndex != -1) {
+                currentExerciseIndex = lastVisitedExerciseIndex
+            }
+        } else {
+            await this.storageService.removeItem(StorageKeys.WORKOUT_WIZARD_LAST_VISITED_EXERCISE);
+        }
+
+        if (currentExerciseIndex == -1) {
+            currentExerciseIndex = nextIncompleteExercise
+                ? workout.exercises.findIndex(ex => ex.id === nextIncompleteExercise.id)
+                : lastExerciseIndex
+        }
+
+        this.currentExerciseIndex.set(currentExerciseIndex);
+
+        this.storageService.setItem(StorageKeys.WORKOUT_WIZARD_LAST_WORKOUT, this.workout);
     }
 
     goToNextExerciseSuperSet(superset) {
@@ -264,7 +285,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
             state: 'prepared',
             token: token,
             body: {},
- 
+
         } as Timer, {});*/
         //await this.storageService.setItem(StorageKeys.ACTIVE_TIMER_ID, timer.id);
         let message = `${this.translateService.instant('Next')}: `

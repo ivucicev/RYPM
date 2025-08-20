@@ -45,6 +45,8 @@ BUGS -
      - [ ] starting workout calls collection/sets and returns empty
      - [ ] (?) put continue footer in tabs page so there are less frequent requests
      - [ ] (?) active workout (from wizard) service? used in multiple places, handle locally for less freq. requests
+     - [ ] When completing all exercises on page doesnt navigate to next page even if all completed on current page
+     
 
 UI/UX BUGS
      - [ ] Logo on share details wrong color based on theme

@@ -1,14 +1,14 @@
 packages:
-  - name: rypm-notifier
+  - name: rypm
     functions:
-      - name: rypm-notifier
+      - name: subs
         runtime: nodejs:18
         environment:
           VAPID_SUBJECT: mailto:ivucicev@gmail.com
           VAPID_PUBLIC_KEY: "${VAPID_PUBLIC_KEY}"
           VAPID_PRIVATE_KEY: "${VAPID_PRIVATE_KEY}"
           PST_SECRET: "${PST_SECRET}"
-      - name: rypm-sender
+      - name: send
         runtime: nodejs:18
         environment:
           VAPID_SUBJECT: mailto:ivucicev@gmail.com

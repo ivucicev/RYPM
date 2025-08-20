@@ -12,6 +12,7 @@ import { register } from 'swiper/element/bundle';
 import { chevronBackOutline, chevronForwardOutline, downloadOutline, shareOutline } from 'ionicons/icons';
 import { NavigationExtras, NavigationStart, Router } from '@angular/router';
 import { skipLocationChange } from './core/helpers/platform-helpers';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-root',
@@ -90,7 +91,7 @@ export class AppComponent {
             token = await this.getToken(sub);
         }
 
-        await fetch("https://faas-fra1-afec6ce7.doserverless.co/api/v1/web/fn-89192d39-2123-4764-971d-34f42a9a81ea/rypm-notifier/rypm-sender", {
+        await fetch(environment.api + "api/push-send?token=" + token, {
             method: "POST",
             headers: {
                 "content-type": "application/json",
@@ -105,8 +106,8 @@ export class AppComponent {
         });
     }
 
-    async getToken(sub) {
-        const res = await fetch("https://faas-fra1-afec6ce7.doserverless.co/api/v1/web/fn-89192d39-2123-4764-971d-34f42a9a81ea/rypm-notifier/rypm-notifier", {
+    async getToken(sub?) {
+        const res = await fetch(environment.api + "api/push-subscribe", {
             method: "POST",
             headers: { "content-type": "application/json" },
             body: JSON.stringify({ subscription: sub })

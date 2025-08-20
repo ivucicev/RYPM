@@ -1,5 +1,5 @@
 export const environment = {
 	production: true,
-	api: 'http://app.rypm.app/',
+	api: 'https://app.rypm.app/',
 	demo: 'https://demo.rypm.app/'
 };

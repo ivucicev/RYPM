@@ -1,8 +1,5 @@
 <ion-app class="ion-app-container">
     <ion-router-outlet></ion-router-outlet>
-    <ion-button color="light" class="ion-padding-x ion-margin-top slide-in-button" (click)="push()">
-        {{ 'Enable token' | translate }} &nbsp;
-    </ion-button>
     @if (canShowInstallButton && showInstallButton) {
     <ion-button color="light" class="ion-padding-x ion-margin-top slide-in-button" (click)="triggerInstall()">
         {{ 'Install App' | translate }} &nbsp;
@@ -12,7 +9,6 @@
 </ion-app>
 
 <dialog id="install-dialog" [attr.open]="showInstallButton" [class.opened]="showInstallDialog">
-
     <section>
         <header>
             <img src="/assets/logo-light-sm.png">

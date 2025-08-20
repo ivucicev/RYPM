@@ -65,58 +65,6 @@ export class AppComponent {
 
     public component = AppComponent;
 
-    b64urlToU8(b64u) {
-        const pad = "=".repeat((4 - b64u.length % 4) % 4);
-        const b64 = (b64u + pad).replace(/-/g, "+").replace(/_/g, "/");
-        return Uint8Array.from(atob(b64), c => c.charCodeAt(0));
-    }
-
-    async push() {
-
-        let token = localStorage.getItem("pst");
-
-        if (!token) {
-            if (!('Notification' in window)) 
-                throw new Error('Notifications unsupported')
-            
-            const perm = await Notification.requestPermission();
-            if (perm !== 'granted') 
-                throw new Error('User denied');
-
-            const sub = await (
-                "pushManager" in window
-                    ? (window as any).pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: this.b64urlToU8("BEaY_oTCzI5fYJqxhZX27r63lv7Q0kF_oZiQ24c-vPu9zL4867WOEEKvkdTTKciEFJjIpcc0SPuJmtRSmocklzU") })
-                    : (await navigator.serviceWorker.register("/sw.js")).pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: this.b64urlToU8("BEaY_oTCzI5fYJqxhZX27r63lv7Q0kF_oZiQ24c-vPu9zL4867WOEEKvkdTTKciEFJjIpcc0SPuJmtRSmocklzU") })
-            );
-            token = await this.getToken(sub);
-        }
-
-        await fetch(environment.api + "api/push-send?token=" + token, {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-                "authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                token,
-                title: "Timer Expired",
-                body: "Next workout: Dumbbell Press",
-                navigate: "https://app.rypm.app/"
-            })
-        });
-    }
-
-    async getToken(sub?) {
-        const res = await fetch(environment.api + "api/push-subscribe", {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({ subscription: sub })
-        });
-        const { token } = await res.json();
-        localStorage.setItem("pst", token);
-        return token;
-    }
-
     async ngOnInit() {
     }
 

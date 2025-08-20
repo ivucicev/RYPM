@@ -12,7 +12,8 @@ export const COLLECTIONS = {
     measurement_entry: 'measurement_entry',
     conversations: 'conversations',
     messages: 'messages',
-    progress_photos: 'progress_photos'
+    progress_photos: 'progress_photos',
+    timers: 'timers'
 };
 export type Collection = keyof typeof COLLECTIONS
 

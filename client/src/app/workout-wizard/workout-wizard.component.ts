@@ -27,6 +27,8 @@ import { ToastService } from '../core/services/toast-service';
 import { WakeLockService } from '../core/services/WakeLockService';
 import { StorageService } from '../core/services/storage.service';
 import { StorageKeys } from '../core/constants/storage-keys';
+import { Timer } from '../core/models/collections/timer';
+import { PushService } from '../core/services/push.service';
 
 @Component({
     selector: 'app-workout-wizard',
@@ -106,7 +108,8 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         private toast: ToastService,
         private alertController: AlertController,
         private wake: WakeLockService,
-        private storageService: StorageService
+        private storageService: StorageService,
+        private push: PushService
     ) {
     }
 
@@ -183,7 +186,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
             })
         }
         if (nextSuperset >= 0) {
-            this.toast.info(`Superset - ${nextName}`, "top")
+            this.toast.info(`${this.translateService.instant('Superset')} - ${nextName}`, "top")
             this.transitionToExercise(nextSuperset, this.currentExerciseIndex() > nextSuperset)
         }
     }
@@ -237,17 +240,36 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         this.currentExerciseIndex.set(index);
     }
 
-    startRest(setIndex: number) {
+    async startRest(setIndex: number) {
         const setForms = this.currentExercise().controls.sets as FormArray<ExerciseSetFormGroup>;
         const setForm = setForms.at(setIndex);
 
         this.lastCompletedSet = setForm;
         this.lastCompletedSetExercise = this.exercises.find(e => e.controls.sets.controls.find(s => s.controls.id.value == setForm.controls.id.value) != null);
 
+        //start rest, should add rest to timers
+        if (this.lastCompletedSetExercise?.controls?.restDuration?.value) {
+            const restDurationValue = this.lastCompletedSetExercise.controls.restDuration.value;
+            const sendAt = new Date(Date.now() + (restDurationValue * 1000) - 2000);
+            const duration = (restDurationValue * 1000) - 2000;
+            const timer = await this.pocketbaseService.timers.create({
+                sendAt: sendAt.toISOString(),
+                state: 'prepared',
+                token: await this.storageService.getItem(StorageKeys.PORTABLE_SUBSCRIPTION_TOKEN),
+                body: {},
+
+            } as Timer, {});
+            await this.storageService.setItem(StorageKeys.ACTIVE_TIMER_ID, timer.id);
+            await this.push.push('Rest over', 'Next: hello word', duration)
+        }
         setForm.markAsDirty({ onlySelf: true });
     }
 
-    onRestSkipped() {
+    async onRestSkipped() {
+        const timerId = await this.storageService.getItem<string>(StorageKeys.ACTIVE_TIMER_ID);
+        if (timerId)
+            this.pocketbaseService.timers.update(timerId, { state: 'cancelled' } as Timer);
+        
         this.lastCompletedSet.controls.restSkipped.setValue(true);
         this.lastCompletedSet.markAsDirty({ onlySelf: true });
     }

@@ -55,7 +55,6 @@ export class ContinueFooterComponent {
         this.lastCompletedSetExercise = null;
         this.workout = null;
 
-
         let workout = await this.storageService.getItem<Workout>(StorageKeys.WIZARD_LAST_WORKOUT)
         let workoutCheck = null;
         try {

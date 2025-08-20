@@ -47,12 +47,14 @@ export class PushService {
     async push(title, body, duration) {
         let token = await this.storage.getItem<string>(StorageKeys.PORTABLE_SUBSCRIPTION_TOKEN);
         if (!token) token = await this.requestNotifications();
+        const controller = new AbortController();
         await fetch(environment.api + `api/push-send?token=${token}&duration=${duration}`, {
             method: "POST",
             headers: {
                 "content-type": "application/json",
                 "authorization": `Bearer ${token}`
             },
+            signal: controller.signal,
             body: JSON.stringify({
                 token,
                 title,
@@ -60,6 +62,7 @@ export class PushService {
                 navigate: "https://app.rypm.app/"
             })
         });
+        return controller;
     }
 
     async getToken(sub?) {

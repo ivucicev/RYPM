@@ -31,21 +31,26 @@ BUGS -
      - [x] load per miscle group
      - [x] fix program creation from AI program
      - [x] Fix NGINX config collision with SW
-     - [ ] When creating program - adding lots of weeks causes 404 in console and lots of requests !HIGH prio -too many requests in general, i think server would crash with 1.5 active users
-     - [ ] Navigating exercise left and right calls N requests ever time, even if nothing is changed  !HIGH
-     - [ ] EDITING DONE WORKOUT WORKS LIKE DOG SHIT - doesnt work, creates random exercises and deletes old ones very WTF functionallity also updates navigating left and right for no reason
-     - [ ] Calling Continue workout from program calls so many requests that i get 429 error from the API !HIGH
-     - [ ] bandwidth -> saving sends whole object insead of patched fields
-     - [ ] editing workout program -> setting values wrong value in picker [confusing]
-     - [ ] going to next page calls 6 requests
-     - [ ] setting completed false on whole exercise  when it is already false
-     - [ ] continue footer missing
-     - [ ] start workout batch creating sets
-     - [ ] home screen opening popover fetches programs again?
-     - [ ] starting workout calls collection/sets and returns empty
+     - [x] When creating program - adding lots of weeks causes 404 in console and lots of requests !HIGH prio -too many requests in general, i think server would crash with 1.5 active users
+     - [x] Navigating exercise left and right calls N requests ever time, even if nothing is changed  !HIGH
+     - [x] EDITING DONE WORKOUT WORKS LIKE DOG SHIT - doesnt work, creates random exercises and deletes old ones very WTF functionallity also updates navigating left and right for no reason
+     - [x] Calling Continue workout from program calls so many requests that i get 429 error from the API !HIGH
+     - [x] editing workout program -> setting values wrong value in picker [confusing]
+     - [x] going to next page calls 6 requests
+     - [x] setting completed false on whole exercise  when it is already false
+     - [x] continue footer missing
+     - [x] start workout batch creating sets
+     - [x] home screen opening popover fetches programs again?
+     - [x] When completing all exercises on page doesnt navigate to next page even if all completed on current page
+     - [x] starting workout calls collection/sets and returns empty
      - [ ] (?) put continue footer in tabs page so there are less frequent requests
      - [ ] (?) active workout (from wizard) service? used in multiple places, handle locally for less freq. requests
-     - [ ] When completing all exercises on page doesnt navigate to next page even if all completed on current page
+     - [ ] bandwidth -> saving sends whole object insead of patched fields
+     - [ ] active page local storage
+     - [ ] program detail edit, extending weeks does not change week display on info tab (need to move back first and reenter edit)
+     - [ ] picker on set does not show correct values
+     - [ ] active page local storage
+     - [ ] measurements fix (has Many relationship instead of singular, naming is not consistent)
      
 
 UI/UX BUGS

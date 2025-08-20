@@ -249,18 +249,24 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
         //start rest, should add rest to timers
         if (this.lastCompletedSetExercise?.controls?.restDuration?.value) {
-            const restDurationValue = this.lastCompletedSetExercise.controls.restDuration.value;
-            const sendAt = new Date(Date.now() + (restDurationValue * 1000) - 2000);
-            const duration = (restDurationValue * 1000) - 2000;
-            /*const timer = await this.pocketbaseService.timers.create({
-                sendAt: sendAt.toISOString(),
-                state: 'prepared',
-                token: await this.storageService.getItem(StorageKeys.PORTABLE_SUBSCRIPTION_TOKEN),
-                body: {},
+            /* const restDurationValue = this.lastCompletedSetExercise.controls.restDuration.value;
+             const sendAt = new Date(Date.now() + (restDurationValue * 1000) - 2000);
+             const duration = (restDurationValue * 1000) - 2000;
+             const token = await this.storageService.getItem<string>(StorageKeys.PORTABLE_SUBSCRIPTION_TOKEN);
+ 
+             const timer = await this.pocketbaseService.timers.create({
+                 sendAt: sendAt.toISOString(),
+                 state: 'prepared',
+                 token: token,
+                 body: {},
+ 
+             } as Timer, {});
+ 
+             await this.storageService.setItem(StorageKeys.ACTIVE_TIMER_ID, timer.id); */
 
-            } as Timer, {});*/
-            //await this.storageService.setItem(StorageKeys.ACTIVE_TIMER_ID, timer.id);
-            await this.push.push('Rest over', 'Next: hello word', duration)
+            //console.log(this.nextExercise().controls.name.value)
+
+            //const abortController = await this.push.push(this.translateService.instant('Rest over'), 'Next: hello word', duration)
         }
         setForm.markAsDirty({ onlySelf: true });
     }
@@ -269,26 +275,32 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         const timerId = await this.storageService.getItem<string>(StorageKeys.ACTIVE_TIMER_ID);
         if (timerId)
             this.pocketbaseService.timers.update(timerId, { state: 'cancelled' } as Timer);
-        
+
         this.lastCompletedSet.controls.restSkipped.setValue(true);
         this.lastCompletedSet.markAsDirty({ onlySelf: true });
     }
 
     async handleUncompletedSets() {
+        let hasBatch = false;
+        const batch = this.pocketbaseService.pb.createBatch()
         await this.workout.exercises.forEach(async exercise => {
             await exercise.sets.forEach(async set => {
-                await this.pocketbaseService.sets.update(
-                    set.id,
-                    {
-                        completed: true
-                    } as Set,
-                    {
-                        headers: { ...PB.HEADER.NO_TOAST }
-                    }
-                );
+                if (set.completed != true) {
+                    hasBatch = true;
+                    batch.collection("sets").update(
+                        set.id,
+                        {
+                            completed: true
+                        } as Set,
+                        {
+                            headers: { ...PB.HEADER.NO_TOAST }
+                        }
+                    );
+                }
             });
         });
-
+        if (hasBatch)
+            await batch.send();
         return lastValueFrom(of(true));
     }
 

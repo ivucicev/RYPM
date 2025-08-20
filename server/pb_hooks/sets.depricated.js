@@ -1,6 +1,10 @@
 /// <reference path="../pb_data/types.d.ts" />
 
-onRecordAfterUpdateSuccess((e) => {
+onRecordAfter((e) => {
+
+    sleep(10000)
+
+    $app.logger().warn("NOW!!!")
 
        /* const userId = e.record.get("user");
     const completed = e.record.getBool("completed");
@@ -41,4 +45,4 @@ const existingWorkout = $app.findRecordsByFilter(
     )[0];*/
 
     e.next();
-}, "sets")
+}, "timers")

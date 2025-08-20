@@ -166,13 +166,24 @@ export class ExerciseFormComponent implements OnChanges {
             form.controls.completedAt.setValue(null);
         }
 
-        if (form.controls.completed.value == true && this.exercise?.controls?.superset?.value != null && this.exercise?.controls?.superset?.value != "") {
-            // set completed check if there is superset mark
-            this.onSupersetCompletedEvent.emit(this.exercise?.controls?.superset?.value);
+        var allCompleted = true;
+        for (let i = 0; i < this.setsArray.length; i++) {
+            const formTmp = this.setsArray.at(i);
+            if (formTmp.controls.completed.value != true && i != setIndex) {
+                allCompleted = false;
+            }
         }
 
         this.exercise.markAsPristine({ onlySelf: true }); // prevent set dirty from propagating to main form (triggers update)
         form.markAsDirty({ onlySelf: true });
+
+        if (allCompleted && form.controls.completed.value == true)
+            this.onAllCompletedEvent.emit();
+
+        if (form.controls.completed.value == true && this.exercise?.controls?.superset?.value != null && this.exercise?.controls?.superset?.value != "") {
+            // set completed check if there is superset mark
+            this.onSupersetCompletedEvent.emit(this.exercise?.controls?.superset?.value);
+        }
     }
 
     onCompleted(setIndex: number) {

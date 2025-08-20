@@ -145,7 +145,7 @@ export class PocketbaseService {
                 }
             } else if (options?.method == "POST" || options?.method == "PATCH" || options?.method == "DELETE") {
                 if (!options?.headers?.notoast) {
-                    this.toastService.success();
+                    //this.toastService.success();
                 }
             }
 

@@ -6,7 +6,7 @@
 
     @if (!restBadge.isResting && !timerOnly()) {
     <ion-button size="large" expand="round" shape="round" color="primary" (click)="navToActiveWorkout()">
-        <ion-icon slot="start" [name]="'play-outline'"></ion-icon>
+        <ion-icon slot="end" [name]="'play-outline'"></ion-icon>
         {{ 'Continue workout' | translate }}
     </ion-button>
     }

@@ -19,8 +19,10 @@ COPY ../data-import/exercise-templates.json /pb/pb_data/exercise-templates.json
 FROM alpine:latest
 
 RUN apk add --no-cache ca-certificates
+RUN apk add --no-cache curl dcron
 
 COPY --from=pocketbase-builder /pb /pb
+COPY crontab /etc/crontabs/root
 
 WORKDIR /pb
 

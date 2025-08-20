@@ -9,7 +9,7 @@ import { Constants } from './core/constants/constants';
 import { ThemeService } from './core/services/theme.service';
 import { registerIcons } from './core/constants/icons';
 import { register } from 'swiper/element/bundle';
-import { alertCircle, chevronBackOutline, chevronForwardOutline, downloadOutline, shareOutline } from 'ionicons/icons';
+import { chevronBackOutline, chevronForwardOutline, downloadOutline, shareOutline } from 'ionicons/icons';
 import { NavigationExtras, NavigationStart, Router } from '@angular/router';
 import { skipLocationChange } from './core/helpers/platform-helpers';
 
@@ -72,18 +72,15 @@ export class AppComponent {
 
     async push() {
 
-
         let token = localStorage.getItem("pst");
 
         if (!token) {
-            if (!('Notification' in window)) {
+            if (!('Notification' in window)) 
                 throw new Error('Notifications unsupported')
-            }
-
+            
             const perm = await Notification.requestPermission();
-            if (perm !== 'granted') {
+            if (perm !== 'granted') 
                 throw new Error('User denied');
-            }
 
             const sub = await (
                 "pushManager" in window
@@ -120,7 +117,6 @@ export class AppComponent {
     }
 
     async ngOnInit() {
-
     }
 
     initializeApp() {

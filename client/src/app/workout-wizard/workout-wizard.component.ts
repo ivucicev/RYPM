@@ -249,26 +249,56 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
         //start rest, should add rest to timers
         if (this.lastCompletedSetExercise?.controls?.restDuration?.value) {
-            /* const restDurationValue = this.lastCompletedSetExercise.controls.restDuration.value;
-             const sendAt = new Date(Date.now() + (restDurationValue * 1000) - 2000);
-             const duration = (restDurationValue * 1000) - 2000;
-             const token = await this.storageService.getItem<string>(StorageKeys.PORTABLE_SUBSCRIPTION_TOKEN);
- 
-             const timer = await this.pocketbaseService.timers.create({
-                 sendAt: sendAt.toISOString(),
-                 state: 'prepared',
-                 token: token,
-                 body: {},
- 
-             } as Timer, {});
- 
-             await this.storageService.setItem(StorageKeys.ACTIVE_TIMER_ID, timer.id); */
-
-            //console.log(this.nextExercise().controls.name.value)
-
-            //const abortController = await this.push.push(this.translateService.instant('Rest over'), 'Next: hello word', duration)
+            await this.prepareAndSendNotification(setForms, setIndex)
         }
         setForm.markAsDirty({ onlySelf: true });
+    }
+
+    async prepareAndSendNotification(setForms, setIndex) {
+        const restDurationValue = this.lastCompletedSetExercise.controls.restDuration.value;
+        const sendAt = new Date(Date.now() + (restDurationValue * 1000) - 2000);
+        const duration = (restDurationValue * 1000) - 2000;
+        const token = await this.storageService.getItem<string>(StorageKeys.PORTABLE_SUBSCRIPTION_TOKEN);
+        /*const timer = await this.pocketbaseService.timers.create({
+            sendAt: sendAt.toISOString(),
+            state: 'prepared',
+            token: token,
+            body: {},
+ 
+        } as Timer, {});*/
+        //await this.storageService.setItem(StorageKeys.ACTIVE_TIMER_ID, timer.id);
+        let message = `${this.translateService.instant('Next')}: `
+        let nextSet;
+        if (this.currentExercise()?.controls?.sets?.length - 1 == setIndex && this.nextExercise()?.controls?.name?.value) {
+            // show next
+            message += `${this.nextExercise()?.controls?.name?.value} 1/${this.nextExercise()?.controls?.sets?.length}`
+            const setFormsNext = this.nextExercise().controls.sets as FormArray<ExerciseSetFormGroup>;
+            const setFormNext = setFormsNext.at(0);
+            nextSet = setFormNext;
+
+        } else {
+            // show current
+            message += `${this.currentExercise()?.controls?.name?.value} ${setIndex + 2}/${this.currentExercise().controls?.sets?.length}`
+            nextSet = setForms.at(setIndex + 1);
+        }
+
+        // show current but next set
+        if (!nextSet) return;
+        if (nextSet.controls?.completed?.value == true) return;
+
+        let weight: any = ''
+        if (nextSet.controls.weightType.value == WeightType.LB) {
+            weight = '@' + (nextSet.controls.currentWeight.value || nextSet.controls.previousWeight.value || nextSet.controls.weight.value) + "lb";
+        }
+        if (nextSet.controls.weightType.value == WeightType.KG) {
+            weight = '@' + (nextSet.controls.currentWeight.value || nextSet.controls.previousWeight.value || nextSet.controls.weight.value) + "kg";
+        }
+        if (nextSet.controls.weightType.value == WeightType.BW) {
+            weight = '@bw';
+        }
+        message += ` ${nextSet.controls.currentValue.value || nextSet.controls.maxValue.value || nextSet.controls.previousValue.value || nextSet.controls.value.value}${weight}`;
+        console.log(message)
+        //await this.push.push(this.translateService.instant('Rest timer over'), message, duration)
     }
 
     async onRestSkipped() {

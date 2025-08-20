@@ -6,7 +6,7 @@ routerAdd("POST", "/api/push-send", (e) => {
     let duration = e.request.url.query().get("duration")
     let body = e.requestInfo().body;
 
-    //send fire and forget
+    //send fire and forget ??
     sleep(parseInt(duration))
 
     $http.send({

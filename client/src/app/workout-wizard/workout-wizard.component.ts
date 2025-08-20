@@ -252,13 +252,13 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
             const restDurationValue = this.lastCompletedSetExercise.controls.restDuration.value;
             const sendAt = new Date(Date.now() + (restDurationValue * 1000) - 2000);
             const duration = (restDurationValue * 1000) - 2000;
-            const timer = await this.pocketbaseService.timers.create({
+            /*const timer = await this.pocketbaseService.timers.create({
                 sendAt: sendAt.toISOString(),
                 state: 'prepared',
                 token: await this.storageService.getItem(StorageKeys.PORTABLE_SUBSCRIPTION_TOKEN),
                 body: {},
 
-            } as Timer, {});
+            } as Timer, {});*/
             await this.storageService.setItem(StorageKeys.ACTIVE_TIMER_ID, timer.id);
             await this.push.push('Rest over', 'Next: hello word', duration)
         }

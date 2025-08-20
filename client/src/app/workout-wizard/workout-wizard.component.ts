@@ -297,8 +297,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
             weight = '@bw';
         }
         message += ` ${nextSet.controls.currentValue.value || nextSet.controls.maxValue.value || nextSet.controls.previousValue.value || nextSet.controls.value.value}${weight}`;
-        console.log(message)
-        //await this.push.push(this.translateService.instant('Rest timer over'), message, duration)
+        await this.push.push(this.translateService.instant('Rest timer over'), message, duration)
     }
 
     async onRestSkipped() {

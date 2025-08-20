@@ -259,7 +259,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
                 body: {},
 
             } as Timer, {});*/
-            await this.storageService.setItem(StorageKeys.ACTIVE_TIMER_ID, timer.id);
+            //await this.storageService.setItem(StorageKeys.ACTIVE_TIMER_ID, timer.id);
             await this.push.push('Rest over', 'Next: hello word', duration)
         }
         setForm.markAsDirty({ onlySelf: true });

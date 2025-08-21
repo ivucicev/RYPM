@@ -19,10 +19,11 @@ COPY ../data-import/exercise-templates.json /pb/pb_data/exercise-templates.json
 FROM alpine:latest
 
 RUN apk add --no-cache ca-certificates
-RUN apk add --no-cache curl dcron
+RUN apk add --no-cache ca-certificates curl dcron \
+    && printf '* * * * * i=0; while [ $i -lt 60 ]; do /usr/bin/curl -fsS http://localhost:8080/api/hello-world/hello || echo tick-fail >&2; sleep 1; i=$((i+1)); done\n' > /etc/crontabs/root \
+    && chmod 600 /etc/crontabs/root
 
 COPY --from=pocketbase-builder /pb /pb
-COPY crontab /etc/crontabs/root
 
 WORKDIR /pb
 

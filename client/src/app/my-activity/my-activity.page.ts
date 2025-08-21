@@ -619,7 +619,7 @@ export class MyActivityPage {
 
             workout.tagsToShow = tagsToShow;
             workout.load = workout.exercises.reduce((total, exercise) => {
-                return total + (exercise.sets?.reduce((sum, set) => sum + (set.weight || 0), 0) || 0);
+                return total + (exercise.sets?.reduce((sum, set) => sum + set.value * (set.weight || 0), 0) || 0);
             }, 0);
 
             workout.exercises.forEach(e => {

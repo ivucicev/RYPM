@@ -2,10 +2,13 @@ BUGS -
      - [ ] (?) put continue footer in tabs page so there are less frequent requests
      - [ ] (?) active workout (from wizard) service? used in multiple places, handle locally for less freq. requests
      - [ ] bandwidth -> saving sends whole object insead of patched fields
-     - [x] active exercise page local storage 
      - [ ] program detail edit, extending weeks does not change week display on info tab (need to move back first and reenter edit)
-     - [ ] picker on set does not show correct values
+     - [ ] picker on set does not show correct values - when editing program [week/day], check templates also
      - [ ] measurements fix (has Many relationship instead of singular, naming is not consistent)
+     - [x] cehck adding exercises dynamic 
+     - [x] edit pogram navigating weeks back to info weeks segment do not change
+     - [x] check editing workout sets reps when actve wo
+     - [ ]  
      
 
 UI/UX BUGS
@@ -24,7 +27,7 @@ Settings -
 General -
     - [?] FB [POSTPONED]
     - [?] Apple [POSTPONED]
-    - [ ] PWA notifications for Rest timer
+    - [x] PWA notifications for Rest timer
     - [ ] White labeling
     - [ ] Marketing website
 
@@ -38,3 +41,11 @@ Features & Ideas
     - [ ] Meal planner weekly, monthly with grocery store list... based on your dietary restrictions and weight and goal to go with supporting workout plan recovery
     - [ ] Meal planner with tickboxes like Breeakfast [x] Eggs 4x & Tuna 50g & Rice 18g
     - [ ] Meal planner shopping list based on monthly meal plan
+
+
+    todo - login - register
+    todo - invites
+    todo categories
+    todo private public
+    todo organize by logic
+    todo colors

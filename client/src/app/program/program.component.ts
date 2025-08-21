@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ErrorMessageDirective } from '../core/directives/error-message.directive';
@@ -16,6 +16,7 @@ import { Day } from '../core/models/collections/day';
 import { WorkoutStateColorPipe } from '../core/pipes/workout-state-color.pipe';
 import { ProgramInfo, ProgramService, ProgramActionKey } from '../core/services/program.service';
 import { ToastService } from '../core/services/toast-service';
+import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-program',
@@ -65,7 +66,8 @@ export class ProgramComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private autosaveService: AutosaveService,
         private programService: ProgramService,
-        private toastService: ToastService
+        private toastService: ToastService,
+        private change: ChangeDetectorRef
     ) {
     }
 
@@ -105,6 +107,8 @@ export class ProgramComponent implements OnInit, OnDestroy {
         }
 
         this.selectedWeekIndex = Number((event.detail.value as string).split('-').at(-1));
+
+        this.change.markForCheck();
     }
 
     navigateToWorkout(day: Day) {

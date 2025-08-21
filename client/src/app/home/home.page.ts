@@ -20,6 +20,8 @@ import { ProgramInfo, ProgramService } from '../core/services/program.service';
 import { TemplateService } from '../core/services/template.service';
 import { FormsModule } from '@angular/forms';
 import { WakeLockService } from '../core/services/WakeLockService';
+import { StorageService } from '../core/services/storage.service';
+import { StorageKeys } from '../core/constants/storage-keys';
 
 type WorkoutInfo = (Workout & { nextExercise?: (Exercise & { nextSet?: Set }) });
 
@@ -59,6 +61,7 @@ export class HomePage {
     activeProgramIds = [];
 
     continueFooter = viewChild(ContinueFooterComponent);
+    isInital = false;
 
     constructor(
         private navCtrl: NavController,
@@ -66,14 +69,23 @@ export class HomePage {
         private programService: ProgramService,
         private templateService: TemplateService,
         private wake: WakeLockService,
-        private animationCtrl: AnimationController
+        private animationCtrl: AnimationController,
+        private storage: StorageService
 
     ) {
+        this.isInital = true;
     }
 
     //#region Init
     async ionViewWillEnter() {
+        const active = await this.storage.getItem<Workout>(StorageKeys.WORKOUT_WIZARD_LAST_WORKOUT)
+        if (active?.id && this.isInital) {
+            await this.navCtrl.navigateForward([`./workout-wizard/${active.id}`]);
+            this.isInital = false;
+            return;
+        }
         await this.refresh();
+        this.isInital = false;
     }
 
     async refresh() {

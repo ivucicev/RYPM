@@ -15,6 +15,7 @@ COPY ../server/pb_hooks /pb/pb_hooks
 COPY ../data-import/exercise-templates.json /pb/pb_import/exercise-templates.json
 COPY ../data-import/exercise-templates.json /pb/pb_data/pb_import/exercise-templates.json
 COPY ../data-import/exercise-templates.json /pb/pb_data/exercise-templates.json
+COPY crontab /
 
 FROM alpine:latest
 

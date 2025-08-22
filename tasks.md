@@ -1,9 +1,6 @@
 BUGS -
-     - [x] Block editing on done days in progarm
-     - [x] Enable notifications note...
-     - [x] Situation  [] [] [] [] marking fast [s1] [s2] [s3] [s4] then uncheck [s1] [] [s3] [s4] what will timer do?
-     - [x] unchecking workout should skip rest timer
      - [ ] picker on set does not show correct values - when editing program [week/day], check templates also
+     - [ ] When getting back to app timer was pused
      
 
 UI/UX BUGS

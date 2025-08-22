@@ -23,24 +23,30 @@ export class PushService {
     async requestNotifications() {
         let token = await this.storage.getItem<string>(StorageKeys.PORTABLE_SUBSCRIPTION_TOKEN);
         if (!token) {
-            if (!('Notification' in window))
+            if (!('Notification' in window)) {
+                await this.storage.setItem(StorageKeys.NOTIFICATIONS_ENABLED, 0);
                 throw new Error('Notifications unsupported')
+            }
 
             const perm = await Notification.requestPermission();
-            if (perm !== 'granted')
+            if (perm !== 'granted') {
+                await this.storage.setItem(StorageKeys.NOTIFICATIONS_ENABLED, 0);
                 throw new Error('User denied');
+            }
 
             const sub = await (
                 "pushManager" in window
                     ? (window as any).pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: this.b64urlToU8("BEaY_oTCzI5fYJqxhZX27r63lv7Q0kF_oZiQ24c-vPu9zL4867WOEEKvkdTTKciEFJjIpcc0SPuJmtRSmocklzU") })
                     : (await navigator.serviceWorker.register("/sw.js")).pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: this.b64urlToU8("BEaY_oTCzI5fYJqxhZX27r63lv7Q0kF_oZiQ24c-vPu9zL4867WOEEKvkdTTKciEFJjIpcc0SPuJmtRSmocklzU") })
             );
+
             token = await this.getToken(sub);
 
             const user = await this.account.getCurrentUser();
 
             await this.pocketbase.users.update(user.id, { notificationsEnabled: true, notificationsToken: token });
         }
+        await this.storage.setItem(StorageKeys.NOTIFICATIONS_ENABLED, 1);
         return token;
     }
 

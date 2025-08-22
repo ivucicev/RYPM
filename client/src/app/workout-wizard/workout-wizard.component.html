@@ -57,6 +57,15 @@
         } @else {
         <ion-spinner class="fullscreen" name="dots"></ion-spinner>
         }
+        @if (showNotificationPopup) {
+            <div class="notes">
+                <ion-icon [src]="notificationIcon"></ion-icon>
+                {{ 'Notifications are off. Turn them on to get alerts for the next set and rest period ending.' | translate }}
+                <br>
+                <ion-button (click)="requestNotifications()" class="ion-float-right" size="small" color="primary" fill="clear">{{ 'Turn on' | translate }}</ion-button>
+                <ion-button (click)="hideNotificationPopup()" class="ion-float-right" size="small" color="danger" fill="clear">{{ 'Don\'t show again' | translate }}</ion-button>
+            </div>
+        }
     </div>
 </ion-content>
 

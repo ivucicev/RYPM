@@ -1,15 +1,11 @@
 BUGS -
      - [ ] (?) put continue footer in tabs page so there are less frequent requests
      - [ ] (?) active workout (from wizard) service? used in multiple places, handle locally for less freq. requests
-     - [ ] bandwidth -> saving sends whole object insead of patched fields
      - [ ] program detail edit, extending weeks does not change week display on info tab (need to move back first and reenter edit)
      - [ ] picker on set does not show correct values - when editing program [week/day], check templates also
-     - [ ] measurements fix (has Many relationship instead of singular, naming is not consistent)
-     - [x] cehck adding exercises dynamic 
-     - [x] edit pogram navigating weeks back to info weeks segment do not change
-     - [x] check editing workout sets reps when actve wo
-     - [ ]  Block editing on done days in progarm
-     
+     - [ ] Block editing on done days in progarm
+     - [ ] Situation  [] [] [] [] marking fast [s1] [s2] [s3] [s4] then uncheck [s1] [] [s3] [s4] what will timer do?
+     - [ ] Enable notifications note...
      
 
 UI/UX BUGS

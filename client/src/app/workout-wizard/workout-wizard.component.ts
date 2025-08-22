@@ -30,6 +30,7 @@ import { StorageKeys } from '../core/constants/storage-keys';
 import { Notification } from '../core/models/collections/notification';
 import { PushService } from '../core/services/push.service';
 import { AccountService } from '../core/services/account.service';
+import { caretForwardCircleSharp, notificationsOffOutline } from 'ionicons/icons';
 
 @Component({
     selector: 'app-workout-wizard',
@@ -62,6 +63,9 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
     animationDirection = null;
 
     isDayCompleted = false;
+
+    notificationIcon = notificationsOffOutline;
+    showNotificationPopup = false;
 
     currentExercise = computed(() => {
         const currentExercise = this.exercises[this.currentExerciseIndex()];
@@ -128,6 +132,8 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
                 const id = params['id'];
                 this.refresh(id);
             });
+        
+        await this.checkNotificationPopup();
     }
 
     ngOnDestroy() {
@@ -505,4 +511,26 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
         await actionSheet.present();
     }
+
+    async requestNotifications() {
+        const token = await this.push.requestNotifications();
+        if (token) this.showNotificationPopup = false;
+    }
+
+    async hideNotificationPopup() {
+        await this.storageService.setItem(StorageKeys.HIDE_NOTIFICATION_POPUP, 1)
+        await this.storageService.setItem(StorageKeys.NOTIFICATIONS_ENABLED, 0)
+        this.showNotificationPopup = false;
+    }
+
+    async checkNotificationPopup() {
+        const hide = await this.storageService.getItem(StorageKeys.HIDE_NOTIFICATION_POPUP);
+        const enabled = await this.storageService.getItem(StorageKeys.NOTIFICATIONS_ENABLED);
+
+        if (!enabled && !hide) {
+            this.showNotificationPopup = true;
+        }
+
+    }
+
 }

@@ -31,7 +31,7 @@ routerAdd("GET", "/api/check-notifications", (e) => {
             $app.db().update('notifications', { state: 'sent' }, $dbx.exp("id = {:id}", { id: notification?.id })).execute();
 
         const sent = $http.send({
-            url: "https://faas-fra1-afec6ce7.doserverless.co/api/v1/web/fn-89192d39-2123-4764-971d-34f42a9a81ea/rypm/send",
+            url: process.env.PUSH_SEND_URL,
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

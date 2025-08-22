@@ -19,6 +19,8 @@ services:
             POCKETBASE_ADMIN_EMAIL: ${POCKETBASE_ADMIN_EMAIL}
             POCKETBASE_ADMIN_PASS: ${POCKETBASE_ADMIN_PASS}
             OPENAI_API_KEY: ${OPENAI_API_KEY}
+            PUSH_SEND_URL: ${PUSH_SEND_URL}
+            PUSH_SUBSCRIBE_URL: ${PUSH_SUBSCRIBE_URL}
         restart: unless-stopped
 
     # rypm-updater:

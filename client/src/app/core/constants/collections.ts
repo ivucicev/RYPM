@@ -1,3 +1,4 @@
+
 export const COLLECTIONS = {
     programs: 'programs',
     templates: 'templates',
@@ -13,7 +14,7 @@ export const COLLECTIONS = {
     conversations: 'conversations',
     messages: 'messages',
     progress_photos: 'progress_photos',
-    timers: 'timers'
+    notifications: 'notifications'
 };
 export type Collection = keyof typeof COLLECTIONS
 

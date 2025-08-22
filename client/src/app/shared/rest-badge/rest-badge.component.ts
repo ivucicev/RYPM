@@ -2,6 +2,8 @@ import { Component, input, output, SimpleChanges } from '@angular/core';
 import { DurationPipe } from 'src/app/core/pipes/duration.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
 import { IonIcon, IonButton } from '@ionic/angular/standalone';
+import { StorageService } from 'src/app/core/services/storage.service';
+import { StorageKeys } from 'src/app/core/constants/storage-keys';
 
 @Component({
     selector: 'app-rest-badge',
@@ -22,7 +24,10 @@ export class RestBadgeComponent {
 
     onRestSkippedEvent = output<boolean>();
 
-    constructor() { }
+    increasedRest = 0;
+
+    constructor(private storage: StorageService) {
+    }
 
     ngOnChanges(_: SimpleChanges) {
         const initialTime = this.initialTime();
@@ -31,7 +36,7 @@ export class RestBadgeComponent {
             const start = new Date(initialTime);
             const end = start.setSeconds(start.getSeconds() + this.duration());
             if (new Date().getTime() < end) {
-                const restTimeRemaining = Math.floor((end - new Date().getTime()) / 1000);
+                let restTimeRemaining = Math.floor((end - new Date().getTime()) / 1000);
                 if (restTimeRemaining > 0) {
                     this.startRest(restTimeRemaining);
                     return;
@@ -48,7 +53,6 @@ export class RestBadgeComponent {
         this.restTimeRemaining = duration;
 
         this.isResting = true;
-
         this.restTimerId = setInterval(() => {
             this.restTimeRemaining--;
             if (this.restTimeRemaining <= 0) {
@@ -68,7 +72,13 @@ export class RestBadgeComponent {
 
     skipRest() {
         this.onRestSkippedEvent.emit(true);
-
         this.stopRest();
     }
+
+    async increaseRest() {
+        this.restTimeRemaining += 30;
+        this.increasedRest += 30;
+        //await this.storage.setItem(StorageKeys.INCREASED_REST, this.increasedRest);
+    }
+
 }

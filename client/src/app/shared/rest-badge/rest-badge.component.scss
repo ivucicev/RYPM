@@ -1,0 +1,31 @@
+ion-button.increase-rest-btn::part(native) {
+    z-index: -10 !important;
+    padding-left: 70px;
+    margin-left: -45px;
+    padding-right: 40px
+}
+
+// ion-button.rest {
+//     z-index: 1000 !important;
+//     position: relative;
+//     margin-left: 45px;
+
+// }
+
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-25%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+        z-index: -11 !important;
+    }
+}
+
+ion-button.animate-in {
+    z-index: -11 !important;
+    animation: slideInFromLeft 0.4s ease-out forwards;
+}

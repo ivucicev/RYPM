@@ -8,7 +8,8 @@ BUGS -
      - [x] cehck adding exercises dynamic 
      - [x] edit pogram navigating weeks back to info weeks segment do not change
      - [x] check editing workout sets reps when actve wo
-     - [ ]  
+     - [ ]  Block editing on done days in progarm
+     
      
 
 UI/UX BUGS

@@ -63,9 +63,9 @@
                         <ion-chip [color]="day.workout?.state | workoutStateColor" (click)="navigateToWorkout(day)">
 
                             <ion-label>{{ ('Day' | translate) }} {{ dayIndex + 1}}</ion-label>
-
                             @if (day.workout?.state === WorkoutState.Completed) {
-                            <ion-icon name="checkmark-circle-outline"></ion-icon> }
+                            <ion-icon name="checkmark-circle-outline"></ion-icon>
+                            }
 
                             @if (day.workout?.state === WorkoutState.InProgress) {
                             <ion-icon name="time-outline"></ion-icon> }

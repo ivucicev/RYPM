@@ -27,8 +27,9 @@ import { ToastService } from '../core/services/toast-service';
 import { WakeLockService } from '../core/services/WakeLockService';
 import { StorageService } from '../core/services/storage.service';
 import { StorageKeys } from '../core/constants/storage-keys';
-import { Timer } from '../core/models/collections/timer';
+import { Notification } from '../core/models/collections/notification';
 import { PushService } from '../core/services/push.service';
+import { AccountService } from '../core/services/account.service';
 
 @Component({
     selector: 'app-workout-wizard',
@@ -109,7 +110,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         private alertController: AlertController,
         private wake: WakeLockService,
         private storageService: StorageService,
-        private push: PushService
+        private push: PushService,
     ) {
         effect(() => {
             const currentExercise = this.currentExercise()?.getRawValue();
@@ -280,14 +281,8 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         const sendAt = new Date(Date.now() + (restDurationValue * 1000) - 2000);
         const duration = (restDurationValue * 1000) - 2000;
         const token = await this.storageService.getItem<string>(StorageKeys.PORTABLE_SUBSCRIPTION_TOKEN);
-        /*const timer = await this.pocketbaseService.timers.create({
-            sendAt: sendAt.toISOString(),
-            state: 'prepared',
-            token: token,
-            body: {},
+        //if (!token) return;
 
-        } as Timer, {});*/
-        //await this.storageService.setItem(StorageKeys.ACTIVE_TIMER_ID, timer.id);
         let message = `${this.translateService.instant('Next')}: `
         let nextSet;
         if (this.currentExercise()?.controls?.sets?.length - 1 == setIndex && this.nextExercise()?.controls?.name?.value) {
@@ -318,14 +313,26 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
             weight = '@bw';
         }
         message += ` ${nextSet.controls.currentValue.value || nextSet.controls.maxValue.value || nextSet.controls.previousValue.value || nextSet.controls.value.value}${weight}`;
-        await this.push.push(this.translateService.instant('Rest timer over'), message, duration)
+
+        const notification = await this.pocketbaseService.notifications.create({
+            sendAt: sendAt.toISOString(),
+            state: 'prepared',
+            token: token,
+            type: 'timer',
+            user: this.pocketbaseService?.pb?.authStore?.record.id,
+            to: this.pocketbaseService?.pb?.authStore?.record.id,
+            body: {
+                title: this.translateService.instant('Rest timer over'),
+                body: message,
+                token,
+                user: this.pocketbaseService?.pb?.authStore?.record.id
+            },
+
+        } as Notification, {});
     }
 
     async onRestSkipped() {
-        const timerId = await this.storageService.getItem<string>(StorageKeys.ACTIVE_TIMER_ID);
-        if (timerId)
-            this.pocketbaseService.timers.update(timerId, { state: 'cancelled' } as Timer);
-
+        await this.pocketbaseService.pb.send(`/api/skip-timers/user/${this.pocketbaseService?.pb?.authStore?.record.id}`, {});
         this.lastCompletedSet.controls.restSkipped.setValue(true);
         this.lastCompletedSet.markAsDirty({ onlySelf: true });
     }

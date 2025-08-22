@@ -1,11 +1,9 @@
 BUGS -
-     - [ ] (?) put continue footer in tabs page so there are less frequent requests
-     - [ ] (?) active workout (from wizard) service? used in multiple places, handle locally for less freq. requests
-     - [ ] program detail edit, extending weeks does not change week display on info tab (need to move back first and reenter edit)
+     - [x] Block editing on done days in progarm
+     - [x] Enable notifications note...
+     - [x] Situation  [] [] [] [] marking fast [s1] [s2] [s3] [s4] then uncheck [s1] [] [s3] [s4] what will timer do?
+     - [x] unchecking workout should skip rest timer
      - [ ] picker on set does not show correct values - when editing program [week/day], check templates also
-     - [ ] Block editing on done days in progarm
-     - [ ] Situation  [] [] [] [] marking fast [s1] [s2] [s3] [s4] then uncheck [s1] [] [s3] [s4] what will timer do?
-     - [ ] Enable notifications note...
      
 
 UI/UX BUGS

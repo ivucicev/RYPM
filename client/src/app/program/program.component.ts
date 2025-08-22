@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@ang
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ErrorMessageDirective } from '../core/directives/error-message.directive';
-import { NavController, PopoverController, IonLabel, IonItem, IonButton, IonIcon, IonPopover, IonList, IonChip, IonContent, IonSegmentButton, IonRow, IonHeader, IonToolbar, IonTitle, IonBackButton, IonInput, IonButtons, IonTextarea, IonSelect, IonSelectOption, IonSegment, TabsCustomEvent, SegmentCustomEvent } from '@ionic/angular/standalone';
+import { NavController, PopoverController, IonLabel, IonItem, IonButton, IonIcon, IonPopover, IonList, IonChip, IonContent, IonSegmentButton, IonRow, IonHeader, IonToolbar, IonTitle, IonBackButton, IonInput, IonButtons, IonTextarea, IonSelect, IonSelectOption, IonSegment, TabsCustomEvent, SegmentCustomEvent, IonNote } from '@ionic/angular/standalone';
 import { RepType } from '../core/models/enums/rep-type';
 import { WeightType } from '../core/models/enums/weight-type';
 import { ExerciseFormComponent } from '../form/exercise-form/exercise-form.component';
@@ -24,7 +24,7 @@ import { JsonPipe } from '@angular/common';
     styleUrls: ['./program.component.scss'],
     standalone: true,
     imports: [IonButtons, IonBackButton, IonTitle, IonToolbar, IonHeader, IonRow, IonSegmentButton, IonContent, IonChip, IonList, IonPopover, IonIcon, IonButton, IonItem, IonLabel, TranslateModule, ReactiveFormsModule, FormsModule, IonSegment, ErrorMessageDirective, IonInput, IonTextarea, IonSelect, IonSelectOption,
-        ExerciseFormComponent, WorkoutStateColorPipe],
+        ExerciseFormComponent, WorkoutStateColorPipe, IonNote],
     providers: [FormsService, AutosaveService, ToastService]
 })
 export class ProgramComponent implements OnInit, OnDestroy {
@@ -43,6 +43,8 @@ export class ProgramComponent implements OnInit, OnDestroy {
     WeightType = WeightType;
     WorkoutState = WorkoutState;
     public dayActionsPopoverOpen = false;
+
+    finishedDays = [];
 
     weeks = Array.from({ length: 12 }, (_, i) => i + 1);
 
@@ -307,6 +309,9 @@ export class ProgramComponent implements OnInit, OnDestroy {
     public presentPopover(e) {
         this.dayActionsPopoverOpen = true;
         this.popover.event = e
+    }
+
+    weeksChanged() {
     }
 
     // TODO: Trainer

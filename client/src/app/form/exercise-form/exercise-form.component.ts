@@ -88,6 +88,7 @@ export class ExerciseFormComponent implements OnChanges {
     @Input() workout: Workout;
 
     onCompletedEvent = output<number>();
+    onUncompletedEvent = output<number>();
     onAllCompletedEvent = output<void>();
     onRemoveExerciseEvent = output<void>();
 
@@ -97,6 +98,8 @@ export class ExerciseFormComponent implements OnChanges {
 
     canMoveExerciseUp = input<boolean>(true);
     canMoveExerciseDown = input<boolean>(true);
+
+    disabled = input<boolean>(false);
 
     onDirtyEvent = output<void>();
 
@@ -164,6 +167,7 @@ export class ExerciseFormComponent implements OnChanges {
             this.onCompleted(setIndex);
         } else {
             form.controls.completedAt.setValue(null);
+            this.onUnCompleted(setIndex);
         }
 
         var allCompleted = true;
@@ -188,6 +192,10 @@ export class ExerciseFormComponent implements OnChanges {
 
     onCompleted(setIndex: number) {
         this.onCompletedEvent.emit(setIndex);
+    }
+
+    onUnCompleted(setIndex: number) {
+        this.onUncompletedEvent.emit(setIndex);
     }
 
     addSet() {
@@ -457,6 +465,9 @@ export class ExerciseFormComponent implements OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
+        if (this.disabled()) {
+            this.exercise.disable();
+        }
         if ((changes['exercise'] || changes['workoutMode']) && this.workoutMode) {
             this.autoFillDefaults();
         }

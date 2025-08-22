@@ -45,7 +45,7 @@
             </ion-item>
             <ion-item>
                 <ion-label>{{ 'Duration' | translate }}</ion-label>
-                <ion-select formControlName="numberOfWeeks">
+                <ion-select formControlName="numberOfWeeks" (ionChange)="weeksChanged()">
                     @for (num of weeks; track num) {
                     <ion-select-option [value]="num">
                         {{num}} {{ 'Weeks' | translate }}
@@ -61,7 +61,6 @@
                     <div class="days-scroll">
                         @for (day of week.days; track $index; let dayIndex = $index) {
                         <ion-chip [color]="day.workout?.state | workoutStateColor" (click)="navigateToWorkout(day)">
-
                             <ion-label>{{ ('Day' | translate) }} {{ dayIndex + 1}}</ion-label>
                             @if (day.workout?.state === WorkoutState.Completed) {
                             <ion-icon name="checkmark-circle-outline"></ion-icon>
@@ -186,14 +185,20 @@
                         </div>
 
                         <div formArrayName="exercises">
+                            @if (program?.weeks[weekIndex].days[activeDayIndex]?.workout?.state == WorkoutState.Completed) {
+                                <ion-note>
+                                    <ion-icon name="information-circle-outline"></ion-icon>
+                                    {{ 'Editing is disabled as this day is already completed.' | translate }}
+                                </ion-note>
+                            }
                             @for (exercise of getExercisesArray(weekIndex, activeDayIndex).controls; track
                             $index; let
                             exIndex = $index) {
                             <ng-container [formGroupName]="exIndex">
-
                                 <ion-item lines="none" class="ion-no-border ion-no-padding">
                                     <app-exercise-form [style.width]="'100%'" (onDirtyEvent)="onExerciseDirtyEvent()"
-                                        [exercise]="exercise"
+                                        [exercise]="exercise" 
+                                        [disabled]="program?.weeks[weekIndex].days[activeDayIndex]?.workout?.state == WorkoutState.Completed"
                                         [canMoveExerciseDown]="$index < getExercisesArray(weekIndex, activeDayIndex).controls.length - 1"
                                         [canMoveExerciseUp]="$index > 0"
                                         (moveExerciseDownEvent)="moveExerciseDown($index)"

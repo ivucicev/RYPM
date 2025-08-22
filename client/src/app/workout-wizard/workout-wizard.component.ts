@@ -282,6 +282,10 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         setForm.markAsDirty({ onlySelf: true });
     }
 
+    async uncompleteSet(setIndex: number) {
+        await this.onRestSkipped();
+    }
+
     async prepareAndSendNotification(setForms, setIndex) {
         const restDurationValue = this.lastCompletedSetExercise.controls.restDuration.value;
         const sendAt = new Date(Date.now() + (restDurationValue * 1000) - 2000);

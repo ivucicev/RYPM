@@ -48,6 +48,10 @@ export class ContinueFooterComponent {
         this.navCtrl.navigateForward(['./workout-wizard', this.workout.id]);
     }
 
+    timerCompleted() {
+        
+    }
+
     async refresh() {
         this.restBadge()?.stopRest();
 

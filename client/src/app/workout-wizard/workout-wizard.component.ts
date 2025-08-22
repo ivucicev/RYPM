@@ -341,8 +341,8 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
     async onRestSkipped() {
         await this.pocketbaseService.pb.send(`/api/skip-timers/user/${this.pocketbaseService?.pb?.authStore?.record.id}`, {});
-        this.lastCompletedSet.controls.restSkipped.setValue(true);
-        this.lastCompletedSet.markAsDirty({ onlySelf: true });
+        this.lastCompletedSet?.controls?.restSkipped?.setValue(true);
+        this.lastCompletedSet?.markAsDirty({ onlySelf: true });
     }
 
     async handleUncompletedSets() {

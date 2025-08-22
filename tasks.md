@@ -1,6 +1,6 @@
 BUGS -
      - [ ] picker on set does not show correct values - when editing program [week/day], check templates also
-     - [ ] When getting back to app timer was pused
+     - [x] When getting back to app timer was pused and totally wrong time shown
      - [ ] Navigating to active workout stopped working
      - [ ] sometimes workouts not loaded on home screen     
 

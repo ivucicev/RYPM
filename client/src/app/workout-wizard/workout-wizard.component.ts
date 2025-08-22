@@ -327,14 +327,12 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         const notification = await this.pocketbaseService.notifications.create({
             sendAt: sendAt.toISOString(),
             state: 'prepared',
-            token: token,
             type: 'timer',
             user: this.pocketbaseService?.pb?.authStore?.record.id,
             to: this.pocketbaseService?.pb?.authStore?.record.id,
             body: {
                 title: this.translateService.instant('Rest timer over'),
                 body: message,
-                token,
                 user: this.pocketbaseService?.pb?.authStore?.record.id
             },
 
@@ -501,6 +499,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
                         const d = await alert.onDidDismiss();
                         if (d && d.role === 'destructive') {
                             await this.pocketbaseService.workouts.delete(this.workout.id);
+                            await this.pocketbaseService.pb.send(`/api/skip-timers/user/${this.pocketbaseService?.pb?.authStore?.record.id}`, {});
                             this.navCtrl.navigateBack(['./tabs']);
                         }
                     }

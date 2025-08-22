@@ -5,14 +5,22 @@ routerAdd("GET", "/api/check-notifications", (e) => {
     const notifications = arrayOf(new DynamicModel({
         id: "",
         sendAt: "",
-        token: "",
         body: {},
         state: "",
+        token: "",
         created: ""
     }));
 
     try {
-        $app.db().newQuery(`SELECT id, sendAt, token, body, state, created FROM notifications WHERE sendAt <= DATETIME('now') AND state="prepared" ORDER BY sendAt DESC`).all(notifications);
+        $app.db().newQuery(`
+            SELECT n.id, n.sendAt, n.body, n.state, n.created, u.notificationsToken as token
+            FROM notifications n
+            INNER JOIN users u ON n.[to] = u.id
+            WHERE n.sendAt <= DATETIME('now')
+              AND n.state = "prepared"
+              AND u.notificationsToken IS NOT NULL
+            ORDER BY n.sendAt DESC
+        `).all(notifications);
     } catch (error) {
         $app.logger().error(error)
         e.next();
@@ -23,27 +31,37 @@ routerAdd("GET", "/api/check-notifications", (e) => {
 
     let sentTokens = [];
 
+
     notifications.forEach(notification => {
 
-        if (sentTokens.includes(notification.token))
+        const body = JSON.parse(notification.body);
+        body.token = notification.token;
+
+        if (sentTokens.includes(notification.token)) {
             $app.db().update('notifications', { state: 'cancelled' }, $dbx.exp("id = {:id}", { id: notification?.id })).execute();
+            return;
+        }   
         else
             $app.db().update('notifications', { state: 'sent' }, $dbx.exp("id = {:id}", { id: notification?.id })).execute();
 
-        const sent = $http.send({
-            url: process.env.PUSH_SEND_URL,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "authorization": `Bearer ${notification.token}`
-            },
-            body: JSON.stringify(notification.body)
-        });
-
-        if (sent.statusCode == 200) {
-            sentTokens.push(notification.token);
-        } else {
-            $app.db().update('notifications', { state: 'error', errorMessage: sent.raw }, $dbx.exp("id = {:id}", { id: notification?.id })).execute();
+        try {            
+            const sent = $http.send({
+                url: process.env.PUSH_SEND_URL,
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${notification.token}`
+                },
+                body: JSON.stringify(body)
+            });
+    
+            if (sent.statusCode == 200) {
+                sentTokens.push(notification.token);
+            } else {
+                $app.db().update('notifications', { state: 'error', errorMessage: sent.raw }, $dbx.exp("id = {:id}", { id: notification?.id })).execute();
+            }
+        } catch (error) {
+            $app.db().update('notifications', { state: 'error', errorMessage: error }, $dbx.exp("id = {:id}", { id: notification?.id })).execute();
         }
     })
 

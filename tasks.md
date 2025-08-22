@@ -1,7 +1,8 @@
 BUGS -
      - [ ] picker on set does not show correct values - when editing program [week/day], check templates also
      - [ ] When getting back to app timer was pused
-     
+     - [ ] Navigating to active workout stopped working
+     - [ ] sometimes workouts not loaded on home screen     
 
 UI/UX BUGS
      - [ ] Logo on share details wrong color based on theme

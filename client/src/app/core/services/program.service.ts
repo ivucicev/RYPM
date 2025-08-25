@@ -52,7 +52,7 @@ export class ProgramService {
         private modalCtrl: ModalController,
         private alertController: AlertController,
         private loadingController: LoadingController
-    ) {
+        ) {
     }
 
     /**
@@ -257,13 +257,13 @@ export class ProgramService {
             comment: '',
             state: WorkoutState.InProgress
         };
-
         this.createAndNavToWorkout(workout);
     }
 
     private async createAndNavToWorkout(workout: Workout) {
 
         const exerciseNames = workout.exercises.map(e => e.name);
+
         const filter = exerciseNames.map(name => `exercise.name = '${name}'`).join(' || ');
         const sets = await this.pocketbaseService.sets.getList(0, 20,
             {
@@ -287,8 +287,9 @@ export class ProgramService {
             if (!setsForExercise || setsForExercise?.length === 0) return;
             ex.notes = setsForExercise[0]?.exercise?.notes || '';
             if (!setsForExercise) return;
+            setsForExercise.sort((a, b) => a.index - b.index);
             ex.sets.forEach((set, index) => {
-                const previousSet = setsForExercise.find(s => s.index === index);
+                const previousSet = setsForExercise.find((s,i) => s.index === index || (s.index == 0 && i == index));
                 if (previousSet) {
                     set.previousValue = previousSet.currentValue;
                     set.previousWeight = previousSet.currentWeight;
@@ -325,7 +326,6 @@ export class ProgramService {
                 sets.forEach((set, _) => {
                     set.id = null;
                     set.exercise = createdExerciseId;
-
                     setBatch.collection('sets').create(set);
                 });
             });

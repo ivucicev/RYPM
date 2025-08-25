@@ -51,6 +51,7 @@ export class TemplateComponent implements OnInit, OnDestroy {
     }
 
     ok() {
+        this.autosaveService.save('templates', this.templateForm.getRawValue());
         this.navCtrl.navigateBack(['./tabs']);
     }
 
@@ -71,8 +72,6 @@ export class TemplateComponent implements OnInit, OnDestroy {
     init(template?: Template) {
         this.template = template;
         this.templateForm = this.programFormService.createTemplateFormGroup(template);
-        this.autosaveService.register<TemplateBM>(this.templateForm, 'templates', false)
-            .subscribe();
     }
 
     async refresh(id: string) {

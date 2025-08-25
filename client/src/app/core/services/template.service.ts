@@ -33,7 +33,7 @@ export class TemplateService {
         private modalCtrl: ModalController,
         private navCtrl: NavController,
         private alertController: AlertController,
-        private loadingController: LoadingController
+        private loadingController: LoadingController,
     ) {
     }
 
@@ -170,6 +170,56 @@ export class TemplateService {
     }
 
     async createAndNavToWorkout(workout: Workout) {
+
+        const exerciseNames = workout.exercises.map(e => e.name);
+
+        const filter = exerciseNames.map(name => `exercise.name = '${name}'`).join(' || ');
+        const sets = await this.pocketbaseService.sets.getList(0, 20,
+            {
+                expand: 'exercise',
+                filter,
+                sort: '-completedAt, -index'
+            }
+        );
+
+        const groupedSets = sets.items.reduce((acc, set: any) => {
+            const name = set.exercise?.name;
+            if (!name) return acc;
+            if (!acc[name]) acc[name] = [];
+            acc[name].push(set);
+            return acc;
+        }, {} as Record<string, typeof sets.items>);
+
+        workout.exercises.forEach(ex => {
+            const setsForExercise: any = groupedSets[ex.name];
+            if (!setsForExercise || setsForExercise?.length === 0) return;
+            ex.notes = setsForExercise[0]?.exercise?.notes || '';
+            if (!setsForExercise) return;
+            // Sort by completedAt desc, then by index asc
+            setsForExercise.sort((a, b) => {
+                if (b.completedAt !== a.completedAt) {
+                    return new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime();
+                }
+                return a.index - b.index;
+            });
+
+            // Keep only the latest set for each index
+            const uniqueSetsByIndex = new Map<number, any>();
+            for (const set of setsForExercise) {
+                if (!uniqueSetsByIndex.has(set.index)) {
+                    uniqueSetsByIndex.set(set.index, set);
+                }
+            }
+            const filteredSetsForExercise = Array.from(uniqueSetsByIndex.values()).sort((a, b) => a.index - b.index);
+            ex.sets.forEach((set, index) => {
+                const previousSet = filteredSetsForExercise.find((s, i) => s.index === index || (s.index == 0 && i == index));
+                if (previousSet) {
+                    set.previousValue = previousSet.currentValue;
+                    set.previousWeight = previousSet.currentWeight;
+                }
+            });
+        });
+
         const wo = await this.pocketbaseService.upsertRecord('workouts', workout);
         return await this.navCtrl.navigateForward([`./workout-wizard/${wo.id}`]);
     }

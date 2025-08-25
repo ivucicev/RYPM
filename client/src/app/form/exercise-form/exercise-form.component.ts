@@ -149,11 +149,8 @@ export class ExerciseFormComponent implements OnChanges {
 
         for (let i = 0; i < sets.length; i++) {
             const set = sets.at(i);
-
-            if (set.controls.completed.value) continue;
-
-            set.controls.currentValue.setValue(set.controls.currentValue.value || set.controls.previousValue.value || set.controls.value.value || 0);
-            set.controls.currentWeight.setValue(set.controls.currentWeight.value || set.controls.previousWeight.value || set.controls.currentWeight.value || set.controls.weight.value || 0);
+            set.controls.currentValue.setValue(set.controls.previousValue.value || set.controls.currentValue.value || set.controls.value.value || 0);
+            set.controls.currentWeight.setValue(set.controls.previousWeight.value || set.controls.currentWeight.value || set.controls.weight.value || 0);
         }
     }
 
@@ -280,12 +277,13 @@ export class ExerciseFormComponent implements OnChanges {
 
         this.numSets = 1;
         this.selectedWeightType = currentSet.weightType;
-        this.selectedWeight = currentSet.currentWeight || currentSet.previousWeight || currentSet.weight || 0;
         this.selectedRepType = currentSet.type;
-        this.selectedValue = currentSet.currentValue || currentSet.previousValue || currentSet.value || 0;
         this.selectedMinValue = currentSet.minValue || 1;
         this.selectedMaxValue = currentSet.maxValue || 1;
-
+        
+        this.selectedWeight = currentSet.currentWeight || currentSet.previousWeight || currentSet.weight || 0;
+        this.selectedValue = currentSet.currentValue || currentSet.previousValue || currentSet.value || 0;
+        
         this.setPickerModal.present();
     }
 

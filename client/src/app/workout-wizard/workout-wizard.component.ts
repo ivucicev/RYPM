@@ -500,6 +500,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
                         const d = await alert.onDidDismiss();
                         if (d && d.role === 'destructive') {
                             await this.pocketbaseService.workouts.delete(this.workout.id);
+                            await this.storageService.removeItem(StorageKeys.WORKOUT_WIZARD_LAST_WORKOUT);
                             await this.pocketbaseService.pb.send(`/api/skip-timers/user/${this.pocketbaseService?.pb?.authStore?.record.id}`, {});
                             this.navCtrl.navigateBack(['./tabs']);
                         }

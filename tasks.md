@@ -1,8 +1,9 @@
 BUGS -
      - [ ] picker on set does not show correct values - when editing program [week/day], check templates also
-     - [x] When getting back to app timer was pused and totally wrong time shown
      - [ ] Navigating to active workout stopped working
      - [ ] sometimes workouts not loaded on home screen     
+     - [x] Continue wirkout wrong prev values...
+     - [x] One workout went incompleted
 
 UI/UX BUGS
      - [ ] Logo on share details wrong color based on theme
@@ -20,7 +21,6 @@ Settings -
 General -
     - [?] FB [POSTPONED]
     - [?] Apple [POSTPONED]
-    - [x] PWA notifications for Rest timer
     - [ ] White labeling
     - [ ] Marketing website
 

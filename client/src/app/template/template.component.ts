@@ -52,7 +52,7 @@ export class TemplateComponent implements OnInit, OnDestroy {
 
     ok() {
         this.autosaveService.save('templates', this.templateForm.getRawValue());
-        this.navCtrl.navigateBack(['./tabs']);
+        this.navCtrl.navigateBack(['./tabs/home'], { queryParams: { tab: 'templates' } });
     }
 
     ngOnInit() {

@@ -259,8 +259,8 @@ onRecordCreate((e) => {
         });
 
         $app.db()
-            .newQuery(`SELECT defaultWeightType FROM users WHERE user={:user}`)
-            .bind({ "user": e.record.id }).one(weightType);
+            .newQuery(`SELECT defaultWeightType FROM users WHERE id={:user}`)
+            .bind({ "user": userId }).one(weightType);
 
         return weightType.defaultWeightType == 2 ? 'kg' : 'lb';
     }
@@ -432,15 +432,15 @@ onRecordCreate((e) => {
                                INNER JOIN exercises e ON s.exercise = e.id
                                WHERE s.created >= DATE('now', '-35 days') AND user={:user}`)
                     .bind({
-                        "user": e.record.id
+                        "user": userId
                     })
                     .all(rows);
 
                 $app.db()
                     .newQuery(`SELECT defaultWeightType
-                               FROM users WHERE user={:user}`)
+                               FROM users WHERE id={:user}`)
                     .bind({
-                        "user": e.record.id
+                        "user": userId
                     })
                     .one(weightType);
 

@@ -1,7 +1,6 @@
 import { Component, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Keyboard } from '@capacitor/keyboard';
 import { IonFooter, IonList, IonInput, IonIcon, IonItem, IonContent, IonTitle, IonButtons, IonToolbar, IonHeader, IonBackButton, IonButton } from "@ionic/angular/standalone";
 import { AccountService } from '../core/services/account.service';
 import { AITrainer } from '../core/models/enums/ai-trainer';
@@ -16,7 +15,6 @@ import { ProgramService } from '../core/services/program.service';
 import { FormsService } from '../core/services/forms.service';
 import { AutosaveService } from '../core/services/autosave.service';
 import { WeightType } from '../core/models/enums/weight-type';
-import { ReserveType } from '../core/models/enums/reserve-type';
 import { RepType } from '../core/models/enums/rep-type';
 
 @Pipe({ name: 'markdown' })

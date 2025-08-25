@@ -214,7 +214,7 @@
         @if (set.weightType !== WeightType.NA) {
         <span class="weight-value">
             @if (set.weightType === WeightType.KG || set.weightType === WeightType.LB) {
-            {{ set.weight }}
+            {{ set.currentWeight || set.previousWeight || set.weight }}
             }
             {{ set.weightType | weightType }}
         </span>

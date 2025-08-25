@@ -22,6 +22,7 @@ import { FormsModule } from '@angular/forms';
 import { WakeLockService } from '../core/services/WakeLockService';
 import { StorageService } from '../core/services/storage.service';
 import { StorageKeys } from '../core/constants/storage-keys';
+import { ActivatedRoute } from '@angular/router';
 
 type WorkoutInfo = (Workout & { nextExercise?: (Exercise & { nextSet?: Set }) });
 
@@ -70,10 +71,16 @@ export class HomePage {
         private templateService: TemplateService,
         private wake: WakeLockService,
         private animationCtrl: AnimationController,
-        private storage: StorageService
+        private storage: StorageService,
+        private route: ActivatedRoute
 
     ) {
         this.isInital = true;
+        this.route.queryParams.subscribe((r: any) => {
+            if (r.tab && r.tab == 'templates') {
+                this.getTemplates();
+            }
+        })
     }
 
     //#region Init
@@ -250,7 +257,7 @@ export class HomePage {
         const actionSheet = await this.templateService.presentTemplateActionSheet(template);
         const e = await actionSheet.onDidDismiss();
         if (e.data?.reload) {
-            this.refresh();
+            await this.getTemplates();
         }
     }
 
@@ -258,13 +265,13 @@ export class HomePage {
         const actionSheet = await this.templateService.presentTemplateActionSheet(template);
         const e = await actionSheet.onDidDismiss();
         if (e.data?.reload) {
-            this.refresh();
+            await this.getTemplates();
         }
     }
 
     async deleteTemplate(id: string) {
         await this.templateService.deleteTemplate(id);
-        this.refresh();
+        await this.getTemplates();
     }
     //#endregion
 

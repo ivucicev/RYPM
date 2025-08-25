@@ -65,8 +65,8 @@ export class AutosaveService {
                 form.patchValue(result, { emitEvent: false });
                 form.markAsPristine();
                 saveResult$.next(Promise.resolve(result));
-
-                subscription.unsubscribe();
+                if (subscription)
+                    subscription.unsubscribe();
                 this.subscriptions.delete(form);
 
                 this.initUpdate(form, collection, showToast, debounceMs, saveResult$);

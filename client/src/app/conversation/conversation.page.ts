@@ -239,7 +239,7 @@ export class ConversationPage implements OnInit {
 
     async ngOnDestroy() {
         if (this.conversationId)
-            await this.pb.pb.realtime.unsubscribe(this.conversationId);
+            await this.pb.pb.realtime?.unsubscribe(this.conversationId);
     }
 
     scrollToBottom(smooth: boolean = true) {

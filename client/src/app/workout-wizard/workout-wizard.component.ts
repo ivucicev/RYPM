@@ -425,7 +425,6 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         await this.handleUncompletedSets(); // TF is this??
         await this.pocketbaseService.workouts.update(model.id, model);
         await this.storageService.removeItem(StorageKeys.WORKOUT_WIZARD_LAST_WORKOUT)
-
         this.navCtrl.navigateBack(['./tabs']);
 
     }

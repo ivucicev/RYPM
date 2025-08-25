@@ -1,12 +1,4 @@
 BUGS -
-     - [ ] picker on set does not show correct values - when editing program [week/day], check templates also
-     - [ ] Navigating to active workout stopped working
-     - [ ] sometimes workouts not loaded on home screen     
-
-UI/UX BUGS
-     - [ ] Logo on share details wrong color based on theme
-     - [ ] Safari ios white theme - installation screen not visible
-     - [ ] first time navigating to safari ios not showing installation button
 
 Chat -
     - [ ] Human Trainer

@@ -89,7 +89,15 @@ export class HomePage {
         }
     }
 
-    async refresh() {
+    getTemplates = async () => {
+        const templates = await this.pocketbaseService.templates.getFullList({
+            sort: '-created'
+        });
+
+        this.templates = templates;
+    }
+
+    refresh = async () => {
 
         await this.continueFooter()?.refresh();
 
@@ -111,12 +119,6 @@ export class HomePage {
         });
 
         this.lastWorkout = this.workouts[0];
-
-        const templates = await this.pocketbaseService.templates.getFullList({
-            sort: '-created'
-        });
-
-        this.templates = templates;
 
         this.activeProgramIds.length = 0;
 
@@ -265,6 +267,14 @@ export class HomePage {
         this.refresh();
     }
     //#endregion
+
+    async onTabChange(e) {
+        if (e == 'templates') {
+           await this.getTemplates(); 
+        } else if (e == 'programs') {
+            await this.refresh();
+        }
+    }
 
     private animation!: Animation;
 

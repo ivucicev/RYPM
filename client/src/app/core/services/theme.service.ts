@@ -21,12 +21,13 @@ export class ThemeService {
     } 
 
     async initializeTheme() {
-        const userTheme = await this.storageService.getItem<string>(StorageKeys.THEME);
+        let userTheme = await this.storageService.getItem<string>(StorageKeys.THEME);
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
         if (userTheme) {
             document.documentElement.setAttribute('data-theme', userTheme);
         } else if (prefersDark) {
+            userTheme = 'dark';
             document.documentElement.setAttribute('data-theme', 'dark');
         }
         this.isDark.set(userTheme === 'dark')

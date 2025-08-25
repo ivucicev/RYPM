@@ -52,6 +52,12 @@ export class AppComponent {
             this.globalize(value);
         });
 
+        registerIcons();
+    }
+
+    public component = AppComponent;
+
+    async ngOnInit() {
         this.router.events.subscribe(e => {
             if (e instanceof NavigationStart) {
                 if (!e?.url?.includes('sign-in')) {
@@ -60,13 +66,6 @@ export class AppComponent {
                 }
             }
         })
-
-        registerIcons();
-    }
-
-    public component = AppComponent;
-
-    async ngOnInit() {
     }
 
     initializeApp() {

@@ -73,7 +73,7 @@
     </div>
     }
     <ion-row class="segment-toolbar ion-padding">
-        <ion-segment [(ngModel)]="tab" lines="none">
+        <ion-segment [(ngModel)]="tab" lines="none" (ngModelChange)="onTabChange($event)">
             <ion-segment-button value="programs">
                 <ion-label>
                     {{'Programs' | translate}}
@@ -167,7 +167,7 @@
                     }
                 </ion-item-sliding>
                 } @empty {
-                <app-no-data [text]="'No programs yet.' | translate"></app-no-data>
+                <app-no-data [reloadFn]="refresh" [text]="'No programs yet.' | translate"></app-no-data>
                 }
             </ion-list>
         </ng-container>
@@ -202,7 +202,7 @@
                     </ion-item-options>
                 </ion-item-sliding>
                 } @empty {
-                <app-no-data [text]="'No templates yet.' | translate"></app-no-data>
+                <app-no-data [reloadFn]="getTemplates" [text]="'No templates yet.' | translate"></app-no-data>
                 }
             </ion-list>
         </ng-container>

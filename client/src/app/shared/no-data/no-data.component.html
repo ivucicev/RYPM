@@ -1,6 +1,16 @@
 <div class="no-data-container">
-    <!-- <ion-icon name="file-tray-outline" size="large" color="medium" aria-hidden="true"></ion-icon> -->
+    <ion-icon [src]="sadIcon" class="ion-margin" size="large" color="medium" aria-hidden="true"></ion-icon>
     <div class="no-data-text ion-text-center ion-color-medium">
         {{ text ?? ('No data yet.' | translate) }}
     </div>
+
+    @if(reloadFn) {
+    <div>
+        <ion-button (click)="reload()" expand="block" fill="clear" color="primary" class="ion-margin">
+            {{ 'Reload' | translate }}
+            <ion-icon [src]="reloadIcon" slot="end"></ion-icon>
+        </ion-button>
+    </div>
+    }
+
 </div>

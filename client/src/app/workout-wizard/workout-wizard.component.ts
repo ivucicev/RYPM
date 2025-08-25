@@ -128,11 +128,11 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         this.wake.enable();
         this.activatedRoute.params
             .pipe(takeUntil(this.unsubscribeAll))
-            .subscribe(params => {
+            .subscribe(async params => {
                 const id = params['id'];
-                this.refresh(id);
+                await this.refresh(id);
             });
-        
+
         await this.checkNotificationPopup();
     }
 
@@ -150,7 +150,18 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
         this.workoutId = id;
 
-        const workout = await this.pocketbaseService.workouts.getOne(id, { expand: 'exercises_via_workout,exercises_via_workout.sets_via_exercise' });
+        let workout;
+        try {
+            workout = await this.pocketbaseService.workouts.getOne(id, { expand: 'exercises_via_workout,exercises_via_workout.sets_via_exercise' });
+        } catch (e) {
+            await this.storageService.removeItem(StorageKeys.WORKOUT_WIZARD_LAST_WORKOUT);
+        }
+
+        if (!workout) {
+            await this.navCtrl.navigateBack(['./tabs']);
+            return;
+        }
+
         this.workout = workout;
 
         // get oprevious weights and values

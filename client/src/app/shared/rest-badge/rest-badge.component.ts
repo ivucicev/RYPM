@@ -28,6 +28,11 @@ export class RestBadgeComponent implements OnInit {
     increasedRest = 0;
 
     constructor(private storage: StorageService) {
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                this.ngOnInit();
+            }
+        });
     }
 
     async ngOnInit() {

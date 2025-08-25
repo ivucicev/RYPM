@@ -41,6 +41,7 @@ export class AppComponent {
         private accountService: AccountService,
         private themeService: ThemeService
     ) {
+
         this.accountService.attemptAutoLogin().then(res => res ? this.navCtrl.navigateRoot(['./tabs']) : this.navCtrl.navigateRoot(['./sign-in']));
 
         this.initializeApp();

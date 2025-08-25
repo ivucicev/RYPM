@@ -34,14 +34,7 @@ export class ContinueFooterComponent {
         private navCtrl: NavController,
         private storageService: StorageService
     ) {
-        /* if ('Notification' in window && Notification.permission !== 'granted') {
-             Notification.requestPermission();
-
-             new Notification('Rest timer completed', {
-                 body: 'Time to continue your workout!',
-                 //icon: '/assets/icons/icon-72x72.png'
-             });
-         }*/
+        
     }
 
     navToActiveWorkout() {
@@ -49,7 +42,7 @@ export class ContinueFooterComponent {
     }
 
     timerCompleted() {
-        
+
     }
 
     async refresh() {

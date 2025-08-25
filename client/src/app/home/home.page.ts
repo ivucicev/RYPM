@@ -80,6 +80,7 @@ export class HomePage {
     async ionViewWillEnter() {
         const active = await this.storage.getItem<Workout>(StorageKeys.WORKOUT_WIZARD_LAST_WORKOUT)
         if (active?.id && this.isInital) {
+            
             await this.navCtrl.navigateForward([`./workout-wizard/${active.id}`]);
             this.isInital = false;
             return;

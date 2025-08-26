@@ -149,8 +149,8 @@ export class ExerciseFormComponent implements OnChanges {
 
         for (let i = 0; i < sets.length; i++) {
             const set = sets.at(i);
-            set.controls.currentValue.setValue(set.controls.previousValue.value || set.controls.currentValue.value || set.controls.value.value || 0);
-            set.controls.currentWeight.setValue(set.controls.previousWeight.value || set.controls.currentWeight.value || set.controls.weight.value || 0);
+            set.controls.currentValue.setValue(set.controls.currentValue.value || set.controls.previousValue.value || set.controls.value.value || 0);
+            set.controls.currentWeight.setValue(set.controls.currentWeight.value || set.controls.previousWeight.value || set.controls.weight.value || 0);
         }
     }
 

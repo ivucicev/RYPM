@@ -130,7 +130,7 @@ export class ConversationPage implements OnInit {
         setTimeout(() => {
             const message = {
                 conversation: this.conversationId,
-                message: this.translate.instant("Your program is ready! Check it in workouts tab."),
+                message: this.translate.instant("Your program is ready! Check it out in workouts tab."),
                 to: this.user.id,
                 from: null,
                 created: new Date(),

@@ -12,6 +12,14 @@
 <ion-content class="bg_color ion-padding-x" fullscreen>
     <ion-item>
         <ion-label>
+            {{ 'Notifications' | translate }}
+            <ion-note> {{ 'Timers and messages' | translate }} </ion-note>
+        </ion-label>
+        <ion-toggle slot="end" [(ngModel)]="notificationsEnabled" (ionChange)="toggleNotifications($event)"
+            class="ion-padding-x"></ion-toggle>
+    </ion-item>
+    <ion-item>
+        <ion-label>
             {{ 'Weight' | translate }}
         </ion-label>
         <ion-segment class="w-80" [value]="selectedWeightType" (ionChange)="setWeightType($event.detail.value)">

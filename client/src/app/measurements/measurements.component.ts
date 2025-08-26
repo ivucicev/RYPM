@@ -6,19 +6,24 @@ import { AccountService } from 'src/app/core/services/account.service';
 import { PocketbaseService } from '../core/services/pocketbase.service';
 import { User } from '../core/models/collections/user';
 import { PB } from '../core/constants/pb-constants';
-import { IonHeader, IonToolbar, IonButtons, IonBackButton, IonSegment, IonContent, IonLabel, IonSegmentButton, IonTitle, IonRow, IonCol, IonAvatar, IonCard, IonCardHeader, IonCardContent, IonCardSubtitle, IonCardTitle, IonIcon, IonToggle, IonItem, IonSelect, IonSelectOption } from "@ionic/angular/standalone";
+import { IonHeader, IonToolbar, IonButtons, IonBackButton, IonSegment, IonContent, IonLabel, IonSegmentButton, IonTitle, IonRow, IonCol, IonAvatar, IonCard, IonCardHeader, IonCardContent, IonCardSubtitle, IonCardTitle, IonIcon, IonToggle, IonItem, IonSelect, IonSelectOption, ToggleChangeEventDetail, IonNote } from "@ionic/angular/standalone";
 import { AITrainer } from '../core/models/enums/ai-trainer';
 import { FormsModule } from '@angular/forms';
+import { IonToggleCustomEvent } from '@ionic/core';
+import { PushService } from '../core/services/push.service';
+import { StorageService } from '../core/services/storage.service';
+import { StorageKeys } from '../core/constants/storage-keys';
 
 @Component({
     selector: 'app-measurements',
     templateUrl: 'measurements.component.html',
     styleUrls: ['./measurements.component.scss'],
     standalone: true,
-    imports: [IonTitle, IonSegmentButton, IonItem, FormsModule, IonToggle, IonIcon, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonRow, IonCol, IonLabel, IonContent, IonSegment, IonBackButton, IonButtons, IonToolbar, IonHeader, TranslateModule, WeightTypePipe]
+    imports: [IonTitle, IonSegmentButton, IonItem, FormsModule, IonToggle, IonIcon, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonRow, IonCol, IonLabel, IonContent, IonSegment, IonBackButton, IonButtons, IonToolbar, IonHeader, TranslateModule, WeightTypePipe, IonNote]
 })
 export class MeasurementsComponent implements OnInit {
 
+    notificationsEnabled: boolean = false;
     selectedWeightType: any = WeightType.KG;
     selectedIncrement: any = 1.25;
     weightType = WeightType;
@@ -33,7 +38,9 @@ export class MeasurementsComponent implements OnInit {
 
     constructor(
         private accountService: AccountService,
-        private pocketbaseService: PocketbaseService
+        private pocketbaseService: PocketbaseService,
+        private push: PushService,
+        private storage: StorageService
     ) { }
 
     setIncrement(increment) {
@@ -62,6 +69,23 @@ export class MeasurementsComponent implements OnInit {
         this.currentUser.aiTrainer = this.selectedTrainer;
     }
 
+    async toggleNotifications($event: IonToggleCustomEvent<ToggleChangeEventDetail<any>>) {
+        this.currentUser.notificationsEnabled = this.notificationsEnabled;
+        const update = { notificationsEnabled: this.notificationsEnabled, token: "" } as any
+        await this.storage.removeItem(StorageKeys.PORTABLE_SUBSCRIPTION_TOKEN);
+        if (this.notificationsEnabled) {
+            const token = await this.push.requestNotifications();
+            update.token = token;
+        }
+
+        this.pocketbaseService.users.update(
+            this.currentUser.id,
+            update as User,
+            { headers: PB.HEADER.NO_TOAST }
+        );
+    
+    }
+
     toggle(e) {
         if (e.detail.checked) {
             this.changeTrainer(AITrainer.RYPED);
@@ -79,6 +103,7 @@ export class MeasurementsComponent implements OnInit {
         if (this.selectedTrainer) {
             this.aiTrainerToggle = true;
         }
+        this.notificationsEnabled = this.currentUser.notificationsEnabled;
     }
 
     setWeightType(type) {

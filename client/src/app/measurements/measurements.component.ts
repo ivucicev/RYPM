@@ -54,6 +54,7 @@ export class MeasurementsComponent implements OnInit {
     }
 
     changeTrainer(trainer: AITrainer) {
+        
         if (this.selectedTrainer == trainer) {
             this.selectedTrainer = null;
             this.aiTrainerToggle = false;

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
-import { hasSessionGuardGuard } from './core/guards/has-session-guard.guard';
+import { hasSessionGuard } from './core/guards/has-session-guard.guard';
+import { validSessionGuard } from './core/guards/valid-session-guard.guard';
 
 export const routes: Routes = [
     {
@@ -9,12 +10,13 @@ export const routes: Routes = [
     },
     {
         path: '',
-        loadChildren: () => import('./tabs/tabs.routes').then(m => m.routes)
+        loadChildren: () => import('./tabs/tabs.routes').then(m => m.routes),
+        canActivate: [validSessionGuard]
     },
     {
         path: 'sign-in',
         loadChildren: () => import('./sign-in/sign-in.routes').then(m => m.routes),
-        canActivate: [hasSessionGuardGuard]
+        canActivate: [hasSessionGuard]
     },
     {
         path: 'register',

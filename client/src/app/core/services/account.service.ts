@@ -143,37 +143,24 @@ export class AccountService {
     async loginWithFacebook() {
         const authData = await this.pocketbase.collection('users').authWithOAuth2({ ...this.oauthParams, provider: 'facebook' });
         if (!authData) return new Promise((resolve, _) => resolve(null));
-
         await this.saveAuthToStorage(authData);
-
         await this.loginSuccess(authData)
-        //this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
         return authData;
     }
 
     async loginWithGoogle() {
         const authData = await this.pocketbase.collection('users').authWithOAuth2({ provider: 'google' });
         if (!authData) return new Promise((resolve, _) => resolve(null));
-
         await this.saveAuthToStorage(authData);
-
         await this.loginSuccess(authData)
-
-        //this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
-
         return authData;
     }
 
     async loginWithGithub() {
         const authData = await this.pocketbase.collection('users').authWithOAuth2({ provider: 'github' });
         if (!authData) return new Promise((resolve, _) => resolve(null));
-
         await this.saveAuthToStorage(authData);
-
         await this.loginSuccess(authData)
-
-        //this.navCtrl.navigateRoot(['./tabs'], { skipLocationChange: skipLocationChange(this.platform) });
-
         return authData;
     }
 

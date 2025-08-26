@@ -270,13 +270,10 @@ export class AccountService {
         const authData = await this.storageService.getItem<UserMap>(StorageKeys.TOKEN);
         if (authData) {
             try {
-                this.pocketbase.authStore.save(authData.token);
-                await this.pocketbase.collection('users').authRefresh({ headers: PB.HEADER.NO_TOAST });
-
+                const res = await this.pocketbase.collection('users').authRefresh({ headers: PB.HEADER.NO_TOAST });
+                this.pocketbase.authStore.save(res.token, res.record);
                 const user = await this.getCurrentUser(true);
-
                 await this.pocketbase.collection('users').update(user.id, { lastLoginAt: new Date() }, { headers: PB.HEADER.NO_TOAST })
-
                 return true;
             } catch (error) {
                 await this.logout();

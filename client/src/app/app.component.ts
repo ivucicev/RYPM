@@ -41,14 +41,11 @@ export class AppComponent {
         private accountService: AccountService,
         private themeService: ThemeService
     ) {
-        this.accountService.attemptAutoLogin().then(res => {
-            if (!res) this.navCtrl.navigateRoot(['./sign-in'])
-        }) 
         this.initializeApp();
         this.themeService.initializeTheme();
 
         this.myEvent.getLanguageObservable().subscribe(value => {
-            this.navCtrl.navigateRoot(['./']);
+            this.navCtrl.navigateRoot(['./tabs/home']);
             this.globalize(value);
         });
 

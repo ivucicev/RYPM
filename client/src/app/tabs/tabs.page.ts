@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { IonTabs, IonIcon, IonTabBar, IonTabButton, IonLabel } from '@ionic/angular/standalone';
-import { chatbubblesOutline, settingsOutline } from 'ionicons/icons';
+import { chatbubblesOutline, peopleOutline, settingsOutline } from 'ionicons/icons';
+import { AccountService } from '../core/services/account.service';
+import { UserType } from '../core/models/enums/user-type';
 
 @Component({
     selector: 'app-tabs',
@@ -15,8 +17,18 @@ export class TabsPage {
 
     settingsIcon = settingsOutline;
     bubblesIcon = chatbubblesOutline;
+    peopleIcon = peopleOutline;
 
-    constructor() { }
+    currentUserType = UserType.User
+    trainer = UserType.Trainer;
+
+    constructor(private account: AccountService) { 
+        this.account.getCurrentUser().then(u => {
+            if (u) {
+                this.currentUserType = u.type;
+            }
+        })
+    }
 
     tabChange(tabsRef: IonTabs) {
         if (tabsRef?.outlet?.activatedView?.element)

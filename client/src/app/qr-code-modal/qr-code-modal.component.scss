@@ -27,3 +27,7 @@
     text-align: center;
     margin-top: 8px;
 }
+
+:host ::ng-deep canvas {
+    border-radius: 20px;
+}

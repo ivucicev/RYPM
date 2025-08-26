@@ -14,7 +14,8 @@ export const COLLECTIONS = {
     conversations: 'conversations',
     messages: 'messages',
     progress_photos: 'progress_photos',
-    notifications: 'notifications'
+    notifications: 'notifications',
+    invites: 'invites'
 };
 export type Collection = keyof typeof COLLECTIONS
 

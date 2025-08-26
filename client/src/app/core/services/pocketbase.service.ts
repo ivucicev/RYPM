@@ -19,6 +19,7 @@ import { Measurement } from '../models/collections/measurement';
 import { MeasurementEntry } from '../models/collections/measurement-entry';
 import { Conversation } from '../models/collections/conversations';
 import { Message } from '../models/collections/message';
+import { Invite } from '../models/collections/invite';
 
 @Injectable({
     providedIn: 'root'
@@ -55,7 +56,8 @@ export class PocketbaseService {
         'conversations': [],
         'messages': [],
         'progress_photos': [],
-        'notifications': []
+        'notifications': [],
+        'invites': []
     };
 
     public static readonly systemFields = ['user', 'created', 'updated', 'collectionId', 'collectionName'];
@@ -250,6 +252,10 @@ export class PocketbaseService {
 
     public get notifications() {
         return this.pb.collection<Notification>(COLLECTIONS.notifications);
+    }
+
+    public get invites() {
+        return this.pb.collection<Invite>(COLLECTIONS.invites);
     }
     //#endregion
 

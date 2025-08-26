@@ -10,27 +10,15 @@
 </ion-header>
 
 <ion-content class="ion-padding" fullscreen>
-    <div class="qr-container">
-        <div class="qr-code">
-            <!-- TODO: Trainer -->
-            <img src="" alt="QR Code">
-        </div>
-        <p class="qr-description">{{'Scan to connect' | translate}}</p>
-    </div>
-
-
+    <qrcode [qrdata]="'https://app.rypm.app/api/invite/' + code" [width]="256" [errorCorrectionLevel]="'M'" class="ion-text-center"></qrcode>
+    <p class="qr-description">{{'Scan to connect' | translate}}</p>
 </ion-content>
 
 <ion-footer class="ion-no-border">
     <ion-toolbar>
         <div class="ion-padding">
-            <!-- TODO: Trainer -->
             <div class="button-group ion-margin-bottom">
-                <ion-button size="medium" expand="block" fill="outline" color="primary">
-                    <ion-icon slot="start" name="copy-outline"></ion-icon>
-                    {{'Copy' | translate}}
-                </ion-button>
-                <ion-button size="medium" expand="block" fill="outline" color="primary">
+                <ion-button size="medium" expand="block" fill="outline" color="primary" (click)="share()">
                     <ion-icon slot="start" name="share-social-outline"></ion-icon>
                     {{ 'Share' | translate }}
                 </ion-button>

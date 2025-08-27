@@ -5,9 +5,6 @@
             <ion-button (click)="openSearchUser()">
                 <ion-icon name="search-outline"></ion-icon>
             </ion-button>
-            <ion-button (click)="openLinkScreen()">
-                <ion-icon name="link-outline"></ion-icon>
-            </ion-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
@@ -18,7 +15,7 @@
     </ion-refresher>
     <ion-list lines="none">
         @for(chat of conversations; track chat.id) {
-        @if (aiTrainers.OFF < aiTrainer) { <ion-item-sliding>
+        @if (aiTrainers.OFF < aiTrainer && chat.isAI) { <ion-item-sliding>
             <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="aiConversation(chat.id)">
                 <div class="item-inner d-flex">
                     <div class="img_box center_img">
@@ -84,5 +81,11 @@
             }
     </ion-list>
 </ion-content>
+
+<ion-fab slot="fixed" horizontal="end" vertical="bottom" style="bottom: 0">
+    <ion-fab-button>
+        <ion-icon name="add" (click)="openLinkScreen()"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
 
 <app-continue-footer></app-continue-footer>

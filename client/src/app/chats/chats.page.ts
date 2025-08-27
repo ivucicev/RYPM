@@ -3,7 +3,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { QrCodeModalComponent } from '../qr-code-modal/qr-code-modal.component';
-import { ModalController, NavController, IonHeader, IonItem, IonContent, IonList, IonIcon, IonToolbar, IonButtons, IonTitle, IonButton, IonItemSliding, IonItemOption, IonItemOptions, IonRefresher, IonRefresherContent, AlertController } from '@ionic/angular/standalone';
+import { ModalController, NavController, IonHeader, IonItem, IonContent, IonList, IonIcon, IonToolbar, IonButtons, IonTitle, IonButton, IonItemSliding, IonItemOption, IonItemOptions, IonRefresher, IonRefresherContent, AlertController, IonFab, IonFabButton } from '@ionic/angular/standalone';
 import { ContinueFooterComponent } from '../shared/continue-footer/continue-footer.component';
 import { PocketbaseService } from '../core/services/pocketbase.service';
 import { AccountService } from '../core/services/account.service';
@@ -27,7 +27,7 @@ interface ChatItem {
     templateUrl: 'chats.page.html',
     styleUrls: ['chats.page.scss'],
     standalone: true,
-    imports: [IonButton, NoDataComponent, IonItemSliding, IonRefresher, IonRefresherContent, IonItemOptions, IonItemOption, DateTimePipe, IonTitle, IonButtons, IonToolbar, IonIcon, IonList, IonContent, IonItem, IonHeader, TranslateModule, CommonModule, FormsModule, ContinueFooterComponent],
+    imports: [IonButton, NoDataComponent, IonItemSliding, IonRefresher, IonRefresherContent, IonItemOptions, IonItemOption, DateTimePipe, IonTitle, IonButtons, IonToolbar, IonIcon, IonList, IonContent, IonItem, IonHeader, TranslateModule, CommonModule, FormsModule, ContinueFooterComponent, IonFab, IonFabButton],
 })
 export class ChatsPage {
     showSearchBar = false;
@@ -120,12 +120,18 @@ export class ChatsPage {
             component: QrCodeModalComponent
         });
 
-        return await modal.present();
+        await modal.present();
+
+        const data: any = await modal.onDidDismiss();
+        if (data && data.conversation)
+            this.conversations.unshift(data.conversation);
     }
 
     conversation(chatId) {
         // TODO
-        this.navCtrl.navigateForward(['/conversation/' + chatId]);
+        const currentConversation = this.conversations.find(c => c.id == chatId);
+        const toUser = currentConversation.participants.filter(f => f != this.user.id);
+        this.navCtrl.navigateForward(['/conversation/' + chatId + '/' + toUser[0].id]);
     }
 
     aiConversation(chatId) {

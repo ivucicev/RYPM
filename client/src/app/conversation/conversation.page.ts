@@ -46,6 +46,7 @@ export class ConversationPage implements OnInit {
     chevronIcon = chevronForward;
     alertOutline = alertOutline;
     isTyping = false;
+    toId;
 
     @ViewChild(IonContent) content!: IonContent;
 
@@ -57,6 +58,7 @@ export class ConversationPage implements OnInit {
         })
         this.activatedRoute.params.subscribe((param: any) => {
             if (param.id) this.conversationId = param.id;
+            if (param.to) this.toId = param.to;
             this.getMessagesByConversationId(this.conversationId);
         });
 
@@ -65,9 +67,10 @@ export class ConversationPage implements OnInit {
     async ngOnInit() {
         this.user = await this.accountService.getCurrentUser();
         if (this.user && this.user.aiTrainer) {
-            this.aiTrainer = this.user.aiTrainer;
+            this.aiTrainer = this.user.aiTrainer; 
         }
     }
+
 
     async getMessagesByConversationId(conversationId: string) {
         const messages = await this.pb.messages.getFullList({
@@ -97,9 +100,9 @@ export class ConversationPage implements OnInit {
             conversation: this.conversationId,
             message: this.newMessage,
             from: this.user.id,
-            to: null,
+            to: this.isAIConversation ? null : this.toId,
             created: new Date(),
-            role: MESSAGEROLE.User,
+            role: this.isAIConversation ? MESSAGEROLE.Assistant : MESSAGEROLE.User,
         };
 
         this.messages.push(message);

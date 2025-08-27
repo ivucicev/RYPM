@@ -10,19 +10,31 @@
 </ion-header>
 
 <ion-content class="ion-padding" fullscreen>
-    <qrcode [qrdata]="'https://app.rypm.app/api/invite/' + code" [width]="256" [errorCorrectionLevel]="'M'" class="ion-text-center"></qrcode>
-    <p class="qr-description">{{'Scan to connect' | translate}}</p>
+    <!-- <qrcode [qrdata]="'https://app.rypm.app/api/invite/' + code" [width]="256" [errorCorrectionLevel]="'M'" class="ion-text-center"></qrcode> -->
+
+    @if (currentUser.type == trainerType) {
+    <p class="qr-description">{{'Share this code to connect with the client' | translate}}</p>
+    <h1 class="ion-text-center ion-margin ion-padding" style="font-size: 60px;">{{ code }}</h1>
+    } @else {
+    <p class="qr-description">{{'Please enter your trainer code' | translate}}</p>
+    <ion-input-otp [type]="'text'" size="large" fill="solid" (ionComplete)="connect($event)" class="margin-auto" length="6"> {{ 'Didn\'t
+        get a code?' | translate }} {{ 'Please contact your trainer.' | translate }}
+    </ion-input-otp>
+    }
+
 </ion-content>
 
 <ion-footer class="ion-no-border">
     <ion-toolbar>
         <div class="ion-padding">
+            @if (currentUser.type == trainerType) {
             <div class="button-group ion-margin-bottom">
                 <ion-button size="medium" expand="block" fill="outline" color="primary" (click)="share()">
                     <ion-icon slot="start" name="share-social-outline"></ion-icon>
                     {{ 'Share' | translate }}
                 </ion-button>
             </div>
+            }
             <div>
                 <ion-button expand="round" color="primary" class="btn" (click)="dismissModal()">
                     {{ 'Complete' | translate}}

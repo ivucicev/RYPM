@@ -37,6 +37,11 @@ export class RestBadgeComponent implements OnInit {
         window.addEventListener('pageshow', (e: PageTransitionEvent) => {
             this.ngOnInit();
         });
+        window.addEventListener('focus', (e: PageTransitionEvent) => {
+            this.ngOnInit();
+        });
+        window.addEventListener('blur', (e: PageTransitionEvent) => {
+        });
     }
 
     async ngOnInit() {
@@ -63,6 +68,14 @@ export class RestBadgeComponent implements OnInit {
                 });
                 const start = new Date(initialTime);
                 const end = start.setSeconds(start.getSeconds() + this.duration());
+                const now = Date.now();
+
+                // check discrepancy
+                const diff = Math.abs((end - now) - (this.duration() * 1000));
+                if (diff > 2000) { // e.g. >2s drift
+                    this.ngOnInit();
+                    // optionally reset / correct here
+                }
                 if (new Date().getTime() < end) {
                     let restTimeRemaining = Math.floor((end - new Date().getTime()) / 1000);
                     if (restTimeRemaining > 0) {
@@ -71,7 +84,7 @@ export class RestBadgeComponent implements OnInit {
                     }
                 }
             }
-    
+
             this.stopRest();
             if (this.restTimeRemaining <= 0)
                 this.onTimerCompletedEvent.emit(true);

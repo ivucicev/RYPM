@@ -41,7 +41,7 @@ export class QrCodeModalComponent {
             const user = await this.account.getCurrentUser();
             await navigator.share({
                 title: `${user.name} ${await this.translate.instant('has invited you to RYPM.')}`,
-                text: `${await this.translate.instant('Use the following link to connect')}: https://app.rypm.app/api/invite/${this.code}`
+                text: `${await this.translate.instant('Use the following code to connect')}: ${this.code} https://app.rypm.app`
             });
         }
     }

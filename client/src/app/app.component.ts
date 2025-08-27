@@ -52,7 +52,7 @@ export class AppComponent {
 
         this.activatedRoute.queryParams.subscribe((params: any) => {
             if (params && params.inviteCode) {
-                this.handleInviteCode(params.inviteCode);
+                //this.handleInviteCode(params.inviteCode);
             }
         });
 
@@ -73,7 +73,7 @@ export class AppComponent {
     }
 
     async handleInviteCode(code) {
-        alert(code)
+        //alert(code)
     }
 
     initializeApp() {
@@ -94,7 +94,9 @@ export class AppComponent {
             let defaultLang = window.localStorage.getItem(Constants.KEY_DEFAULT_LANGUAGE);
             this.globalize(defaultLang);
 
-            SplashScreen.hide();
+            setTimeout(() => {
+                SplashScreen.hide();
+            }, 2000)
 
             if (!this.isInstalled)
                 setTimeout(() => {

@@ -5,6 +5,8 @@
 	"display": "fullscreen",
 	"scope": "./",
 	"start_url": "./tabs/home",
+	"launch_handler": { "client_mode": "navigate-existing" },
+	"capture_links": "existing-client-event",
 	"icons": [
 		{
 			"purpose": "maskable any",

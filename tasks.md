@@ -1,4 +1,7 @@
-BUGS -
+Bug
+    - [ ] Timer does not pause
+    - [ ] Accept invites
+    - [ ] Order of sets wasnt correnct at workout
 
 Chat -
     - [ ] Human Trainer

@@ -26,12 +26,16 @@ export class RestBadgeComponent implements OnInit {
     onRestSkippedEvent = output<boolean>();
 
     increasedRest = 0;
+    private debounced?: any;
 
     constructor(private storage: StorageService) {
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'visible') {
                 this.ngOnInit();
             }
+        });
+        window.addEventListener('pageshow', (e: PageTransitionEvent) => {
+            this.ngOnInit();
         });
     }
 
@@ -49,26 +53,29 @@ export class RestBadgeComponent implements OnInit {
     }
 
     async ngOnChanges(_: SimpleChanges) {
-        const initialTime = this.initialTime();
-        if (initialTime != null) {
-            await this.storage.setItem(StorageKeys.REST_BADGE_STORAGE_KEY, {
-                initialTime,
-                duration: this.duration()
-            });
-            const start = new Date(initialTime);
-            const end = start.setSeconds(start.getSeconds() + this.duration());
-            if (new Date().getTime() < end) {
-                let restTimeRemaining = Math.floor((end - new Date().getTime()) / 1000);
-                if (restTimeRemaining > 0) {
-                    this.startRest(restTimeRemaining);
-                    return;
+        clearTimeout(this.debounced);
+        this.debounced = setTimeout(async () => {
+            const initialTime = this.initialTime();
+            if (initialTime != null) {
+                await this.storage.setItem(StorageKeys.REST_BADGE_STORAGE_KEY, {
+                    initialTime,
+                    duration: this.duration()
+                });
+                const start = new Date(initialTime);
+                const end = start.setSeconds(start.getSeconds() + this.duration());
+                if (new Date().getTime() < end) {
+                    let restTimeRemaining = Math.floor((end - new Date().getTime()) / 1000);
+                    if (restTimeRemaining > 0) {
+                        this.startRest(restTimeRemaining);
+                        return;
+                    }
                 }
             }
-        }
-
-        this.stopRest();
-        if (this.restTimeRemaining <= 0)
-            this.onTimerCompletedEvent.emit(true);
+    
+            this.stopRest();
+            if (this.restTimeRemaining <= 0)
+                this.onTimerCompletedEvent.emit(true);
+        }, 100);
     }
 
     async startRest(duration: number) {

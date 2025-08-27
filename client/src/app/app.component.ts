@@ -10,7 +10,7 @@ import { ThemeService } from './core/services/theme.service';
 import { registerIcons } from './core/constants/icons';
 import { register } from 'swiper/element/bundle';
 import { chevronBackOutline, chevronForwardOutline, downloadOutline, shareOutline } from 'ionicons/icons';
-import { NavigationExtras, NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, NavigationStart, Router } from '@angular/router';
 import { skipLocationChange } from './core/helpers/platform-helpers';
 import { environment } from 'src/environments/environment';
 
@@ -39,7 +39,8 @@ export class AppComponent {
         private myEvent: MyEvent,
         private router: Router,
         private accountService: AccountService,
-        private themeService: ThemeService
+        private themeService: ThemeService,
+        private activatedRoute: ActivatedRoute
     ) {
         this.initializeApp();
         this.themeService.initializeTheme();
@@ -47,6 +48,12 @@ export class AppComponent {
         this.myEvent.getLanguageObservable().subscribe(value => {
             this.navCtrl.navigateRoot(['./tabs/home']);
             this.globalize(value);
+        });
+
+        this.activatedRoute.queryParams.subscribe((params: any) => {
+            if (params && params.inviteCode) {
+                this.handleInviteCode(params.inviteCode);
+            }
         });
 
         registerIcons();
@@ -63,6 +70,10 @@ export class AppComponent {
                 }
             }
         })
+    }
+
+    async handleInviteCode(code) {
+        alert(code)
     }
 
     initializeApp() {

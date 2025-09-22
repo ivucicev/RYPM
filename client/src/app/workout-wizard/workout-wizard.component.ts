@@ -416,6 +416,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
         if (data) {
             await this.completeWorkout();
+            await this.pocketbaseService.pb.send(`/api/skip-timers/user/${this.pocketbaseService?.pb?.authStore?.record.id}`, {});
             this.wake.disable();
         }
 

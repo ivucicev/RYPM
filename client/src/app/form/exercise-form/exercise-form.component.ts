@@ -44,7 +44,9 @@ export class ExerciseFormComponent implements OnChanges {
 
     listCircleIcon = listCircleOutline;
     durationOptions: { value: number }[] = [
-        { value: 0 }
+        { value: 15 },
+        { value: 20 },
+        { value: 25 }
     ];
 
     public editMode = false;
@@ -70,8 +72,8 @@ export class ExerciseFormComponent implements OnChanges {
     selectedValue: any = 10;
     selectedMinValue: any = 8;
     selectedMaxValue: any = 12;
-    rpes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    rirs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    rpes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    rirs = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     supersets = ['A', 'B', 'C', 'D', 'E', 'F'];
     selectedRPE;
     selectedRIR;
@@ -113,7 +115,7 @@ export class ExerciseFormComponent implements OnChanges {
         private programFormService: FormsService,
         private pocketbaseService: PocketbaseService
     ) {
-        for (let seconds = 15; seconds <= 600; seconds += 15) {
+        for (let seconds = 30; seconds <= 600; seconds += 15) {
             this.durationOptions.push({ value: seconds });
         }
 

@@ -285,11 +285,11 @@ export class ProgramService {
         Object.keys(groupedSets).forEach((gs) => {
             const sets = groupedSets[gs];
             const latestDate = sets
-                .map(set => new Date(set.completedAt).toISOString().split('T')[0])
+                .map(set => set.completedAt ? new Date(set.completedAt).toISOString().split('T')[0] : new Date(0).toISOString().split('T')[0])
                 .sort()
                 .pop();
             groupedSets[gs] = sets.filter(s => {
-                const d = new Date(s.completedAt).toISOString();
+                const d = s.completedAt ? new Date(s.completedAt).toISOString() : new Date(0).toISOString().split('T')[0];
                 return d.startsWith(latestDate);
             })
         })

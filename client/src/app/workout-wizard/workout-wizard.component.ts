@@ -374,7 +374,8 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
                     batch.collection("sets").update(
                         set.id,
                         {
-                            completed: true
+                            completed: true,
+                            completedAt: new Date()
                         } as Set,
                         {
                             headers: { ...PB.HEADER.NO_TOAST }

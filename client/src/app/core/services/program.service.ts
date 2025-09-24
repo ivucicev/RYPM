@@ -52,7 +52,7 @@ export class ProgramService {
         private modalCtrl: ModalController,
         private alertController: AlertController,
         private loadingController: LoadingController
-        ) {
+    ) {
     }
 
     /**
@@ -264,15 +264,16 @@ export class ProgramService {
 
         const exerciseNames = workout.exercises.map(e => e.name);
 
-        const filter = exerciseNames.map(name => `exercise.name = '${name}'`).join(' || ');
-        const sets = await this.pocketbaseService.sets.getList(0, 20,
+        const filter = exerciseNames.map(name => `completed=1 && exercise.name = '${name}'`).join(' || ');
+        const sets = await this.pocketbaseService.sets.getList(0, 200,
             {
                 expand: 'exercise',
                 filter,
-                sort: '-completedAt, -index'
+                sort: 'completedAt, index'
             }
         );
 
+        // Group sets by exercise name, but only keep sets from the latest date for each exercise
         const groupedSets = sets.items.reduce((acc, set: any) => {
             const name = set.exercise?.name;
             if (!name) return acc;
@@ -281,21 +282,37 @@ export class ProgramService {
             return acc;
         }, {} as Record<string, typeof sets.items>);
 
+        Object.keys(groupedSets).forEach((gs) => {
+            const sets = groupedSets[gs];
+            const latestDate = sets
+                .map(set => new Date(set.completedAt).toISOString().split('T')[0])
+                .sort()
+                .pop();
+            groupedSets[gs] = sets.filter(s => {
+                const d = new Date(s.completedAt).toISOString();
+                return d.startsWith(latestDate);
+            })
+        })
+
         // Fill in previousValue for each set in workout.exercises from groupedSets
-        workout.exercises.forEach(ex => {
+        workout.exercises.forEach((ex, i) => {
             const setsForExercise: any = groupedSets[ex.name];
             if (!setsForExercise || setsForExercise?.length === 0) return;
             ex.notes = setsForExercise[0]?.exercise?.notes || '';
             if (!setsForExercise) return;
             setsForExercise.sort((a, b) => a.index - b.index);
             ex.sets.forEach((set, index) => {
-                const previousSet = setsForExercise.find((s,i) => s.index === index || (s.index == 0 && i == index));
+                set.index = index;
+                const previousSet = setsForExercise.find((s, i) => (s.index == 0 > 0 && s.index === index) || (s.index == 0 && i == index));
                 if (previousSet) {
                     set.previousValue = previousSet.currentValue;
+                    set.currentValue = previousSet.currentValue;
                     set.previousWeight = previousSet.currentWeight;
+                    set.currentWeight = previousSet.currentWeight;
                 }
             });
         });
+
 
         const workoutData = { ...workout };
         delete workoutData.exercises;

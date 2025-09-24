@@ -163,7 +163,15 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         }
 
         this.workout = workout;
-
+        
+        if (this.workout.exercises && this.workout.exercises.length > 0) {
+            this.workout.exercises.forEach(exercise => {
+            if (exercise.sets && exercise.sets.length > 0) {
+                exercise.sets.sort((a, b) => a.index - b.index);
+            }
+            });
+        }
+        
         // get oprevious weights and values
         await this.getPreviousOfWorkoutType();
 
@@ -416,15 +424,12 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
         if (data) {
             await this.completeWorkout();
-            await this.pocketbaseService.pb.send(`/api/skip-timers/user/${this.pocketbaseService?.pb?.authStore?.record.id}`, {});
-            this.wake.disable();
         }
 
 
     }
 
     async completeWorkout() {
-
         const model = {
             id: this.workout.id,
             state: WorkoutState.Completed,
@@ -436,7 +441,9 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
 
         await this.handleUncompletedSets(); // TF is this??
         await this.pocketbaseService.workouts.update(model.id, model);
-        await this.storageService.removeItem(StorageKeys.WORKOUT_WIZARD_LAST_WORKOUT)
+        await this.storageService.removeItem(StorageKeys.WORKOUT_WIZARD_LAST_WORKOUT);
+        await this.pocketbaseService.pb.send(`/api/skip-timers/user/${this.pocketbaseService?.pb?.authStore?.record.id}`, {});
+        this.wake.disable();
         this.navCtrl.navigateBack(['./tabs']);
 
     }

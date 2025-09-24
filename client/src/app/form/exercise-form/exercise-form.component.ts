@@ -148,7 +148,6 @@ export class ExerciseFormComponent implements OnChanges {
         }
 
         const sets = this.exercise.get('sets') as FormArray<ExerciseSetFormGroup>;
-
         for (let i = 0; i < sets.length; i++) {
             const set = sets.at(i);
             set.controls.currentValue.setValue(set.controls.currentValue.value || set.controls.previousValue.value || set.controls.value.value || 0);

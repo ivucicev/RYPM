@@ -40,11 +40,9 @@ routerAdd("GET", "/api/check-notifications", (e) => {
         if (sentTokens.includes(notification.token)) {
             $app.db().update('notifications', { state: 'cancelled' }, $dbx.exp("id = {:id}", { id: notification?.id })).execute();
             return;
-        }   
-        else
-            $app.db().update('notifications', { state: 'sent' }, $dbx.exp("id = {:id}", { id: notification?.id })).execute();
+        }
 
-        try {            
+        try {
             const sent = $http.send({
                 url: process.env.PUSH_SEND_URL,
                 method: "POST",
@@ -54,8 +52,12 @@ routerAdd("GET", "/api/check-notifications", (e) => {
                 },
                 body: JSON.stringify(body)
             });
-    
+
             if (sent.statusCode == 200) {
+                const sentAt = new Date();
+                const sendAt = new Date(notification.sendAt);
+                const delay = Math.floor((sentAt - sendAt) / 1000);
+                $app.db().update('notifications', { state: 'sent', delay: delay, sentAt: sentAt }, $dbx.exp("id = {:id}", { id: notification?.id })).execute();
                 sentTokens.push(notification.token);
             } else {
                 $app.db().update('notifications', { state: 'error', errorMessage: sent.raw }, $dbx.exp("id = {:id}", { id: notification?.id })).execute();

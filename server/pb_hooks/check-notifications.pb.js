@@ -31,7 +31,6 @@ routerAdd("GET", "/api/check-notifications", (e) => {
 
     let sentTokens = [];
 
-
     notifications.forEach(notification => {
 
         const body = JSON.parse(notification.body);
@@ -43,6 +42,7 @@ routerAdd("GET", "/api/check-notifications", (e) => {
         }
 
         try {
+            const requestDelayDate = new Date();
             const sent = $http.send({
                 url: process.env.PUSH_SEND_URL,
                 method: "POST",
@@ -57,7 +57,8 @@ routerAdd("GET", "/api/check-notifications", (e) => {
                 const sentAt = new Date();
                 const sendAt = new Date(notification.sendAt);
                 const delay = Math.floor((sentAt - sendAt) / 1000);
-                $app.db().update('notifications', { state: 'sent', delay: delay, sentAt: sentAt }, $dbx.exp("id = {:id}", { id: notification?.id })).execute();
+                const requestDelay = Math.floor((sentAt - requestDelayDate) / 1000);
+                $app.db().update('notifications', { state: 'sent', delay: delay, requestDelay: requestDelay, sentAt: sentAt }, $dbx.exp("id = {:id}", { id: notification?.id })).execute();
                 sentTokens.push(notification.token);
             } else {
                 $app.db().update('notifications', { state: 'error', errorMessage: sent.raw }, $dbx.exp("id = {:id}", { id: notification?.id })).execute();

@@ -281,10 +281,10 @@ export class ExerciseFormComponent implements OnChanges {
         this.selectedRepType = currentSet.type;
         this.selectedMinValue = currentSet.minValue || 1;
         this.selectedMaxValue = currentSet.maxValue || 1;
-        
+
         this.selectedWeight = currentSet.currentWeight || currentSet.previousWeight || currentSet.weight || 0;
         this.selectedValue = currentSet.currentValue || currentSet.previousValue || currentSet.value || 0;
-        
+
         this.setPickerModal.present();
     }
 
@@ -362,10 +362,11 @@ export class ExerciseFormComponent implements OnChanges {
             if (i > this.selectedSetIndex && c.controls?.completed?.value != true) {
                 //valuesToPatch.currentValue = this.selectedValue;
                 //valuesToPatch.currentWeight = this.selectedWeight;
-                c.patchValue({
-                    currentValue: this.selectedValue,
-                    currentWeight: this.selectedWeight
-                });
+                if (this.selectedValue > c.controls.currentValue.value && this.selectedWeight > c.controls.currentWeight.value)
+                    c.patchValue({
+                        currentValue: this.selectedValue,
+                        currentWeight: this.selectedWeight
+                    });
             }
         })
 

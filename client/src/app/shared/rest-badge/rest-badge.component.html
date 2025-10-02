@@ -1,6 +1,5 @@
 @if (isResting) {
-<ion-button size="large" class="rest" expand="round" shape="round" color="primary" (click)="skipRest()"
-    [style.display]="!isResting ? 'none' : ''">
+<ion-button size="large" class="rest" expand="round" shape="round" color="primary" (click)="skipRest()">
     <ion-icon slot="start" name="timer-outline"></ion-icon>
     {{'Skip' | translate}} ({{ restTimeRemaining | duration }})
 </ion-button>

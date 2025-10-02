@@ -27,5 +27,5 @@ ion-button.increase-rest-btn::part(native) {
 
 ion-button.animate-in {
     z-index: -11 !important;
-    animation: slideInFromLeft 0.4s ease-out forwards;
+    animation: slideInFromLeft 1s ease-out forwards;
 }

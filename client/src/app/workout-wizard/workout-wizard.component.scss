@@ -72,6 +72,7 @@
         font-size: 1rem;
         color: var(--ion-color-medium);
         text-align: center;
+        white-space: pre-wrap;
     }
 }
 
@@ -141,4 +142,9 @@ ion-footer {
 
 .center {
     margin: 0 auto;
+}
+
+.skip-rest-wizard {
+    position: absolute;
+    bottom: 100px;
 }

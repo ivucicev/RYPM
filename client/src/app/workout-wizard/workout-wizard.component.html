@@ -69,8 +69,9 @@
     </div>
 </ion-content>
 
+
 @if(lastCompletedSet && lastCompletedSetExercise && !isDayCompleted) {
-<ion-footer class="ion-no-border animate__animated animate__fadeInUp ion-padding-bottom skip-footer">
+<ion-footer id="rest-footer" class="ion-no-border skip-rest-wizard animate__animated animate__fadeInUp ion-padding-bottom skip-footer">
     <app-rest-badge [initialTime]="lastCompletedSet.controls.completedAt.value" (onRestSkippedEvent)="onRestSkipped()"
         [duration]="lastCompletedSetExercise.controls.restDuration.value"></app-rest-badge>
 </ion-footer>

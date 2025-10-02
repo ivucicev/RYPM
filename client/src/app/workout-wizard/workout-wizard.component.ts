@@ -11,8 +11,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Constants } from '../core/constants/constants';
 import { TimeBadgeComponent } from '../shared/time-badge/time-badge.component';
 import { PocketbaseService } from '../core/services/pocketbase.service';
-import { lastValueFrom, of, Subject, takeUntil } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { filter, lastValueFrom, of, Subject, takeUntil } from 'rxjs';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { Workout } from '../core/models/collections/workout';
 import { WorkoutState } from '../core/models/enums/workout-state';
 import { AutosaveService } from '../core/services/autosave.service';
@@ -107,6 +107,7 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private modalCtrl: ModalController,
         private navCtrl: NavController,
+        private router: Router,
         private translateService: TranslateService,
         private autosaveService: AutosaveService,
         private actionSheetCtrl: ActionSheetController,
@@ -116,6 +117,12 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         private storageService: StorageService,
         private push: PushService,
     ) {
+        this.router.events
+            .pipe(filter(event => event instanceof NavigationStart))
+            .subscribe((event: NavigationStart) => {
+                document.getElementById('rest-footer')?.remove();
+                console.log('Navigation is about to start:', event.url);
+            });
         effect(() => {
             const currentExercise = this.currentExercise()?.getRawValue();
             if (this.workout != null) {
@@ -163,15 +170,15 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         }
 
         this.workout = workout;
-        
+
         if (this.workout.exercises && this.workout.exercises.length > 0) {
             this.workout.exercises.forEach(exercise => {
-            if (exercise.sets && exercise.sets.length > 0) {
-                exercise.sets.sort((a, b) => a.index - b.index);
-            }
+                if (exercise.sets && exercise.sets.length > 0) {
+                    exercise.sets.sort((a, b) => a.index - b.index);
+                }
             });
         }
-        
+
         // get oprevious weights and values
         await this.getPreviousOfWorkoutType();
 

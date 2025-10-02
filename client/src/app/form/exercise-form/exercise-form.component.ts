@@ -362,9 +362,12 @@ export class ExerciseFormComponent implements OnChanges {
             if (i > this.selectedSetIndex && c.controls?.completed?.value != true) {
                 //valuesToPatch.currentValue = this.selectedValue;
                 //valuesToPatch.currentWeight = this.selectedWeight;
-                if (this.selectedValue > c.controls.currentValue.value && this.selectedWeight > c.controls.currentWeight.value)
+                if (this.selectedValue >= c.controls.currentValue.value)
                     c.patchValue({
                         currentValue: this.selectedValue,
+                    });
+                if (this.selectedWeight >= c.controls.currentWeight.value)
+                    c.patchValue({
                         currentWeight: this.selectedWeight
                     });
             }

@@ -76,6 +76,7 @@ export class SignInPage implements OnInit {
     }
 
     // Handles user authentication with email/password and manages MFA flow
+    // This method validates the login form and initiates the authentication process
     async signIn() {
         if (this.loginForm.invalid) {
             this.loginForm.markAsDirty();

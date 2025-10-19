@@ -75,6 +75,7 @@ export class SignInPage implements OnInit {
         this.router.navigate(['./forgot-password']);
     }
 
+    // Handles user authentication with email/password and manages MFA flow
     async signIn() {
         if (this.loginForm.invalid) {
             this.loginForm.markAsDirty();

@@ -56,13 +56,24 @@
                         }
                     </div>
 
-                    <div class="exercises-summary">
+                    <div class="exercises-summary"
+                         (click)="toggleExercises(workout.id, $event)"
+                         [class.expanded]="isExercisesExpanded(workout.id)">
                         @for(exercise of workout.exercises; track $index) {
                         <span class="exercise-text">
                             {{ exercise.name }} ({{ exercise.sets?.length }} {{'sets' | translate}})@if ($index < workout.exercises.length - 1){,&nbsp;}
                         </span>
                         }
                     </div>
+
+                    @if (workout.comment) {
+                    <div class="comment-section"
+                         (click)="toggleComment(workout.id, $event)"
+                         [class.expanded]="isCommentExpanded(workout.id)">
+                        <ion-icon name="information-circle-outline"></ion-icon>
+                        <span class="comment-text">{{ workout.comment }}</span>
+                    </div>
+                    }
 
                     @if (workout.tagsToShow?.length > 0) {
                     <div class="tags-row">

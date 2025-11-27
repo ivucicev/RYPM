@@ -16,52 +16,47 @@
 
     @if (workouts?.length) {
     <div class="ion-padding-x ion-padding">
-        <ion-label>{{ 'Active' | translate }}</ion-label>
         <swiper-container slides-per-view="auto" space-between="15" style="width:100%;height:min-content;">
             <!-- [pagination]="true" scrollbar-hide="true" -->
             @for (workout of workouts; track $index) {
-            <swiper-slide>
-                <ion-card class="workout-card" (click)="openWorkout(workout.id)">
-                    <ion-card-header>
-                        <ion-label class="header-row" [color]="'medium'">
-                            <span>{{ workout.start | dateTime }}</span>
-                            <app-time-badge [initialTime]="workout.start"></app-time-badge>
-                        </ion-label>
-                    </ion-card-header>
-                    <ion-card-content>
-                        @if (workout.nextExercise) {
-                        <div class="exercise-row">
-                            <div class="exercise-header">
-                                {{ workout.nextExercise.name }}
-                                @if (workout.nextExercise.restDuration) {
-                                <span class="rest-info">
-                                    <ion-icon name="timer-outline"></ion-icon>
-                                    <span>{{ 'Rest' | translate }}: {{ workout.nextExercise.restDuration }}s</span>
-                                </span>
-                                }
-                            </div>
-                            @if (workout.nextExercise.nextSet) {
-                            <div class="next-set-row">
-                                <ion-icon name="arrow-forward-circle-outline" [color]="'primary'"></ion-icon>
-                                <ion-label>
-                                    <ng-container
-                                        *ngTemplateOutlet="setValueTemplate; context: { set: workout.nextExercise.nextSet, previous: false }"></ng-container>
-                                </ion-label>
+            <swiper-slide class="ion-flex-grow-1">
+                <div class="workout-card-active" (click)="openWorkout(workout.id)">
+                    <div class="active-header">
+                        <span class="ongoing-label">{{ 'Active' | translate }}</span>
+                        <app-time-badge class="timer-badge-large" [initialTime]="workout.start"></app-time-badge>
+                    </div>
+                    <div class="active-subtitle">
+                        <div class="date-time-row">
+                            <span class="workout-info">{{ workout.start | dateTime }}</span>
+                            @if (workout.nextExercise.restDuration) {
+                            <div class="rest-timer-row">
+                                <ion-icon name="timer-outline"></ion-icon>
+                                <span>{{ 'Rest' | translate }}: {{ workout.nextExercise.restDuration }}s</span>
                             </div>
                             }
                         </div>
+                        @if (workout.nextExercise) {
+                        <div class="exercise-row">
+                            <div class="exercise-header-inline">
+                                <span class="exercise-name">{{ workout.nextExercise.name }}</span>
+                                @if (workout.nextExercise.nextSet) {
+                                <span class="set-info">
+                                    <ng-container
+                                        *ngTemplateOutlet="setValueTemplate; context: { set: workout.nextExercise.nextSet, previous: false }"></ng-container>
+                                </span>
+                                }
+                            </div>
+                        </div>
                         } @else {
                         <div class="exercise-row">
-                            <div class="next-set-row">
-                                <ion-icon name="checkmark-circle-outline" [color]="'primary'"></ion-icon>
-                                <ion-label>
-                                    {{ 'All exercises completed' | translate }}
-                                </ion-label>
+                            <div class="completion-row">
+                                <ion-icon name="checkmark-circle-outline"></ion-icon>
+                                <span>{{ 'All exercises completed' | translate }}</span>
                             </div>
                         </div>
                         }
-                    </ion-card-content>
-                </ion-card>
+                    </div>
+                </div>
             </swiper-slide>
             }
         </swiper-container>
@@ -100,10 +95,12 @@
         <ng-container *ngSwitchCase="'programs'">
             <div class="programs-container ion-padding">
                 @for (program of programs; track program.id) {
-                <div class="program-card animate__animated animate__fadeInUp" (click)="presentProgramActionSheet(program)">
+                <div class="program-card animate__animated animate__fadeInUp"
+                    (click)="presentProgramActionSheet(program)">
                     <div class="card-header">
                         <h2 class="program-title">{{ program.name || ('Program' | translate) }}</h2>
-                        <span class="program-duration">{{ program.numberOfWeeks || 'N/A' }} {{ 'WEEKS' | translate }}</span>
+                        <span class="program-duration">{{ program.numberOfWeeks || 'N/A' }} {{ 'WEEKS' | translate
+                            }}</span>
                     </div>
 
                     @if(program.started) {

@@ -125,10 +125,12 @@
     overflow-y: hidden;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
+    scrollbar-width: none;
+    /* Firefox */
 
     &::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Edge */
+        display: none;
+        /* Chrome, Safari, Edge */
     }
 }
 
@@ -186,6 +188,25 @@
     }
 }
 
+.rest-timer-row {
+    gap: 6px;
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    font-size: 14px;
+    color: rgba(26, 26, 26, 0.6);
+
+    ion-icon {
+        font-size: 18px;
+        color: rgba(26, 26, 26, 0.6);
+    }
+
+    span {
+        font-size: 14px;
+        color: rgba(26, 26, 26, 0.6);
+    }
+}
+
 swiper-container {
     height: var(--swiper-container-height);
     width: 100%;
@@ -202,8 +223,7 @@ swiper-container {
     }
 
     swiper-slide {
-        min-width: 275px;
-        width: min-content;
+        min-width: 100%;
     }
 }
 
@@ -258,6 +278,132 @@ swiper-container {
                 display: flex;
                 gap: 4px;
                 flex-shrink: 0;
+            }
+        }
+    }
+}
+
+.workout-card-active {
+    background: #DDD5C7;
+    border-radius: 24px;
+    padding: 24px;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    min-width: 275px;
+
+    &:active {
+        transform: scale(0.98);
+        opacity: 0.9;
+    }
+
+    .active-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+
+        .ongoing-label {
+            font-size: 28px;
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .timer-badge-large {
+            ::ng-deep {
+                ion-badge {
+                    background: transparent;
+                    color: #1a1a1a;
+                    font-size: 28px;
+                    font-weight: 500;
+                    padding: 0;
+                }
+
+                .elapsed-time-badge {
+                    background: transparent;
+                    color: #1a1a1a;
+                    font-size: 28px;
+                    font-weight: 500;
+                    padding: 0;
+                }
+            }
+        }
+    }
+
+    .active-subtitle {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+
+        .date-time-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: rgba(26, 26, 26, 0.6);
+
+            .workout-info {
+                font-size: 14px;
+                color: rgba(26, 26, 26, 0.6);
+            }
+        }
+
+        .exercise-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+
+            .exercise-header-inline {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                justify-content: space-between;
+
+                .exercise-name {
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: #1a1a1a;
+                    flex: 1;
+                    min-width: 0;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
+                .set-info {
+                    font-size: 15px;
+                    color: #1a1a1a;
+                    font-weight: 400;
+                    white-space: nowrap;
+                    flex-shrink: 0;
+
+                    .set-display-container {
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                        color: #1a1a1a;
+
+                        .weight-value,
+                        .rep-value {
+                            color: #1a1a1a;
+                        }
+                    }
+                }
+            }
+
+            .completion-row {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                ion-icon {
+                    font-size: 20px;
+                    color: #1a1a1a;
+                }
+
+                span {
+                    font-size: 15px;
+                    color: #1a1a1a;
+                    font-weight: 400;
+                }
             }
         }
     }

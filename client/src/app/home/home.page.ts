@@ -1,6 +1,6 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, viewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgSwitch, NgSwitchCase, NgTemplateOutlet, UpperCasePipe } from '@angular/common';
+import { JsonPipe, NgSwitch, NgSwitchCase, NgTemplateOutlet, UpperCasePipe } from '@angular/common';
 import { Animation, AnimationController, IonButton, IonContent, IonSegment, IonSegmentButton, LoadingController, NavController } from '@ionic/angular/standalone';
 import { Exercise } from '../core/models/collections/exercise';
 import { Program } from '../core/models/collections/program';

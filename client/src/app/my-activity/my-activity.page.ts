@@ -47,6 +47,10 @@ export class MyActivityPage {
     WorkoutState = WorkoutState;
     currentUser;
 
+    // Track expansion state for exercises and comments
+    expandedExercises: Set<string> = new Set();
+    expandedComments: Set<string> = new Set();
+
     continueFooter = viewChild(ContinueFooterComponent);
 
     chartInstance: chart.Chart | null = null;
@@ -157,6 +161,32 @@ export class MyActivityPage {
 
     async refresh() {
         this.continueFooter().refresh();
+    }
+
+    toggleExercises(workoutId: string, event: Event) {
+        event.stopPropagation();
+        if (this.expandedExercises.has(workoutId)) {
+            this.expandedExercises.delete(workoutId);
+        } else {
+            this.expandedExercises.add(workoutId);
+        }
+    }
+
+    toggleComment(workoutId: string, event: Event) {
+        event.stopPropagation();
+        if (this.expandedComments.has(workoutId)) {
+            this.expandedComments.delete(workoutId);
+        } else {
+            this.expandedComments.add(workoutId);
+        }
+    }
+
+    isExercisesExpanded(workoutId: string): boolean {
+        return this.expandedExercises.has(workoutId);
+    }
+
+    isCommentExpanded(workoutId: string): boolean {
+        return this.expandedComments.has(workoutId);
     }
 
     onPeriodChange($event: IonSelectCustomEvent<SelectChangeEventDetail<any>>) {

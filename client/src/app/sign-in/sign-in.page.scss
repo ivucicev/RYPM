@@ -1,5 +1,10 @@
 .sign-in-screen {
     position: relative;
+
+    // Override global input border-bottom
+    ion-input {
+        border-bottom: none !important;
+    }
 }
 
 .background-image {
@@ -70,27 +75,44 @@
             --background: rgba(30, 30, 30, 0.95);
             --color: rgba(200, 200, 200, 1);
             --placeholder-color: rgba(120, 120, 120, 1);
-            --border-radius: 50px;
+            --border-radius: 12px;
             --border-color: transparent;
             --border-width: 0;
             --padding-start: 24px;
             --padding-end: 56px;
+            --highlight-height: 0;
             --highlight-color: transparent;
+            --highlight-color-focused: transparent;
+            --highlight-color-valid: transparent;
+            --highlight-color-invalid: transparent;
             font-size: 15px;
             min-height: 56px;
             font-weight: 400;
+            border-bottom: none !important;
 
             &::part(native) {
-                border-radius: 50px;
+                border-radius: 12px !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+
+            &::part(native):focus {
+                border: none !important;
+                box-shadow: none !important;
+                outline: none !important;
             }
         }
 
-        ion-input::part(native) {
-            box-shadow: none !important;
+        ion-input.has-focus,
+        ion-input.ion-focused,
+        ion-input.ion-touched {
+            --highlight-color: transparent !important;
+            --highlight-height: 0 !important;
         }
 
-        ion-input.has-focus {
-            --highlight-color: transparent !important;
+        ion-input::part(native)::after,
+        ion-input::after {
+            display: none !important;
         }
 
         .input-icon {
@@ -125,7 +147,7 @@
 
 .sign-in-button {
     --background: #FF5733;
-    --border-radius: 28px;
+    --border-radius: 12px;
     --padding-top: 18px;
     --padding-bottom: 18px;
     font-size: 17px;
@@ -133,6 +155,10 @@
     text-transform: none;
     margin-bottom: 40px;
     height: 56px;
+
+    &::part(native) {
+        border-radius: 12px !important;
+    }
 }
 
 .divider-text {

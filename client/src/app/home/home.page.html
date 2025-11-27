@@ -1,20 +1,15 @@
-<ion-header>
+<ion-header class="modern-header">
     <ion-toolbar>
-        <ion-title>{{'Workout' | translate}}</ion-title>
+        <ion-title>{{ 'Workouts' | translate }}</ion-title>
         @if (workouts?.length == 0) {
         <ion-buttons slot="end">
-            <ion-button (click)="openNewWorkout()">
-                {{ 'New workout' | translate }} &nbsp;
-                <ion-icon name="add-circle-outline"></ion-icon>
-            </ion-button>
+            <button class="header-action-button" (click)="openNewWorkout()">
+                <ion-icon name="add-circle" class="plus-icon"></ion-icon>
+                <span>{{ 'New workout' | translate }}</span>
+            </button>
         </ion-buttons>
         }
     </ion-toolbar>
-    <!--
-     <ion-toolbar>
-        <ion-title><img class="light-invert" src="assets/images/logo.png"></ion-title>
-    </ion-toolbar>
-    -->
 </ion-header>
 
 <ion-content class="bg_color" fullscreen fixed-slot-placement="before">
@@ -72,7 +67,7 @@
         </swiper-container>
     </div>
     }
-    <ion-row class="segment-toolbar ion-padding">
+    <div class="segment-toolbar-modern ion-padding">
         <ion-segment [(ngModel)]="tab" lines="none" (ngModelChange)="onTabChange($event)">
             <ion-segment-button value="programs">
                 <ion-label>
@@ -85,91 +80,71 @@
                 </ion-label>
             </ion-segment-button>
         </ion-segment>
-        <div [ngSwitch]="tab" [style.margin-left]="'auto'">
+        <div [ngSwitch]="tab" class="add-button-container">
             <ng-container *ngSwitchCase="'programs'">
-                <ion-button expand="block" fill="clear" size="small" color="primary" (click)="newProgram()">
-                    {{ 'Add program' | translate }}
-                    <ion-icon slot="end" name="layers-outline"></ion-icon>
-                </ion-button>
+                <button class="add-action-button" (click)="newProgram()">
+                    <ion-icon name="add-circle" class="plus-icon"></ion-icon>
+                    <span>{{ 'Add program' | translate }}</span>
+                </button>
             </ng-container>
             <ng-container *ngSwitchCase="'templates'">
-                <ion-button expand="block" fill="clear" color="primary" size="small" (click)="newTemplate()">
-                    <ion-icon slot="end" name="shapes-outline"></ion-icon>
-                    {{ 'Add template' | translate }}
-                </ion-button>
+                <button class="add-action-button" (click)="newTemplate()">
+                    <ion-icon name="add-circle" class="plus-icon"></ion-icon>
+                    <span>{{ 'Add template' | translate }}</span>
+                </button>
             </ng-container>
         </div>
-    </ion-row>
+    </div>
 
     <div [ngSwitch]="tab">
         <ng-container *ngSwitchCase="'programs'">
-            <ion-list>
+            <div class="programs-container ion-padding">
                 @for (program of programs; track program.id) {
-                <ion-item-sliding class="animate__animated animate__fadeInUp">
-                    <ion-item [button]="true" (click)="presentProgramActionSheet(program)">
-                        <ion-label>
-                            <div>
-                                <h2>{{ program.name || ('Program' | translate) }}
-                                    @if (program.completed) {
-                                    <ion-badge class="active-badge" color="success">{{ 'Completed' |translate
-                                        }}</ion-badge> }
-                                    @if (activeProgramIds.includes(program.id)) {
-                                    <ion-badge id="active-animation" class="active-badge" color="primary">{{ 'Active'
-                                        |translate
-                                        }}</ion-badge> }
-                                    @if (program.aiProgram) {
-                                    <ion-badge class="active-badge" color="tertiary">{{ 'AI Program' |translate
-                                        }}</ion-badge> }
-                                </h2>
-                                <span class="duration">
-                                    <ion-icon name="time-outline" size="small"></ion-icon>
-                                    {{ program.numberOfWeeks || 'N/A' }} {{ 'Weeks' | translate }}
-                                </span>
-                            </div>
+                <div class="program-card animate__animated animate__fadeInUp" (click)="presentProgramActionSheet(program)">
+                    <div class="card-header">
+                        <h2 class="program-title">{{ program.name || ('Program' | translate) }}</h2>
+                        <span class="program-duration">{{ program.numberOfWeeks || 'N/A' }} {{ 'WEEKS' | translate }}</span>
+                    </div>
 
-                            @if(program.started) {
-                            <div class="progress-container">
-                                <div class="progress-bar">
-                                    <div class="progress-fill"
-                                        [style.width.%]="(program.completedDaysCount / program.totalDaysCount) * 100">
-                                    </div>
-                                </div>
-                                <span class="progress-text">
-                                    {{ program.completedDaysCount }}/{{ program.totalDaysCount }} {{ 'Completion' |
-                                    translate }}
-                                </span>
+                    @if(program.started) {
+                    <div class="progress-section">
+                        <div class="progress-bar">
+                            <div class="progress-fill"
+                                [style.width.%]="(program.completedDaysCount / program.totalDaysCount) * 100">
                             </div>
-                            }
+                        </div>
+                        <span class="progress-label">
+                            {{ program.completedDaysCount }}/{{ program.totalDaysCount }} {{ 'Completion' | translate }}
+                        </span>
+                    </div>
+                    }
 
-                            <ion-note>{{ program.description || ('No description' | translate) }}</ion-note>
-                            @if (program.tags?.length > 0) {
-                            <div class="tag-container">
-                                @for (tag of program.tags; track $index) {
-                                <ion-chip color="primary" size="small">{{ tag }}</ion-chip>
-                                }
-                            </div>
-                            }
-                        </ion-label>
-                    </ion-item>
+                    <p class="program-goal">{{ program.description || ('No description' | translate) }}</p>
 
-                    <!--<ion-item-options side="start">
-                        <ion-item-option color="primary" (click)="presentAssignProgramPopover(program)">
-                            <ion-icon slot="icon-only" name="person-add"></ion-icon>
-                        </ion-item-option>
-                    </ion-item-options>-->
+                    @if (program.tags?.length > 0) {
+                    <div class="tags-row">
+                        @for (tag of program.tags; track $index) {
+                        <div class="tag-pill">{{ tag | uppercase }}</div>
+                        }
+                    </div>
+                    }
+
+                    @if (activeProgramIds.includes(program.id)) {
+                    <div class="active-indicator">
+                        <ion-icon name="flash" id="active-animation"></ion-icon>
+                    </div>
+                    }
 
                     @if (!activeProgramIds.includes(program.id)) {
-                    <ion-item-options side="end">
-                        <ion-item-option color="danger" (click)="deleteProgram(program.id)">
-                            <ion-icon slot="icon-only" name="trash"></ion-icon>
-                        </ion-item-option>
-                    </ion-item-options>
+                    <div class="delete-action" (click)="deleteProgram(program.id); $event.stopPropagation()">
+                        <ion-icon name="trash-outline"></ion-icon>
+                    </div>
                     }
-                </ion-item-sliding>
+                </div>
                 } @empty {
                 <app-no-data [reloadFn]="refresh" [text]="'No programs yet.' | translate"></app-no-data>
                 }
-            </ion-list>
+            </div>
         </ng-container>
 
         <ng-container *ngSwitchCase="'templates'">

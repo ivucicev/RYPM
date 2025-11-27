@@ -1,28 +1,27 @@
 <ion-tabs #tabs (ionTabsDidChange)="tabChange(tabs)">
-    <ion-tab-bar slot="bottom">
+    <ion-tab-bar slot="bottom" #tabBar>
+        <div class="tab-indicator" [style.transform]="'translateX(' + indicatorPosition + 'px)'">
+            <div class="indicator-inner" [class.animating]="isAnimating"></div>
+        </div>
+
         <ion-tab-button tab="home" id="home">
             <ion-icon name="barbell-outline"></ion-icon>
-            <ion-label>{{'Workouts' | translate}}</ion-label>
         </ion-tab-button>
 
         <ion-tab-button tab="activity" id="activity">
-            <ion-icon name="analytics-outline"></ion-icon>
-            <ion-label>{{'Activity' | translate}}</ion-label>
+            <ion-icon [src]="barChart"></ion-icon>
         </ion-tab-button>
 
-        <ion-tab-button tab="chats">
+        <ion-tab-button tab="chats" id="chats">
             @if (currentUserType == trainer) {
             <ion-icon [src]="peopleIcon"></ion-icon>
-            <ion-label>{{'Clients' | translate}}</ion-label>
             } @else {
             <ion-icon [src]="bubblesIcon"></ion-icon>
-            <ion-label>{{'Trainer' | translate}}</ion-label>
             }
         </ion-tab-button>
 
         <ion-tab-button tab="settings" id="settings">
             <ion-icon [src]="settingsIcon"></ion-icon>
-            <ion-label>{{'Settings' | translate}}</ion-label>
         </ion-tab-button>
     </ion-tab-bar>
 </ion-tabs>

@@ -1,104 +1,80 @@
-<ion-header class="bg_transparent">
-    <ion-toolbar>
-        <ion-buttons slot="start">
-            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
-        </ion-buttons>
-    </ion-toolbar>
-</ion-header>
+<ion-content class="bg_color register-screen" fullscreen>
+    <div class="background-image">
+        <img src="assets/images/banner_img.png" alt="">
+    </div>
 
-<ion-content class="bg_color" fullscreen>
     <form [formGroup]="registrationForm" (ngSubmit)="register()">
-        <div class="banner">
-            <div class="banner_img center_img">
-                <img src="assets/images/banner_img.png" class="crop_img">
-                <div class="logo animate__animated animate__fadeInUp">
-                    <h1>{{ 'Welcome' | translate }} {{ 'to' | translate }} RYPM.</h1>
-                </div>
+        <div class="form-container">
+            <div class="header-section">
+                <button type="button" class="back-button" (click)="goBack()">
+                    <ion-icon name="chevron-back-outline"></ion-icon>
+                </button>
+                <h1 class="welcome-text">Welcome to RYPM.</h1>
             </div>
-        </div>
-        <div class="form ion-padding-top ion-padding-bottom">
 
             <div class="user-type-selector">
-                <ion-row class="segment-toolbar ion-padding">
-                    <ion-segment formControlName="type">
-                        <ion-segment-button [value]="userTypes.User">
-                            <ion-label class="d-flex">
-                                <ion-icon name="person-outline" class="ion-padding-x large"></ion-icon>
-                                <span>{{ 'User' | translate }}</span>
-                            </ion-label>
-                        </ion-segment-button>
+                <ion-segment formControlName="type">
+                    <ion-segment-button [value]="userTypes.User">
+                        <ion-label>User</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button [value]="userTypes.Trainer">
+                        <ion-label>Trainer</ion-label>
+                    </ion-segment-button>
+                </ion-segment>
+            </div>
 
-                        <ion-segment-button [value]="userTypes.Trainer">
-                            <ion-label class="d-flex">
-                                <ion-icon class="ion-padding-x large" name="barbell-outline"></ion-icon>
-                                <span>{{ 'Trainer' | translate }}</span>
-                            </ion-label>
-                        </ion-segment-button>
-                    </ion-segment>
-                </ion-row>
-                <div class="type-description ion-text-center">
+            <div class="type-description">
+                @if (registrationForm.get('type').value === userTypes.Trainer) {
+                <p>Register as user to find your next trainer. Your profile will be private unless you specify otherwise.</p>
+                } @else {
+                <p>Register as user to find your next trainer. Your profile will be private unless you specify otherwise.</p>
+                }
+            </div>
 
-                    @if (registrationForm.get('type').value === userTypes.Trainer) {
-                    <p>
-                        {{ 'Register as trainer to find your next potential client.' | translate }}
-                        {{ 'Registering as a trainer will still allow you to use the RYPM app for your own training.' | translate }}
-                        {{ 'Your profile will be private unless you specify otherwise.' | translate }}
-                    </p>
-                    } @else {
-                    <p>
-                        {{ 'Register as user to find your next trainer.' | translate }}
-                        {{ 'Your profile will be private unless you specify otherwise.' | translate }}
-                    </p>
-                    }
-
+            <div class="input-group">
+                <label class="input-label">NAME</label>
+                <div class="input-wrapper">
+                    <ion-input formControlName="name" placeholder="Enter your Name" type="text" fill="outline"></ion-input>
+                    <ion-icon name="person-outline" class="input-icon"></ion-icon>
                 </div>
             </div>
 
-            <ion-list>
-                <ion-item class="animate__animated animate__fadeInUp">
-                    <ion-input formControlName="name" labelPlacement="stacked" [label]="'Name' | translate" type="text">
-                    </ion-input>
-                </ion-item>
+            <div class="input-group">
+                <label class="input-label">EMAIL</label>
+                <div class="input-wrapper">
+                    <ion-input formControlName="email" placeholder="Enter your Email" type="email" fill="outline"></ion-input>
+                    <ion-icon name="mail-outline" class="input-icon"></ion-icon>
+                </div>
+            </div>
 
-                <ion-item class="animate__animated animate__fadeInUp">
-                    <ion-input formControlName="email" labelPlacement="stacked" [label]="'Email' | translate"
-                        type="email">
-                    </ion-input>
-                </ion-item>
-
-                <ion-item class="animate__animated animate__fadeInUp">
-                    <ion-input formControlName="password" labelPlacement="stacked" [label]="'Password' | translate"
-                        class="password" type="password">
+            <div class="input-group">
+                <label class="input-label">PASSWORD</label>
+                <div class="input-wrapper">
+                    <ion-input formControlName="password" placeholder="Enter your password" type="password" fill="outline">
                         <ion-input-password-toggle slot="end"></ion-input-password-toggle>
                     </ion-input>
-                </ion-item>
+                </div>
+            </div>
 
-                <ion-item class="animate__animated animate__fadeInUp">
-                    <ion-input formControlName="passwordConfirm" labelPlacement="stacked"
-                        [label]="'Password confirm' | translate" class="password" type="password">
+            <div class="input-group">
+                <label class="input-label">CONFIRM YOUR PASSWORD</label>
+                <div class="input-wrapper">
+                    <ion-input formControlName="passwordConfirm" placeholder="Enter your password" type="password" fill="outline">
                         <ion-input-password-toggle slot="end"></ion-input-password-toggle>
                     </ion-input>
-                </ion-item>
+                </div>
+            </div>
 
-                <ion-item class="animate__animated animate__fadeInUp">
-                    <ion-checkbox labelPlacement="end" formControlName="terms">
-                        <div class="d-flex-register">{{ 'I agree to the' | translate }}
+            <div class="terms-checkbox">
+                <ion-checkbox formControlName="terms"></ion-checkbox>
+                <label>
+                    I agree to the <a (click)="showTerms()">Terms & Conditions</a>
+                </label>
+            </div>
 
-                            <ion-button type="button" size="small" fill="clear" expand="round"
-                                class="terms animate__animated animate__fadeInUp" (click)="showTerms()">{{'Terms &
-                                Conditions' | translate}}
-                            </ion-button>
-                        </div>
-                    </ion-checkbox>
-                </ion-item>
-
-            </ion-list>
-
+            <ion-button expand="block" class="register-button" [disabled]="registrationForm.invalid" (click)="register()">
+                Register
+            </ion-button>
         </div>
     </form>
 </ion-content>
-
-<ion-footer class="ion-no-border animate__animated animate__fadeInUp">
-    <ion-button [disabled]="registrationForm.invalid" size="large" expand="round" class="btn"
-        (click)="register()">{{'Register' | translate}}</ion-button>
-</ion-footer>

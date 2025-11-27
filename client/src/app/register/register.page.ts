@@ -7,7 +7,7 @@ import { FormType } from '../core/helpers/form-helpers';
 import { ErrorMessageDirective } from '../core/directives/error-message.directive';
 import { UserType } from '../core/models/enums/user-type';
 import { IonItem, IonFooter, IonButton, IonList, IonSegmentButton, IonIcon, IonContent, IonBackButton, IonToolbar, IonHeader, IonTitle, IonButtons, IonInput, IonSegment, IonInputPasswordToggle, IonCheckbox, IonLabel, IonRow } from "@ionic/angular/standalone";
-import { JsonPipe } from '@angular/common';
+import { JsonPipe, Location } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
@@ -26,7 +26,8 @@ export class RegisterPage implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private accountService: AccountService,
-        private route: Router
+        private route: Router,
+        private location: Location
     ) {
     }
 
@@ -53,6 +54,10 @@ export class RegisterPage implements OnInit {
             ],
             terms: [false, [Validators.requiredTrue]]
         });
+    }
+
+    goBack() {
+        this.location.back();
     }
 
     showTerms() {

@@ -1,85 +1,60 @@
-<ion-header class="bg_transparent">
-    <ion-toolbar>
-        <ion-buttons slot="start">
-            <ion-back-button [text]="''" [icon]="'close-outline'"></ion-back-button>
-        </ion-buttons>
-    </ion-toolbar>
-</ion-header>
-
 <ion-content class="bg_color sign-in-screen" fullscreen>
-    <div class="banner">
-        <div class="banner_img center_img">
-            <img src="assets/images/banner_img.png" class="crop_img">
-        </div>
-        <div class="logo animate__animated animate__fadeInUp ion-text-center ion-align-items-center">
-            <img src="assets/logo-light.png" style="margin: 0 auto; width: 300px;">
-        </div>
+    <div class="background-image">
+        <img src="assets/images/banner_img.png" alt="">
     </div>
+
     @if (!otpActive) {
     <form [formGroup]="loginForm" (ngSubmit)="signIn()">
-        <div class="form">
-            <ion-list>
-                <ion-item class="animate__animated animate__fadeInUp">
-                    <ion-input formControlName="email" [label]="'Email' | translate" labelPlacement="stacked"
-                        type="email"></ion-input>
-                </ion-item>
-                <ion-item class="animate__animated animate__fadeInUp">
-                    <ion-input formControlName="password" [label]="'Password' | translate" class="password"
-                        labelPlacement="stacked" type="password">
+        <div class="form-container">
+            <div class="logo-section">
+                <h1 class="logo-text">RYPM.</h1>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">EMAIL</label>
+                <div class="input-wrapper">
+                    <ion-input formControlName="email" placeholder="Enter your Email" type="email" fill="outline"></ion-input>
+                    <ion-icon name="mail-outline" class="input-icon"></ion-icon>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">PASSWORD</label>
+                <div class="input-wrapper">
+                    <ion-input formControlName="password" placeholder="Enter your password" type="password" fill="outline">
                         <ion-input-password-toggle slot="end"></ion-input-password-toggle>
                     </ion-input>
-                </ion-item>
-            </ion-list>
-            <span class="or_continue_with animate__animated animate__fadeInUp">
-                <h3 class="ion-text-end" (click)="forgot_password()">{{"Forgot password" | translate}}?</h3>
-            </span>
-            <ion-button size="large" expand="round" class="btn animate__animated animate__fadeInUp"
-                (click)="signIn()">{{'Sign In' | translate}}</ion-button>
-            <div class="or_continue_with animate__animated animate__fadeInUp">
-                <h3 class="ion-text-center">{{'Or continue with' | translate}}</h3>
-                <ion-row>
-                    <!--<ion-col>
-                        <ion-button size="large" expand="round" fill="outline" class="btn rem05"
-                            (click)="signInFacebook()">
-                            <ion-icon [src]="logoFacebook"></ion-icon>
-                        </ion-button>
-                    </ion-col>-->
-                    <ion-col>
-                        <ion-button size="large" expand="round" fill="outline" class="btn rem05"
-                            (click)="signInGoogle()">
-                            <ion-icon [src]="logoGoogle"></ion-icon>
-                        </ion-button>
-                    </ion-col>
-                    <!--<ion-col>
-                        <ion-button size="large" expand="round" fill="outline" class="btn rem05"
-                            (click)="signInGoogle()">
-                            <ion-icon [src]="logoApple"></ion-icon>
-                        </ion-button>
-                    </ion-col>-->
-                    <ion-col>
-                        <ion-button size="large" expand="round" fill="outline" class="btn rem05" (click)="signInMS()">
-                            <ion-icon [src]="logoMS"></ion-icon>
-                        </ion-button>
-                    </ion-col>
-                    <ion-col>
-                        <ion-button size="large" expand="round" fill="outline" class="btn rem05"
-                            (click)="signInGithub()">
-                            <ion-icon [src]="logoGH"></ion-icon>
-                        </ion-button>
-                    </ion-col>
-                </ion-row>
+                </div>
             </div>
-            <div class="or_continue_with padding-10 animate__animated animate__fadeInUp">
-                <h3 class="ion-text-center d-flex-register">
-                    {{'Dont have an account?' | translate}}
-                    <ion-button size="small" fill="clear" expand="round" class="animate__animated animate__fadeInUp"
-                        (click)="register()">{{'Register' | translate}}
-                        <ion-icon name="chevron-forward-outline"></ion-icon>
-                    </ion-button>
-                </h3>
+
+            <div class="forgot-password">
+                <a (click)="forgot_password()">Forgot password?</a>
             </div>
-            <div class="or_continue_with  padding-10 animate__animated animate__fadeInUp ion-text-center ">
-                <span class="version">{{'RYPM.' | translate}} v{{version}}</span>
+
+            <ion-button expand="block" class="sign-in-button" (click)="signIn()">
+                Sign In
+            </ion-button>
+
+            <div class="divider-text">Or continue with</div>
+
+            <div class="social-buttons">
+                <button type="button" class="social-button" (click)="signInGoogle()">
+                    <ion-icon [src]="logoGoogle"></ion-icon>
+                </button>
+                <button type="button" class="social-button" (click)="signInMS()">
+                    <ion-icon [src]="logoMS"></ion-icon>
+                </button>
+                <button type="button" class="social-button" (click)="signInGithub()">
+                    <ion-icon [src]="logoGH"></ion-icon>
+                </button>
+            </div>
+
+            <div class="register-link">
+                No account? <a (click)="register()">Register</a>
+            </div>
+
+            <div class="version-info">
+                RYPM. v{{version}}
             </div>
         </div>
     </form>

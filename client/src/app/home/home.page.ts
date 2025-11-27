@@ -1,6 +1,6 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, viewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
+import { NgSwitch, NgSwitchCase, NgTemplateOutlet, UpperCasePipe } from '@angular/common';
 import { Animation, AnimationController, IonButton, IonContent, IonSegment, IonSegmentButton, LoadingController, NavController } from '@ionic/angular/standalone';
 import { Exercise } from '../core/models/collections/exercise';
 import { Program } from '../core/models/collections/program';
@@ -45,7 +45,8 @@ type WorkoutInfo = (Workout & { nextExercise?: (Exercise & { nextSet?: Set }) })
         FormsModule,
         WeightTypePipe,
         NoDataComponent,
-        ContinueFooterComponent
+        ContinueFooterComponent,
+        UpperCasePipe
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
@@ -167,11 +168,7 @@ export class HomePage {
                 )
             ];
 
-            const tagsToShow: string[] = tags.splice(0, tagsToTake);
-
-            if (tags.length > tagsToTake) {
-                tagsToShow.push(`+${tags.length - 3}`);
-            }
+            const tagsToShow: string[] = tags;
 
             const mapped =
             {

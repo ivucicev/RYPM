@@ -1,6 +1,6 @@
 import { Component, Inject, Signal } from '@angular/core';
 import { BuyappalertPage } from '../buyappalert/buyappalert.page';
-import { ModalController, IonFooter, IonItem, IonIcon, IonBadge, IonButton, IonContent, IonList, IonHeader, IonToolbar, IonTitle, NavController, Platform } from '@ionic/angular/standalone';
+import { ModalController, IonFooter, IonItem, IonIcon, IonBadge, IonButton, IonContent, IonList, IonHeader, IonToolbar, IonTitle, NavController, Platform, IonButtons } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgIf } from '@angular/common';
 import { PopoverController } from '@ionic/angular/standalone';
@@ -10,7 +10,7 @@ import { AccountService } from '../core/services/account.service';
 import { User } from '../core/models/collections/user';
 import { ThemeService } from '../core/services/theme.service';
 import { PocketbaseService } from '../core/services/pocketbase.service';
-import { accessibilityOutline, bookOutline, globeOutline, helpCircleOutline, logOutOutline, moonOutline, personCircleOutline, personOutline, sunnyOutline } from 'ionicons/icons';
+import { accessibilityOutline, bookOutline, globeOutline, helpCircleOutline, logOutOutline, moonOutline, personCircleOutline, personOutline, settingsOutline, sunnyOutline } from 'ionicons/icons';
 // @ts-ignore
 import packageJson from '../../../package.json';
 import { skipLocationChange } from '../core/helpers/platform-helpers';
@@ -20,7 +20,7 @@ import { skipLocationChange } from '../core/helpers/platform-helpers';
     templateUrl: 'settings.page.html',
     styleUrls: ['./settings.page.scss'],
     standalone: true,
-    imports: [IonTitle, IonToolbar, IonHeader, IonList, IonContent, IonIcon, IonItem,
+    imports: [IonTitle, IonToolbar, IonHeader, IonList, IonContent, IonButtons, IonIcon, IonItem,
         TranslateModule
     ],
 })
@@ -33,6 +33,7 @@ export class SettingsPage {
     darkIcon = moonOutline;
     lightIcon = sunnyOutline;
     measurementsIcon = accessibilityOutline;
+    settingsIcon = settingsOutline;
     accountSettingsIcon = personCircleOutline;
     langIcon = globeOutline;
     helpIcon = helpCircleOutline;

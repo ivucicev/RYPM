@@ -1,110 +1,89 @@
-<ion-header>
-    <ion-toolbar [class.show-background]="showToolbar">
+<ion-header class="modern-header">
+    <ion-toolbar>
         <ion-title>{{'Settings' | translate}}</ion-title>
+        <ion-buttons slot="end">
+            <button class="header-action-button" (click)="logout()">
+                <ion-icon [src]="logoutIcon" [size]="'large'"></ion-icon>
+            </button>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
 <ion-content class="bg_color" fullscreen>
 
-    <div class="d-flex">
-        <div class="profile d-flex" (click)="my_profile()">
-            <div class="profile_img center_img">
-                <div class="img_box center_img ion-bo" [style.backgroundImage]="'url(' + (user?.avatar ) + ')'">
-                    @if (!user?.avatar) {
-                    <ion-icon [src]="accountIcon"></ion-icon>
-                    }
-                </div>
-            </div>
-            <div class="text_box ion-margin-start">
-                <h2>{{ user?.name || '-'}}</h2>
-                <h3>{{'View profile' | translate}}</h3>
+    <div class="profile-section" (click)="my_profile()">
+        <div class="profile-avatar">
+            <div class="avatar-box" [style.backgroundImage]="'url(' + (user?.avatar ) + ')'">
+                @if (!user?.avatar) {
+                <ion-icon name="camera"></ion-icon>
+                }
             </div>
         </div>
-        <!--<ion-button fill="clear" (click)="openAccountSwitchOptions()">
-            <ion-icon name="ellipsis-vertical-circle-outline"></ion-icon>
-        </ion-button>-->
+        <span class="profile-link">{{'View your profile' | translate}}</span>
     </div>
 
-    <!-- <div class="get_pro d-flex" (click)="get_pro()">
-        <h2>Unlock app full potential!</h2>
-        <h3 class="end">{{'BUY' | translate}}</h3>
-    </div> -->
-
-    <ion-list lines="none">
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="toggleTheme()">
-            <div class="item-inner d-flex">
-                <ion-icon [size]="'medium'" [src]="isDark() ? lightIcon : darkIcon" slot="icon-only"></ion-icon>
-                <div class="text_box">
-                    <h2>{{ (isDark() ? 'Light' : 'Dark' ) | translate}}</h2>
-                    <h3>{{'Theme' | translate}}</h3>
-                </div>
+    <div class="settings-menu">
+        <div class="menu-item" (click)="measurements()">
+            <div class="menu-icon">
+                <ion-icon [src]="settingsIcon"></ion-icon>
             </div>
-        </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="measurements()">
-            <div class="item-inner d-flex">
-                <ion-icon [size]="'medium'" [src]="measurementsIcon" slot="icon-only"></ion-icon>
-                <div class="text_box">
-                    <h2>{{ 'Settings' | translate}}</h2>
-                    <h3>{{'Set up your defaults' | translate}}</h3>
-                </div>
+            <div class="menu-content">
+                <h2>{{'Settings' | translate}}</h2>
+                <p>{{'Set up your defaults' | translate}}</p>
             </div>
-        </ion-item>
+        </div>
 
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="account_settings()">
-            <div class="item-inner d-flex">
-                <ion-icon [size]="'medium'" [src]="accountSettingsIcon" slot="icon-only"></ion-icon>
-                <div class="text_box">
-                    <h2>{{'Account & Profile' | translate}}</h2>
-                    <h3>{{'Account and profile settings' | translate}}</h3>
-                </div>
+        <div class="menu-divider"></div>
+
+        <div class="menu-item" (click)="account_settings()">
+            <div class="menu-icon">
+                <ion-icon name="person-outline"></ion-icon>
             </div>
-        </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="change_language()">
-            <div class="item-inner d-flex">
-                <ion-icon class="ion-text-start" [src]="langIcon"></ion-icon>
-                <div class="text_box">
-                    <h2>{{'Language' | translate}}</h2>
-                    <h3>{{'Select language' | translate}}</h3>
-                </div>
+            <div class="menu-content">
+                <h2>{{'Account & Profile' | translate}}</h2>
+                <p>{{'Account and profile settings' | translate}}</p>
             </div>
-        </ion-item>
+        </div>
 
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="terms_condition()">
-            <div class="item-inner d-flex">
-                <ion-icon [src]="termsIcon" class="ion-text-start"></ion-icon>
-                <div class="text_box">
-                    <h2>{{'Terms & Conditions' | translate}}</h2>
-                    <h3>{{'Click here to check terms and conditions.' | translate}}</h3>
-                </div>
+        <div class="menu-divider"></div>
+
+        <div class="menu-item" (click)="change_language()">
+            <div class="menu-icon">
+                <ion-icon name="globe-outline"></ion-icon>
             </div>
-        </ion-item>
-
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" href="mailto:support@rypm.app?subject=Support Request">
-            <div class="item-inner d-flex">
-                <ion-icon class="ion-text-start" [src]="helpIcon"></ion-icon>
-                <div class="text_box">
-                    <h2>{{'Help us Improve' | translate}}</h2>
-                    <h3>{{'Chat with us if you need help or you want to help us improve' | translate}}</h3>
-                </div>
+            <div class="menu-content">
+                <h2>{{'Language' | translate}}</h2>
+                <p>{{'Select language' | translate}}</p>
             </div>
-        </ion-item>
+        </div>
 
-        <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="logout()">
-            <div class="item-inner d-flex">
-                <ion-icon class="ion-text-start" [src]="logoutIcon"></ion-icon>
-                <div class="text_box">
-                    <h2>{{'Logout' | translate}}</h2>
-                </div>
+        <div class="menu-divider"></div>
+
+        <div class="menu-item" (click)="terms_condition()">
+            <div class="menu-icon">
+                <ion-icon name="document-text-outline"></ion-icon>
             </div>
-        </ion-item>
+            <div class="menu-content">
+                <h2>{{'Terms & Conditions' | translate}}</h2>
+                <p>{{'Click here to check terms and conditions' | translate}}</p>
+            </div>
+        </div>
 
-        <ion-item lines="none" class="animate__animated animate__fadeInUp">
-            <span slot="end">
-                v{{version}}
-            </span>
-        </ion-item>
+        <div class="menu-divider"></div>
 
-    </ion-list>
+        <a class="menu-item" href="mailto:support@rypm.app?subject=Support Request">
+            <div class="menu-icon">
+                <ion-icon name="chatbubble-outline"></ion-icon>
+            </div>
+            <div class="menu-content">
+                <h2>{{'Help us improve' | translate}}</h2>
+                <p>{{'Chat with us if you need help or you want to help us improve' | translate}}</p>
+            </div>
+        </a>
+    </div>
+
+    <div class="version-info">
+        RYPM, v{{version}}
+    </div>
+
 </ion-content>

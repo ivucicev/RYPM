@@ -36,6 +36,7 @@
         "@ionic/pwa-elements": "^3.3.0",
         "@ngx-translate/core": "^16.0.4",
         "@ngx-translate/http-loader": "^16.0.1",
+        "@sentry/angular": "^10.27.0",
         "angularx-qrcode": "^19.0.0",
         "animate.css": "^4.1.1",
         "chart.js": "^2.9.4",

@@ -1,11 +1,11 @@
-<ion-header>
+<ion-header class="modern-header">
     <ion-toolbar>
         <ion-title>{{'Activity' | translate}}</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content class="bg_color ion-padding-x" fullscreen>
-    <ion-row class="segment-toolbar ion-padding">
+    <div class="segment-toolbar ion-padding">
         <ion-segment lines="none" [(ngModel)]="tab" (ngModelChange)="onTabChange($event)">
             <ion-segment-button value="workouts">
                 <ion-label>
@@ -23,66 +23,59 @@
                 </ion-label>
             </ion-segment-button>
         </ion-segment>
-    </ion-row>
+    </div>
 
     <ng-container [ngSwitch]="tab">
         <ng-container *ngSwitchCase="'workouts'">
-            <ion-list lines="none">
+            <div class="workouts-container">
                 @for(workout of workouts; track $index) {
-                <ion-card>
-                    <div class="inner-card">
-                        <ion-card-header>
-                            <div class="card-header-container">
-                                <div class="user-info">
-                                    <ion-icon name="person-circle" size="small"></ion-icon>
-                                    <span class="creator-name">
-                                        {{ workout?.user.name }}
-                                    </span>
-                                </div>
-                                <div class="datetime">
-                                    {{ workout.start | dateTime }}
-                                </div>
-                                <div class="action-area">
-                                    <ion-button color="dark" fill="clear" size="small" (click)="openSettings(workout)">
-                                        <ion-icon name="ellipsis-vertical"></ion-icon>
-                                    </ion-button>
-                                </div>
-                            </div>
-                        </ion-card-header>
-                        <ion-card-content>
-                            <ion-note color="medium">
-                                @if (workout.load) {
-                                <span>
-                                    {{ 'Training load' | translate }}: {{ workout.load || 0 }} kg
-                                </span>
-                                }
-                                @if (workout.effort) {
-                                <span>
-                                    {{ 'Effort' | translate }}: {{ workout.effort }}/10
-                                </span>
-                                }
-                            </ion-note>
-                            <div class="exercises-list">
-                                @for(exercise of workout.exercises; track $index) {
-                                <span class="exercise-item">
-                                    {{ exercise.name }} ({{ exercise.sets?.length }} {{'sets' | translate}})@if ($index
-                                    < workout.exercises.length - 1){,&nbsp;} </span>
-                                        }
-                            </div>
-                            @if (workout.tagsToShow?.length > 0) {
-                            <div class="tag-container">
-                                @for (tag of workout.tagsToShow; track $index) {
-                                <ion-chip color="primary" size="small">{{ tag }}</ion-chip>
-                                }
-                            </div>
-                            }
-                        </ion-card-content>
+                <div class="workout-card-modern">
+                    <div class="workout-header">
+                        <div class="user-info">
+                            <ion-icon name="person-circle"></ion-icon>
+                            <span class="creator-name">{{ workout?.user.name }}</span>
+                        </div>
+                        <span class="workout-date">{{ workout.start | dateTime }}</span>
+                        <div class="action-menu" (click)="openSettings(workout); $event.stopPropagation()">
+                            <ion-icon name="ellipsis-vertical"></ion-icon>
+                        </div>
                     </div>
-                </ion-card>
+
+                    <div class="workout-stats">
+                        @if (workout.load) {
+                        <div class="stat-item">
+                            <span class="stat-label">{{ 'Training load' | translate }}</span>
+                            <span class="stat-value">{{ workout.load || 0 }} kg</span>
+                        </div>
+                        }
+                        @if (workout.effort) {
+                        <div class="stat-item">
+                            <span class="stat-label">{{ 'Effort' | translate }}</span>
+                            <span class="stat-value">{{ workout.effort }}/10</span>
+                        </div>
+                        }
+                    </div>
+
+                    <div class="exercises-summary">
+                        @for(exercise of workout.exercises; track $index) {
+                        <span class="exercise-text">
+                            {{ exercise.name }} ({{ exercise.sets?.length }} {{'sets' | translate}})@if ($index < workout.exercises.length - 1){,&nbsp;}
+                        </span>
+                        }
+                    </div>
+
+                    @if (workout.tagsToShow?.length > 0) {
+                    <div class="tags-row">
+                        @for (tag of workout.tagsToShow; track $index) {
+                        <div class="tag-pill">{{ tag | uppercase }}</div>
+                        }
+                    </div>
+                    }
+                </div>
                 } @empty {
                 <app-no-data [text]="'No activities yet.' | translate"></app-no-data>
                 }
-            </ion-list>
+            </div>
         </ng-container>
         <ng-container *ngSwitchCase="'stats'">
             <div class="ion-padding-x">

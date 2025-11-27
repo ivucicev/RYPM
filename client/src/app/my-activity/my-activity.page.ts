@@ -7,7 +7,7 @@ import { PocketbaseService } from '../core/services/pocketbase.service';
 import { Workout } from '../core/models/collections/workout';
 import { WorkoutState } from '../core/models/enums/workout-state';
 import { ContinueFooterComponent } from '../shared/continue-footer/continue-footer.component';
-import { NgSwitch, NgSwitchCase } from '@angular/common';
+import { NgSwitch, NgSwitchCase, UpperCasePipe } from '@angular/common';
 
 import * as chart from 'chart.js';
 import { NoDataComponent } from '../shared/no-data/no-data.component';
@@ -37,7 +37,7 @@ import { Muscle } from '../core/models/autogen/enums';
     styleUrls: ['./my-activity.page.scss'],
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [IonHeader, IonModal, IonSelect, IonSelectOption, IonNote, IonFab, IonPopover, IonFabButton, IonSegmentButton, IonToolbar, IonLabel, IonContent, IonRow, IonTitle, IonList, IonCard, IonCardHeader, IonIcon, IonButton, IonChip, IonCardContent, NoDataComponent, TranslateModule, FormsModule, IonSegment, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent, IonItem, IonCardSubtitle, DurationPipe, IonFooter],
+    imports: [IonHeader, IonModal, UpperCasePipe, IonSelect, IonSelectOption, IonNote, IonFab, IonPopover, IonFabButton, IonSegmentButton, IonToolbar, IonLabel, IonContent, IonRow, IonTitle, IonList, IonCard, IonCardHeader, IonIcon, IonButton, IonChip, IonCardContent, NoDataComponent, TranslateModule, FormsModule, IonSegment, NgSwitch, NgSwitchCase, DateTimePipe, ContinueFooterComponent, IonItem, IonCardSubtitle, DurationPipe, IonFooter],
 })
 export class MyActivityPage {
 

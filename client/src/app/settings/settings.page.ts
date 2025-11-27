@@ -20,7 +20,7 @@ import { skipLocationChange } from '../core/helpers/platform-helpers';
     templateUrl: 'settings.page.html',
     styleUrls: ['./settings.page.scss'],
     standalone: true,
-    imports: [IonTitle, IonToolbar, IonHeader, IonList, IonContent, IonButtons, IonIcon, IonItem,
+    imports: [IonTitle, IonToolbar, IonHeader, IonContent, IonButtons, IonIcon, IonItem,
         TranslateModule
     ],
 })

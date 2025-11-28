@@ -13,7 +13,7 @@ RUN npm install
 RUN npm run build
 
 # Copy app sources
-COPY . .
+COPY ../notification-server .
 
 # Run as non-root user
 RUN chown -R node:node /app

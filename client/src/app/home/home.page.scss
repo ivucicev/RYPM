@@ -55,6 +55,11 @@
 
     &:active {
         transform: scale(0.98);
+        background: rgba(42, 42, 42, 1);
+    }
+
+    &.active {
+        background: rgba(42, 42, 42, 1);
     }
 }
 
@@ -66,11 +71,14 @@
 }
 
 .program-title {
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 500;
     color: white;
     margin: 0;
     flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .program-duration {
@@ -148,18 +156,18 @@
 
 .active-indicator {
     position: absolute;
-    bottom: 20px;
-    right: 20px;
-    width: 48px;
-    height: 48px;
-    background: white;
+    bottom: 10px;
+    right: 10px;
+    width: 25px;
+    height: 25px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: rgba(234, 229, 222, 1);
 
     ion-icon {
-        font-size: 24px;
+        font-size: 14px;
         color: #FFA041;
     }
 }

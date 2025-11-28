@@ -59,50 +59,54 @@ export class RestBadgeComponent implements OnInit {
 
     async ngOnChanges(_: SimpleChanges) {
         clearTimeout(this.debounced);
+
         this.debounced = setTimeout(async () => {
             const initialTime = this.initialTime();
+
             if (initialTime != null) {
-                await this.storage.setItem(StorageKeys.REST_BADGE_STORAGE_KEY, {
-                    initialTime,
-                    duration: this.duration()
-                });
-                const start = new Date(initialTime);
-                const end = start.setSeconds(start.getSeconds() + this.duration());
+                const duration = this.duration(); // in seconds
+                const start = new Date(initialTime).getTime();   // ms
+                const end = start + duration * 1000;             // ms
                 const now = Date.now();
 
-                // check discrepancy
-                const diff = Math.abs((end - now) - (this.duration() * 1000));
-                if (diff > 2000) { // e.g. >2s drift
-                    this.ngOnInit();
-                    // optionally reset / correct here
-                }
-                if (new Date().getTime() < end) {
-                    let restTimeRemaining = Math.floor((end - new Date().getTime()) / 1000);
-                    if (restTimeRemaining > 0) {
-                        this.startRest(restTimeRemaining);
-                        return;
-                    }
+                // persist for later resumes
+                await this.storage.setItem(StorageKeys.REST_BADGE_STORAGE_KEY, {
+                    initialTime,
+                    duration
+                });
+
+                // real-time based remaining seconds
+                const remainingMs = end - now;
+                const restTimeRemaining = Math.max(0, Math.ceil(remainingMs / 1000));
+
+                if (restTimeRemaining > 0 && now < end) {
+                    // pass remaining time (and optionally end) to the timer
+                    this.startRest(restTimeRemaining);
+                    return;
                 }
             }
 
             this.stopRest();
-            if (this.restTimeRemaining <= 0)
+            if (this.restTimeRemaining <= 0) {
                 this.onTimerCompletedEvent.emit(true);
+            }
         }, 100);
     }
 
     async startRest(duration: number) {
         this.stopRest();
 
-        this.restTimeRemaining = duration;
-
+        const end = Date.now() + duration * 1000;
         this.isResting = true;
+
         this.restTimerId = setInterval(async () => {
-            this.restTimeRemaining--;
-            if (this.restTimeRemaining <= 0) {
+            const remainingMs = end - Date.now();
+            this.restTimeRemaining = Math.max(0, Math.ceil(remainingMs / 1000));
+
+            if (remainingMs <= 0) {
                 await this.stopRest();
             }
-        }, 1000);
+        }, 250);
     }
 
     async stopRest() {

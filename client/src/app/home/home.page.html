@@ -95,7 +95,7 @@
         <ng-container *ngSwitchCase="'programs'">
             <div class="programs-container ion-padding">
                 @for (program of programs; track program.id) {
-                <div class="program-card animate__animated animate__fadeInUp"
+                <div class="program-card animate__animated animate__fadeInUp" [class.active]="activeProgramIds.includes(program.id)"
                     (click)="presentProgramActionSheet(program)">
                     <div class="card-header">
                         <h2 class="program-title">{{ program.name || ('Program' | translate) }}</h2>
@@ -128,15 +128,15 @@
 
                     @if (activeProgramIds.includes(program.id)) {
                     <div class="active-indicator">
-                        <ion-icon name="flash" id="active-animation"></ion-icon>
+                        <ion-icon [src]="flashIcon" id="active-animation"></ion-icon>
                     </div>
                     }
 
-                    @if (!activeProgramIds.includes(program.id)) {
+                    <!-- @if (!activeProgramIds.includes(program.id)) {
                     <div class="delete-action" (click)="deleteProgram(program.id); $event.stopPropagation()">
                         <ion-icon name="trash-outline"></ion-icon>
                     </div>
-                    }
+                    } -->
                 </div>
                 } @empty {
                 <app-no-data [reloadFn]="refresh" [text]="'No programs yet.' | translate"></app-no-data>

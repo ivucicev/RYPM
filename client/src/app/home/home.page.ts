@@ -23,6 +23,7 @@ import { WakeLockService } from '../core/services/WakeLockService';
 import { StorageService } from '../core/services/storage.service';
 import { StorageKeys } from '../core/constants/storage-keys';
 import { ActivatedRoute } from '@angular/router';
+import { flash, flashOutline } from 'ionicons/icons';
 
 type WorkoutInfo = (Workout & { nextExercise?: (Exercise & { nextSet?: Set }) });
 
@@ -64,6 +65,7 @@ export class HomePage {
 
     continueFooter = viewChild(ContinueFooterComponent);
     isInital = false;
+    flashIcon = flash;
 
     constructor(
         private navCtrl: NavController,
@@ -289,7 +291,7 @@ export class HomePage {
                 .addElement(document.getElementById('active-animation'))
                 .duration(1000)
                 .iterations(Infinity)
-                .fromTo('transform', 'scale(1)', 'scale(1.04)')
+                .fromTo('transform', 'scale(1)', 'scale(1.2)')
                 .fromTo('opacity', '1', '0.8');
             this.animation.play()
         }, 500)

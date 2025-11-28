@@ -73,6 +73,7 @@ export class PocketbaseService {
 
         if (this.isDemoSubdomain()) {
             this.pb = new PocketBase(environment.demo);
+            this.pb.autoCancellation(false);
         } else {
             this.pb = new PocketBase((window as any)['env']?.api || environment.api);
         }

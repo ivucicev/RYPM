@@ -41,7 +41,6 @@ export class TabsPage implements AfterViewInit {
         setTimeout(() => {
             const selectedTab = this.ionTabs?.getSelected();
             if (selectedTab) {
-                console.log('Initial selected tab:', selectedTab);
                 this.updateIndicatorPosition(selectedTab);
             } else {
                 // Fallback to home if no tab is selected
@@ -55,7 +54,6 @@ export class TabsPage implements AfterViewInit {
             this.activeTab = tabsRef.outlet.activatedView.element;
 
         const selectedTab = tabsRef.getSelected();
-        console.log('Selected tab:', selectedTab);
         if (selectedTab) {
             // Use setTimeout to ensure DOM is updated
             setTimeout(() => {
@@ -66,7 +64,6 @@ export class TabsPage implements AfterViewInit {
 
     private updateIndicatorPosition(tabName: string) {
         if (!this.tabBar) {
-            console.log('No tabBar reference');
             return;
         }
 
@@ -75,7 +72,6 @@ export class TabsPage implements AfterViewInit {
         if (tabButton) {
             // Use offsetLeft to get position relative to parent
             const newPosition = tabButton.offsetLeft;
-            console.log('Tab:', tabName, 'Old position:', this.indicatorPosition, 'New position:', newPosition);
             this.indicatorPosition = newPosition;
 
             // Trigger wobble animation
@@ -84,12 +80,10 @@ export class TabsPage implements AfterViewInit {
                 this.isAnimating = false;
             }, 500);
         } else {
-            console.log('Tab button not found:', tabName);
             // Fallback: try with ID selector
             const tabButtonById = this.tabBar.nativeElement.querySelector(`#${tabName}`) as HTMLElement;
             if (tabButtonById) {
                 const newPosition = tabButtonById.offsetLeft;
-                console.log('Tab (by ID):', tabName, 'Position:', newPosition);
                 this.indicatorPosition = newPosition;
 
                 // Trigger wobble animation

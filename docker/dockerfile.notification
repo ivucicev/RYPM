@@ -4,7 +4,6 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-ENV NODE_ENV=production
 ENV PORT=3000
 
 # Install dependencies
@@ -23,6 +22,7 @@ RUN npm run build
 RUN chown -R node:node /app
 USER node
 
+ENV NODE_ENV=production
 EXPOSE 3000
 
 # Start the app (expects a "start" script in package.json)

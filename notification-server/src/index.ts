@@ -40,6 +40,10 @@ function encryptJSON(obj: object, key32: crypto.CipherKey) {
     return `v1.${b64u(iv.toString())}.${b64u(ct.toString())}.${b64u(tag.toString())}`;
 }
 
+app.post('/health-check', async (req: Request, res: Response) => {
+    res.status(200).json({ healthy: true, ok: true });
+});
+
 app.post('/send', async (req: Request, res: Response) => {
 
     const body = req.body;

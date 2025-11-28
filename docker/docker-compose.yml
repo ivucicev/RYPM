@@ -22,6 +22,13 @@ services:
             PUSH_SEND_URL: ${PUSH_SEND_URL}
             PUSH_SUBSCRIBE_URL: ${PUSH_SUBSCRIBE_URL}
         restart: unless-stopped
+    
+    rypm-notification:
+        image: ivucicev/rypm-notification:latest
+        container_name: notification
+        restart: unless-stopped
+        environment:
+            PORT: 80
 
     # rypm-updater:
     #     image: containrrr/watchtower:latest

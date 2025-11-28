@@ -1,0 +1,26 @@
+# Dockerfile for building the Node.js notification server
+# Build context should be set to the ../notification folder when running docker build
+FROM node:18-alpine
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV PORT=3000
+
+# Install dependencies
+COPY package*.json ./
+RUN npm ci --only=production
+RUN npm run build
+
+# Copy app sources
+COPY . .
+
+# Run as non-root user
+RUN chown -R node:node /app
+USER node
+
+EXPOSE 3000
+
+# Start the app (expects a "start" script in package.json)
+CMD ["npm", "start"]
+

@@ -46,6 +46,8 @@ app.get('/health-check', async (req: Request, res: Response) => {
 
 app.post('/send', async (req: Request, res: Response) => {
 
+    console.log("SENDING", req.body);
+
     const body = req.body;
     const { token, title = "Hi", body: msgBody = "From DO Functions", navigate = "https://app.rypm.app/" } = body || {};
     if (!token) return { statusCode: 400, body: "token missing" };
@@ -77,6 +79,8 @@ app.post('/send', async (req: Request, res: Response) => {
 });
 
 app.post('/subscribe', async (req: Request, res: Response) => {
+
+    console.log("SUBSCRIBING", req.body);
 
     if (!process.env.PST_SECRET) return { statusCode: 500, body: "PST_SECRET missing" };
 

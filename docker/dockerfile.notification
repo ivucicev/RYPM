@@ -9,6 +9,7 @@ ENV PORT=3000
 
 # Install dependencies
 COPY package*.json ./
+RUN npm install -g typescript
 RUN npm install
 RUN npm run build
 

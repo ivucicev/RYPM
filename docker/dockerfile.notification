@@ -8,7 +8,7 @@ ENV NODE_ENV=production
 ENV PORT=3000
 
 # Install dependencies
-COPY package*.json ./
+COPY ./notification-server/package*.json ./
 RUN npm install -g typescript
 RUN npm install
 RUN npm run build

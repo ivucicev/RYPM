@@ -71,4 +71,17 @@ jobs:
             ivucicev/rypm-api:latest
             ivucicev/rypm-api:${{ github.run_id }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build and push Notification Server Docker image
+        if: contains(github.event.head_commit.message, 'ci')
+        id: push-notification-server
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: .
+          file: ./docker/dockerfile.notification
+          push: true
+          tags: |
+            ivucicev/rypm-notification:latest
+            ivucicev/rypm-notification:${{ github.run_id }}
+          labels: ${{ steps.meta.outputs.labels }}
           

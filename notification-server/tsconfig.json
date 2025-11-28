@@ -1,0 +1,13 @@
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "compilerOptions": {
+    "target": "ES6",                  // Compiles to modern JavaScript
+    "module": "CommonJS",            // Use CommonJS modules
+    "outDir": "./dist",              // Output compiled files to 'dist'
+    "rootDir": "./src",              // Source files are in 'src'
+    "strict": true,                  // Enable all strict type checks
+    "esModuleInterop": true          // Allow default imports from CommonJS modules
+  },
+  "include": ["src/**/*"],           // Include all TypeScript files in 'src'
+  "exclude": ["node_modules"]        // Exclude dependencies
+}

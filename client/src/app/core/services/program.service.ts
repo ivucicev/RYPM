@@ -30,6 +30,7 @@ export type ProgramActionKey = { [key in keyof typeof PROGRAM_ACTIONS]?: boolean
 
 export const PROGRAM_ACTIONS = {
     start: 'Start',
+    skip: 'Skip',
     continue: 'Continue',
     edit: 'Edit',
     close: 'Close',
@@ -105,6 +106,19 @@ export class ProgramService {
         return ProgramService.mapProgram(program);
     }
 
+    async skipWorkout(program: ProgramInfo) {
+        const workout: Workout = {
+            end: new Date(),
+            start: new Date(),
+            day: program.nextDay.id,
+            exercises: program.nextDay.exercises,
+            effort: 1,
+            comment: 'Skipped.',
+            state: WorkoutState.Skipped
+        };
+        this.createAndNavToWorkout(workout, true);
+    }
+
     async presentProgramActionSheet(programId?: string, program?: ProgramInfo, excludeActions?: ProgramActionKey) {
         if (!programId && !program) return lastValueFrom(of(null));
 
@@ -131,6 +145,17 @@ export class ProgramService {
                         await load.present();
                         await this.startWorkoutFromProgram(program);
                         await load.dismiss();
+                    },
+                } : null,
+                !excludeActions[PROGRAM_ACTIONS.skip] && !program.completed && program.started ? {
+                    text: translations.Skip,
+                    icon: 'play-skip-forward-outline',
+                    data: {
+                        reload: true,
+                        constructive: true
+                    },
+                    handler: () => {
+                        return this.skipWorkout(program);
                     },
                 } : null,
                 !excludeActions[PROGRAM_ACTIONS.edit] ? {
@@ -260,7 +285,7 @@ export class ProgramService {
         this.createAndNavToWorkout(workout);
     }
 
-    private async createAndNavToWorkout(workout: Workout) {
+    private async createAndNavToWorkout(workout: Workout, isSkipping = false) {
 
         const exerciseNames = workout.exercises.map(e => e.name);
 
@@ -318,6 +343,8 @@ export class ProgramService {
 
         const createdWorkout = await this.pocketbaseService.workouts.create(workoutData);
 
+        if (isSkipping) return;
+
         if (workout.exercises?.length) {
             const exerciseBatch = this.pocketbaseService.pb.createBatch();
             const exercisesToCreate: Exercise[] = [...(workout.exercises?.map(ex => { return { ...ex } }))];
@@ -365,7 +392,9 @@ export class ProgramService {
             };
         }
 
-        this.navCtrl.navigateForward([`./workout-wizard/${createdWorkout.id}`]);
+        if (!isSkipping)
+            this.navCtrl.navigateForward([`./workout-wizard/${createdWorkout.id}`]);
+
     }
     //#endregion
 

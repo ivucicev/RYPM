@@ -68,5 +68,7 @@
     "recent_activities": "Recent Activities",
     "Start": "Start",
     "Cancel": "Cancel",
-    "Delete": "Delete"
+    "Delete": "Delete",
+    "Skip": "Skip",
+    "Edit": "Edit"
 }

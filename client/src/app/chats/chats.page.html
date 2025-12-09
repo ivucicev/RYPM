@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="modern-header">
     <ion-toolbar>
         <ion-title>{{ 'Chat' | translate }}</ion-title>
         <ion-buttons slot="end">
@@ -9,77 +9,72 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content class="bg_color" fullscreen>
+<ion-content class="bg_color ion-padding-x" fullscreen>
     <ion-refresher slot="fixed" (ionRefresh)="pullToRefresh($event)">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-    <ion-list lines="none">
+    <div class="conversations-container">
         @for(chat of conversations; track chat.id) {
-        @if (aiTrainers.OFF < aiTrainer && chat.isAI) { <ion-item-sliding>
-            <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="aiConversation(chat.id)">
-                <div class="item-inner d-flex">
-                    <div class="img_box center_img">
-                        @if (aiTrainers.RYPED == aiTrainer) {
-                        <img [src]="'assets/images/RYPED.png'" class="crop_img">
-                        }
-                        @if (aiTrainers.RYPEM == aiTrainer) {
-                        <img [src]="'assets/images/RYPEM.png'" class="crop_img">
-                        }
+            @if (aiTrainers.OFF < aiTrainer && chat.isAI) {
+                <div class="conversation-card animate__animated animate__fadeInUp" (click)="aiConversation(chat.id)">
+                    <div class="conversation-header">
+                        <div class="user-info">
+                            <div class="img_box center_img">
+                                @if (aiTrainers.RYPED == aiTrainer) {
+                                <img [src]="'assets/images/RYPED.png'" class="crop_img">
+                                }
+                                @if (aiTrainers.RYPEM == aiTrainer) {
+                                <img [src]="'assets/images/RYPEM.png'" class="crop_img">
+                                }
+                            </div>
+                            <span class="conversation-name">
+                                @if (aiTrainers.RYPED == aiTrainer) { Ed Ryp } @else { Em Ryp } - {{ 'AI Trainer' | translate }}
+                            </span>
+                        </div>
+                        <span class="conversation-date">{{ chat.lastMessageDate | dateTime }}</span>
+                        <div class="action-menu" (click)="deleteConversation(chat.id); $event.stopPropagation()">
+                            <ion-icon name="trash-outline"></ion-icon>
+                        </div>
                     </div>
-                    <div class="text_box">
-                        <h2 class="d-flex">
-                            <span class="item-title"> @if (aiTrainers.RYPED == aiTrainer) { Ed Ryp } @else { Em Ryp } -
-                                {{
-                                'AI Trainer' | translate }}</span>
-                            <small class="end">{{ chat.lastMessageDate | dateTime }}</small>
-                        </h2>
-                        <h3 [class.system-message]="true">
-                            @if ('system' === 'system') {
-                            <ion-icon name="alert-circle"></ion-icon>
-                            }
-                            {{ chat.lastMessage || '-' }}
-                        </h3>
+                    @if (chat.lastMessage) {
+                    <div class="last-message" [class.system-message]="true">
+                        @if ('system' === 'system') {
+                        <ion-icon name="alert-circle"></ion-icon>
+                        }
+                        <span>{{ chat.lastMessage }}</span>
                     </div>
+                    }
                 </div>
-            </ion-item>
-            <ion-item-options>
-                <ion-item-option (click)="deleteConversation(chat.id)" color="danger"><ion-icon
-                        name="trash-outline"></ion-icon></ion-item-option>
-            </ion-item-options>
-            </ion-item-sliding>
             }
             @else {
-            <ion-item-sliding>
-                <ion-item lines="none" class="animate__animated animate__fadeInUp" (click)="conversation(chat.id)">
-                    <div class="item-inner d-flex">
-                        <div class="img_box center_img">
-                            <img [src]="chat.avatar || 'assets/images/avatar.svg'" class="crop_img">
+                <div class="conversation-card animate__animated animate__fadeInUp" (click)="conversation(chat.id)">
+                    <div class="conversation-header">
+                        <div class="user-info">
+                            <div class="img_box center_img">
+                                <img [src]="chat.avatar || 'assets/images/avatar.svg'" class="crop_img">
+                            </div>
+                            <span class="conversation-name">{{ chat.name }}</span>
                         </div>
-                        <div class="text_box">
-                            <h2 class="d-flex">
-                                <span class="item-title">{{ chat.name }}</span>
-                                <small class="end">{{ chat.time }}</small>
-                            </h2>
-                            <h3 [class.system-message]="chat.messageType === 'system'">
-                                @if (chat.messageType === 'system') {
-                                <ion-icon name="alert-circle"></ion-icon>
-                                }
-                                {{ chat.lastMessage || '-'}}
-                            </h3>
+                        <span class="conversation-date">{{ chat.time }}</span>
+                        <div class="action-menu" (click)="deleteConversation(chat.id); $event.stopPropagation()">
+                            <ion-icon name="trash-outline"></ion-icon>
                         </div>
                     </div>
-                </ion-item>
-                <ion-item-options>
-                    <ion-item-option (click)="deleteConversation(chat.id)" color="danger"><ion-icon
-                            name="trash-outline"></ion-icon></ion-item-option>
-                </ion-item-options>
-            </ion-item-sliding>
+                    @if (chat.lastMessage) {
+                    <div class="last-message" [class.system-message]="chat.messageType === 'system'">
+                        @if (chat.messageType === 'system') {
+                        <ion-icon name="alert-circle"></ion-icon>
+                        }
+                        <span>{{ chat.lastMessage }}</span>
+                    </div>
+                    }
+                </div>
             }
-            }
-            @empty {
-            <app-no-data [text]="'No conversations yet.' | translate"></app-no-data>
-            }
-    </ion-list>
+        }
+        @empty {
+        <app-no-data [text]="'No conversations yet.' | translate"></app-no-data>
+        }
+    </div>
 </ion-content>
 
 <ion-fab slot="fixed" horizontal="end" vertical="bottom" style="bottom: 0">

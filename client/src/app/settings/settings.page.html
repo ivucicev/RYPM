@@ -15,7 +15,7 @@
         <div class="profile-avatar">
             <div class="avatar-box" [style.backgroundImage]="'url(' + (user?.avatar ) + ')'">
                 @if (!user?.avatar) {
-                <ion-icon name="camera"></ion-icon>
+                <ion-icon [src]="cameraIcon"></ion-icon>
                 }
             </div>
         </div>

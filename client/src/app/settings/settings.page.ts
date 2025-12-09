@@ -10,7 +10,7 @@ import { AccountService } from '../core/services/account.service';
 import { User } from '../core/models/collections/user';
 import { ThemeService } from '../core/services/theme.service';
 import { PocketbaseService } from '../core/services/pocketbase.service';
-import { accessibilityOutline, bookOutline, globeOutline, helpCircleOutline, logOutOutline, moonOutline, personCircleOutline, personOutline, settingsOutline, sunnyOutline } from 'ionicons/icons';
+import { accessibilityOutline, bookOutline, cameraOutline, globeOutline, helpCircleOutline, logOutOutline, moonOutline, personCircleOutline, personOutline, settingsOutline, sunnyOutline } from 'ionicons/icons';
 // @ts-ignore
 import packageJson from '../../../package.json';
 import { skipLocationChange } from '../core/helpers/platform-helpers';
@@ -39,6 +39,7 @@ export class SettingsPage {
     helpIcon = helpCircleOutline;
     termsIcon = bookOutline;
     logoutIcon = logOutOutline;
+    cameraIcon = cameraOutline;
 
     isDark: Signal<boolean> = this.themeService.isDark;
     version: any = packageJson.version;

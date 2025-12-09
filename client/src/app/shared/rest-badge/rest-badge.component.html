@@ -1,14 +1,12 @@
 @if (isResting) {
-<ion-button size="large" class="rest" expand="round" shape="round" color="primary" (click)="skipRest()">
-    <ion-icon slot="start" name="timer-outline"></ion-icon>
-    {{'Skip' | translate}} ({{ restTimeRemaining | duration }})
-</ion-button>
+    <ion-button size="large" class="rest" expand="round" shape="round" color="primary" (click)="skipRest()">
+        <ion-icon slot="start" name="timer-outline"></ion-icon>
+        {{'Skip' | translate}} ({{ restTimeRemaining | duration }})
+    </ion-button>
 }
-<!-- @if (restTimeRemaining < 60) { 
-    <ion-button part="native" (click)="increaseRest()" class="increase-rest-btn animate-in" size="large"
-    expand="round" shape="round" color="danger">
+<!-- @if (restTimeRemaining < 60) { <ion-button part="native" (click)="increaseRest()" class="increase-rest-btn animate-in"
+    size="large" expand="round" shape="round" color="danger">
     <ion-icon slot="end" name="add-outline"></ion-icon>
     30sec
     </ion-button>
-    }
     } -->

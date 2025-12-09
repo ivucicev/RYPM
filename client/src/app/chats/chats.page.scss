@@ -1,73 +1,111 @@
-.img_box {
-    --width: 50px;
-    width: var(--width);
-    height: var(--width);
-    min-width: var(--width);
-    min-height: var(--width);
-    border-radius: 50px;
+.conversations-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 0;
 }
 
+.conversation-card {
+    background: rgba(27, 27, 27, 1);
+    border-radius: 20px;
+    padding: 24px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
 
-.system-message {
-    color: var(--ion-color-secondary) !important;
-    display: flex;
-    align-items: center;
-
-    ion-icon {
-        margin-right: 6px;
-        font-size: 16px;
-        color: var(--ion-color-secondary) !important;
+    &:active {
+        transform: scale(0.98);
+        background: rgba(42, 42, 42, 1);
     }
 }
 
-.text_box {
-    width: calc(100% - 48px);
+.conversation-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    position: relative;
 }
 
-ion-list {
-    height: 100%;
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
 
-    ion-item {
-        margin-bottom: 11px;
+    .img_box {
+        --width: 40px;
+        width: var(--width);
+        height: var(--width);
+        min-width: var(--width);
+        min-height: var(--width);
+        border-radius: 50px;
+        flex-shrink: 0;
+    }
 
-        .item-inner {
-            .text_box {
-                width: 100%;
-                overflow: hidden;
-                padding: 8px 15px;
+    .conversation-name {
+        font-weight: 500;
+        color: white;
+        font-size: 16px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
 
-                h2 {
-                    margin: 0;
-                    color: var(--white);
-                    font-size: 1.11rem;
-                    letter-spacing: 0.3px;
-                    padding-bottom: 6px;
+.conversation-date {
+    font-size: 14px;
+    color: rgba(138, 138, 138, 1);
+    white-space: nowrap;
+    margin-left: auto;
+}
 
-                    .item-title {
-                        white-space: nowrap;
-                        text-overflow: ellipsis;
-                        overflow: hidden;
-                    }
+.action-menu {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 59, 48, 0.15);
+    cursor: pointer;
+    transition: background 0.2s ease;
+    flex-shrink: 0;
 
-                    small {
-                        min-width: fit-content;
-                        font-weight: 500;
-                        color: var(--text-light);
-                        font-size: .65rem;
-                        display: block;
-                        opacity: .5;
-                    }
-                }
+    &:active {
+        background: rgba(255, 59, 48, 0.25);
+    }
 
-                h3 {
-                    margin: 0;
-                    color: var(--text-light);
-                    font-size: 0.73rem;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                    white-space: nowrap;
-                }
-            }
+    ion-icon {
+        font-size: 18px;
+        color: rgba(255, 59, 48, 1);
+    }
+}
+
+.last-message {
+    font-size: 14px;
+    color: rgba(138, 138, 138, 1);
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    &.system-message {
+        color: var(--ion-color-secondary);
+
+        ion-icon {
+            font-size: 16px;
+            color: var(--ion-color-secondary);
+            flex-shrink: 0;
         }
+    }
+
+    span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }

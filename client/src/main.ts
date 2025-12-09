@@ -41,7 +41,7 @@ Sentry.init({
     sendDefaultPii: true,
     integrations: [
         Sentry.browserTracingIntegration(),
-        Sentry.replayIntegration()
+        Sentry.replayIntegration(),
     ],
     // Tracing
     tracesSampleRate: 1.0, //  Capture 100% of the transactions
@@ -83,7 +83,7 @@ bootstrapApplication(AppComponent, {
         {
             provide: ErrorHandler,
             useValue: Sentry.createErrorHandler({
-                showDialog: true,
+                showDialog: false,
             }),
         }, {
             provide: Sentry.TraceService,

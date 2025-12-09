@@ -61,68 +61,62 @@ ion-header {
 
 }
 
-.chat_container {
-    padding: 15px 20px;
-    flex-wrap: wrap;
-    position: relative;
-    z-index: 99;
+.messages-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 0;
+}
 
-    .chat_box {
-        width: auto !important;
-        margin-bottom: 14px;
-        min-width: 70%;
-        align-items: flex-start;
-        max-width: 85%;
+.message-card {
+    display: flex;
+    max-width: 85%;
 
-        .chat {
-            min-width: 150px;
-            border-radius: 8px;
-            max-width: 100%;
-            box-shadow: 0 2px 10px 0px rgba(0, 0, 0, 0.1);
-            padding: 15px;
+    .message-content {
+        background: rgba(27, 27, 27, 1);
+        border-radius: 20px;
+        padding: 16px 20px;
+        box-shadow: 0 2px 10px 0px rgba(0, 0, 0, 0.1);
+        flex: 1;
+
+        h2 {
+            margin: 0;
+            font-size: 16px;
+            color: white;
+            line-height: 1.5;
+            padding-bottom: 5px;
+            font-weight: 400;
+        }
+    }
+
+    .message-time {
+        margin: 8px 0 0 0;
+        font-size: 12px;
+        font-weight: 500;
+        color: rgba(138, 138, 138, 1);
+    }
+
+    &.received {
+        .message-content {
+            background: rgba(27, 27, 27, 1);
+        }
+    }
+
+    &.send {
+        margin-left: auto;
+        margin-right: 0;
+
+        .message-content {
+            background: var(--primary);
+            text-align: right;
 
             h2 {
-                margin: 0;
-                font-size: .95rem;
-                color: var(--white);
-                line-height: 20px;
-                padding-bottom: 5px;
+                color: white;
                 font-weight: 400;
             }
-        }
 
-        p {
-            margin: 0;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--text-light);
-        }
-
-        &.received {
-            .chat {
-                background: var(--ion-card-background) !important;
-            }
-        }
-
-        &.send {
-            margin-left: auto;
-            margin-right: 0;
-
-            .chat {
-                background: var(--primary);
-                margin-left: auto;
-                margin-right: 0;
-                text-align: right;
-
-                h2 {
-                    color: var(--white);
-                    font-weight: 400;
-                }
-
-                p {
-                    color: var(--white);
-                    opacity: .6;
-                }
+            .message-time {
+                color: rgba(255, 255, 255, 0.7);
             }
         }
     }

@@ -21,7 +21,7 @@ export class ThemeService {
     } 
 
     async initializeTheme() {
-        let userTheme = await this.storageService.getItem<string>(StorageKeys.THEME);
+        let userTheme = 'dark';//await this.storageService.getItem<string>(StorageKeys.THEME);
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
         if (userTheme) {

@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+            <ion-back-button color="dark" text="" icon="chevron-back-outline"></ion-back-button>
         </ion-buttons>
         <ion-title>{{ 'Workout' | translate }}</ion-title>
         <ion-label slot="end">
@@ -31,12 +31,12 @@
     <div #exerciseContent class="wizard-container">
         @if (currentExercise() != null) {
         <div class="exercise-header">
-            <div class="tags">
+            <div class="tags-row">
                 @for (tag of currentExercise().controls.primaryMuscles.value; track tag) {
-                <ion-chip color="primary" outline>{{ tag }}</ion-chip>
+                <div class="tag-pill">{{ tag }}</div>
                 }
                 @for (tag of currentExercise().controls.secondaryMuscles.value; track tag) {
-                <ion-chip color="secondary" outline>{{ tag }}</ion-chip> }
+                <div class="tag-pill secondary">{{ tag }}</div> }
             </div>
         </div>
         @if (currentExercise().controls.notes.value) {
@@ -109,7 +109,7 @@
 
     <div class="exercise-tabs">
         @for (exercise of exercises; track exercise; let i = $index) {
-        <div class="exercise-tab" [ngClass]="{'active': currentExerciseIndex() === i}" (click)="selectExercise(i)">
+        <div class="exercise-tab" [ngClass]="{'active': currentExerciseIndex() === i, 'completed': isExerciseComplete(exercise)}" (click)="selectExercise(i)">
         </div>
         }
     </div>

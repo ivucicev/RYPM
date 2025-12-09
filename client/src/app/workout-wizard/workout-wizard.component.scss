@@ -1,43 +1,68 @@
 .exercise-header {
-    .tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 4px;
+    margin-bottom: 16px;
+}
+
+.tags-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.tag-pill {
+    background: transparent;
+    border: 1px solid rgba(138, 138, 138, 0.3);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    color: white;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+
+    &.secondary {
+        opacity: 0.7;
     }
 }
 
 .wizard-container {
-    gap: 10px;
-    padding-bottom: 10px;
     display: flex;
     flex-direction: column;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.notes {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 16px;
+    background: rgba(27, 27, 27, 1);
+    border-radius: 12px;
+    margin-bottom: 16px;
+
+    ion-icon {
+        font-size: 20px;
+        color: rgba(138, 138, 138, 1);
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    font-size: 14px;
+    color: rgba(138, 138, 138, 1);
+    line-height: 1.5;
 }
 
 .sets-container {
-
-    .set-item {
-        margin-bottom: 8px;
-        border-radius: 8px;
-
-        h2 {
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-
-        .set-value {
-            font-size: 16px;
-            margin: 4px 0;
-        }
-
-        .weight-type {
-            display: inline-block;
-            font-size: 14px;
-            background-color: rgba(var(--ion-color-medium-rgb), 0.2);
-            padding: 2px 8px;
-            border-radius: 4px;
-            margin-top: 4px;
-        }
-    }
+    // Remove any default padding/margin that might interfere
 }
 
 .rest-timer {
@@ -55,12 +80,17 @@
 .prev-next-buttons {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
     ion-button {
-        --padding-start: 15px !important;
-        --padding-end: 15px !important;
+        --padding-start: 12px !important;
+        --padding-end: 12px !important;
         margin: 0px;
-        height: 52px;
+        height: 48px;
+
+        ion-icon {
+            font-size: 24px;
+        }
     }
 }
 
@@ -69,8 +99,9 @@
 
     .next-label {
         margin: 0;
-        font-size: 1rem;
-        color: var(--ion-color-medium);
+        font-size: 16px;
+        font-weight: 400;
+        color: rgba(138, 138, 138, 1);
         text-align: center;
         white-space: pre-wrap;
     }
@@ -80,8 +111,9 @@
     display: flex;
     justify-content: space-around;
     width: 100%;
-    padding: 15px;
-    padding-bottom: 20px;
+    padding: 16px;
+    padding-top: 12px;
+    padding-bottom: 24px;
     background: transparent;
     .exercise-tab:first-child {
         border-top-left-radius: 50px;
@@ -94,12 +126,21 @@
     .exercise-tab {
         flex: 1;
         height: 15px;
-        margin: 0 2px;
-        border-radius: 2px;
-        background-color: var(--ion-color-medium);
+        margin: 0 1px;
+        background-color: rgba(70, 70, 70, 1);
+        transition: all 0.3s ease;
 
         &.active {
-            background-color: var(--ion-color-primary);
+            background: linear-gradient(90deg, #FFA041 0%, #FC3A3C 100%);
+        }
+
+        &.completed {
+            background-color: var(--ion-color-success);
+        }
+
+        &.active.completed {
+            background: linear-gradient(90deg, #FFA041 0%, #FC3A3C 100%);
+            opacity: 1;
         }
     }
 }
@@ -127,15 +168,15 @@ ion-footer {
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 0px 10px;
+    padding: 0px 16px;
 
     .footer-container {
-        border-radius: 50px;
-        background: rgb(7, 6, 6);
-        padding: 0px 25px;
+        border-radius: 20px;
+        background: rgba(27, 27, 27, 1);
+        padding: 8px 24px;
 
         .nav-buttons {
-            margin: 0px -2.5rem;
+            margin: 0px -24px;
         }
     }
 }

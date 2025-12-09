@@ -92,6 +92,11 @@ export class WorkoutWizardComponent implements OnInit, OnDestroy {
         return null;
     });
 
+    isExerciseComplete(exercise: ExerciseFormGroup): boolean {
+        const sets = exercise.controls.sets.controls;
+        return sets.every(set => set.controls.completed.value === true);
+    }
+
     RepType = RepType;
     WeightType = WeightType;
 

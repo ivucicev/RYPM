@@ -74,7 +74,7 @@ export class ProgramService {
         const reps = this.formatRepRange(sets);
         const weight = this.formatWeight(sets);
 
-        return `${exercise.name} ${sets.length}x${reps}${weight ? ` @ ${weight}` : ''}`;
+        return `${exercise.name} ${sets.length}x${reps}${weight ? `@${weight}` : ''}`;
     }
 
     private formatRepRange(sets: Set[]): string {

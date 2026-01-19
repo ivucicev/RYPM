@@ -14,6 +14,8 @@ import { User } from '../models/collections/user';
 import { Workout } from '../models/collections/workout';
 import { Exercise } from '../models/collections/exercise';
 import { Set } from '../models/collections/exercise-set';
+import { RepType } from '../models/enums/rep-type';
+import { WeightType } from '../models/enums/weight-type';
 
 export type ProgramInfo = (
     Program &
@@ -54,6 +56,91 @@ export class ProgramService {
         private alertController: AlertController,
         private loadingController: LoadingController
     ) {
+    }
+
+    getExercisesWithSetsSummary(exercises: Exercise[] | undefined | null): string {
+        if (!exercises?.length) return '';
+
+        return exercises
+            .map(exercise => this.formatExerciseWithSets(exercise))
+            .filter(Boolean)
+            .join(', ');
+    }
+
+    private formatExerciseWithSets(exercise: Exercise): string {
+        const sets = exercise.sets ?? [];
+        if (!sets.length) return exercise.name;
+
+        const reps = this.formatRepRange(sets);
+        const weight = this.formatWeight(sets);
+
+        return `${exercise.name} ${sets.length}x${reps}${weight ? ` @ ${weight}` : ''}`;
+    }
+
+    private formatRepRange(sets: Set[]): string {
+        const repType = sets[0]?.type ?? RepType.Reps;
+
+        if (repType === RepType.Max) {
+            return 'max';
+        }
+
+        const minValues = sets
+            .map(set => this.getSetMinRepValue(set, repType))
+            .filter((value): value is number => value !== null && value !== undefined);
+        const maxValues = sets
+            .map(set => this.getSetMaxRepValue(set, repType))
+            .filter((value): value is number => value !== null && value !== undefined);
+
+        if (!minValues.length || !maxValues.length) return '';
+
+        const min = Math.min(...minValues);
+        const max = Math.max(...maxValues);
+        const suffix = repType === RepType.Duration ? 's' : '';
+
+        if (min === max) {
+            return `${min}${suffix}`;
+        }
+
+        return `${min}-${max}${suffix}`;
+    }
+
+    private getSetMinRepValue(set: Set, repType: RepType): number | null {
+        if (repType === RepType.Range) {
+            return set.minValue ?? set.currentValue ?? set.value ?? set.maxValue ?? null;
+        }
+
+        return set.currentValue ?? set.value ?? set.minValue ?? set.maxValue ?? null;
+    }
+
+    private getSetMaxRepValue(set: Set, repType: RepType): number | null {
+        if (repType === RepType.Range) {
+            return set.maxValue ?? set.currentValue ?? set.value ?? set.minValue ?? null;
+        }
+
+        return set.currentValue ?? set.value ?? set.maxValue ?? set.minValue ?? null;
+    }
+
+    private formatWeight(sets: Set[]): string {
+        const weightType = sets[0]?.weightType;
+        if (!weightType || weightType === WeightType.NA) return '';
+
+        if (weightType === WeightType.BW) return 'bw';
+
+        const weights = sets
+            .map(set => set.currentWeight ?? set.weight)
+            .filter((value): value is number => value !== null && value !== undefined);
+
+        if (!weights.length) return '';
+
+        const min = Math.min(...weights);
+        const max = Math.max(...weights);
+        const unit = weightType === WeightType.LB ? 'lb' : 'kg';
+
+        if (min === max) {
+            return `${min}${unit}`;
+        }
+
+        return `${min}-${max}${unit}`;
     }
 
     /**
@@ -133,7 +220,7 @@ export class ProgramService {
         const translations = await lastValueFrom(this.translateService.get(Object.values(PROGRAM_ACTIONS)));
 
         const actionSheet = await this.actionSheetCtrl.create({
-            header: program.name,
+            header: program.name + " - " + this.getExercisesWithSetsSummary(program.nextDay?.exercises),
             buttons: [
                 !excludeActions[PROGRAM_ACTIONS.start] && !program.completed ? {
                     text: program.started

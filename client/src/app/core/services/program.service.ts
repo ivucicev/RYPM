@@ -74,7 +74,7 @@ export class ProgramService {
         const reps = this.formatRepRange(sets);
         const weight = this.formatWeight(sets);
 
-        return `${exercise.name} ${sets.length}x${reps}${weight ? `@${weight}` : ''}`;
+        return `${exercise.name} ${sets.length}x${reps}`;
     }
 
     private formatRepRange(sets: Set[]): string {
@@ -377,13 +377,20 @@ export class ProgramService {
         const exerciseNames = workout.exercises.map(e => e.name);
 
         const filter = exerciseNames.map(name => `completed=1 && exercise.name = '${name}'`).join(' || ');
-        const sets = await this.pocketbaseService.sets.getList(0, 200,
+
+        const sets = await this.pocketbaseService.sets.getList(0, 500,
             {
                 expand: 'exercise',
                 filter,
-                sort: 'completedAt, index'
+                sort: '-completedAt, index'
             }
         );
+
+        console.log(sets.items.filter((s: any) => s.exercise?.name == 'Dumbbell Bench Press'));
+
+        sets.items.filter((s: any) => s.exercise?.name == 'Dumbbell Bench Press').forEach((s: any) => {
+            console.log(s.currentValue, s.currentWeight, s.completedAt);
+        })
 
         // Group sets by exercise name, but only keep sets from the latest date for each exercise
         const groupedSets = sets.items.reduce((acc, set: any) => {
@@ -406,13 +413,20 @@ export class ProgramService {
             })
         })
 
+        console.log(groupedSets['Dumbbell Bench Press']);
+
         // Fill in previousValue for each set in workout.exercises from groupedSets
         workout.exercises.forEach((ex, i) => {
             const setsForExercise: any = groupedSets[ex.name];
             if (!setsForExercise || setsForExercise?.length === 0) return;
             ex.notes = setsForExercise[0]?.exercise?.notes || '';
             if (!setsForExercise) return;
-            setsForExercise.sort((a, b) => a.index - b.index);
+            setsForExercise.sort((a, b) => {
+                const aTime = a.completedAt ? new Date(a.completedAt).getTime() : 0;
+                const bTime = b.completedAt ? new Date(b.completedAt).getTime() : 0;
+                if (aTime !== bTime) return bTime - aTime;
+                return a.index - b.index;
+            });
             ex.sets.forEach((set, index) => {
                 set.index = index;
                 const previousSet = setsForExercise.find((s, i) => (s.index > 0 && s.index === index) || (s.index == 0 && i == index));

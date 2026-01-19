@@ -386,12 +386,6 @@ export class ProgramService {
             }
         );
 
-        console.log(sets.items.filter((s: any) => s.exercise?.name == 'Dumbbell Bench Press'));
-
-        sets.items.filter((s: any) => s.exercise?.name == 'Dumbbell Bench Press').forEach((s: any) => {
-            console.log(s.currentValue, s.currentWeight, s.completedAt);
-        })
-
         // Group sets by exercise name, but only keep sets from the latest date for each exercise
         const groupedSets = sets.items.reduce((acc, set: any) => {
             const name = set.exercise?.name;
@@ -412,8 +406,6 @@ export class ProgramService {
                 return d.startsWith(latestDate);
             })
         })
-
-        console.log(groupedSets['Dumbbell Bench Press']);
 
         // Fill in previousValue for each set in workout.exercises from groupedSets
         workout.exercises.forEach((ex, i) => {

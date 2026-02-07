@@ -107,6 +107,27 @@ app.post('/subscribe', async (req: Request, res: Response) => {
 
 })
 
+
 app.listen(PORT, () => {
     console.log(`Server is running at :${PORT}`);
 });
+
+
+// notification checker (to trigger DO Functions to send pending notifs, since DO doesn't support cron yet)
+
+import { request } from "undici";
+
+const URL = "http://localhost:8080/api/check-notifications";
+let inFlight = false;
+
+setInterval(async () => {
+    if (inFlight) return;
+    inFlight = true;
+    try {
+        const res = await request(URL, { method: "POST", headersTimeout: 1000, bodyTimeout: 1000 });
+        res.body.destroy(); // fire & forget
+    } catch (_) {
+    } finally {
+        inFlight = false;
+    }
+}, 1000);

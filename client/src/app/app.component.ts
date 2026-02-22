@@ -12,7 +12,6 @@ import { register } from 'swiper/element/bundle';
 import { chevronBackOutline, chevronForwardOutline, downloadOutline, shareOutline } from 'ionicons/icons';
 import { ActivatedRoute, NavigationExtras, NavigationStart, Router } from '@angular/router';
 import { skipLocationChange } from './core/helpers/platform-helpers';
-import { environment } from 'src/environments/environment';
 import { WakeLockService } from './core/services/WakeLockService';
 import { StorageService } from './core/services/storage.service';
 import { StorageKeys } from './core/constants/storage-keys';

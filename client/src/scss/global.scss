@@ -874,3 +874,24 @@ ion-app[dir="rtl"] {
 .markd *:last-child {
     margin-bottom: 0;
 }
+
+// iOS Safari does not support manifest-based orientation lock.
+// Show a blocking overlay in landscape to enforce portrait-only UX.
+@media screen and (orientation: landscape) and (max-width: 1024px) {
+    ion-app::before {
+        content: "Rotate your device to portrait to continue.";
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 24px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--ion-text-color, #ffffff);
+        background: var(--ion-background-color, #000000);
+        pointer-events: all;
+    }
+}

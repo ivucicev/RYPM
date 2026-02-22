@@ -421,7 +421,7 @@ export class ProgramService {
             });
             ex.sets.forEach((set, index) => {
                 set.index = index;
-                const previousSet = setsForExercise.find((s, i) => (s.index > 0 && s.index === index) || (s.index == 0 && i == index));
+                const previousSet = setsForExercise.find((s, i) => (s.index > 0 && s.index === index) || (s.index == 0 && index == 0));
                 if (previousSet) {
                     set.previousValue = previousSet.currentValue;
                     set.currentValue = previousSet.currentValue;

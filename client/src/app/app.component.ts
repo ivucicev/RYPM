@@ -13,6 +13,11 @@ import { chevronBackOutline, chevronForwardOutline, downloadOutline, shareOutlin
 import { ActivatedRoute, NavigationExtras, NavigationStart, Router } from '@angular/router';
 import { skipLocationChange } from './core/helpers/platform-helpers';
 import { environment } from 'src/environments/environment';
+import { WakeLockService } from './core/services/WakeLockService';
+import { StorageService } from './core/services/storage.service';
+import { StorageKeys } from './core/constants/storage-keys';
+import { WorkoutState } from './core/models/enums/workout-state';
+import { Workout } from './core/models/collections/workout';
 
 @Component({
     selector: 'app-root',
@@ -30,6 +35,7 @@ export class AppComponent {
     downloadIcon = downloadOutline;
     isInstalled = window.matchMedia('(display-mode: standalone)').matches;
     canShowInstallButton = true;
+    private wakeLockIntervalId: any = null;
 
     constructor(
         private platform: Platform,
@@ -40,7 +46,9 @@ export class AppComponent {
         private router: Router,
         private accountService: AccountService,
         private themeService: ThemeService,
-        private activatedRoute: ActivatedRoute
+        private activatedRoute: ActivatedRoute,
+        private wake: WakeLockService,
+        private storage: StorageService
     ) {
         this.initializeApp();
         this.themeService.initializeTheme();
@@ -68,6 +76,7 @@ export class AppComponent {
                     this.showInstallButton = false;
                     this.canShowInstallButton = false;
                 }
+                this.syncWakeLock();
             }
         })
     }
@@ -102,6 +111,8 @@ export class AppComponent {
                 setTimeout(() => {
                     this.showInstallButton = true;
                 }, 2000)
+
+            this.startWakeLockMonitor();
         })
     }
 
@@ -171,6 +182,23 @@ export class AppComponent {
             this.deferredPrompt.prompt();
             const choiceResult = await this.deferredPrompt.userChoice;
             this.deferredPrompt = null;
+        }
+    }
+
+    private startWakeLockMonitor() {
+        this.syncWakeLock();
+        if (this.wakeLockIntervalId) return;
+        this.wakeLockIntervalId = setInterval(() => this.syncWakeLock(), 30000);
+        document.addEventListener('visibilitychange', () => this.syncWakeLock(), false);
+    }
+
+    private async syncWakeLock() {
+        const lastWorkout = await this.storage.getItem<Workout>(StorageKeys.WORKOUT_WIZARD_LAST_WORKOUT);
+        const shouldKeepAwake = !!lastWorkout?.id && (lastWorkout?.state == null || lastWorkout?.state === WorkoutState.InProgress);
+        if (shouldKeepAwake) {
+            this.wake.enable();
+        } else {
+            this.wake.disable();
         }
     }
 }
